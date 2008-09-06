@@ -21,6 +21,7 @@ com.elclab.proveit = {
 	
 	isMediaWikiEditPage : function (url)
 	{
+		alert("Entering isMediaWikiEditPage");
 		var found = false;
 		var i = 0;
 		while(!found && i < knownSites.length)
@@ -82,10 +83,16 @@ com.elclab.proveit = {
                    .getInterface(Components.interfaces.nsIDOMWindow); 
                    
 				var windURL = top.getBrowser().currentURI; //backup
+				mainWindow.alert("Test");
 				
-                if(!isMediaWikiEditPage(windURL))
+                if(!com.elclab.proveit.isMediaWikiEditPage(windURL))
                 {
                 	mainWindow.alert("Not MediaWiki");
+                }
+                
+                else
+                {
+                	mainWindow.alert("Is MediaWiki");
                 }
 				
 				com.elclab.proveit.scanRef();
