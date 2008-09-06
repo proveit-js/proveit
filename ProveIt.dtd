@@ -1,0 +1,63 @@
+<!ENTITY ProveIt.title "ProveIt!" >
+<!ENTITY OpenProveIt.commandkey "P">
+<!ENTITY OpenProveIt.modifierskey "control alt">
+
+<!ENTITY ProveIt.Tagstyle "Tag Style:">
+<!ENTITY ProveIt.markup "wikimarkup:">
+<!ENTITY ProveIt.fullcitation "full citation">
+<!ENTITY ProveIt.nameonly "name only">
+<!ENTITY ProveIt.insert "Insert">
+<!ENTITY ProveIt.scta1 "save">
+<!ENTITY ProveIt.scta2 "changes">
+<!ENTITY ProveIt.scta3 "throughout">
+<!ENTITY ProveIt.scta4 "article">
+<!ENTITY ProveIt.addnew "Add a New Reference">
+<!ENTITY ProveIt.save "Save">
+<!ENTITY ProveIt.addother "Add other fields">
+
+<!ENTITY ProveIt.Website "WebSite">
+<!ENTITY ProveIt.Book "Book">
+<!ENTITY ProveIt.Journal "Journal">
+<!ENTITY ProveIt.Conference "Conference">
+<!ENTITY ProveIt.Encyclopedia "Encyclopedia">
+<!ENTITY ProveIt.News "News">
+<!ENTITY ProveIt.Newsgroup "Newsgroup">
+<!ENTITY ProveIt.Paper "Paper(Scientific)">
+<!ENTITY ProveIt.Press "Press Release">
+<!ENTITY ProveIt.Patent "Patent">
+
+<!ENTITY ProveIt.addname "Name:">
+<!ENTITY ProveIt.addauthor "Author(l,f):">
+<!ENTITY ProveIt.addtitle "Title:">
+<!ENTITY ProveIt.addpublisher "Publisher:">
+<!ENTITY ProveIt.addyear "Year:">
+<!ENTITY ProveIt.addlocation "Location:">
+<!ENTITY ProveIt.addisbn "ISBN:">
+<!ENTITY ProveIt.addpages "Pages:">
+<!ENTITY ProveIt.addmonth "Month:">
+<!ENTITY ProveIt.addjournal "Journal:">
+<!ENTITY ProveIt.addvolume "Volume:">
+<!ENTITY ProveIt.addissue "Issue:">
+<!ENTITY ProveIt.addurl "URL:">
+<!ENTITY ProveIt.adddate "Date(YYYY-MM-DD):">
+<!ENTITY ProveIt.addadate "Access Date(YYYY-MM-DD):">
+<!ENTITY ProveIt.addcoauth "Co-Authors:">
+<!ENTITY ProveIt.addbooktitle "Book Title:">
+<!ENTITY ProveIt.addencyclopedia "Encyclopedia:">
+<!ENTITY ProveIt.addnewsgroup "Newsgroup:">
+<!ENTITY ProveIt.addversion "Version:">
+<!ENTITY ProveIt.addsite "Site:">
+<!ENTITY ProveIt.addnewspaper "Newspaper:">
+<!ENTITY ProveIt.addpubplace "Publication Place:">
+<!ENTITY ProveIt.addeditor "Editor(l,f):">
+<!ENTITY ProveIt.addarticle "Article:">
+<!ENTITY ProveIt.addpubplace "Publisher Place:">
+<!ENTITY ProveIt.addpubyear "Publication Year:">
+<!ENTITY ProveIt.addinventor "Inventor(l,f):">
+<!ENTITY ProveIt.addidate "Issue Date(YYYY-MM-DD):">
+<!ENTITY ProveIt.addpnumber "Patent Number:">
+<!ENTITY ProveIt.addcountry "Country(US):">
+
+<!ENTITY ProveIt.newvalues "New Values: (name=value, name=value, etc.)">
+<!ENTITY ProveIt.cancel "Cancel">
+<!ENTITY ProveIt.savechanges "Save Changes">
