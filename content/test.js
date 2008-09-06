@@ -21,6 +21,7 @@ com.elclab.proveit = {
 	
 	isMediaWikiEditPage : function (url)
 	{
+		var isMediaWiki = null;
 		alert("Entering isMediaWikiEditPage");
 		var found = false;
 		var i = 0;
@@ -32,9 +33,19 @@ com.elclab.proveit = {
 		}
 		
 		if(found)
-			return path.indexOf("action=edit");
+			isMediaWiki = path.indexOf("action=edit");
 		else
-			return false;
+			isMediaWiki = false;
+			
+		var mainWindow = window.QueryInterface(Components.interfaces.nsIInterfaceRequestor)
+        .getInterface(Components.interfaces.nsIWebNavigation)
+        .QueryInterface(Components.interfaces.nsIDocShellTreeItem)
+        .rootTreeItem
+        .QueryInterface(Components.interfaces.nsIInterfaceRequestor)
+        .getInterface(Components.interfaces.nsIDOMWindow);
+        
+        mainWindow.alert("isMediaWiki: " + isMediaWiki);
+        return isMediaWiki;
 	},
 
 	/*
