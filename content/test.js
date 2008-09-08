@@ -22,12 +22,15 @@ com.elclab.proveit = {
 	isMediaWikiEditPage : function (url)
 	{
 		var isMediaWiki = null;
-		alert("Entering isMediaWikiEditPage");
+		//alert("Entering isMediaWikiEditPage");
 		var found = false;
 		var i = 0;
-		while(!found && i < knownSites.length)
+		var host = url.host;
+		//alert("host: " + host);
+		
+		while(!found && i < com.elclab.proveit.knownSites.length)
 		{
-			if(url.host.indexOf(knownSites[i]) != -1)
+			if(host.indexOf(com.elclab.proveit.knownSites[i]) != -1)
 				found = true;
 			i++;
 		}
@@ -37,14 +40,7 @@ com.elclab.proveit = {
 		else
 			isMediaWiki = false;
 			
-		var mainWindow = window.QueryInterface(Components.interfaces.nsIInterfaceRequestor)
-        .getInterface(Components.interfaces.nsIWebNavigation)
-        .QueryInterface(Components.interfaces.nsIDocShellTreeItem)
-        .rootTreeItem
-        .QueryInterface(Components.interfaces.nsIInterfaceRequestor)
-        .getInterface(Components.interfaces.nsIDOMWindow);
-        
-        mainWindow.alert("isMediaWiki: " + isMediaWiki);
+		//alert("isMediaWiki: " + isMediaWiki);
         return isMediaWiki;
 	},
 
@@ -58,6 +54,48 @@ com.elclab.proveit = {
 	 * onload and onunload event handlers tied to the sidebar. These tie the
 	 * event handler into the browser and remove it when finished.
 	 */
+	
+	/**
+	 * Returns true if and only if ProveIt sidebar is open.
+	 */
+	/*
+	isSidebarOpen : function()
+	{
+		alert("Sidebar checked prop: " + document.getElementById("viewProveItSidebar").getAttribute("checked"));
+		
+		if(document.getElementById("viewProveItSidebar").getAttribute("checked") == "checked")
+			return true;	
+		else
+			return false;
+	},
+	*/
+	
+	
+	/**
+	 * Ensures ProveIt sidebar is open.
+	 */
+	/*
+	openSidebar : function()
+	{
+		toggleSidebar("viewProveItSidebar", true);
+	},
+	*/
+	
+	/**
+	 * Ensures ProveIt sidebar is closed.
+	 */
+	
+	closeSidebar : function()
+	{
+		alert("Entering closeSidebar");
+		alert("Sidebar open: " + this.isSidebarOpen());
+		if(this.isSidebarOpen())
+		{
+			toggleSidebar("viewProveItSidebar");
+		}
+	},
+	
+	
 	proveitonload : function() {
 		top.getBrowser().addProgressListener(this.sendalert,
 				this.NOTIFY_STATE_DOCUMENT);
@@ -86,24 +124,26 @@ com.elclab.proveit = {
 				// to keep us from double firing in the event the page is still
 				// loading, we will then use the state_stop in statechange.
 				
-				var mainWindow = window.QueryInterface(Components.interfaces.nsIInterfaceRequestor)
+				/*
+				 	var mainWindow = window.QueryInterface(Components.interfaces.nsIInterfaceRequestor)
                    .getInterface(Components.interfaces.nsIWebNavigation)
                    .QueryInterface(Components.interfaces.nsIDocShellTreeItem)
                    .rootTreeItem
                    .QueryInterface(Components.interfaces.nsIInterfaceRequestor)
                    .getInterface(Components.interfaces.nsIDOMWindow); 
-                   
-				var windURL = top.getBrowser().currentURI; //backup
-				mainWindow.alert("Test");
+                */
+				var windURL = top.getBrowser().currentURI; //get curURL
+				//alert("Test");
 				
                 if(!com.elclab.proveit.isMediaWikiEditPage(windURL))
                 {
-                	mainWindow.alert("Not MediaWiki");
+                	alert("Not MediaWiki");
+                	com.elclab.proveit.closeSidebar();
                 }
                 
                 else
                 {
-                	mainWindow.alert("Is MediaWiki");
+                	alert("Is MediaWiki");
                 }
 				
 				com.elclab.proveit.scanRef();
