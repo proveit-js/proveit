@@ -11,7 +11,7 @@ if (com.elclab.proveit)
 	throw new Error("com.elclab.proveit already exists");
 
 com.elclab.proveit = {
-
+	
 	// Constants for a progress listener.
 	NOTIFY_STATE_DOCUMENT : Components.interfaces.nsIWebProgress.NOTIFY_STATE_DOCUMENT,
 	STATE_START : Components.interfaces.nsIWebProgressListener.STATE_START,
@@ -25,7 +25,7 @@ com.elclab.proveit = {
 		alert: 1
 	},
 	
-	logType : this.console, 
+	logType : this.alert, 
 	
 	log : function(str)
 	{
@@ -68,6 +68,7 @@ com.elclab.proveit = {
 	
 	closeUnlessMediaWiki : function ()
 	{
+		com.elclab.proveit.log("Entering closeUnlessMediaWiki");
 		var windURL = top.getBrowser().currentURI;
 		if(!com.elclab.proveit.isMediaWikiEditPage(windURL))
         {
@@ -201,6 +202,38 @@ com.elclab.proveit = {
 		}
 	},
 	
+	highlightTargetString : function(target)
+	{
+		com.elclab.proveit.log("Entering highlightTargetString");
+		var t = com.elclab.proveit.getMWEditBox();
+		var origText = t.value; 
+		var startInd = origText.indexOf(target); 
+		var endInd = startInd + target.length; 
+		t.value = origText.substring(0, startInd); 
+		t.scrollTop = 1000000; //Larger than any real textarea (hopefully)
+		var curScrollTop = t.scrollTop; 
+		t.value += origText.substring(startInd); 
+		t.scrollTop = curScrollTop + 204; 
+		t.focus(); 
+		t.setSelectionRange(startInd, endInd); 
+		//alert(curScrollTop);
+	},
+		
+	getMWEditBox : function()
+	{
+		if (top.window.content.document.getElementById('wikEdTextarea')) {
+			textareaname = "wikEdTextarea";
+		} 
+		else if (top.window.content.document.getElementById('wpTextbox1')) {
+			textareaname = "wpTextbox1";
+		} 
+		else 
+		{
+			return;
+		}
+		
+		return top.window.content.document.getElementById(textareaname);
+	},
 	
 	proveitonload : function() {
 		top.getBrowser().addProgressListener(this.sendalert,
@@ -210,6 +243,7 @@ com.elclab.proveit = {
 				document.getElementById('refbox'), "end_before", 0, 0, false,
 				false);
 		document.getElementById('edit').hidePopup();
+		com.elclab.proveit.log("Loading ProveIt.");
 		this.scanRef();
 
 	},
@@ -244,7 +278,8 @@ com.elclab.proveit = {
 				//com.elclab.proveit.log("Test");
 				
 				com.elclab.proveit.closeUnlessMediaWiki();
-				
+				com.elclab.proveit.log("Calling highlightTargetString");
+				com.elclab.proveit.highlightTargetString("<ref");
 				com.elclab.proveit.scanRef();
 			};
 		},
@@ -261,6 +296,8 @@ com.elclab.proveit = {
 				// function from here
 				
 				com.elclab.proveit.closeUnlessMediaWiki();
+				com.elclab.proveit.log("Calling highlightTargetString");
+				com.elclab.proveit.highlightTargetString("<ref");
 				com.elclab.proveit.scanRef();
 			}
 			if (aFlag & com.elclab.proveit.STATE_START) {
