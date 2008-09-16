@@ -92,12 +92,29 @@ com.elclab.proveit = {
 	 * event handler into the browser and remove it when finished.
 	 */
 	
+	//From http://developer.mozilla.org/en/Code_snippets/Sidebar
+	setSidebarWidth : function(width) 
+	{
+  		window.top.document.getElementById("sidebar-box").width = width;
+	},
+	
+	DEFAULT_SIDEBAR_WIDTH : 300,
+	
+	/**
+	 * Sets sidebar to hopefully sufficient default width, because resize will be disabled.
+	 */
+	setDefaultSidebarWidth : function()
+	{
+		com.elclab.proveit.setSidebarWidth(com.elclab.proveit.DEFAULT_SIDEBAR_WIDTH);
+	},
+	
+	
 	/**
 	 * Removes splitter, disabling resize, to avoid awkward GUI behavior
 	 */
-	
 	disableResize : function()
 	{
+		 com.elclab.proveit.setDefaultSidebarWidth();		 
 		 var mainWindow = window.QueryInterface(Components.interfaces.nsIInterfaceRequestor)
 		 .getInterface(Components.interfaces.nsIWebNavigation)
  		 .QueryInterface(Components.interfaces.nsIDocShellTreeItem)
@@ -202,6 +219,18 @@ com.elclab.proveit = {
 		}
 	},
 	
+	blurSidebar : function()
+	{
+		var mainWindow = window.QueryInterface(Components.interfaces.nsIInterfaceRequestor)
+			 .getInterface(Components.interfaces.nsIWebNavigation)
+			 .QueryInterface(Components.interfaces.nsIDocShellTreeItem)
+			 .rootTreeItem
+			 .QueryInterface(Components.interfaces.nsIInterfaceRequestor)
+			 .getInterface(Components.interfaces.nsIDOMWindow);
+		mainWindow.document.getElementById("sidebar").blur();
+		mainWindow.document.getElementById("sidebar-box").blur();
+	},
+	
 	highlightTargetString : function(target)
 	{
 		com.elclab.proveit.log("Entering highlightTargetString");
@@ -278,8 +307,10 @@ com.elclab.proveit = {
 				//com.elclab.proveit.log("Test");
 				
 				com.elclab.proveit.closeUnlessMediaWiki();
+				/*
 				com.elclab.proveit.log("Calling highlightTargetString");
 				com.elclab.proveit.highlightTargetString("<ref");
+				*/
 				com.elclab.proveit.scanRef();
 			};
 		},
@@ -296,8 +327,10 @@ com.elclab.proveit = {
 				// function from here
 				
 				com.elclab.proveit.closeUnlessMediaWiki();
+				/*
 				com.elclab.proveit.log("Calling highlightTargetString");
 				com.elclab.proveit.highlightTargetString("<ref");
+				*/
 				com.elclab.proveit.scanRef();
 			}
 			if (aFlag & com.elclab.proveit.STATE_START) {
@@ -493,9 +526,39 @@ com.elclab.proveit = {
 	},
 
 	/**
+	 * Selects reference in main article, as well as showing below (for now)
+	 */
+	doSelect : function()
+	{
+		//com.elclab.proveit.log("Entering doSelect");
+		com.elclab.proveit.dispSelect();
+		
+		var item = document.getElementById("refbox").selectedItem.id;
+		var curRefText = this.currentrefs[item]["orig"];
+		this.log(curRefText);
+		this.highlightTargetString(curRefText);
+		document.getElementById("refbox").selectedItem.blur();
+		document.getElementById("refbox").blur();
+		com.elclab.proveit.blurSidebar();
+		var mainWindow = window.QueryInterface(Components.interfaces.nsIInterfaceRequestor)
+		 .getInterface(Components.interfaces.nsIWebNavigation)
+ 		 .QueryInterface(Components.interfaces.nsIDocShellTreeItem)
+         .rootTreeItem
+         .QueryInterface(Components.interfaces.nsIInterfaceRequestor)
+         .getInterface(Components.interfaces.nsIDOMWindow);
+        mainWindow.focus();
+        mainWindow.document.focus();
+		//com.elclab.proveit.getMWEditBox().focus();
+        mainWindow.document.getElementById("wpTextbox1").focus();
+		
+		//com.elclab.proveit.log("Leaving doSelect");
+	},
+		
+	/**
 	 * updates the edit window and puts the text in the small display window.
 	 */
 	dispSelect : function() {
+		//com.elclab.proveit.log("Entering dispSelect");
 		var box = document.getElementById("editlist");
 		var size = box.childNodes.length;
 		// com.elclab.proveit.log(size);
@@ -592,6 +655,7 @@ com.elclab.proveit = {
 	 * the display chooser.
 	 */
 	scanRef : function() {
+		com.elclab.proveit.log("Entering scanRef.");
 		// text is the text from the edit box
 		var text;
 		// zero out the old scan, just in case

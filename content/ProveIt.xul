@@ -35,7 +35,7 @@
 					</hbox>
 				</hbox>
 				<hbox width="250"  flex="1" >
-					<richlistbox id="refbox" flex="1" onselect="com.elclab.proveit.dispSelect()" onclick=""/>
+					<richlistbox id="refbox" flex="1" onselect="com.elclab.proveit.doSelect()" onclick=""/>
 				</hbox>
 				<hbox height="20" align="end" pack="start" >
 					<spacer width="15" />
