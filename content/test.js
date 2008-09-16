@@ -547,7 +547,7 @@ com.elclab.proveit = {
          .QueryInterface(Components.interfaces.nsIInterfaceRequestor)
          .getInterface(Components.interfaces.nsIDOMWindow);
         mainWindow.focus();
-        mainWindow.document.focus();
+        //mainWindow.document.focus();
 		//com.elclab.proveit.getMWEditBox().focus();
         mainWindow.document.getElementById("wpTextbox1").focus();
 		
