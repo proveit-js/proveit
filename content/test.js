@@ -231,6 +231,8 @@ com.elclab.proveit = {
 		mainWindow.document.getElementById("sidebar-box").blur();
 	},
 	
+	HALF_EDIT_BOX_IN_PIXELS : 204,
+	
 	highlightTargetString : function(target)
 	{
 		com.elclab.proveit.log("Entering highlightTargetString");
@@ -242,7 +244,7 @@ com.elclab.proveit = {
 		t.scrollTop = 1000000; //Larger than any real textarea (hopefully)
 		var curScrollTop = t.scrollTop; 
 		t.value += origText.substring(startInd); 
-		t.scrollTop = curScrollTop + 204; 
+		t.scrollTop = curScrollTop + this.HALF_EDIT_BOX_IN_PIXELS; 
 		t.focus(); 
 		t.setSelectionRange(startInd, endInd); 
 		//alert(curScrollTop);
@@ -530,26 +532,39 @@ com.elclab.proveit = {
 	 */
 	doSelect : function()
 	{
-		//com.elclab.proveit.log("Entering doSelect");
+		com.elclab.proveit.log("Entering doSelect");
 		com.elclab.proveit.dispSelect();
 		
 		var item = document.getElementById("refbox").selectedItem.id;
 		var curRefText = this.currentrefs[item]["orig"];
 		this.log(curRefText);
 		this.highlightTargetString(curRefText);
+		/*
 		document.getElementById("refbox").selectedItem.blur();
 		document.getElementById("refbox").blur();
 		com.elclab.proveit.blurSidebar();
+		*/
 		var mainWindow = window.QueryInterface(Components.interfaces.nsIInterfaceRequestor)
 		 .getInterface(Components.interfaces.nsIWebNavigation)
  		 .QueryInterface(Components.interfaces.nsIDocShellTreeItem)
          .rootTreeItem
          .QueryInterface(Components.interfaces.nsIInterfaceRequestor)
          .getInterface(Components.interfaces.nsIDOMWindow);
-        mainWindow.focus();
+        //mainWindow.focus();
         //mainWindow.document.focus();
-		//com.elclab.proveit.getMWEditBox().focus();
-        mainWindow.document.getElementById("wpTextbox1").focus();
+        document.getElementById("refbox").clearSelection();
+		com.elclab.proveit.getMWEditBox().focus();
+        //mainWindow.document.getElementById("wpSummary").focus();
+        //mainWindow.document.getElementById("wpTextbox1").focus();
+        //mainWindow.document.getElementById("wpTextbox1").scrollTo = document.getElementById("wpTextbox1").scrollTo + 1;
+        //mainWindow.document.getElementById("wpTextbox1").scrollTo = document.getElementById("wpTextbox1").scrollTo - 1;
+        
+		com.elclab.proveit.log("Scrolled and highlighted, and attempted to focus.");
+		/*
+		com.elclab.proveit.log("About to output edit box content:");
+        com.elclab.proveit.log(com.elclab.proveit.getMWEditBox().value);
+        */
+        //com.elclab.proveit.log(mainWindow.document.getElementById("wpTextbox1").value);
 		
 		//com.elclab.proveit.log("Leaving doSelect");
 	},
