@@ -526,52 +526,83 @@ com.elclab.proveit = {
 		this.dispSelect();
 		this.updateInText();
 	},
+	
+	ignoreSelection : false,
 
+	restoreSelection : function()
+	{
+		com.elclab.proveit.log("Entering restoreSelection.")
+		// Restores selection after edit box is left and sidebar returned to..
+		if(this.curRefItem != null)
+		{
+			this.ignoreSelection = true;
+			document.getElementById("refbox").selectItem(this.curRefItem);
+		}
+	},
+	
+	curRefItem : null,
+	
 	/**
 	 * Selects reference in main article, as well as showing below (for now)
 	 */
 	doSelect : function()
 	{
+		//com.elclab.proveit.log("Selected item: " + document.getElementById("refbox").selectedItem);
+		
+		//if(this.ignoreSelection || this.curRefItem == document.getElementById("refbox").selectedItem)
+		if(this.ignoreSelection)
+		{
+			this.ignoreSelection = false;
+			return; //ignore event thrown by scripted select or clearSelection.
+		}
 		com.elclab.proveit.log("Entering doSelect");
-		com.elclab.proveit.dispSelect();
+		//com.elclab.proveit.dispSelect();
 		
-		var item = document.getElementById("refbox").selectedItem.id;
-		var curRefText = this.currentrefs[item]["orig"];
-		this.log(curRefText);
-		this.highlightTargetString(curRefText);
-		/*
-		document.getElementById("refbox").selectedItem.blur();
-		document.getElementById("refbox").blur();
-		com.elclab.proveit.blurSidebar();
-		*/
-		var mainWindow = window.QueryInterface(Components.interfaces.nsIInterfaceRequestor)
-		 .getInterface(Components.interfaces.nsIWebNavigation)
- 		 .QueryInterface(Components.interfaces.nsIDocShellTreeItem)
-         .rootTreeItem
-         .QueryInterface(Components.interfaces.nsIInterfaceRequestor)
-         .getInterface(Components.interfaces.nsIDOMWindow);
-        //mainWindow.focus();
-        //mainWindow.document.focus();
-        document.getElementById("refbox").clearSelection();
-		com.elclab.proveit.getMWEditBox().focus();
-        //mainWindow.document.getElementById("wpSummary").focus();
-        //mainWindow.document.getElementById("wpTextbox1").focus();
-        //mainWindow.document.getElementById("wpTextbox1").scrollTo = document.getElementById("wpTextbox1").scrollTo + 1;
-        //mainWindow.document.getElementById("wpTextbox1").scrollTo = document.getElementById("wpTextbox1").scrollTo - 1;
-        
-		com.elclab.proveit.log("Scrolled and highlighted, and attempted to focus.");
-		/*
-		com.elclab.proveit.log("About to output edit box content:");
-        com.elclab.proveit.log(com.elclab.proveit.getMWEditBox().value);
-        */
-        //com.elclab.proveit.log(mainWindow.document.getElementById("wpTextbox1").value);
+		//if(document.getElementById("refbox").selectedItem != null)
+		//{
+			this.curRefItem = document.getElementById("refbox").selectedItem; // don't allow overwriting with null selection.
+		//}
 		
-		//com.elclab.proveit.log("Leaving doSelect");
+		var curRef = this.currentrefs[this.curRefItem.id];
+		if(curRef.inMWEditBox)
+		{
+			com.elclab.proveit.log("Current ref is in edit box.  Highlighting ref.")
+			var curRefText = curRef["orig"];
+			this.log(curRefText);
+			/*
+			if(isStringHighlighted(curRefText))
+			{
+				return;
+			}
+			*/
+			this.highlightTargetString(curRefText);
+			/*var mainWindow = window.QueryInterface(Components.interfaces.nsIInterfaceRequestor)
+			 .getInterface(Components.interfaces.nsIWebNavigation)
+	 		 .QueryInterface(Components.interfaces.nsIDocShellTreeItem)
+	         .rootTreeItem
+	         .QueryInterface(Components.interfaces.nsIInterfaceRequestor)
+	         .getInterface(Components.interfaces.nsIDOMWindow);
+	        */
+	        //mainWindow.focus();
+	        //mainWindow.document.focus();
+			com.elclab.proveit.log("About to clear refbox selection.")
+			com.elclab.proveit.ignoreSelection = true;
+	        document.getElementById("refbox").clearSelection(); //Clearing selection throws onSelect!
+			//com.elclab.proveit.ignoreSelection = true; // Focus event may also have effect on selection.
+	        com.elclab.proveit.getMWEditBox().focus();
+			com.elclab.proveit.log("Scrolled and highlighted, and attempted to focus.");
+		}
+		else
+		{
+			com.elclab.proveit.log("Current reference is not yet saved to textbox.")
+		}
+		com.elclab.proveit.log("Leaving doSelect");
 	},
 		
 	/**
 	 * updates the edit window and puts the text in the small display window.
 	 */
+	
 	dispSelect : function() {
 		//com.elclab.proveit.log("Entering dispSelect");
 		var box = document.getElementById("editlist");
@@ -583,6 +614,7 @@ com.elclab.proveit = {
 			// com.elclab.proveit.log(size);
 		}
 		if (document.getElementById("refbox").selectedItem) {
+			/*
 			var name = document.getElementById("refbox").selectedItem.id;
 			if (this.toggleinsert) {
 				// com.elclab.proveit.log(name);
@@ -596,6 +628,7 @@ com.elclab.proveit = {
 					document.getElementById('display').value = "There is no name for this reference.";
 				}
 			}
+			*/
 		} else {
 			return;
 		}
@@ -720,13 +753,14 @@ com.elclab.proveit = {
 					// com.elclab.proveit.log(this.currentScan[i]);
 					cutupstring = workingstring.split(/\|/g);
 					if (!this.currentrefs[name]) {
-						if (workingstring.indexOf('c') != -1
+						if (workingstring.indexOf('c') != -1 // Forking on c/C will not work, as templates are case insensitive.
 								&& workingstring.substr(workingstring
 										.indexOf('c'), 4) == "cite") {
 							// create a new cite object
 							var citation = new this.Cite();
 							citation["orig"] = orig;
 							citation["save"] = true;
+							citation.inMWEditBox = true;
 							if (name) {
 								citation["name"] = name;
 							}
@@ -762,7 +796,7 @@ com.elclab.proveit = {
 									}
 								}
 							}
-						} else if (workingstring.indexOf('C') != -1
+						} else if (workingstring.indexOf('C') != -1 
 								&& workingstring.substr(workingstring
 										.indexOf('C'), 8) == "Citation") {
 							var citation = new this.Citation();
@@ -771,6 +805,7 @@ com.elclab.proveit = {
 							}
 							citation["orig"] = orig;
 							citation["save"] = true;
+							citation.inMWEditBox = true;
 							var citstart = workingstring.indexOf('C');
 							workingstring = workingstring.substring(citstart
 									+ 8);
@@ -827,7 +862,7 @@ com.elclab.proveit = {
 			} else {
 			}
 		}
-		document.getElementById('display').value = "";
+		//document.getElementById('display').value = "";
 	},
 
 	/**
@@ -836,6 +871,8 @@ com.elclab.proveit = {
 	Cite : function() {
 		this.name;
 		this.type;
+		this.save; 
+		this.inMWEditBox; // true if and only if the ref is in the MW edit box with the same value as this object's orig.
 		this.toString = function() {
 			if (this.name) {
 				var returnstring = "<ref name=\"";
@@ -868,6 +905,8 @@ com.elclab.proveit = {
 
 	Citation : function() {
 		this.name;
+		this.save; 
+		this.inMWEditBox; // true if and only if the ref is in the MW edit box with the same value as this object's orig.
 		this.toString = function() {
 			if (this.name) {
 				var returnstring = "<ref name=\"";
@@ -911,6 +950,7 @@ com.elclab.proveit = {
 			tag = new this.Citation();
 		}
 		tag["save"] = true;
+		tag.inMWEditBox = false;
 		if (this.currentrefs[document.getElementById(type + "name").value]) {
 			for (var j = 2; true; j++) {
 				if (!this.currentrefs[document.getElementById(type + "name").value
