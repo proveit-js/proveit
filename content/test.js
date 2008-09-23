@@ -379,23 +379,48 @@ com.elclab.proveit = {
 		this.currentrefs = [];
 	},
 
+	getInsertionText : function()
+	{
+		// Adapted from dispSelect
+		var textToInsert = "";
+		if (document.getElementById("refbox").selectedItem) {
+			var name = document.getElementById("refbox").selectedItem.id;
+			if (this.toggleinsert) {
+				// com.elclab.proveit.log(name);
+				textToInsert = this.currentrefs[name]
+						.toString();
+			} else {
+				if (this.currentrefs[name].name) {
+					textToInsert = "<ref name=\""
+							+ this.currentrefs[name].name + "\" />";
+				} else {
+					com.elclab.proveit.log("Selected item appears invalid.  Returning empty insertion text");
+					textToInsert = "";
+				}
+			}
+			
+		}
+		else
+		{
+			com.elclab.proveit.log("No selected item.  Returning empty insertion text");
+			textToInsert = "";
+		}
+		
+		return textToInsert;
+	},
+	
 	/**
 	 * this function takes the text from the display area and inserts it to the
 	 * location of the cursor in the document.
 	 */
 	insert : function() {
-		if (!(document.getElementById('display').value == "There is no name for this reference.")) {
-			var textareaname;
-			if (top.window.content.document.getElementById('wikEdTextarea')) {
-				textareaname = "wikEdTextarea";
-			} else if (top.window.content.document.getElementById('wpTextbox1')) {
-				textareaname = "wpTextbox1";
-			} else {
-				return;
-			}
-			var sel = document.getElementById('display').value;
-			var txtarea = top.window.content.document
-					.getElementById(textareaname);
+		if (document.getElementById("refbox").selectedItem) {
+			var txtarea = this.getMWEditBox();
+			if(!txtarea)
+				return false;
+			//var sel = document.getElementById('display').value;
+			var sel = this.getInsertionText();
+
 			// var start = top.window.content.document
 			// .getElementById(textareaname).selectionStart;
 			// var end =
@@ -885,7 +910,7 @@ com.elclab.proveit = {
 			returnstring += " ";
 			for (var name in this) {
 				if (!((name == "type") || (name == "name")
-						|| (name == "toString") || (name == "orig") || (name == "save"))
+						|| (name == "toString") || (name == "orig") || (name == "save") || (name == "inMWEditBox"))
 						&& (this[name])) {
 					returnstring += " | ";
 					returnstring += name;
