@@ -946,7 +946,7 @@ com.elclab.proveit = {
 			}
 			for (var name in this) {
 				if (!((name == "name") || (name == "toString")
-						|| (name == "add") || (name == "orig") || (name == "save"))
+						|| (name == "add") || (name == "orig") || (name == "save") || (name == "inMWEditBox"))
 						&& (this[name] != "")) {
 					returnstring += " | ";
 					returnstring += name;

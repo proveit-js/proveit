@@ -9,6 +9,11 @@
 		com.elclab.proveit.proveitonload();
 	</script>
 	
+	<!-- Doesn't load refbox when tabs readded on startup 
+	
+	Need to double click refbox sometimes
+	-->
+	
 	<menupopup id="viewSidebarMenu" >
 		<menuitem key="key_openProveItSidebar" observes="viewProveItSidebar" />
 	</menupopup>
