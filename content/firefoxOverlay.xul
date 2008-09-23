@@ -4,6 +4,11 @@
 <overlay id="ProveItOverlay"
 	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 	
+	<script type="application/x-javascript" src="chrome://proveit/content/test.js"/>
+	<script>
+		com.elclab.proveit.proveitonload();
+	</script>
+	
 	<menupopup id="viewSidebarMenu" >
 		<menuitem key="key_openProveItSidebar" observes="viewProveItSidebar" />
 	</menupopup>

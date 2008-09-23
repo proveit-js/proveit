@@ -727,7 +727,7 @@
 			</vbox>
 		</vbox>
 	</panel>
-	<panel id="edit" style="background-color: #ECE9D8)">
+	<panel id="edit" style="background-color: #ECE9D8">
 		<vbox id="editpanel" align="center">
 			<label id="editlabel" value="Citation"/>
 			<hbox id="editprime" hidden="true">

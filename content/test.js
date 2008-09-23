@@ -66,9 +66,9 @@ com.elclab.proveit = {
         return isMediaWiki;
 	},
 	
-	closeUnlessMediaWiki : function ()
+	openOnlyForMediawiki : function ()
 	{
-		com.elclab.proveit.log("Entering closeUnlessMediaWiki");
+		com.elclab.proveit.log("Entering openOnlyForMediawiki");
 		var windURL = top.getBrowser().currentURI;
 		if(!com.elclab.proveit.isMediaWikiEditPage(windURL))
         {
@@ -78,6 +78,10 @@ com.elclab.proveit = {
         else
         {
         	com.elclab.proveit.log("Is MediaWiki");
+        	if(!this.isSidebarOpen())
+        	{
+        		this.openSidebar();
+        	}
 	    }
 	},
 
@@ -308,7 +312,7 @@ com.elclab.proveit = {
 				//var windURL = top.getBrowser().currentURI; //get curURL
 				//com.elclab.proveit.log("Test");
 				
-				com.elclab.proveit.closeUnlessMediaWiki();
+				com.elclab.proveit.openOnlyForMediawiki();
 				/*
 				com.elclab.proveit.log("Calling highlightTargetString");
 				com.elclab.proveit.highlightTargetString("<ref");
@@ -328,7 +332,7 @@ com.elclab.proveit = {
 				// scan/add
 				// function from here
 				
-				com.elclab.proveit.closeUnlessMediaWiki();
+				com.elclab.proveit.openOnlyForMediawiki();
 				/*
 				com.elclab.proveit.log("Calling highlightTargetString");
 				com.elclab.proveit.highlightTargetString("<ref");
