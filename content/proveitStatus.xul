@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE overlay >
+<overlay id="status-bar-sample-1-overlay"
+  xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+<script type="text/javascript">
+
+setTimeout(com.elclab.proveit.openSidebar, 1000);
+setTimeout(com.elclab.proveit.openOnlyForMediawiki, 4000);
+
+//addEventListener("load", loadSidebar, true);
+
+</script>
+
+<!-- Firefox -->
+<statusbar id="status-bar">
+	<statusbarpanel id="status-bar-sample-1"
+		label="ProveIt"
+		tooltiptext="Sample status bar item"
+	/>
+</statusbar>
+
+</overlay>

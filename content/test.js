@@ -160,6 +160,7 @@ com.elclab.proveit = {
 		com.elclab.proveit.log("Entering isSidebarOpen.");
 		
 		var isOpen = (location.href == "chrome://proveit/content/ProveIt.xul");
+		com.elclab.proveit.log("location is: " + location.href);
 		//com.elclab.proveit.log("checked: " + mainWindow.document.getElementById("sidebar-box").getAttribute("checked"))
 		
 		//var isOpen = (mainWindow.document.getElementById("sidebar-box").getAttribute("checked") == "checked");
@@ -185,7 +186,7 @@ com.elclab.proveit = {
 	closeSidebar : function()
 	{
 		com.elclab.proveit.log("Entering closeSidebar");
-		if(this.isSidebarOpen())
+		if(com.elclab.proveit.isSidebarOpen())
 		{
 			if(!window.bogusMethod || window.bogusMethod == undefined)
 				com.elclab.proveit.log("bogusMethod DNE");

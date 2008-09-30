@@ -5,15 +5,31 @@
 	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 	
 	<script type="application/x-javascript" src="chrome://proveit/content/test.js"/>
-	<script>
-		com.elclab.proveit.proveitonload();
+	
+	
+	<script type="text/javascript">
+	  
+	  setTimeout(com.elclab.proveit.openSidebar, 1000);
+	  setTimeout(com.elclab.proveit.openOnlyForMediawiki, 4000);
+	  
+	  //addEventListener("load", loadSidebar, true);
+	  
 	</script>
+
 	
 	<!-- Doesn't load refbox when tabs readded on startup 
 	
 	Need to double click refbox sometimes
 	-->
 	
+	<statusbar id="status-bar">
+	<statusbarpanel id="status-bar-sample-1"
+		label="ProveIt"
+		tooltiptext="Sample status bar item"
+	/>
+	</statusbar>
+
+
 	<menupopup id="viewSidebarMenu" >
 		<menuitem key="key_openProveItSidebar" observes="viewProveItSidebar" />
 	</menupopup>
