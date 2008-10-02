@@ -11,9 +11,21 @@
 	  
 	  //setTimeout(com.elclab.proveit.openSidebar, 1000);
 	  
-	  com.elclab.proveit.proveitpreload();
-	  setTimeout(com.elclab.proveit.openOnlyForMediawiki, 4000);
+	  window.addEventListener("load", com.elclab.proveit.proveitpreload, true);
+	  //setTimeout(com.elclab.proveit.openOnlyForMediawiki, 4000);
 	  
+	  //window.addEventListener("load", com.elclab.proveit.openOnlyForMediawiki, true); // Gives url of about:blank, which has no host
+	  
+	  
+	  window.addEventListener("load", 
+	  function()
+	  {
+	  	window.setTimeout(com.elclab.proveit.openOnlyForMediawiki, 250);
+	  }, true); 
+	  
+	  // Even with the load handler, the timeout of 250 (ms) is necessary to ensure the URL is available.  
+	  // This is the lowest timeout that I found reliably works
+
 	  //addEventListener("load", loadSidebar, true);
 	  
 	</script>
