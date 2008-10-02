@@ -623,7 +623,7 @@ com.elclab.proveit = {
 			com.elclab.proveit.curRefItem = com.elclab.proveit.getRefbox().selectedItem; // don't allow overwriting with null selection.
 		//}
 		com.elclab.proveit.log("curRefItem: " + com.elclab.proveit.curRefItem + "; curRefItem.id: " + com.elclab.proveit.curRefItem.id)
-		com.elclab.proveit.log("currentrefs: " + com.elclab.proveit.currentrefs + "; length: " + com.elclab.proveit.currentrefs.length);
+		//com.elclab.proveit.log("currentrefs: " + com.elclab.proveit.currentrefs + "; length: " + com.elclab.proveit.currentrefs.length);
 		var curRef = com.elclab.proveit.currentrefs[com.elclab.proveit.curRefItem.id];
 		if(curRef.inMWEditBox)
 		{
@@ -902,7 +902,7 @@ com.elclab.proveit = {
 							com.elclab.proveit.log("citation: " + citation);
 							com.elclab.proveit.currentrefs[text] = citation;
 							com.elclab.proveit.log("com.elclab.proveit.currentrefs[text]: " + com.elclab.proveit.currentrefs[text]);
-							com.elclab.proveit.log("currentrefs.length: " + com.elclab.proveit.currentrefs.length);
+							//com.elclab.proveit.log("currentrefs.length: " + com.elclab.proveit.currentrefs.length);
 							
 							//com.elclab.proveit.log("currentrefs: " + com.elclab.proveit.currentrefs);
 
@@ -926,7 +926,7 @@ com.elclab.proveit = {
 							com.elclab.proveit.log("text: " + text);
 							com.elclab.proveit.currentrefs[text] = citation;
 							com.elclab.proveit.log("com.elclab.proveit.currentrefs[text]: " + com.elclab.proveit.currentrefs[text]);
-							com.elclab.proveit.log("currentrefs.length: " + com.elclab.proveit.currentrefs.length);
+							//com.elclab.proveit.log("currentrefs.length: " + com.elclab.proveit.currentrefs.length);
 							
 							//com.elclab.proveit.log("currentrefs: " + com.elclab.proveit.currentrefs);
 
@@ -938,8 +938,8 @@ com.elclab.proveit = {
 			}
 		}
 		//document.getElementById('display').value = "";
-		com.elclab.proveit.log("currentrefs: " + com.elclab.proveit.currentrefs);
-		com.elclab.proveit.log("currentrefs.length: " + com.elclab.proveit.currentrefs.length);
+		com.elclab.proveit.log("currentrefs: " + com.elclab.proveit.currentrefs.toString());
+		//com.elclab.proveit.log("currentrefs.length: " + com.elclab.proveit.currentrefs.length);
 							
 	},
 
