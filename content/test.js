@@ -57,12 +57,19 @@ com.elclab.proveit = {
 			i++;
 		}
 		
+		var index;
+		
 		if(found)
-			isMediaWiki = path.indexOf("action=edit");
+		{
+			index = path.indexOf("action=edit");	
+			if(index != -1)
+				isMediaWiki = true;
+		}
 		else
 			isMediaWiki = false;
 			
-		//alert("isMediaWiki: " + isMediaWiki);
+		com.elclab.proveit.log("host: " + host);
+		com.elclab.proveit.log("isMediaWiki: " + isMediaWiki);
         return isMediaWiki;
 	},
 	
@@ -78,9 +85,9 @@ com.elclab.proveit = {
         else
         {
         	com.elclab.proveit.log("Is MediaWiki");
-        	if(!this.isSidebarOpen())
+        	if(!com.elclab.proveit.isSidebarOpen())
         	{
-        		this.openSidebar();
+        		com.elclab.proveit.openSidebar();
         	}
 	    }
 	},
@@ -271,16 +278,22 @@ com.elclab.proveit = {
 		return top.window.content.document.getElementById(textareaname);
 	},
 	
+	proveitpreload : function()
+	{
+		com.elclab.proveit.log("Entering proveitpreload.")
+		top.getBrowser().addProgressListener(com.elclab.proveit.sendalert,
+				com.elclab.proveit.NOTIFY_STATE_DOCUMENT);
+	},
+	
 	proveitonload : function() {
-		top.getBrowser().addProgressListener(this.sendalert,
-				this.NOTIFY_STATE_DOCUMENT);
+		
 		com.elclab.proveit.disableResize();
 		document.getElementById("edit").openPopup(
 				document.getElementById('refbox'), "end_before", 0, 0, false,
 				false);
 		document.getElementById('edit').hidePopup();
 		com.elclab.proveit.log("Loading ProveIt.");
-		this.scanRef();
+		com.elclab.proveit.scanRef();
 
 	},
 
@@ -380,7 +393,7 @@ com.elclab.proveit = {
 			// com.elclab.proveit.log("Deleting #" + i + ": " + item.id);
 			// com.elclab.proveit.log(size);
 		}
-		this.currentScan = [];
+		com.elclab.proveit.currentScan = [];
 		this.currentrefs = [];
 	},
 
@@ -734,60 +747,59 @@ com.elclab.proveit = {
 	 */
 	scanRef : function() {
 		com.elclab.proveit.log("Entering scanRef.");
-		// text is the text from the edit box
+		// textValue is the text from the edit box
 		var text;
 		// zero out the old scan, just in case
-		this.currentScan = [];
+		com.elclab.proveit.currentScan = [];
 		// these are strings used to allow the correct parsing of the tag
 		var workingstring;
 		var cutupstring;
 		// we use different textarea id's if people are using wikiEd, this
 		// should fix that.
-		var textareaname;
+		var text = com.elclab.proveit.getMWEditBox();
 		// check to see if the edit box exists, basically a boilerplate for
 		// using it
 		// on the wrong page. We also check to see which textarea is being used,
 		// wikiEd's or the normal one.
-		this.clearlist();
-		if (top.window.content.document.getElementById('wikEdTextarea')) {
-			textareaname = "wikEdTextarea";
-		} else if (top.window.content.document.getElementById('wpTextbox1')) {
-			textareaname = "wpTextbox1";
-		}
-		if (textareaname) {
+		com.elclab.proveit.clearlist();
+		
+		var textValue;
+		if (text) {
+			com.elclab.proveit.log("Edit box object is valid.");
+			textValue = text.value;
 			// since we should pick the name out before we get to the citation
 			// tag type, here's a variable to hold it
 			var name, orig;
 			// grab the text from the box, wpTextbox1 is the standard boxx name.
-			text = top.window.content.document.getElementById(textareaname).value;
 			// scan it for citation tags...
-			this.currentScan = text
+			com.elclab.proveit.currentScan = textValue
 					.match(/<[\s]*ref[^>]*>[\s]*{{+[\s]*(cite|Citation)[^}]*}}+[\s]*<[\s]*\/[\s]*ref[\s]*>/gi);
 			// if there are results,
-			if (this.currentScan) {
+			if (com.elclab.proveit.currentScan) {
+				com.elclab.proveit.log("currentScan is valid.");
 				// just for me and testing, make them easier to read by
 				// replacing
 				// all | with newlines and a tab
-				for (var i = 0; i < this.currentScan.length; i++) {
-					workingstring = this.currentScan[i]
+				for (var i = 0; i < com.elclab.proveit.currentScan.length; i++) {
+					workingstring = com.elclab.proveit.currentScan[i]
 							.match(/{{[\s]*(cite|Citation)[^}]*}}/i)[0];
-					name = this.currentScan[i].match(/<[\s]*ref[^>]*/i);
+					name = com.elclab.proveit.currentScan[i].match(/<[\s]*ref[^>]*/i);
 					name = name[0].split(/\"/gi)[1];
 					// com.elclab.proveit.log(name);
 					if (!name || name == -1) {
 						delete(name);
 					}
-					orig = this.currentScan[i];
+					orig = com.elclab.proveit.currentScan[i];
 					// com.elclab.proveit.log(name);
 					// com.elclab.proveit.log(workingstring);
-					// com.elclab.proveit.log(this.currentScan[i]);
+					// com.elclab.proveit.log(com.elclab.proveit.currentScan[i]);
 					cutupstring = workingstring.split(/\|/g);
-					if (!this.currentrefs[name]) {
+					if (!com.elclab.proveit.currentrefs[name]) {
 						if (workingstring.indexOf('c') != -1 // Forking on c/C will not work, as templates are case insensitive.
 								&& workingstring.substr(workingstring
 										.indexOf('c'), 4) == "cite") {
 							// create a new cite object
-							var citation = new this.Cite();
+							var citation = new com.elclab.proveit.Cite();
 							citation["orig"] = orig;
 							citation["save"] = true;
 							citation.inMWEditBox = true;
@@ -829,7 +841,7 @@ com.elclab.proveit = {
 						} else if (workingstring.indexOf('C') != -1 
 								&& workingstring.substr(workingstring
 										.indexOf('C'), 8) == "Citation") {
-							var citation = new this.Citation();
+							var citation = new com.elclab.proveit.Citation();
 							if (name) {
 								citation["name"] = name;
 							}
@@ -859,13 +871,13 @@ com.elclab.proveit = {
 								}
 							}
 						} else {
-							// com.elclab.proveit.log("Can't Parse: " + this.currentScan[i]);
+							// com.elclab.proveit.log("Can't Parse: " + com.elclab.proveit.currentScan[i]);
 							var citation = workingstring;
 						}
 						// com.elclab.proveit.log("Adding: " + name);
 						if (name) {
-							var text = this.addNewElement(name);
-							this.currentrefs[text] = citation;
+							var text = com.elclab.proveit.addNewElement(name);
+							com.elclab.proveit.currentrefs[text] = citation;
 
 						} else {
 							name = "";
@@ -882,8 +894,8 @@ com.elclab.proveit = {
 								name += citation["title"];
 							}
 
-							var text = this.addNewElement(name);
-							this.currentrefs[text] = citation;
+							var text = com.elclab.proveit.addNewElement(name);
+							com.elclab.proveit.currentrefs[text] = citation;
 
 						}
 					} else {

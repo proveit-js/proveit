@@ -9,7 +9,9 @@
 	
 	<script type="text/javascript">
 	  
-	  setTimeout(com.elclab.proveit.openSidebar, 1000);
+	  //setTimeout(com.elclab.proveit.openSidebar, 1000);
+	  
+	  com.elclab.proveit.proveitpreload();
 	  setTimeout(com.elclab.proveit.openOnlyForMediawiki, 4000);
 	  
 	  //addEventListener("load", loadSidebar, true);
