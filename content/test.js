@@ -44,6 +44,7 @@ com.elclab.proveit = {
 	{
 		var isMediaWiki = null;
 		var url = top.getBrowser().currentURI;
+		com.elclab.proveit.log("url: " + url.spec);
 		
 		//com.elclab.proveit.log("Entering isMediaWikiEditPage");
 		var found = false;
@@ -174,6 +175,7 @@ com.elclab.proveit = {
 	 */
 	isSidebarOpen : function()
 	{
+		com.elclab.proveit.log("Entering isSidebarOpen.");
 		var mainWindow = window.QueryInterface(Components.interfaces.nsIInterfaceRequestor)
 			 .getInterface(Components.interfaces.nsIWebNavigation)
 			 .QueryInterface(Components.interfaces.nsIDocShellTreeItem)
@@ -182,18 +184,17 @@ com.elclab.proveit = {
 			 .getInterface(Components.interfaces.nsIDOMWindow);
 		
 		//com.elclab.proveit.log("hidden: " + mainWindow.document.getElementById("sidebar-box").hidden);	 
-		//com.elclab.proveit.log("Entering isSidebarOpen.");
 		
 		//var isOpen = (location.href == "chrome://proveit/content/ProveIt.xul");
 		// Above line WILL NOT always work, because context of location.href varies.
 		
 		var loc = document.getElementById("sidebar").contentWindow.location.href;
 		var isOpen = (loc == "chrome://proveit/content/ProveIt.xul");
-		//com.elclab.proveit.log("location is: " + loc);
+		com.elclab.proveit.log("location is: " + loc);
 		
 		//var isOpen = com.elclab.proveit.isSidebarOpenBool;
 		
-		//com.elclab.proveit.log("isOpen: " + isOpen);
+		com.elclab.proveit.log("isOpen: " + isOpen);
 		
 		return isOpen;
 	},
@@ -297,20 +298,22 @@ com.elclab.proveit = {
 	
 	proveitonload : function() {
 		//com.elclab.proveit.isSidebarOpenBool = true;
+		com.elclab.proveit.log("Loading ProveIt.");
 		com.elclab.proveit.disableResize();
 		com.elclab.proveit.getSidebarDoc().getElementById("edit").openPopup(
 				com.elclab.proveit.getRefbox(), "end_before", 0, 0, false,
 				false);
 		com.elclab.proveit.getSidebarDoc().getElementById('edit').hidePopup();
-		com.elclab.proveit.log("Loading ProveIt.");
+		
 		if(com.elclab.proveit.isMediaWikiEditPage())
 			com.elclab.proveit.scanRef();
+		
 		return true;
 	},
 
 	proveitonunload : function() {
 		com.elclab.proveit.enableResize();
-		top.getBrowser().removeProgressListener(com.elclab.proveit.sendalert);
+		//top.getBrowser().removeProgressListener(com.elclab.proveit.sendalert);
 		//com.elclab.proveit.isSidebarOpenBool = false;
 	},
 	/**
@@ -607,6 +610,8 @@ com.elclab.proveit = {
 	 */
 	doSelect : function()
 	{
+		com.elclab.proveit.log("Entering doSelect");
+		
 		//com.elclab.proveit.log("Selected item: " + com.elclab.proveit.getRefbox().selectedItem);
 		
 		//if(this.ignoreSelection || this.curRefItem == document.getElementById("refbox").selectedItem)
@@ -615,15 +620,14 @@ com.elclab.proveit = {
 			com.elclab.proveit.ignoreSelection = false;
 			return; //ignore event thrown by scripted select or clearSelection.
 		}
-		com.elclab.proveit.log("Entering doSelect");
 		//com.elclab.proveit.dispSelect();
 		
 		//if(com.elclab.proveit.getRefbox().selectedItem != null)
 		//{
 			com.elclab.proveit.curRefItem = com.elclab.proveit.getRefbox().selectedItem; // don't allow overwriting with null selection.
 		//}
-		com.elclab.proveit.log("curRefItem: " + com.elclab.proveit.curRefItem + "; curRefItem.id: " + com.elclab.proveit.curRefItem.id)
-		//com.elclab.proveit.log("currentrefs: " + com.elclab.proveit.currentrefs + "; length: " + com.elclab.proveit.currentrefs.length);
+		//com.elclab.proveit.log("curRefItem: " + com.elclab.proveit.curRefItem + "; curRefItem.id: " + com.elclab.proveit.curRefItem.id)
+		//com.elclab.proveit.log("currentrefs: " + com.elclab.proveit.currentrefs);
 		var curRef = com.elclab.proveit.currentrefs[com.elclab.proveit.curRefItem.id];
 		if(curRef.inMWEditBox)
 		{
@@ -798,7 +802,6 @@ com.elclab.proveit = {
 				// just for me and testing, make them easier to read by
 				// replacing
 				// all | with newlines and a tab
-				com.elclab.proveit.log("com.elclab.proveit.currentScan.length: " + com.elclab.proveit.currentScan.length)
 				for (var i = 0; i < com.elclab.proveit.currentScan.length; i++) {
 					workingstring = com.elclab.proveit.currentScan[i]
 							.match(/{{[\s]*(cite|Citation)[^}]*}}/i)[0];
@@ -894,20 +897,20 @@ com.elclab.proveit = {
 							// com.elclab.proveit.log("Can't Parse: " + com.elclab.proveit.currentScan[i]);
 							var citation = workingstring;
 						}
-						com.elclab.proveit.log("Adding: " + name);
+						//com.elclab.proveit.log("Adding: " + name);
 						if (name) {
-							com.elclab.proveit.log("Name is defined: " + name)
+							//com.elclab.proveit.log("Name is defined: " + name)
 							var text = com.elclab.proveit.addNewElement(name);
-							com.elclab.proveit.log("text: " + text);
-							com.elclab.proveit.log("citation: " + citation);
+							//com.elclab.proveit.log("text: " + text);
+							//com.elclab.proveit.log("citation: " + citation);
 							com.elclab.proveit.currentrefs[text] = citation;
-							com.elclab.proveit.log("com.elclab.proveit.currentrefs[text]: " + com.elclab.proveit.currentrefs[text]);
+							//com.elclab.proveit.log("com.elclab.proveit.currentrefs[text]: " + com.elclab.proveit.currentrefs[text]);
 							//com.elclab.proveit.log("currentrefs.length: " + com.elclab.proveit.currentrefs.length);
 							
 							//com.elclab.proveit.log("currentrefs: " + com.elclab.proveit.currentrefs);
 
 						} else {
-							com.elclab.proveit.log("Name is not defined.")
+							//com.elclab.proveit.log("Name is not defined.")
 							name = "";
 							if (citation["author"]) {
 								name = citation["author"] + "; ";
@@ -923,9 +926,9 @@ com.elclab.proveit = {
 							}
 							//com.elclab.proveit.log("Generated name: " + name)
 							var text = com.elclab.proveit.addNewElement(name);
-							com.elclab.proveit.log("text: " + text);
+							//com.elclab.proveit.log("text: " + text);
 							com.elclab.proveit.currentrefs[text] = citation;
-							com.elclab.proveit.log("com.elclab.proveit.currentrefs[text]: " + com.elclab.proveit.currentrefs[text]);
+							//com.elclab.proveit.log("com.elclab.proveit.currentrefs[text]: " + com.elclab.proveit.currentrefs[text]);
 							//com.elclab.proveit.log("currentrefs.length: " + com.elclab.proveit.currentrefs.length);
 							
 							//com.elclab.proveit.log("currentrefs: " + com.elclab.proveit.currentrefs);
@@ -938,9 +941,11 @@ com.elclab.proveit = {
 			}
 		}
 		//document.getElementById('display').value = "";
-		com.elclab.proveit.log("currentrefs: " + com.elclab.proveit.currentrefs.toString());
+		com.elclab.proveit.log("com.elclab.proveit.currentScan: " + com.elclab.proveit.currentScan)
+		com.elclab.proveit.log("currentrefs: " + com.elclab.proveit.currentrefs);
 		//com.elclab.proveit.log("currentrefs.length: " + com.elclab.proveit.currentrefs.length);
-							
+		
+		
 	},
 
 	/**
@@ -1190,7 +1195,7 @@ String.prototype.trim = function() {
 	return this.replace(/^\s+|\s+$/g, "");
 }
 
-Array.prototype.toString() = function() {
+Array.prototype.toString = function() {
 	str = "";
 	
 	for(e in this)

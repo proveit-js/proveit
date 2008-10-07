@@ -9,21 +9,28 @@
 	
 	<script type="text/javascript">
 	  
-	  //setTimeout(com.elclab.proveit.openSidebar, 1000);
-	  
 	  window.addEventListener("load", com.elclab.proveit.proveitpreload, true);
-	  //setTimeout(com.elclab.proveit.openOnlyForMediawiki, 4000);
 	  
-	  //window.addEventListener("load", com.elclab.proveit.openOnlyForMediawiki, true); // Gives url of about:blank, which has no host
+	  // Works except when sidebar is already open upon startup
 	  
-	  
-	  window.addEventListener("load", 
-	  function()
+	  window.addEventListener("load", function()
 	  {
-	  	window.setTimeout(com.elclab.proveit.openOnlyForMediawiki, 250);
+	  	window.setTimeout(function()
+	  	{
+	  		//com.elclab.proveit.log("Entering anonymous onload function");
+	  		if(!com.elclab.proveit.isSidebarOpen())
+		  		com.elclab.proveit.openOnlyForMediawiki();
+			else
+			{
+				toggleSidebar("viewProveItSidebar");
+				com.elclab.proveit.log("Reloading sidebar.");
+				
+				
+			}
+	  	}, 500)
 	  }, true); 
 	  
-	  // Even with the load handler, the timeout of 250 (ms) is necessary to ensure the URL is available.  
+	  // Even with the load handler, the timeout of 500 (ms) is necessary to ensure the URL is available.  
 	  // This is the lowest timeout that I found reliably works
 
 	  //addEventListener("load", loadSidebar, true);
