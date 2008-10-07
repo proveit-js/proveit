@@ -857,7 +857,7 @@ com.elclab.proveit = {
 									parts[1] = parts[1].trim();
 									// add it to the object
 									if (parts[1] != "") {
-										citation[parts[0]] = parts[1];
+										citation.params[parts[0]] = parts[1];
 									}
 								}
 							}
@@ -886,11 +886,13 @@ com.elclab.proveit = {
 								// split the attribute on the = and trim the
 								// sides
 								var parts = cutupstring[j].split("=");
-								parts[0] = parts[0].trim();
-								parts[1] = parts[1].trim();
-								// add it to the object
-								if (parts[1] != "") {
-									citation[parts[0]] = parts[1];
+								if (parts[1]) {
+									parts[0] = parts[0].trim();
+									parts[1] = parts[1].trim();
+									// add it to the object
+									if (parts[1] != "") {
+										citation.params[parts[0]] = parts[1];
+									}
 								}
 							}
 						} else {
@@ -912,18 +914,22 @@ com.elclab.proveit = {
 						} else {
 							//com.elclab.proveit.log("Name is not defined.")
 							name = "";
-							if (citation["author"]) {
-								name = citation["author"] + "; ";
-							} else if (citation["last"]) {
-								name = citation["last"];
-								if (citation["first"]) {
-									name += ", " + citation["first"] + "; ";
+							if (citation.params["author"]) {
+								name = citation.params["author"] + "; ";
+							} else if (citation.params["last"]) {
+								name = citation.params["last"];
+								if (citation.params["first"]) {
+									name += ", " + citation.params["first"] + "; ";
 								}
 							}
 
-							if (citation["title"]) {
-								name += citation["title"];
+							if (citation.params["title"]) {
+								name += citation.params["title"];
 							}
+							
+							if(name == "")
+								name = citation.toString(); //backup
+								
 							//com.elclab.proveit.log("Generated name: " + name)
 							var text = com.elclab.proveit.addNewElement(name);
 							//com.elclab.proveit.log("text: " + text);
@@ -956,6 +962,7 @@ com.elclab.proveit = {
 		this.type;
 		this.save; 
 		this.inMWEditBox; // true if and only if the ref is in the MW edit box with the same value as this object's orig.
+		this.params = new Object();
 		this.toString = function() {
 			if (this.name) {
 				var returnstring = "<ref name=\"";
@@ -966,14 +973,14 @@ com.elclab.proveit = {
 			}
 			returnstring += this.type;
 			returnstring += " ";
-			for (var name in this) {
-				if (!((name == "type") || (name == "name")
-						|| (name == "toString") || (name == "orig") || (name == "save") || (name == "inMWEditBox"))
-						&& (this[name])) {
+			for (var name in this.params) {
+				if (!((name == "type") || 
+						(name == "toString") || (name == "orig") || (name == "save") || (name == "inMWEditBox"))
+						&& (this.params[name] && this.params[name] != "")) {
 					returnstring += " | ";
 					returnstring += name;
 					returnstring += "=";
-					returnstring += this[name];
+					returnstring += this.params[name];
 					returnstring += " ";
 				}
 			}
@@ -990,6 +997,7 @@ com.elclab.proveit = {
 		this.name;
 		this.save; 
 		this.inMWEditBox; // true if and only if the ref is in the MW edit box with the same value as this object's orig.
+		this.params = new Object();
 		this.toString = function() {
 			if (this.name) {
 				var returnstring = "<ref name=\"";
@@ -998,14 +1006,14 @@ com.elclab.proveit = {
 			} else {
 				var returnstring = "<ref>{{Citation "
 			}
-			for (var name in this) {
-				if (!((name == "name") || (name == "toString")
+			for (var name in this.params) {
+				if (!( (name == "toString")
 						|| (name == "add") || (name == "orig") || (name == "save") || (name == "inMWEditBox"))
-						&& (this[name] != "")) {
+						&& (this.params[name] && this.params[name] != "")) {
 					returnstring += " | ";
 					returnstring += name;
 					returnstring += "=";
-					returnstring += this[name];
+					returnstring += this.params[name];
 					returnstring += " ";
 				}
 			}
@@ -1146,6 +1154,7 @@ com.elclab.proveit = {
 		for (var i = 0; i < blah.childNodes.length; i++) {
 			if (blah.childNodes[i].id == name) {
 				bad = true;
+				com.elclab.proveit.log("name: " + name);
 				break;
 			}
 		}
