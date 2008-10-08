@@ -1104,6 +1104,7 @@ com.elclab.proveit = {
 	 * Changes the panel for the cite entry panel to the correct type of entry
 	 */
 	changeCite : function() {
+		com.elclab.proveit.log("Entering changeCite");
 		var that = com.elclab.proveit.getSidebarDoc().getElementById("citemenu").value;
 		that = com.elclab.proveit.getSidebarDoc().getElementById(that);
 		var childlist = com.elclab.proveit.getSidebarDoc().getElementById("citepanes").childNodes;
