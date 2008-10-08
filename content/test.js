@@ -44,7 +44,7 @@ com.elclab.proveit = {
 	{
 		var isMediaWiki = null;
 		var url = top.getBrowser().currentURI;
-		com.elclab.proveit.log("url: " + url.spec);
+		//com.elclab.proveit.log("url: " + url.spec);
 		
 		//com.elclab.proveit.log("Entering isMediaWikiEditPage");
 		var found = false;
@@ -72,8 +72,8 @@ com.elclab.proveit = {
 		else
 			isMediaWiki = false;
 			
-		com.elclab.proveit.log("host: " + host);
-		com.elclab.proveit.log("isMediaWiki: " + isMediaWiki);
+		//com.elclab.proveit.log("host: " + host);
+		//com.elclab.proveit.log("isMediaWiki: " + isMediaWiki);
         return isMediaWiki;
 	},
 	
@@ -175,7 +175,7 @@ com.elclab.proveit = {
 	 */
 	isSidebarOpen : function()
 	{
-		com.elclab.proveit.log("Entering isSidebarOpen.");
+		//com.elclab.proveit.log("Entering isSidebarOpen.");
 		var mainWindow = window.QueryInterface(Components.interfaces.nsIInterfaceRequestor)
 			 .getInterface(Components.interfaces.nsIWebNavigation)
 			 .QueryInterface(Components.interfaces.nsIDocShellTreeItem)
@@ -190,11 +190,11 @@ com.elclab.proveit = {
 		
 		var loc = document.getElementById("sidebar").contentWindow.location.href;
 		var isOpen = (loc == "chrome://proveit/content/ProveIt.xul");
-		com.elclab.proveit.log("location is: " + loc);
+		//com.elclab.proveit.log("location is: " + loc);
 		
 		//var isOpen = com.elclab.proveit.isSidebarOpenBool;
 		
-		com.elclab.proveit.log("isOpen: " + isOpen);
+		//com.elclab.proveit.log("isOpen: " + isOpen);
 		
 		return isOpen;
 	},
@@ -261,6 +261,8 @@ com.elclab.proveit = {
 		var t = com.elclab.proveit.getMWEditBox();
 		var origText = t.value; 
 		var startInd = origText.indexOf(target); 
+		if(startInd == -1)
+			com.elclab.proveit.log("Target string not found!");
 		var endInd = startInd + target.length; 
 		t.value = origText.substring(0, startInd); 
 		t.scrollTop = 1000000; //Larger than any real textarea (hopefully)
@@ -290,7 +292,7 @@ com.elclab.proveit = {
 	
 	proveitpreload : function()
 	{
-		com.elclab.proveit.log("Entering proveitpreload.")
+		//com.elclab.proveit.log("Entering proveitpreload.")
 		top.getBrowser().addProgressListener(com.elclab.proveit.sendalert,
 				com.elclab.proveit.NOTIFY_STATE_DOCUMENT);
 		return true; // Is this necessary to ensure Firefox doesn't gray out buttons?
@@ -400,7 +402,7 @@ com.elclab.proveit = {
 	 */
 
 	clearlist : function() {
-		com.elclab.proveit.log("Entering clearList.");
+		//com.elclab.proveit.log("Entering clearList.");
 		// var deletion = function(box) {
 		// for (var i = 0; i < box.childNodes.length; i++) {
 		// // deletion(box.childNodes[i]);
@@ -501,6 +503,7 @@ com.elclab.proveit = {
 	 */
 
 	updateInText : function() {
+		com.elclab.proveit.log("Entering updateInText");
 		var item = com.elclab.proveit.getRefbox().selectedItem.id;
 		
 		var txtarea = com.elclab.proveit.getMWEditBox();
@@ -522,11 +525,19 @@ com.elclab.proveit = {
 		text = text.replace(regex, com.elclab.proveit.currentrefs[item].toString());
 		// insert tags
 		txtarea.value = text;
-
-		// restore textarea scroll position
+		
+		// Baseline for future modifications
+		
 		com.elclab.proveit.currentrefs[item]["orig"] = com.elclab.proveit.currentrefs[item].toString();
 		com.elclab.proveit.currentrefs[item]["save"] = true;
+		
+		/*
+		// restore textarea scroll position
 		txtarea.scrollTop = textScroll;
+		*/
+		//com.elclab.proveit.log("Highlighting changes.");
+		
+		com.elclab.proveit.highlightTargetString(com.elclab.proveit.currentrefs[item].toString());
 
 	},
 
@@ -541,23 +552,25 @@ com.elclab.proveit = {
 	},
 
 	editSave : function() {
+		com.elclab.proveit.log("Entering editSave");
 		var name = com.elclab.proveit.getRefbox().selectedItem.id;
-		var list = com.elclab.proveit.getSidebarDoc().getElementById("editlist").childNodes;
-		for (item in list) {
-			if (list[item]) {
+		var list = com.elclab.proveit.getSidebarDoc().getElementById("editlist").getElementsByTagName("hbox");
+		for (var i = 0; i < list.length; i++) {
+			if (list[i]) {
 				// com.elclab.proveit.log(item + ":" + list[item].id);
-				var node = list[item].id;
-				delete(com.elclab.proveit.currentrefs[name][node]);
-				if (item != "length" && item != "item"
-						&& com.elclab.proveit.getSidebarDoc().getElementById(node + "namec").value != ""
-						&& com.elclab.proveit.getSidebarDoc().getElementById(node + "value").value != "")
-					com.elclab.proveit.currentrefs[name][com.elclab.proveit.getSidebarDoc().getElementById(node
-							+ "namec").value] = com.elclab.proveit.getSidebarDoc().getElementById(node
-							+ "value").value;
-				if (node == "name"
-						&& com.elclab.proveit.getSidebarDoc().getElementById(node + "value").value != "") {
-					com.elclab.proveit.getSidebarDoc().getElementById(name + "label").value = com.elclab.proveit.getSidebarDoc()
-							.getElementById(node + "value").value;
+				var node = list[i].id;
+				//com.elclab.proveit.log("item: " + i);
+				com.elclab.proveit.log("node: " + node);
+				delete(com.elclab.proveit.currentrefs[name].params[node]);
+				var paramName = com.elclab.proveit.getSidebarDoc().getElementById(node + "namec").value;
+				var paramVal = com.elclab.proveit.getSidebarDoc().getElementById(node + "value").value;
+				
+				if (paramName != "" && node != "name" && paramVal != "")
+					com.elclab.proveit.currentrefs[name].params[paramName] = paramVal;
+				else if (node == "name"
+						&& paramVal != "") {
+					com.elclab.proveit.getSidebarDoc().getElementById(name + "label").value = paramVal;
+					com.elclab.proveit.currentrefs[name][node] = paramVal;
 				}
 			}
 		}
@@ -565,36 +578,53 @@ com.elclab.proveit = {
 		extra = extra.split(/\,/gi);
 		if (extra == -1 && com.elclab.proveit.getSidebarDoc().getElementById("editextra").value != "") {
 			var split = extra[i].split(/\=/i);
-			if (split[0].trim() == "name") {
+			var paramName = split[0].trim();
+			var paramVal = split[1].trim();
+			if (paramName == "name") {
 				// com.elclab.proveit.log("Setting name(single): " + split[1].trim());
-				com.elclab.proveit.getSidebarDoc().getElementById(name + "label").value = split[1].trim();
+				com.elclab.proveit.getSidebarDoc().getElementById(name + "label").value = paramVal;
+				com.elclab.proveit.currentrefs[name][paramName] = paramVal;
 			}
-			com.elclab.proveit.currentrefs[name][split[0].trim()] = split[1].trim();
-		} else if (com.elclab.proveit.getSidebarDoc().getElementById('editextra').value != "") {
+			else
+			{
+				com.elclab.proveit.currentrefs[name].params[paramName] = paramVal;
+			}
+		} // Can if above ever be executed?  extra should not be -1... 
+		else if (com.elclab.proveit.getSidebarDoc().getElementById('editextra').value != "") {
 			for (var i = 0; i < extra.length; i++) {
 				var split = extra[i].split(/\=/i);
-				if (split[0].trim() == "name") {
+				var paramName = split[0].trim();
+				var paramVal = split[1].trim();	
+				if (paramName == "name") {
 					// com.elclab.proveit.log("Setting name(multi): " + split[1].trim());
 					com.elclab.proveit.getSidebarDoc().getElementById(name + "label").value = split[1]
 							.trim();
+					com.elclab.proveit.currentrefs[name][paramName] = paramVal;			
 				}
-				com.elclab.proveit.currentrefs[name][split[0].trim()] = split[1].trim();
+				else
+				{
+					com.elclab.proveit.currentrefs[name].params[paramName] = paramVal;
+				}
 			}
 		}
 		com.elclab.proveit.getSidebarDoc().getElementById("editextra").value = "";
 		com.elclab.proveit.getSidebarDoc().getElementById("edit").hidePopup();
 		if (com.elclab.proveit.currentrefs[name].toString() != com.elclab.proveit.currentrefs[name]["orig"]) {
-		com.elclab.proveit.currentrefs[name]["save"] = false;
+			com.elclab.proveit.currentrefs[name]["save"] = false;
 		}
-		com.elclab.proveit.dispSelect();
-		com.elclab.proveit.updateInText();
+		//com.elclab.proveit.dispSelect();
+		if(com.elclab.proveit.currentrefs[name]["save"] == false)
+		{
+			com.elclab.proveit.updateInText();
+		}
+		com.elclab.proveit.log("Leaving editSave.")
 	},
 	
 	ignoreSelection : false,
 
 	restoreSelection : function()
 	{
-		com.elclab.proveit.log("Entering restoreSelection.")
+		//com.elclab.proveit.log("Entering restoreSelection.")
 		// Restores selection after edit box is left and sidebar returned to..
 		if(com.elclab.proveit.curRefItem != null)
 		{
@@ -610,7 +640,7 @@ com.elclab.proveit = {
 	 */
 	doSelect : function()
 	{
-		com.elclab.proveit.log("Entering doSelect");
+		//com.elclab.proveit.log("Entering doSelect");
 		
 		//com.elclab.proveit.log("Selected item: " + com.elclab.proveit.getRefbox().selectedItem);
 		
@@ -631,9 +661,9 @@ com.elclab.proveit = {
 		var curRef = com.elclab.proveit.currentrefs[com.elclab.proveit.curRefItem.id];
 		if(curRef.inMWEditBox)
 		{
-			com.elclab.proveit.log("Current ref is in edit box.  Highlighting ref.")
+			//com.elclab.proveit.log("Current ref is in edit box.  Highlighting ref.")
 			var curRefText = curRef["orig"];
-			com.elclab.proveit.log(curRefText);
+			//com.elclab.proveit.log("curRefText: " + curRefText);
 			/*
 			if(isStringHighlighted(curRefText))
 			{
@@ -650,26 +680,31 @@ com.elclab.proveit = {
 	        */
 	        //mainWindow.focus();
 	        //mainWindow.document.focus();
-			com.elclab.proveit.log("About to clear refbox selection.")
+			//com.elclab.proveit.log("About to clear refbox selection.")
 			com.elclab.proveit.ignoreSelection = true;
 	        com.elclab.proveit.getRefbox().clearSelection(); //Clearing selection throws onSelect!
 			//com.elclab.proveit.ignoreSelection = true; // Focus event may also have effect on selection.
 	        com.elclab.proveit.getMWEditBox().focus();
-			com.elclab.proveit.log("Scrolled and highlighted, and attempted to focus.");
+			//com.elclab.proveit.log("Scrolled and highlighted, and attempted to focus.");
 		}
 		else
 		{
-			com.elclab.proveit.log("Current reference is not yet saved to textbox.")
+			//com.elclab.proveit.log("Current reference is not yet saved to textbox.")
 		}
-		com.elclab.proveit.log("Leaving doSelect");
+		
+		//com.elclab.proveit.log("Calling updateEditPopup.");
+		com.elclab.proveit.updateEditPopup();
+		
+		//com.elclab.proveit.log("Leaving doSelect");
 	},
 		
 	/**
-	 * updates the edit window and puts the text in the small display window.
+	 * Updates the edit window (popup that appears when you click pencil icon).
+	 * Moved from doSelect/dispSelect
 	 */
-	
-	dispSelect : function() {
-		//com.elclab.proveit.log("Entering dispSelect");
+	updateEditPopup : function()
+	{
+		//com.elclab.proveit.log("Entering updateEditPopup.")
 		var box = com.elclab.proveit.getSidebarDoc().getElementById("editlist");
 		var size = box.childNodes.length;
 		// com.elclab.proveit.log(size);
@@ -678,6 +713,90 @@ com.elclab.proveit = {
 			// com.elclab.proveit.log("Deleting #" + i + ": " + item.id);
 			// com.elclab.proveit.log(size);
 		}
+		
+		//var name = com.elclab.proveit.getRef().selectedItem.id;
+		var name = com.elclab.proveit.curRefItem.id;
+		
+		var current = com.elclab.proveit.currentrefs[name];
+		
+		if (current["template"] == "cite") {
+			com.elclab.proveit.getSidebarDoc().getElementById("editlabel").value = current["type"];
+		} else {
+			com.elclab.proveit.getSidebarDoc().getElementById("editlabel").value = "Citation";
+		}
+		
+		if(current["name"] && current["name"] != null)
+			com.elclab.proveit.addEditPopupRow(current, "name");
+		
+		var paramNames = new Array();
+		//First run through just to get names.
+		for(item in current.params)
+		{
+			paramNames.push(item);
+		}
+		
+		if(current["template"] == "cite")
+			paramNames.sort(com.elclab.proveit.citeParamSorter);
+		else if(current["template"] == "Citation")
+			paramNames.sort(com.elclab.proveit.CitationParamSorter);
+		else
+			paramNames.sort();
+		/* Sort them to provide consistent interface.  Uses custom sort order (which is easily tweaked)
+		   where possible.
+
+		   Javascript does destructive sorting, which in this case, is convenient...
+		*/
+			
+		for(var i = 0; i < paramNames.length; i++) {
+			//com.elclab.proveit.log("Calling addEditPopupRow on current.params." + item);
+			com.elclab.proveit.addEditPopupRow(current, paramNames[i]);
+		}
+			
+		var submit = document.getElementById("editsubmit");
+		if(submit && submit != null && (submit.hidden == null || submit.hidden == false))
+			com.elclab.proveit.log("Save button exists.");
+		else
+			com.elclab.proveit.log("Save button does not exist.");
+		//com.elclab.proveit.log("Leaving updateEditPopup");
+	},
+	
+	/**
+	 * Adds a single row of edit popup
+	 */
+	addEditPopupRow : function(current, item)
+	{
+		//com.elclab.proveit.log("Entering addEditPopupRow.");
+		//com.elclab.proveit.log("item: " + item);
+		/*
+		if (item != "type" && item != "toString" && item != "orig"
+				&& item != "save") {
+		*/
+			var newline = com.elclab.proveit.getSidebarDoc().getElementById("editprime")
+					.cloneNode(true);
+			var left = newline.childNodes[0];
+			var right = newline.childNodes[2];
+			//newline.id = "" + item;
+			newline.id = item;
+			newline.hidden = false;
+			com.elclab.proveit.getSidebarDoc().getElementById("editlist").appendChild(newline);
+	
+			left.id = "" + item + "namec";
+			right.id = "" + item + "value";
+			com.elclab.proveit.getSidebarDoc().getElementById(item + "namec").value = item;
+			if(item != "name")
+				com.elclab.proveit.getSidebarDoc().getElementById(item + "value").value = current.params[item];
+			else
+				com.elclab.proveit.getSidebarDoc().getElementById(item + "value").value = current[item];
+		//}
+	},
+	
+	/**
+	 * and puts the text in the small display window.
+	 */
+	
+	dispSelect : function() {
+		//com.elclab.proveit.log("Entering dispSelect");
+		
 		if (com.elclab.proveit.getRefbox().selectedItem) {
 			/*
 			var name = com.elclab.proveit.getRefbox().selectedItem.id;
@@ -697,29 +816,7 @@ com.elclab.proveit = {
 		} else {
 			return;
 		}
-		var current = com.elclab.proveit.currentrefs[name];
-		if (current["type"]) {
-			com.elclab.proveit.getSidebarDoc().getElementById("editlabel").value = current["type"];
-		} else {
-			com.elclab.proveit.getSidebarDoc().getElementById("editlabel").value = "Citation";
-		}
-		for (item in current) {
-			if (item != "type" && item != "toString" && item != "orig"
-					&& item != "save") {
-				var newline = com.elclab.proveit.getSidebarDoc().getElementById("editprime")
-						.cloneNode(true);
-				var left = newline.childNodes[0];
-				var right = newline.childNodes[2];
-				newline.id = "" + item;
-				newline.hidden = false;
-				com.elclab.proveit.getSidebarDoc().getElementById("editlist").appendChild(newline);
-
-				left.id = "" + item + "namec";
-				right.id = "" + item + "value";
-				com.elclab.proveit.getSidebarDoc().getElementById(item + "namec").value = item;
-				com.elclab.proveit.getSidebarDoc().getElementById(item + "value").value = current[item];
-			}
-		}
+		
 		// either enable or disable the save changes text
 		
 	},
@@ -768,7 +865,7 @@ com.elclab.proveit = {
 	 * the display chooser.
 	 */
 	scanRef : function() {
-		com.elclab.proveit.log("Entering scanRef.");
+		//com.elclab.proveit.log("Entering scanRef.");
 		// textValue is the text from the edit box
 		var text;
 		// zero out the old scan, just in case
@@ -853,11 +950,11 @@ com.elclab.proveit = {
 								// sides
 								var parts = cutupstring[j].split("=");
 								if (parts[1]) {
-									parts[0] = parts[0].trim();
-									parts[1] = parts[1].trim();
+									var paramName = parts[0].trim();
+									var paramVal = parts[1].trim();
 									// add it to the object
-									if (parts[1] != "") {
-										citation.params[parts[0]] = parts[1];
+									if (paramVal != "") {
+										citation.params[paramName] = paramVal;
 									}
 								}
 							}
@@ -887,13 +984,14 @@ com.elclab.proveit = {
 								// sides
 								var parts = cutupstring[j].split("=");
 								if (parts[1]) {
-									parts[0] = parts[0].trim();
-									parts[1] = parts[1].trim();
+									var paramName = parts[0].trim();
+									var paramVal = parts[1].trim();
 									// add it to the object
-									if (parts[1] != "") {
-										citation.params[parts[0]] = parts[1];
+									if (paramVal != "") {
+										citation.params[paramName] = paramVal;
 									}
 								}
+								
 							}
 						} else {
 							// com.elclab.proveit.log("Can't Parse: " + com.elclab.proveit.currentScan[i]);
@@ -947,8 +1045,8 @@ com.elclab.proveit = {
 			}
 		}
 		//document.getElementById('display').value = "";
-		com.elclab.proveit.log("com.elclab.proveit.currentScan: " + com.elclab.proveit.currentScan)
-		com.elclab.proveit.log("currentrefs: " + com.elclab.proveit.currentrefs);
+		//com.elclab.proveit.log("com.elclab.proveit.currentScan: " + com.elclab.proveit.currentScan)
+		//com.elclab.proveit.log("currentrefs: " + com.elclab.proveit.currentrefs);
 		//com.elclab.proveit.log("currentrefs.length: " + com.elclab.proveit.currentrefs.length);
 		
 		
@@ -959,6 +1057,7 @@ com.elclab.proveit = {
 	 */
 	Cite : function() {
 		this.name;
+		this.template = "cite"; // Signifies template type is cite web, news, etc.
 		this.type;
 		this.save; 
 		this.inMWEditBox; // true if and only if the ref is in the MW edit box with the same value as this object's orig.
@@ -995,6 +1094,7 @@ com.elclab.proveit = {
 
 	Citation : function() {
 		this.name;
+		this.template = "Citation"; // Signifies template type is Citation
 		this.save; 
 		this.inMWEditBox; // true if and only if the ref is in the MW edit box with the same value as this object's orig.
 		this.params = new Object();
@@ -1104,7 +1204,7 @@ com.elclab.proveit = {
 	 * Changes the panel for the cite entry panel to the correct type of entry
 	 */
 	changeCite : function() {
-		com.elclab.proveit.log("Entering changeCite");
+		//com.elclab.proveit.log("Entering changeCite");
 		var that = com.elclab.proveit.getSidebarDoc().getElementById("citemenu").value;
 		that = com.elclab.proveit.getSidebarDoc().getElementById(that);
 		var childlist = com.elclab.proveit.getSidebarDoc().getElementById("citepanes").childNodes;
@@ -1137,6 +1237,13 @@ com.elclab.proveit = {
 	 *         used to tie the meta-data to the list.
 	 */
 	addNewElement : function(name) {
+		
+		if(name == "Prime")
+		{
+			com.elclab.proveit.log("Prime detected.");
+			name = "";
+		}
+		
 		// grab the list
 		var blah = com.elclab.proveit.getRefbox();
 		// blah.rows = 5;
@@ -1176,7 +1283,7 @@ com.elclab.proveit = {
 		newimage.id = name + "image";
 		newimage.addEventListener("click", function() {
 			com.elclab.proveit.getRefbox().selectItem(this.parentNode);
-			// com.elclab.proveit.log("Onclick happenned!");
+			//com.elclab.proveit.log("Item edit clicked");
 			com.elclab.proveit.getSidebarDoc().getElementById("edit").openPopup(this, "end_before", 0, 0,
 					false, false);
 		}, false);
@@ -1192,6 +1299,89 @@ com.elclab.proveit = {
 		// return the id so the caller functions can set up the citation text
 		// deprecated
 		return name;
+	},
+	
+	citeParamKey : 
+	{
+		url : 0,
+		title : 1,
+		accessdate : 2,
+		author : 3,
+		last : 4,
+		first : 5,
+		authorlink : 6,
+		coauthors : 7,
+		date : 8,
+		year : 9,
+		month : 10,
+		format : 11,
+		work : 12,
+		publisher : 13,
+		location : 14,
+		pages : 15,
+		language : 16,
+		doi : 17,
+		archiveurl : 18,
+		archivedate : 19,
+		quote : 20
+	},
+	
+	citeParamSorter : function(paramA, paramB)
+	{
+		if(com.elclab.proveit.citeParamKey[paramA] != null && com.elclab.proveit.citeParamKey[paramB] != null)
+			return com.elclab.proveit.citeParamKey[paramA] - com.elclab.proveit.citeParamKey[paramB];
+		else
+		{
+			if(paramA < paramB)
+				return -1
+			else if(paramA == paramB)
+				return 0;
+			else
+				return 1;
+		}
+	},
+
+	CitationParamKey : 
+	{
+		last : 0,
+		first : 1,
+		"author-link" : 2,
+		last2 : 3,
+		first2 : 4,
+		"author2-link" : 5,
+		"publication-date" : 6,
+		date : 7,
+		year : 8,
+		title : 9,
+		edition : 10,
+		volume : 11,
+		series : 12,
+		"publication-place" : 13,
+		place : 14,
+		publisher : 15,
+		pages : 16,
+		page : 17,
+		id : 18,
+		isbn : 19,
+		doi : 20,
+		oclc : 21,
+		url : 22,
+		accessdate : 23
+	},
+	
+	CitationParamSorter : function(paramA, paramB)
+	{
+		if(com.elclab.proveit.CitationParamKey[paramA] != null && com.elclab.proveit.CitationParamKey[paramB] != null)
+			return com.elclab.proveit.CitationParamKey[paramA] - com.elclab.proveit.CitationParamKey[paramB];
+		else
+		{
+			if(paramA < paramB)
+				return -1
+			else if(paramA == paramB)
+				return 0;
+			else
+				return 1;
+		}
 	}
 }
 

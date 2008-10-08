@@ -13,7 +13,10 @@
 	
 	<richlistitem id="prime" hidden="true">
 		<hbox flex="1" align="center">
-			<label control="prime" id="primelabel" value="Prime" crop="end" minwidth="200" maxwidth="200"/>
+			<label control="prime" id="primelabel" value="" crop="end" minwidth="200" maxwidth="200"/>
+			<!--
+				Having value="Prime" causes this to show up briefly.
+			-->
 			<label hidden="true" id="infoholder" value="" />
 			<spacer width="0" />
 			<image src="18.png" id="primeimage" width="10" height="10" />
