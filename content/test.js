@@ -262,7 +262,10 @@ com.elclab.proveit = {
 		var origText = t.value; 
 		var startInd = origText.indexOf(target); 
 		if(startInd == -1)
+		{
 			com.elclab.proveit.log("Target string not found!");
+			return false;
+		}
 		var endInd = startInd + target.length; 
 		t.value = origText.substring(0, startInd); 
 		t.scrollTop = 1000000; //Larger than any real textarea (hopefully)
@@ -519,11 +522,27 @@ com.elclab.proveit = {
 		var endPos = txtarea.selectionEnd;
 		var text = txtarea.value;
 		var textScroll = txtarea.scrollTop;
-		//com.elclab.proveit.log("Replacing: \n\t" + com.elclab.proveit.currentrefs[item]["orig"] + "\nWith:\n\t" + com.elclab.proveit.currentrefs[item].toString());
-		var regexpstring = com.elclab.proveit.currentrefs[item]["orig"].replace(/\|/g, "\\|");
-		var regex = new RegExp(regexpstring);
+		com.elclab.proveit.log("Replacing: \n\t" + com.elclab.proveit.currentrefs[item]["orig"] + "\nWith:\n\t" + com.elclab.proveit.currentrefs[item].toString());
+		
+		// This code (the original) had the minor drawback of not working when references contained links.
+		//var regexpstring = com.elclab.proveit.currentrefs[item]["orig"].replace(/\|/g, "\\|");
+		
+		/* 
+		This is correct, if you insist on only using replace with regex.
+		var regexpstring = com.elclab.proveit.currentrefs[item]["orig"].replace(/([\[\\\^\$\.\|\?\*\+\(\)\]\{\}])/g, "\\$1");
+		//com.elclab.proveit.log(regexpstring);
+		//var regex = new RegExp(regexpstring);
+		if(text.search(regex) == -1)
+		{
+			com.elclab.proveit.log("Existing ref not found!");
+		}
 		text = text.replace(regex, com.elclab.proveit.currentrefs[item].toString());
-		// insert tags
+		*/
+		
+		// This is most reasonable, given that replace works just fine without regex. :)
+		text = text.replace(com.elclab.proveit.currentrefs[item]["orig"], com.elclab.proveit.currentrefs[item].toString());
+		
+		// Do replacement in textarea.
 		txtarea.value = text;
 		
 		// Baseline for future modifications
@@ -725,6 +744,7 @@ com.elclab.proveit = {
 			com.elclab.proveit.getSidebarDoc().getElementById("editlabel").value = "Citation";
 		}
 		
+		// Closer to minimizing hacks for name
 		if(current["name"] && current["name"] != null)
 			com.elclab.proveit.addEditPopupRow(current, "name");
 		
@@ -749,21 +769,16 @@ com.elclab.proveit = {
 			
 		for(var i = 0; i < paramNames.length; i++) {
 			//com.elclab.proveit.log("Calling addEditPopupRow on current.params." + item);
-			com.elclab.proveit.addEditPopupRow(current, paramNames[i]);
+			com.elclab.proveit.addEditPopupRow(current.params, paramNames[i]);
 		}
 			
-		var submit = document.getElementById("editsubmit");
-		if(submit && submit != null && (submit.hidden == null || submit.hidden == false))
-			com.elclab.proveit.log("Save button exists.");
-		else
-			com.elclab.proveit.log("Save button does not exist.");
 		//com.elclab.proveit.log("Leaving updateEditPopup");
 	},
 	
 	/**
 	 * Adds a single row of edit popup
 	 */
-	addEditPopupRow : function(current, item)
+	addEditPopupRow : function(list, item)
 	{
 		//com.elclab.proveit.log("Entering addEditPopupRow.");
 		//com.elclab.proveit.log("item: " + item);
@@ -783,11 +798,9 @@ com.elclab.proveit = {
 			left.id = "" + item + "namec";
 			right.id = "" + item + "value";
 			com.elclab.proveit.getSidebarDoc().getElementById(item + "namec").value = item;
-			if(item != "name")
-				com.elclab.proveit.getSidebarDoc().getElementById(item + "value").value = current.params[item];
-			else
-				com.elclab.proveit.getSidebarDoc().getElementById(item + "value").value = current[item];
-		//}
+			
+			com.elclab.proveit.getSidebarDoc().getElementById(item + "value").value = list[item];	
+	    //}
 	},
 	
 	/**
