@@ -316,10 +316,11 @@ com.elclab.proveit = {
 		
 		// We use click because of event bubbling.
 		// If we use select here, we can't process insert image click before processing select.
+		/*
 		com.elclab.proveit.getRefbox().addEventListener("click", function() {
 			com.elclab.proveit.doSelect();
 		}, false);
-		
+		*/
 		if(com.elclab.proveit.isMediaWikiEditPage())
 			com.elclab.proveit.scanRef();
 		
@@ -339,7 +340,7 @@ com.elclab.proveit = {
 	 */
 	sendalert : {
 		onLocationChange : function(aProgress, aRequest, aURI) {
-			com.elclab.proveit.log("sendalert.onLocationChange");
+			//com.elclab.proveit.log("sendalert.onLocationChange");
 			if (!aProgress.isLoadingDocument) {
 				// this checks to see if the tab is changed, the isloading check
 				// is
@@ -358,9 +359,20 @@ com.elclab.proveit = {
 				//com.elclab.proveit.log("Test");
 				
 				com.elclab.proveit.openOnlyForMediawiki();
+				if(com.elclab.proveit.isSidebarOpen())
+				{
+					com.elclab.proveit.log("Reloading sidebar from onLocationChange.")
+					window.setTimeout(function()
+					{
+						toggleSidebar("viewProveItSidebar");
+						toggleSidebar("viewProveItSidebar");
+					}, 0)
+				}
+				//com.elclab.proveit.proveitonload();
+				/*
 				if(com.elclab.proveit.isMediaWikiEditPage())
 					com.elclab.proveit.scanRef();
-		
+				*/
 				/*
 				com.elclab.proveit.log("Calling highlightTargetString");
 				com.elclab.proveit.highlightTargetString("<ref");
@@ -370,7 +382,7 @@ com.elclab.proveit = {
 			};
 		},
 		onStateChange : function(aProgress, aRequest, aFlag, aStatus) {
-			com.elclab.proveit.log("sendalert.onStateChange");
+			//com.elclab.proveit.log("sendalert.onStateChange");
 			if ((aFlag & com.elclab.proveit.STATE_STOP) && aRequest && aRequest != null && (aRequest.URI)
 					&& (aRequest.URI.host == top.getBrowser().currentURI.host)
 					&& (aRequest.URI.path == top.getBrowser().currentURI.path)) {
@@ -437,7 +449,7 @@ com.elclab.proveit = {
 			// com.elclab.proveit.log("Deleting #" + i + ": " + item.id);
 			// com.elclab.proveit.log(size);
 		}
-		com.elclab.proveit.log("Clearing currentScan and currentrefs");
+		//com.elclab.proveit.log("Clearing currentScan and currentrefs");
 
 		com.elclab.proveit.currentScan = [];
 		com.elclab.proveit.currentrefs = [];
@@ -715,8 +727,8 @@ com.elclab.proveit = {
 			com.elclab.proveit.log("selectedItem.parentNode.id: " + com.elclab.proveit.getRefbox().selectedItem.parentNode.id);*/
 			
 		//}
-		com.elclab.proveit.log("curRefItem: " + com.elclab.proveit.curRefItem + "; curRefItem.id: " + com.elclab.proveit.curRefItem.id)
-		com.elclab.proveit.log("doSelect currentrefs: " + com.elclab.proveit.currentrefs);
+		//com.elclab.proveit.log("curRefItem: " + com.elclab.proveit.curRefItem + "; curRefItem.id: " + com.elclab.proveit.curRefItem.id)
+		//com.elclab.proveit.log("doSelect currentrefs: " + com.elclab.proveit.currentrefs);
 		var curRef = com.elclab.proveit.currentrefs[com.elclab.proveit.curRefItem.id];
 		if(curRef.inMWEditBox)
 		{
@@ -947,7 +959,7 @@ com.elclab.proveit = {
 		// wikiEd's or the normal one.
 		com.elclab.proveit.clearlist();
 		
-		com.elclab.proveit.log("scanRef currentrefs: " + com.elclab.proveit.currentrefs);
+		//com.elclab.proveit.log("scanRef currentrefs: " + com.elclab.proveit.currentrefs);
 		
 		var textValue;
 		if (text) {
@@ -966,7 +978,7 @@ com.elclab.proveit = {
 				// just for me and testing, make them easier to read by
 				// replacing
 				// all | with newlines and a tab
-				com.elclab.proveit.log("com.elclab.proveit.currentScan.length: " + com.elclab.proveit.currentScan.length);
+				//com.elclab.proveit.log("com.elclab.proveit.currentScan.length: " + com.elclab.proveit.currentScan.length);
 				for (var i = 0; i < com.elclab.proveit.currentScan.length; i++) {
 					//com.elclab.proveit.log("com.elclab.proveit.currentScan[" + i + "]: " + com.elclab.proveit.currentScan[i]);
 					workingstring = com.elclab.proveit.currentScan[i]
@@ -1085,7 +1097,7 @@ com.elclab.proveit = {
 						} else {
 							//com.elclab.proveit.log("Name is not defined.")
 							name = "";
-							com.elclab.proveit.log("citation: " + citation);
+							//com.elclab.proveit.log("citation: " + citation);
 							if (citation.params["author"]) {
 								name = citation.params["author"] + "; ";
 							} else if (citation.params["last"]) {
@@ -1120,7 +1132,7 @@ com.elclab.proveit = {
 		}
 		//document.getElementById('display').value = "";
 		//com.elclab.proveit.log("com.elclab.proveit.currentScan: " + com.elclab.proveit.currentScan)
-		com.elclab.proveit.log("scanRef currentrefs: " + com.elclab.proveit.currentrefs);
+		//com.elclab.proveit.log("scanRef currentrefs: " + com.elclab.proveit.currentrefs);
 		//com.elclab.proveit.log("scanRefs currentrefs.length: " + com.elclab.proveit.currentrefs.length);	
 	},
 

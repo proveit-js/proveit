@@ -41,7 +41,7 @@
 					</hbox>
 				</hbox>
 				<hbox width="250"  flex="1" >
-					<richlistbox id="refbox" flex="1" onselect="/*com.elclab.proveit.doSelect();*/ /* com.elclab.proveit.restoreSelection();*/" onclick=""/>
+					<richlistbox id="refbox" flex="1" onselect="/*com.elclab.proveit.doSelect();*/ /* com.elclab.proveit.restoreSelection();*/" onclick="com.elclab.proveit.doSelect();"/>
 				</hbox>
 				<hbox height="20" align="end" pack="start" >
 					<spacer width="15" />
