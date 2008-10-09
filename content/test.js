@@ -1011,6 +1011,7 @@ com.elclab.proveit = {
 							if (name) {
 								citation["name"] = name;
 							}
+							
 							// find the start location on the type
 							var typestart = cutupstring[0].toLowerCase()
 									.indexOf('e');
@@ -1023,7 +1024,18 @@ com.elclab.proveit = {
 							citation["type"] = type;
 							// the rest of the cutup are the attributes, cycle
 							// through them and parse them
-							for (var j = 1; j < cutupstring.length; j++) {
+							
+							var nameSplit = workingstring.substring(workingstring.indexOf("|") + 1).split(/=(?:[^\[\=\|]*?(?:\[\[[^\|\]\=]*(?:\|(?:[^\|\]\=]*))?\]\])?[^\[\|\=]*?)+(?:\||\}\})/);
+							var valSplit = workingstring.substring(workingstring.indexOf("|"), workingstring.indexOf("}}")).split(/\|[^\|=]*=/);
+
+							for (var j = 0; j < nameSplit.length - 1; j++) {
+								var paramName = nameSplit[j].trim();
+								var paramVal = valSplit[j + 1].trim();
+								// add it to the object
+								if (paramVal != "") {
+										citation.params[paramName] = paramVal;
+								}
+								/*
 								// if it is the last one, take off the }} from
 								// the
 								// end
@@ -1042,6 +1054,7 @@ com.elclab.proveit = {
 										citation.params[paramName] = paramVal;
 									}
 								}
+								*/
 							}
 						} else if (workingstring.match(/{{[\s]*Citation/i) != null) {
 							var citation = new com.elclab.proveit.Citation();
@@ -1051,11 +1064,26 @@ com.elclab.proveit = {
 							citation["orig"] = orig;
 							citation["save"] = true;
 							citation.inMWEditBox = true;
+							/*
 							var citstart = workingstring.indexOf(workingstring.match(/Citation/i));
 							workingstring = workingstring.substring(citstart
 									+ 8);
 							cutupstring = workingstring.split(/\|/g);
-							for (var j = 0; j < cutupstring.length; j++) {
+							*/
+							
+							var nameSplit = workingstring.substring(workingstring.indexOf("|") + 1).split(/=(?:[^\[\=\|]*?(?:\[\[[^\|\]\=]*(?:\|(?:[^\|\]\=]*))?\]\])?[^\[\|\=]*?)+(?:\||\}\})/);
+							var valSplit = workingstring.substring(workingstring.indexOf("|"), workingstring.indexOf("}}")).split(/\|[^\|=]*=/);
+							
+							
+							for (var j = 0; j < nameSplit.length - 1; j++) {
+								var paramName = nameSplit[j].trim();
+								var paramVal = valSplit[j + 1].trim();
+								// add it to the object
+								if (paramVal != "") {
+										citation.params[paramName] = paramVal;
+								}
+								
+								/*
 								// if it is the last one, take off the }} from
 								// the
 								// end
@@ -1074,7 +1102,7 @@ com.elclab.proveit = {
 										citation.params[paramName] = paramVal;
 									}
 								}
-								
+								*/
 							}
 						} else {
 							com.elclab.proveit.log("Can't Parse: " + com.elclab.proveit.currentScan[i]);
