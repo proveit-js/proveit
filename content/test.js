@@ -968,7 +968,7 @@ com.elclab.proveit = {
 				// all | with newlines and a tab
 				com.elclab.proveit.log("com.elclab.proveit.currentScan.length: " + com.elclab.proveit.currentScan.length);
 				for (var i = 0; i < com.elclab.proveit.currentScan.length; i++) {
-					com.elclab.proveit.log("com.elclab.proveit.currentScan[" + i + "]: " + com.elclab.proveit.currentScan[i]);
+					//com.elclab.proveit.log("com.elclab.proveit.currentScan[" + i + "]: " + com.elclab.proveit.currentScan[i]);
 					workingstring = com.elclab.proveit.currentScan[i]
 							.match(/{{[\s]*(cite|Citation)[^}]*}}/i)[0];
 					//var name = com.elclab.proveit.currentScan[i].match(/<[\s]*ref[^>]*/i);
@@ -990,9 +990,7 @@ com.elclab.proveit = {
 					cutupstring = workingstring.split(/\|/g);
 					//com.elclab.proveit.log("currentrefs[" + name + "]" + com.elclab.proveit.currentrefs[name]);
 					if (!com.elclab.proveit.currentrefs[name]) {
-						if (workingstring.indexOf('c') != -1 // Forking on c/C will not work, as templates are case insensitive.
-								&& workingstring.substr(workingstring
-										.indexOf('c'), 4) == "cite") {
+						if (workingstring.match(/{{[\s]*cite/i) != null) {
 							// create a new cite object
 							var citation = new com.elclab.proveit.Cite();
 							citation["orig"] = orig;
@@ -1033,9 +1031,7 @@ com.elclab.proveit = {
 									}
 								}
 							}
-						} else if (workingstring.indexOf('C') != -1 
-								&& workingstring.substr(workingstring
-										.indexOf('C'), 8) == "Citation") {
+						} else if (workingstring.match(/{{[\s]*Citation/i) != null) {
 							var citation = new com.elclab.proveit.Citation();
 							if (name) {
 								citation["name"] = name;
@@ -1043,7 +1039,7 @@ com.elclab.proveit = {
 							citation["orig"] = orig;
 							citation["save"] = true;
 							citation.inMWEditBox = true;
-							var citstart = workingstring.indexOf('C');
+							var citstart = workingstring.indexOf(workingstring.match(/Citation/i));
 							workingstring = workingstring.substring(citstart
 									+ 8);
 							cutupstring = workingstring.split(/\|/g);
