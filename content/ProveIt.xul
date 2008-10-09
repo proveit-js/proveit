@@ -19,7 +19,9 @@
 			-->
 			<label hidden="true" id="infoholder" value="" />
 			<spacer width="0" />
-			<image src="18.png" id="primeimage" width="10" height="10" />
+			<image src="18.png" id="primeeditimage" width="10" height="10" />
+			<spacer width="5" />
+			<image src="insert_10x10.png" id="primeinsertimage" width="10" height="10"></image>
 			<spacer width="0" />
 		</hbox>
 	</richlistitem>
@@ -39,7 +41,7 @@
 					</hbox>
 				</hbox>
 				<hbox width="250"  flex="1" >
-					<richlistbox id="refbox" flex="1" onselect="com.elclab.proveit.doSelect();/* com.elclab.proveit.restoreSelection();*/" onclick=""/>
+					<richlistbox id="refbox" flex="1" onselect="/*com.elclab.proveit.doSelect();*/ /* com.elclab.proveit.restoreSelection();*/" onclick=""/>
 				</hbox>
 				<hbox height="20" align="end" pack="start" >
 					<spacer width="15" />
@@ -52,12 +54,11 @@
 						<label id="nametoggle" class="plain" value="&ProveIt.nameonly;" onclick="com.elclab.proveit.flipToggle('name')"/>
 					</hbox>
 				</hbox>
+				<!--
 				<hbox align="start" minheight="30">
-				<!--<hbox align="start" minheight="150">-->
-					<!--
+				<hbox align="start" minheight="150">
 					<textbox id="display" multiline="true" readonly="true" minheight="150" maxheight="500" flex="1" />
-					-->
-					<!--<vbox width="35" height="150" align="center">-->
+					<vbox width="35" height="150" align="center">
 					<vbox width="35" height="25" align="center">
 						<vbox pack="center" align="center" id="insertnew" width="28" height="28" style="border-style: ridge" onclick="com.elclab.proveit.insert()">
 							<spacer height="4" />
@@ -68,6 +69,7 @@
 					</vbox>
 				</hbox>
 				<separator class="groove" />
+				-->
 				<hbox height="50" pack="center" align="center">
 					<!--<button id="addnewitembutton" height="25" width="150" popup="createnew">-->
 					<button id="addnewitembutton" height="30" popup="createnew">

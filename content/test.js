@@ -264,6 +264,7 @@ com.elclab.proveit = {
 		if(startInd == -1)
 		{
 			com.elclab.proveit.log("Target string not found!");
+			com.elclab.proveit.log("target: " + target);
 			return false;
 		}
 		var endInd = startInd + target.length; 
@@ -309,6 +310,12 @@ com.elclab.proveit = {
 				com.elclab.proveit.getRefbox(), "end_before", 0, 0, false,
 				false);
 		com.elclab.proveit.getSidebarDoc().getElementById('edit').hidePopup();
+		
+		// We use click because of event bubbling.
+		// If we use select here, we can't process insert image click before processing select.
+		com.elclab.proveit.getRefbox().addEventListener("click", function() {
+			com.elclab.proveit.doSelect();
+		}, false);
 		
 		if(com.elclab.proveit.isMediaWikiEditPage())
 			com.elclab.proveit.scanRef();
@@ -412,7 +419,12 @@ com.elclab.proveit = {
 		// box.removeChild(box.childNodes[i]);
 		// }
 		// }
-		var box = com.elclab.proveit.getSidebarDoc().getElementById("refbox");
+		var box = com.elclab.proveit.getRefbox();
+		if(box == null)
+		{
+			//com.elclab.proveit.log("Ref box is not loaded yet.");
+			return false;
+		}
 		var size = box.childNodes.length;
 		// com.elclab.proveit.log(size);
 		for (var i = 0; i < size; i++) {
@@ -425,22 +437,24 @@ com.elclab.proveit = {
 		com.elclab.proveit.currentrefs = [];
 	},
 
-	getInsertionText : function()
+	getInsertionText : function(ref)
 	{
 		// Adapted from dispSelect
 		var textToInsert = "";
-		if (com.elclab.proveit.getSidebarDoc().getElementById("refbox").selectedItem) {
-			var name = com.elclab.proveit.getRefbox().selectedItem.id;
+		if (com.elclab.proveit.getRefbox().selectedItem) {
+			//var name = com.elclab.proveit.getRefbox().selectedItem.id;
 			if (com.elclab.proveit.toggleinsert) {
 				// com.elclab.proveit.log(name);
-				textToInsert = com.elclab.proveit.currentrefs[name]
-						.toString();
+				/*textToInsert = com.elclab.proveit.currentrefs[name]
+						.toString();*/
+				textToInsert = ref.toString();
 			} else {
-				if (com.elclab.proveit.currentrefs[name].name) {
+				//if (com.elclab.proveit.currentrefs[name].name) {
+				if (ref.name) {
 					textToInsert = "<ref name=\""
-							+ com.elclab.proveit.currentrefs[name].name + "\" />";
+							+ ref.name + "\" />";
 				} else {
-					com.elclab.proveit.log("Selected item appears invalid.  Returning empty insertion text");
+					com.elclab.proveit.log("Ref lacks name.  Returning empty insertion text");
 					textToInsert = "";
 				}
 			}
@@ -460,12 +474,22 @@ com.elclab.proveit = {
 	 * location of the cursor in the document.
 	 */
 	insert : function() {
+		com.elclab.proveit.log("Entering insert.");
 		if (com.elclab.proveit.getRefbox().selectedItem) {
 			var txtarea = com.elclab.proveit.getMWEditBox();
 			if(!txtarea)
 				return false;
 			//var sel = com.elclab.proveit.getSidebarDoc().getElementById('display').value;
-			var sel = com.elclab.proveit.getInsertionText();
+			if(com.elclab.proveit.currentrefs == [])
+				com.elclab.proveit.log("currentrefs is undefined.");
+			/*else
+				com.elclab.proveit.log("currentrefs: " + com.elclab.proveit.currentrefs);*/
+			com.elclab.proveit.log("selectedItem.parentNode.localName: " + com.elclab.proveit.getRefbox().selectedItem.parentNode.localName)
+			com.elclab.proveit.log("selectedItem.parentNode.id: " + com.elclab.proveit.getRefbox().selectedItem.parentNode.id);
+			
+			var ref = com.elclab.proveit.currentrefs[com.elclab.proveit.getRefbox().selectedItem.parentNode.id];
+			com.elclab.proveit.log("ref: " + ref)
+			var sel = com.elclab.proveit.getInsertionText(ref);
 
 			// var start = top.window.content.document
 			// .getElementById(textareaname).selectionStart;
@@ -498,6 +522,8 @@ com.elclab.proveit = {
 			txtarea.scrollTop = textScroll;
 
 		}
+		else
+			com.elclab.proveit.log("No item selected.");
 	},
 
 	/**
@@ -640,6 +666,8 @@ com.elclab.proveit = {
 	},
 	
 	ignoreSelection : false,
+	
+	highlightOnSelect : true,
 
 	restoreSelection : function()
 	{
@@ -647,7 +675,7 @@ com.elclab.proveit = {
 		// Restores selection after edit box is left and sidebar returned to..
 		if(com.elclab.proveit.curRefItem != null)
 		{
-			com.elclab.proveit.ignoreSelection = true;
+			//com.elclab.proveit.ignoreSelection = true;
 			com.elclab.proveit.getRefbox().selectItem(com.elclab.proveit.curRefItem);
 		}
 	},
@@ -659,7 +687,7 @@ com.elclab.proveit = {
 	 */
 	doSelect : function()
 	{
-		//com.elclab.proveit.log("Entering doSelect");
+		com.elclab.proveit.log("Entering doSelect");
 		
 		//com.elclab.proveit.log("Selected item: " + com.elclab.proveit.getRefbox().selectedItem);
 		
@@ -674,9 +702,15 @@ com.elclab.proveit = {
 		//if(com.elclab.proveit.getRefbox().selectedItem != null)
 		//{
 			com.elclab.proveit.curRefItem = com.elclab.proveit.getRefbox().selectedItem; // don't allow overwriting with null selection.
+			/*com.elclab.proveit.log("selectedItem.localName: " + com.elclab.proveit.getRefbox().selectedItem.localName)
+			com.elclab.proveit.log("selectedItem.id: " + com.elclab.proveit.getRefbox().selectedItem.id);
+			
+			com.elclab.proveit.log("selectedItem.parentNode.localName: " + com.elclab.proveit.getRefbox().selectedItem.parentNode.localName)
+			com.elclab.proveit.log("selectedItem.parentNode.id: " + com.elclab.proveit.getRefbox().selectedItem.parentNode.id);*/
+			
 		//}
 		//com.elclab.proveit.log("curRefItem: " + com.elclab.proveit.curRefItem + "; curRefItem.id: " + com.elclab.proveit.curRefItem.id)
-		//com.elclab.proveit.log("currentrefs: " + com.elclab.proveit.currentrefs);
+		//com.elclab.proveit.log("doSelect currentrefs: " + com.elclab.proveit.currentrefs);
 		var curRef = com.elclab.proveit.currentrefs[com.elclab.proveit.curRefItem.id];
 		if(curRef.inMWEditBox)
 		{
@@ -689,7 +723,16 @@ com.elclab.proveit = {
 				return;
 			}
 			*/
-			com.elclab.proveit.highlightTargetString(curRefText);
+			if(com.elclab.proveit.highlightOnSelect == true)
+			{
+				com.elclab.proveit.log("doSelect calling highlightTargetString");
+				com.elclab.proveit.highlightTargetString(curRefText);
+			}
+			else
+			{
+				com.elclab.proveit.log("doSelect not calling highlightTargetString");
+				com.elclab.proveit.highlightOnSelect = true;
+			}
 			/*var mainWindow = window.QueryInterface(Components.interfaces.nsIInterfaceRequestor)
 			 .getInterface(Components.interfaces.nsIWebNavigation)
 	 		 .QueryInterface(Components.interfaces.nsIDocShellTreeItem)
@@ -700,9 +743,11 @@ com.elclab.proveit = {
 	        //mainWindow.focus();
 	        //mainWindow.document.focus();
 			//com.elclab.proveit.log("About to clear refbox selection.")
-			com.elclab.proveit.ignoreSelection = true;
+			
+			//com.elclab.proveit.ignoreSelection = true;
 	        com.elclab.proveit.getRefbox().clearSelection(); //Clearing selection throws onSelect!
-			//com.elclab.proveit.ignoreSelection = true; // Focus event may also have effect on selection.
+			
+	        //com.elclab.proveit.ignoreSelection = true; // Focus event may also have effect on selection.
 	        com.elclab.proveit.getMWEditBox().focus();
 			//com.elclab.proveit.log("Scrolled and highlighted, and attempted to focus.");
 		}
@@ -897,7 +942,7 @@ com.elclab.proveit = {
 		
 		var textValue;
 		if (text) {
-			com.elclab.proveit.log("Edit box object is valid.");
+			//com.elclab.proveit.log("Edit box object is valid.");
 			textValue = text.value;
 			// since we should pick the name out before we get to the citation
 			// tag type, here's a variable to hold it
@@ -908,15 +953,21 @@ com.elclab.proveit = {
 					.match(/<[\s]*ref[^>]*>[\s]*{{+[\s]*(cite|Citation)[^}]*}}+[\s]*<[\s]*\/[\s]*ref[\s]*>/gi);
 			// if there are results,
 			if (com.elclab.proveit.currentScan) {
-				com.elclab.proveit.log("currentScan is valid.");
+				//com.elclab.proveit.log("currentScan is valid.");
 				// just for me and testing, make them easier to read by
 				// replacing
 				// all | with newlines and a tab
 				for (var i = 0; i < com.elclab.proveit.currentScan.length; i++) {
 					workingstring = com.elclab.proveit.currentScan[i]
 							.match(/{{[\s]*(cite|Citation)[^}]*}}/i)[0];
-					name = com.elclab.proveit.currentScan[i].match(/<[\s]*ref[^>]*/i);
-					name = name[0].split(/\"/gi)[1];
+					//var name = com.elclab.proveit.currentScan[i].match(/<[\s]*ref[^>]*/i);
+					//name = name[0].split(/\"/gi)[1]; // This only works when double quotes are used, which are not required.
+					var match = com.elclab.proveit.currentScan[i].match(/<[\s]*ref[\s]*name[\s]*=[\s]*(?:(?:\"(.*?)\")|(?:\'(.*?)\')|(?:(.*?)))[\s]*\/?[\s]*>/);
+					
+					if(match && match != null)
+						name = match[1] || match[2] || match[3];
+					else
+						name = null;
 					// com.elclab.proveit.log(name);
 					if (!name || name == -1) {
 						delete(name);
@@ -1263,11 +1314,18 @@ com.elclab.proveit = {
 		// get the number of rows, used to give id's to the new item
 		// grab some input from the textbox
 		// create a new richlistitem from the dummy prototype.
-		var newchild = com.elclab.proveit.getSidebarDoc().getElementById("prime").cloneNode(true);
+		var dummy = com.elclab.proveit.getSidebarDoc().getElementById("prime");
+		if(dummy == null)
+		{
+			//com.elclab.proveit.log("Prime dummy item is not loaded yet.");
+			return false;
+		}
+		var newchild = dummy.cloneNode(true);
 		// grab the nodes that need changed out of it
 		var newlabel = newchild.firstChild.childNodes[0];
 		var infoholder = newchild.firstChild.childNodes[1];
-		var newimage = newchild.firstChild.childNodes[3];
+		var neweditimage = newchild.firstChild.childNodes[3];
+		var newinsertimage = newchild.firstChild.childNodes[5];
 		// change the necessary information in those nodes, as well as
 		// change the dummy node to not hidden. note the use of num in id's
 		// first check to see if there is a node with this name already
@@ -1293,13 +1351,32 @@ com.elclab.proveit = {
 		newchild.id = name;
 		newchild.hidden = false;
 		blah.appendChild(newchild);
-		newimage.id = name + "image";
-		newimage.addEventListener("click", function() {
+		neweditimage.id = name + "image";
+		neweditimage.addEventListener("click", function() {
 			com.elclab.proveit.getRefbox().selectItem(this.parentNode);
 			//com.elclab.proveit.log("Item edit clicked");
 			com.elclab.proveit.getSidebarDoc().getElementById("edit").openPopup(this, "end_before", 0, 0,
 					false, false);
 		}, false);
+		
+		newinsertimage.id = name + "insertimage"; // probably isn't necessary
+		newinsertimage.addEventListener("click", function() {
+			com.elclab.proveit.getRefbox().selectItem(this.parentNode);
+			com.elclab.proveit.insert();
+		}, false); // True may ensure row is selected prior to attempting to insert.
+		
+		/*
+		newinsertimage.parentNode.parentNode.addEventListener("select", function() {
+			com.elclab.proveit.log("Entering newinsertimage select handler and setting highlightOnSelect false");
+			com.elclab.proveit.highlightOnSelect = false;
+		}, false);
+		*/
+		
+		newinsertimage.addEventListener("click", function() {
+			com.elclab.proveit.log("Entering newinsertimage click handler and setting highlightOnSelect false");
+			com.elclab.proveit.highlightOnSelect = false;
+		}, false);
+		
 		newlabel.id = name + "label";
 		// not sure why this is necessary, but it's the only way to get it to
 		// work in ff3
@@ -1333,10 +1410,11 @@ com.elclab.proveit = {
 		location : 14,
 		pages : 15,
 		language : 16,
-		doi : 17,
-		archiveurl : 18,
-		archivedate : 19,
-		quote : 20
+		isbn : 17,
+		doi : 18,
+		archiveurl : 19,
+		archivedate : 20,
+		quote : 21
 	},
 	
 	citeParamSorter : function(paramA, paramB)
