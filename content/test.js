@@ -639,6 +639,7 @@ com.elclab.proveit = {
 			com.elclab.proveit.log("text is not valid.");
 			return false;
 		}
+		// FIX: Commas can be part of fields.
 		textSplit = text.split(/\,/gi);
 		/*
 		if (textSplit == -1 && text != "") {
@@ -659,6 +660,8 @@ com.elclab.proveit = {
 		*/
 		if (text != "") {
 			for (var i = 0; i < textSplit.length; i++) {
+				// FIX: Equal signs can be part of fields.  This can probably be fixed just 
+				// by taking the first equal once comma split is worked out.
 				var split = textSplit[i].split(/\=/i);
 				var paramName = split[0].trim();
 				var paramVal = split[1].trim();	
@@ -968,7 +971,7 @@ com.elclab.proveit = {
 	splitNameVals : function (workingstring)
 	{
 		var split = {};
-		split.nameSplit = workingstring.substring(workingstring.indexOf("|") + 1).split(/=(?:[^\[\|]*?(?:\[\[[^\|\]]*(?:\|(?:[^\|\]]*))?\]\])?[^\[\|]*?)+(?:\||\}\})/);
+		split.nameSplit = workingstring.substring(workingstring.indexOf("|") + 1).split(/=(?:[^\[\|]*?(?:\[\[[^\|\]]*(?:\|(?:[^\|\]]*))?\]\])?)+(?:\||\}\})/);
 		split.valSplit = workingstring.substring(workingstring.indexOf("|"), workingstring.indexOf("}}")).split(/\|[^\|=]*=/);
 		return split;
 	},
