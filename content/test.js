@@ -763,6 +763,11 @@ com.elclab.proveit = {
 		//com.elclab.proveit.log("curRefItem: " + com.elclab.proveit.curRefItem + "; curRefItem.id: " + com.elclab.proveit.curRefItem.id)
 		//com.elclab.proveit.log("doSelect currentrefs: " + com.elclab.proveit.currentrefs);
 		var curRef = com.elclab.proveit.currentrefs[com.elclab.proveit.curRefItem.id];
+		if(!curRef || curRef == null)
+		{
+			com.elclab.proveit.log("doSelect: curRef is not defined.");
+			return false;
+		}
 		if(curRef.inMWEditBox)
 		{
 			//com.elclab.proveit.log("Current ref is in edit box.  Highlighting ref.")
