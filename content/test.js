@@ -964,6 +964,14 @@ com.elclab.proveit = {
 	},
 
 	currentrefs : [],
+	
+	splitNameVals : function (workingstring)
+	{
+		var split = {};
+		split.nameSplit = workingstring.substring(workingstring.indexOf("|") + 1).split(/=(?:[^\[\|]*?(?:\[\[[^\|\]]*(?:\|(?:[^\|\]]*))?\]\])?[^\[\|]*?)+(?:\||\}\})/);
+		split.valSplit = workingstring.substring(workingstring.indexOf("|"), workingstring.indexOf("}}")).split(/\|[^\|=]*=/);
+		return split;
+	},
 
 	/**
 	 * This Function accesses the wiki edit box and scans the contained text for
@@ -1055,8 +1063,9 @@ com.elclab.proveit = {
 							// the rest of the cutup are the attributes, cycle
 							// through them and parse them
 							
-							var nameSplit = workingstring.substring(workingstring.indexOf("|") + 1).split(/=(?:[^\[\|]*?(?:\[\[[^\|\]]*(?:\|(?:[^\|\]]*))?\]\])?[^\[\|]*?)+(?:\||\}\})/);
-							var valSplit = workingstring.substring(workingstring.indexOf("|"), workingstring.indexOf("}}")).split(/\|[^\|=]*=/);
+							var split = com.elclab.proveit.splitNameVals(workingstring);
+							var nameSplit = split.nameSplit;
+							var valSplit = split.valSplit;
 
 							for (var j = 0; j < nameSplit.length - 1; j++) {
 								var paramName = nameSplit[j].trim();
@@ -1101,9 +1110,9 @@ com.elclab.proveit = {
 							cutupstring = workingstring.split(/\|/g);
 							*/
 							
-							var nameSplit = workingstring.substring(workingstring.indexOf("|") + 1).split(/=(?:[^\[\=\|]*?(?:\[\[[^\|\]\=]*(?:\|(?:[^\|\]\=]*))?\]\])?[^\[\|\=]*?)+(?:\||\}\})/);
-							var valSplit = workingstring.substring(workingstring.indexOf("|"), workingstring.indexOf("}}")).split(/\|[^\|=]*=/);
-							
+							var split = com.elclab.proveit.splitNameVals(workingstring);
+							var nameSplit = split.nameSplit;
+							var valSplit = split.valSplit;
 							
 							for (var j = 0; j < nameSplit.length - 1; j++) {
 								var paramName = nameSplit[j].trim();
