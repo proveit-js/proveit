@@ -1045,6 +1045,9 @@ com.elclab.proveit = {
 					//com.elclab.proveit.log("name: " + name);
 					// com.elclab.proveit.log(workingstring);
 					// com.elclab.proveit.log(com.elclab.proveit.currentScan[i]);
+					// /\|/ is not adequate, because of embedded piped links.  However:
+					// /\|(?=(?:(?:[^\[\|\]]+)|(?:\[\[[^\|\]]+(?:\|(?:[^\|\]]*))?\]\]))+(?:\||\}\}))/
+					// would have worked...
 					cutupstring = workingstring.split(/\|/g);
 					//com.elclab.proveit.log("currentrefs[" + name + "]" + com.elclab.proveit.currentrefs[name]);
 					if (!com.elclab.proveit.currentrefs[name]) {
