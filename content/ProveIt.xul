@@ -28,7 +28,8 @@
 	
 	<vbox flex="1">
 		<hbox flex="1" maxwidth="800">
-			<vbox width="250" >
+			<!--<vbox width="250" >-->
+			<vbox width="270">
 				<hbox height="20" align="end" pack="start" >
 					<spacer width="15" />
 					<label class="plain" value="&ProveIt.Tagstyle;" />
@@ -81,7 +82,7 @@
 		</hbox>
 	</vbox>
 	
-	<panel id="createnew" style="background-color: #ECE9D8" position="end_after">
+	<panel id="createnew" style="background-color: #ECE9D8" position="end_after" width="350">
 		<vbox flex="1" hidden="false" id="cite">
 			<hbox pack="center" align="center">
 				<menulist id="citemenu" oncommand="com.elclab.proveit.changeCite()">

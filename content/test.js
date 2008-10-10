@@ -455,13 +455,18 @@ com.elclab.proveit = {
 		com.elclab.proveit.currentrefs = [];
 	},
 
-	getInsertionText : function(ref)
+	/**
+	 * 
+	 * @param {Reference to insert} ref
+	 * @param {If full is true, insert full text, otherwise ref name only} full
+	 */
+	getInsertionText : function(ref, full)
 	{
 		// Adapted from dispSelect
 		var textToInsert = "";
-		if (com.elclab.proveit.getRefbox().selectedItem) {
+		if (ref) {
 			//var name = com.elclab.proveit.getRefbox().selectedItem.id;
-			if (com.elclab.proveit.toggleinsert) {
+			if (full) {
 				// com.elclab.proveit.log(name);
 				/*textToInsert = com.elclab.proveit.currentrefs[name]
 						.toString();*/
@@ -480,65 +485,72 @@ com.elclab.proveit = {
 		}
 		else
 		{
-			com.elclab.proveit.log("No selected item.  Returning empty insertion text");
+			com.elclab.proveit.log("Invalid item.  Returning empty insertion text");
 			textToInsert = "";
 		}
 		
 		return textToInsert;
 	},
 	
+	insertRef : function(ref, full)
+	{
+		var txtarea = com.elclab.proveit.getMWEditBox();
+		if(!txtarea)
+			return false;
+		var sel = com.elclab.proveit.getInsertionText(ref, full);
+
+		// var start = top.window.content.document
+		// .getElementById(textareaname).selectionStart;
+		// var end =
+		// top.window.content.document.getElementById(textareaname).selectionEnd;
+		// top.window.content.document.getElementById(textareaname).value =
+		// base
+		// .substring(0, start)
+		// + sel + base.substring(end, base.length);
+		// top.window.content.document.getElementById(textareaname).focus();
+		// var num = start + sel.length;
+		// top.window.content.document.getElementById(textareaname)
+		// .setSelectionRange(start, num);
+		// save textarea scroll position
+		var textScroll = txtarea.scrollTop;
+		// get current selection
+		txtarea.focus();
+		var startPos = txtarea.selectionStart;
+		var endPos = txtarea.selectionEnd;
+		var selText = txtarea.value.substring(startPos, endPos);
+		// insert tags
+		txtarea.value = txtarea.value.substring(0, startPos) + sel
+				+ txtarea.value.substring(endPos, txtarea.value.length);
+		// set new selection
+
+		txtarea.selectionStart = startPos;
+		txtarea.selectionEnd = txtarea.selectionStart + sel.length;
+
+		// restore textarea scroll position
+		txtarea.scrollTop = textScroll;
+
+		
+	},
+	
 	/**
 	 * this function takes the text from the display area and inserts it to the
 	 * location of the cursor in the document.
 	 */
-	insert : function() {
+	insertSelectedRef : function() {
 		com.elclab.proveit.log("Entering insert.");
 		if (com.elclab.proveit.getRefbox().selectedItem) {
-			var txtarea = com.elclab.proveit.getMWEditBox();
-			if(!txtarea)
-				return false;
-			//var sel = com.elclab.proveit.getSidebarDoc().getElementById('display').value;
 			if(com.elclab.proveit.currentrefs == [])
 				com.elclab.proveit.log("currentrefs is undefined.");
+			//var sel = com.elclab.proveit.getSidebarDoc().getElementById('display').value;
 			/*else
 				com.elclab.proveit.log("currentrefs: " + com.elclab.proveit.currentrefs);*/
 			com.elclab.proveit.log("selectedItem.parentNode.localName: " + com.elclab.proveit.getRefbox().selectedItem.parentNode.localName)
 			com.elclab.proveit.log("selectedItem.parentNode.id: " + com.elclab.proveit.getRefbox().selectedItem.parentNode.id);
-			
+				
 			var ref = com.elclab.proveit.currentrefs[com.elclab.proveit.getRefbox().selectedItem.parentNode.id];
+			
 			com.elclab.proveit.log("ref: " + ref)
-			var sel = com.elclab.proveit.getInsertionText(ref);
-
-			// var start = top.window.content.document
-			// .getElementById(textareaname).selectionStart;
-			// var end =
-			// top.window.content.document.getElementById(textareaname).selectionEnd;
-			// top.window.content.document.getElementById(textareaname).value =
-			// base
-			// .substring(0, start)
-			// + sel + base.substring(end, base.length);
-			// top.window.content.document.getElementById(textareaname).focus();
-			// var num = start + sel.length;
-			// top.window.content.document.getElementById(textareaname)
-			// .setSelectionRange(start, num);
-			// save textarea scroll position
-			var textScroll = txtarea.scrollTop;
-			// get current selection
-			txtarea.focus();
-			var startPos = txtarea.selectionStart;
-			var endPos = txtarea.selectionEnd;
-			var selText = txtarea.value.substring(startPos, endPos);
-			// insert tags
-			txtarea.value = txtarea.value.substring(0, startPos) + sel
-					+ txtarea.value.substring(endPos, txtarea.value.length);
-			// set new selection
-
-			txtarea.selectionStart = startPos;
-			txtarea.selectionEnd = txtarea.selectionStart + sel.length;
-
-			// restore textarea scroll position
-			txtarea.scrollTop = textScroll;
-
+			com.elclab.proveit.insertRef(ref, com.elclab.proveit.toggleinsert);
 		}
 		else
 			com.elclab.proveit.log("No item selected.");
@@ -613,6 +625,55 @@ com.elclab.proveit = {
 		com.elclab.proveit.getSidebarDoc().getElementById('editextra').value = "";
 		com.elclab.proveit.dispSelect();
 	},
+	
+	processCommaSeparated : function(ref, text)
+	{
+		com.elclab.proveit.log("Entering processCommaSeparated");
+		if(!(ref && ref != null))
+		{
+			com.elclab.proveit.log("ref is not valid.");
+			return false;
+		}
+		if(!(text && text != null))
+		{
+			com.elclab.proveit.log("text is not valid.");
+			return false;
+		}
+		textSplit = text.split(/\,/gi);
+		/*
+		if (textSplit == -1 && text != "") {
+			var split = textSplit[i].split(/\=/i);
+			var paramName = split[0].trim();
+			var paramVal = split[1].trim();
+			if (paramName == "name") {
+				// com.elclab.proveit.log("Setting name(single): " + split[1].trim());
+				com.elclab.proveit.getSidebarDoc().getElementById(name + "label").value = paramVal;
+				com.elclab.proveit.currentrefs[name][paramName] = paramVal;
+			}
+			else
+			{
+				com.elclab.proveit.currentrefs[name].params[paramName] = paramVal;
+			}
+		} // Can if above ever be executed?  textSplit should not be -1... 
+		else 
+		*/
+		if (text != "") {
+			for (var i = 0; i < textSplit.length; i++) {
+				var split = textSplit[i].split(/\=/i);
+				var paramName = split[0].trim();
+				var paramVal = split[1].trim();	
+				if (paramName == "name") {
+					// com.elclab.proveit.log("Setting name(multi): " + split[1].trim());
+					com.elclab.proveit.getSidebarDoc().getElementById(name + "label").value = paramVal;
+					ref[paramName] = paramVal;			
+				}
+				else
+				{
+					ref.params[paramName] = paramVal;
+				}
+			}
+		}
+	},
 
 	editSave : function() {
 		com.elclab.proveit.log("Entering editSave");
@@ -638,38 +699,7 @@ com.elclab.proveit = {
 			}
 		}
 		var extra = com.elclab.proveit.getSidebarDoc().getElementById("editextra").value;
-		extra = extra.split(/\,/gi);
-		if (extra == -1 && com.elclab.proveit.getSidebarDoc().getElementById("editextra").value != "") {
-			var split = extra[i].split(/\=/i);
-			var paramName = split[0].trim();
-			var paramVal = split[1].trim();
-			if (paramName == "name") {
-				// com.elclab.proveit.log("Setting name(single): " + split[1].trim());
-				com.elclab.proveit.getSidebarDoc().getElementById(name + "label").value = paramVal;
-				com.elclab.proveit.currentrefs[name][paramName] = paramVal;
-			}
-			else
-			{
-				com.elclab.proveit.currentrefs[name].params[paramName] = paramVal;
-			}
-		} // Can if above ever be executed?  extra should not be -1... 
-		else if (com.elclab.proveit.getSidebarDoc().getElementById('editextra').value != "") {
-			for (var i = 0; i < extra.length; i++) {
-				var split = extra[i].split(/\=/i);
-				var paramName = split[0].trim();
-				var paramVal = split[1].trim();	
-				if (paramName == "name") {
-					// com.elclab.proveit.log("Setting name(multi): " + split[1].trim());
-					com.elclab.proveit.getSidebarDoc().getElementById(name + "label").value = split[1]
-							.trim();
-					com.elclab.proveit.currentrefs[name][paramName] = paramVal;			
-				}
-				else
-				{
-					com.elclab.proveit.currentrefs[name].params[paramName] = paramVal;
-				}
-			}
-		}
+		com.elclab.proveit.processCommaSeparated(com.elclab.proveit.currentrefs[name], extra);
 		com.elclab.proveit.getSidebarDoc().getElementById("editextra").value = "";
 		com.elclab.proveit.getSidebarDoc().getElementById("edit").hidePopup();
 		if (com.elclab.proveit.currentrefs[name].toString() != com.elclab.proveit.currentrefs[name]["orig"]) {
@@ -1025,7 +1055,7 @@ com.elclab.proveit = {
 							// the rest of the cutup are the attributes, cycle
 							// through them and parse them
 							
-							var nameSplit = workingstring.substring(workingstring.indexOf("|") + 1).split(/=(?:[^\[\=\|]*?(?:\[\[[^\|\]\=]*(?:\|(?:[^\|\]\=]*))?\]\])?[^\[\|\=]*?)+(?:\||\}\})/);
+							var nameSplit = workingstring.substring(workingstring.indexOf("|") + 1).split(/=(?:[^\[\|]*?(?:\[\[[^\|\]]*(?:\|(?:[^\|\]]*))?\]\])?[^\[\|]*?)+(?:\||\}\})/);
 							var valSplit = workingstring.substring(workingstring.indexOf("|"), workingstring.indexOf("}}")).split(/\|[^\|=]*=/);
 
 							for (var j = 0; j < nameSplit.length - 1; j++) {
@@ -1252,43 +1282,71 @@ com.elclab.proveit = {
 		} else {
 			tag = new com.elclab.proveit.Citation();
 		}
-		tag["save"] = true;
-		tag.inMWEditBox = false;
+		var paramName, paramVal;
+		
+		//tag["save"] = true;
+		//tag.inMWEditBox = false;
+		// What is this + j?  How can it be right?
 		if (com.elclab.proveit.currentrefs[com.elclab.proveit.getSidebarDoc().getElementById(type + "name").value]) {
 			for (var j = 2; true; j++) {
 				if (!com.elclab.proveit.currentrefs[com.elclab.proveit.getSidebarDoc().getElementById(type + "name").value
 						+ j]) {
-					tag[box.childNodes[i].childNodes[1].id
-							.substring(type.length)] = box.childNodes[i].childNodes[1].value
+					paramName = box.childNodes[i].childNodes[1].id
+							.substring(type.length);
+					paramVal = box.childNodes[i].childNodes[1].value
 							+ j;
+					if(paramName != "name")	
+						tag.params[paramName] = paramVal;
+					else
+						tag[paramName] = paramVal;
 				}
 			}
 		}
 
-		for (var i = 0; i < box.childNodes.length - 1; i++) {
-			if (box.childNodes[i].childNodes[1]
-					&& box.childNodes[i].childNodes[1].id == (type + "extra")) {
+		var extraTextbox= com.elclab.proveit.getSidebarDoc().getElementById(type + "extra");
+		if (extraTextbox != null && extraTextbox.value != null) {
+				com.elclab.proveit.log("Calling processCommaSeparated");
+				com.elclab.proveit.processCommaSeparated(tag, extraTextbox.value);
 
-			} else if (box.childNodes[i].childNodes[1]
+		}
+		
+		for (var i = 0; i < box.childNodes.length - 2; i++) {
+			com.elclab.proveit.log("box.childNodes[i].childNodes[1].id: " + box.childNodes[i].childNodes[1].id)
+			if (box.childNodes[i].childNodes[1]
 					&& box.childNodes[i].childNodes[1].id == (type + "name")) {
 				if (com.elclab.proveit.currentrefs[com.elclab.proveit.getSidebarDoc().getElementById(type + "name").value]) {
 					for (var j = 2; true; j++) {
 						if (!com.elclab.proveit.currentrefs[com.elclab.proveit.getSidebarDoc().getElementById(type
 								+ "name").value
 								+ j]) {
-							tag[box.childNodes[i].childNodes[1].id
-									.substring(type.length)] = box.childNodes[i].childNodes[1].value
+							paramName = box.childNodes[i].childNodes[1].id
+									.substring(type.length);
+							paramVal = box.childNodes[i].childNodes[1].value
 									+ j;
+							if(paramName != "name")	
+								tag.params[paramName] = paramVal;
+							else
+								tag[paramName] = paramVal;
 						}
 					}
 				} else {
-					tag[box.childNodes[i].childNodes[1].id
-							.substring(type.length)] = box.childNodes[i].childNodes[1].value;
+					paramName = box.childNodes[i].childNodes[1].id
+							.substring(type.length);
+					paramVal = box.childNodes[i].childNodes[1].value;
+					if(paramName != "name")	
+						tag.params[paramName] = paramVal;
+					else
+						tag[paramName] = paramVal;
 				}
 				com.elclab.proveit.addNewElement(box.childNodes[i].childNodes[1].value);
 			} else if (box.childNodes[i].childNodes[1]
 					&& box.childNodes[i].childNodes[1].value != "") {
-				tag[box.childNodes[i].childNodes[1].id.substring(type.length)] = box.childNodes[i].childNodes[1].value;
+				paramName = box.childNodes[i].childNodes[1].id.substring(type.length);
+				paramVal = box.childNodes[i].childNodes[1].value;
+				if(paramName != "name")	
+					tag.params[paramName] = paramVal;
+				else
+					tag[paramName] = paramVal;
 			}
 		}
 		com.elclab.proveit.currentrefs[com.elclab.proveit.getSidebarDoc().getElementById(type + 'name').value] = tag;
@@ -1298,6 +1356,23 @@ com.elclab.proveit = {
 		 * Cycle through the boxes and grab the id's versus the values, watch
 		 * for the final box and make sure to grab the type as well
 		 */
+		
+		com.elclab.proveit.curRefItem = com.elclab.proveit.getSidebarDoc().getElementById(tag["name"]);
+		com.elclab.proveit.insertRef(tag, true); // true means insert full text here, regardless of toggle.
+		tag["save"] = true;
+		tag.inMWEditBox = true;
+		com.elclab.proveit.getRefbox().selectItem(com.elclab.proveit.curRefItem);
+		com.elclab.proveit.clearAddCitation(box);
+	},
+	
+	clearAddCitation : function(box)
+	{
+		com.elclab.proveit.log("Entering clearAddCitation.")
+		var fields = box.getElementsByTagName("textbox");
+		for(var i = 0; i < fields.length; i++)
+		{
+			fields[i].value = "";
+		}
 	},
 
 	/**
@@ -1410,7 +1485,7 @@ com.elclab.proveit = {
 		newinsertimage.id = name + "insertimage"; // probably isn't necessary
 		newinsertimage.addEventListener("click", function() {
 			com.elclab.proveit.getRefbox().selectItem(this.parentNode);
-			com.elclab.proveit.insert();
+			com.elclab.proveit.insertSelectedRef();
 		}, false); // True may ensure row is selected prior to attempting to insert.
 		
 		/*
