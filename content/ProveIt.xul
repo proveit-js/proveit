@@ -19,9 +19,9 @@
 			-->
 			<label hidden="true" id="infoholder" value="" />
 			<spacer width="0" />
-			<image src="18.png" id="primeeditimage" width="10" height="10" />
+			<image src="18.png" id="primeeditimage" width="10" height="10" tooltiptext="Edit" />
 			<spacer width="5" />
-			<image src="insert_10x10.png" id="primeinsertimage" width="10" height="10"></image>
+			<image src="insert_10x10.png" id="primeinsertimage" width="10" height="10" tooltiptext="Insert" />
 			<spacer width="0" />
 		</hbox>
 	</richlistitem>
@@ -742,8 +742,15 @@
 				<label value="="/>
 				<textbox id="editprimeright"/>				
 			</hbox>
-			<vbox id="editlist">
+			<vbox id="main_edit">
+				<hbox id="edit_refname" value="">
+					<label id="edit_refname_label" value="&lt;ref&gt; name"/>
+					<label value="=" />
+					<textbox id="edit_refname_value" value=""/>
+				</hbox>
+				<vbox id="editlist">
 				
+				</vbox>
 			</vbox>
 			<label value="&ProveIt.newvalues;"/>
 			<textbox id="editextra" multiline="true" rows="5" />

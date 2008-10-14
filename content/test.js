@@ -682,6 +682,10 @@ com.elclab.proveit = {
 		com.elclab.proveit.log("Entering editSave");
 		var name = com.elclab.proveit.getRefbox().selectedItem.id;
 		var list = com.elclab.proveit.getSidebarDoc().getElementById("editlist").getElementsByTagName("hbox");
+		
+		var refNameValue = com.elclab.proveit.getSidebarDoc().getElementById("edit_refname_value");
+		if(refNameValue.getAttribute("value") != "")
+			com.elclab.proveit.currentrefs[name]["name"] = refNameValue.getAttribute("value");
 		for (var i = 0; i < list.length; i++) {
 			if (list[i]) {
 				// com.elclab.proveit.log(item + ":" + list[item].id);
@@ -692,13 +696,15 @@ com.elclab.proveit = {
 				var paramName = com.elclab.proveit.getSidebarDoc().getElementById(node + "namec").value;
 				var paramVal = com.elclab.proveit.getSidebarDoc().getElementById(node + "value").value;
 				
-				if (paramName != "" && node != "name" && paramVal != "")
+				//if (paramName != "" && node != "name" && paramVal != "")
 					com.elclab.proveit.currentrefs[name].params[paramName] = paramVal;
+				/*
 				else if (node == "name"
 						&& paramVal != "") {
 					com.elclab.proveit.getSidebarDoc().getElementById(name + "label").value = paramVal;
 					com.elclab.proveit.currentrefs[name][node] = paramVal;
 				}
+				*/
 			}
 		}
 		var extra = com.elclab.proveit.getSidebarDoc().getElementById("editextra").value;
@@ -845,9 +851,17 @@ com.elclab.proveit = {
 			com.elclab.proveit.getSidebarDoc().getElementById("editlabel").value = "Citation";
 		}
 		
+		/*
 		// Closer to minimizing hacks for name
 		if(current["name"] && current["name"] != null)
 			com.elclab.proveit.addEditPopupRow(current, "name");
+		*/
+		
+		var refNameValue = com.elclab.proveit.getSidebarDoc().getElementById("edit_refname_value");
+		if(current["name"] && current["name"] != null)
+			refNameValue.setAttribute("value", current["name"]);
+		else
+			refNameValue.setAttribute("value", "");
 		
 		var paramNames = new Array();
 		//First run through just to get names.
