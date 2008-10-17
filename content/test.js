@@ -674,7 +674,10 @@ com.elclab.proveit = {
 				}
 				else
 				{*/
-					ref.params[paramName] = paramVal;
+				if(paramName != "" && paramVal != "")
+				{	
+				    ref.params[paramName] = paramVal;
+				}
 				//}
 			}
 		}
@@ -695,6 +698,10 @@ com.elclab.proveit = {
 			com.elclab.proveit.log("com.elclab.proveit.currentrefs[name][\"name\"]: " + com.elclab.proveit.currentrefs[name]["name"]);
 			*/
 		}
+		else
+		{
+		        com.elclab.proveit.currentrefs[name]["name"] = null; // Save blank names as null
+		}
 		
 		for (var i = 0; i < list.length; i++) {
 			if (list[i]) {
@@ -706,7 +713,7 @@ com.elclab.proveit = {
 				var paramName = com.elclab.proveit.getSidebarDoc().getElementById(node + "namec").value;
 				var paramVal = com.elclab.proveit.getSidebarDoc().getElementById(node + "value").value;
 				
-				//if (paramName != "" && node != "name" && paramVal != "")
+				if (paramName != "" && paramVal != "")
 					com.elclab.proveit.currentrefs[name].params[paramName] = paramVal;
 				/*
 				else if (node == "name"
@@ -726,14 +733,29 @@ com.elclab.proveit = {
 		}
 		//com.elclab.proveit.dispSelect();
 		
-		var newRichItem = com.elclab.proveit.getRefboxElement(com.elclab.proveit.currentrefs[name], com.elclab.proveit.getGeneratedName(com.elclab.proveit.currentrefs[name]));
-		var oldRichItem = com.elclab.proveit.getRefbox().selectedItem;
-		oldRichItem.parentNode.replaceChild(newRichItem, oldRichItem);
-		com.elclab.proveit.getRefbox().selectItem(newRichItem);
-		
 		if(com.elclab.proveit.currentrefs[name]["save"] == false)
 		{
-			com.elclab.proveit.updateInText();
+		    var ref = com.elclab.proveit.currentrefs[name];
+		    var newGenName = com.elclab.proveit.getGeneratedName(ref);
+		    		    
+		    if(ref.baseGenName != newGenName) // is the current gen name same as old, disregarding final possible (1), (2), etc.
+		    {
+			ref.baseGenName = newGenName;
+			newGenName = com.elclab.proveit.genNameWithoutDuplicates(newGenName); // Ensure new name is not already used.
+		    }
+		    else
+		    {
+			newGenName = name;
+		    }
+		    com.elclab.proveit.currentrefs[name] = null;
+		    com.elclab.proveit.currentrefs[newGenName] = ref;
+		    
+		    var newRichItem = com.elclab.proveit.getRefboxElement(ref, newGenName);
+		    var oldRichItem = com.elclab.proveit.getRefbox().selectedItem;
+		    oldRichItem.parentNode.replaceChild(newRichItem, oldRichItem);
+		    com.elclab.proveit.getRefbox().selectItem(newRichItem);
+		    
+		    com.elclab.proveit.updateInText();
 		}
 		
 		com.elclab.proveit.log("Leaving editSave.")
@@ -1263,6 +1285,7 @@ com.elclab.proveit = {
 	 */
 	Cite : function() {
 		this.name;
+		this.baseGenName; // Generated name, without possible (1), (2), etc.  Shows as label in refbox.
 		this.template = "cite"; // Signifies template type is cite web, news, etc.
 		this.type;
 		this.save; 
@@ -1300,6 +1323,7 @@ com.elclab.proveit = {
 
 	Citation : function() {
 		this.name;
+		this.baseGenName; // Generated name, without possible (1), (2), etc.  Shows as label in refbox.
 		this.template = "Citation"; // Signifies template type is Citation
 		this.save; 
 		this.inMWEditBox; // true if and only if the ref is in the MW edit box with the same value as this object's orig.
@@ -1515,8 +1539,7 @@ com.elclab.proveit = {
 		//com.elclab.proveit.log("Entering getRefboxElement.")
 		//com.elclab.proveit.log("ref: " + ref + "; generatedName: " + generatedName);
 		var refName = ref["name"]; //may be null or blank
-		var generatedName = com.elclab.proveit.getGeneratedName(ref); // Must not be null
-		
+				
 		var refbox = com.elclab.proveit.getRefbox();
 		
 		/*
@@ -1617,6 +1640,32 @@ com.elclab.proveit = {
 		return newchild;
 	},
 	
+	genNameWithoutDuplicates : function(generatedName)
+	{
+	    var refbox = com.elclab.proveit.getRefbox();
+	    var bad = false;
+	    for (var i = 0; i < refbox.childNodes.length; i++) {
+		if (refbox.childNodes[i].id == generatedName) {
+		    bad = true;
+		    com.elclab.proveit.log("name: " + generatedName);
+		    break;
+		}
+	    }
+	    // if there is, add a number surrounded by parens to the name at the end
+	    if (com.elclab.proveit.getSidebarDoc().getElementById(generatedName) && bad) {
+		var num = 1;
+		while (true) {
+		    if (!com.elclab.proveit.getSidebarDoc().getElementById(generatedName + "(" + num + ")")) {
+			generatedName = generatedName + "(" + num + ")";
+			break;
+		    }
+		    num++;
+		}
+	    }
+
+	    return generatedName;
+	},			    
+
 	/**
 	 * Only to be used internally to add the citations to the list
 	 * 
@@ -1628,30 +1677,13 @@ com.elclab.proveit = {
 	addNewElement : function(ref) {
 		
 		var generatedName = com.elclab.proveit.getGeneratedName(ref);
+		ref.baseGenName = generatedName;	
 		
 		// first check to see if there is a node with this name already
 		var refbox = com.elclab.proveit.getRefbox();
 		
-		var bad = false;
-		for (var i = 0; i < refbox.childNodes.length; i++) {
-			if (refbox.childNodes[i].id == generatedName) {
-				bad = true;
-				com.elclab.proveit.log("name: " + generatedName);
-				break;
-			}
-		}
-		// if there is, add a number surrounded by parens to the name at the end
-		if (com.elclab.proveit.getSidebarDoc().getElementById(generatedName) && bad) {
-			var num = 1;
-			while (true) {
-				if (!com.elclab.proveit.getSidebarDoc().getElementById(generatedName + "(" + num + ")")) {
-					generatedName = generatedName + "(" + num + ")";
-					break;
-				}
-				num++;
-			}
-		}
-		
+		generatedName = com.elclab.proveit.genNameWithoutDuplicates(generatedName);
+
 		refbox.appendChild(com.elclab.proveit.getRefboxElement(ref, generatedName));
 		
 		return generatedName;
