@@ -25,6 +25,14 @@
 			<spacer width="0" />
 		</hbox>
 	</richlistitem>
+	<tooltip id="dummy_tooltip" hidden="true">
+		<hbox>
+			<label value="&ProveIt.refName;"/>
+			<label value=":"/>
+			<label value=""/>	
+		</hbox>
+		<label />
+	</tooltip>
 	
 	<vbox flex="1">
 		<hbox flex="1" maxwidth="800">
@@ -82,7 +90,7 @@
 		</hbox>
 	</vbox>
 	
-	<panel id="createnew" style="background-color: #ECE9D8" position="end_after" width="350">
+	<panel id="createnew" style="background-color: #ECE9D8" position="end_after" minwidth="350" flex="1">
 		<vbox flex="1" hidden="false" id="cite">
 			<hbox pack="center" align="center">
 				<menulist id="citemenu" oncommand="com.elclab.proveit.changeCite()">
@@ -99,38 +107,38 @@
 					</menupopup>
 				</menulist>
 			</hbox>
-			<vbox id="citepanes">
+			<vbox id="citepanes" flex="1" minwidth="500">
 				<vbox id="book" hidden="true">
 					<hbox pack="center" align="center" flex="1" >
-						<label control="bookname" value="&ProveIt.addname;" width="145"/>
+						<label control="bookname" value="&ProveIt.refName;" flex="1" minwidth="145"/>
 						<textbox id="bookname" />
 					</hbox>
 					<hbox pack="center" align="center" flex="1" >
-						<label control="booktitle" value="&ProveIt.addtitle;" width="145"/>
+						<label control="booktitle" value="&ProveIt.addtitle;" flex="1" minwidth="145"/>
 						<textbox id="booktitle" />
 					</hbox>
 					<hbox pack="center" align="center" flex="1" >
-						<label control="bookauthor" value="&ProveIt.addauthor;" width="145"/>
+						<label control="bookauthor" value="&ProveIt.addauthor;" flex="1" minwidth="145"/>
 						<textbox id="bookauthor" />
 					</hbox>
 					<hbox pack="center" align="center" flex="1" >
-						<label control="bookyear" value="&ProveIt.addyear;" width="145"/>
+						<label control="bookyear" value="&ProveIt.addyear;" flex="1" minwidth="145"/>
 						<textbox id="bookyear" />
 					</hbox>
 					<hbox pack="center" align="center" flex="1" >
-						<label control="bookpublisher" value="&ProveIt.addpublisher;" width="145"/>
+						<label control="bookpublisher" value="&ProveIt.addpublisher;" flex="1" minwidth="145"/>
 						<textbox id="bookpublisher" />
 					</hbox>
 					<hbox pack="center" align="center" flex="1" >
-						<label control="booklocation" value="&ProveIt.addlocation;" width="145"/>
+						<label control="booklocation" value="&ProveIt.addlocation;" flex="1" minwidth="145"/>
 						<textbox id="booklocation" />
 					</hbox>
 					<hbox pack="center" align="center" flex="1" >
-						<label control="bookisbn" value="&ProveIt.addisbn;" width="145"/>
+						<label control="bookisbn" value="&ProveIt.addisbn;" flex="1" minwidth="145"/>
 						<textbox id="bookisbn" />
 					</hbox>
 					<hbox pack="center" align="center" flex="1" >
-						<label control="bookpages" value="&ProveIt.addpages;" width="145"/>
+						<label control="bookpages" value="&ProveIt.addpages;" flex="1" minwidth="145"/>
 						<textbox id="bookpages" />
 					</hbox>
 					<hbox>
@@ -138,52 +146,53 @@
 					</hbox>
 					<hbox pack="end">
 						<button id="bookexpand" label="&ProveIt.addother;" onclick="com.elclab.proveit.openExtra('book')" />
-						<button id="booksubmit" label="&ProveIt.save;" onclick="com.elclab.proveit.addCitation('book');"/>
+						<button id="booksubmit" label="&ProveIt.createnewsave;" onclick="com.elclab.proveit.addCitation('book');"/>
+						<button label="&ProveIt.canceladd;" onclick="com.elclab.proveit.cancelAdd()" />
 					</hbox>
 				</vbox>
 				<vbox id="journal" hidden="true">
 					<hbox pack="center" align="center" flex="1" >
-						<label control="journalname" value="&ProveIt.addname;" width="145"/>
+						<label control="journalname" value="&ProveIt.refName;" flex="1" minwidth="145"/>
 						<textbox id="journalname" />
 					</hbox>
 					<hbox pack="center" align="center" flex="1" >
-						<label control="journaltitle" value="&ProveIt.addtitle;" width="145"/>
+						<label control="journaltitle" value="&ProveIt.addtitle;" flex="1" minwidth="145"/>
 						<textbox id="journaltitle" />
 					</hbox>
 					<hbox pack="center" align="center" flex="1" >
-						<label control="journalauthor" value="&ProveIt.addauthor;" width="145"/>
+						<label control="journalauthor" value="&ProveIt.addauthor;" flex="1" minwidth="145"/>
 						<textbox id="journalauthor" />
 					</hbox>
 					<hbox pack="center" align="center" flex="1" >
-						<label control="journalyear" value="&ProveIt.addyear;" width="145"/>
+						<label control="journalyear" value="&ProveIt.addyear;" flex="1" minwidth="145"/>
 						<textbox id="journalyear" />
 					</hbox>
 					<hbox pack="center" align="center" flex="1" >
-						<label control="journalmonth" value="&ProveIt.addmonth;" width="145"/>
+						<label control="journalmonth" value="&ProveIt.addmonth;" flex="1" minwidth="145"/>
 						<textbox id="journalmonth" />
 					</hbox>
 					<hbox pack="center" align="center" flex="1" >
-						<label control="journaljournal" value="&ProveIt.addjournal;" width="145"/>
+						<label control="journaljournal" value="&ProveIt.addjournal;" flex="1" minwidth="145"/>
 						<textbox id="journaljournal" />
 					</hbox>
 					<hbox pack="center" align="center" flex="1" >
-						<label control="journalvolume" value="&ProveIt.addvolume;" width="145"/>
+						<label control="journalvolume" value="&ProveIt.addvolume;" flex="1" minwidth="145"/>
 						<textbox id="journalvolume" />
 					</hbox>
 					<hbox pack="center" align="center" flex="1" >
-						<label control="journalissue" value="&ProveIt.addissue;" width="145"/>
+						<label control="journalissue" value="&ProveIt.addissue;" flex="1" minwidth="145"/>
 						<textbox id="journalissue" />
 					</hbox>
 					<hbox pack="center" align="center" flex="1" >
-						<label control="journalpages" value="&ProveIt.addpages;" width="145"/>
+						<label control="journalpages" value="&ProveIt.addpages;" flex="1" minwidth="145"/>
 						<textbox id="journalpages" />
 					</hbox>
 					<hbox pack="center" align="center" flex="1" >
-						<label control="journalurl" value="&ProveIt.addurl;" width="145"/>
+						<label control="journalurl" value="&ProveIt.addurl;" flex="1" minwidth="145"/>
 						<textbox id="journalurl" />
 					</hbox>
 					<hbox pack="center" align="center" flex="1" >
-						<label control="journalaccessdate" value="&ProveIt.addadate;" width="145"/>
+						<label control="journalaccessdate" value="&ProveIt.addadate;" flex="1" minwidth="145"/>
 						<textbox id="journalaccessdate" />
 					</hbox>
 					<hbox>
@@ -191,52 +200,53 @@
 					</hbox>
 					<hbox pack="end">
 						<button id="journalexpand" label="&ProveIt.addother;" onclick="com.elclab.proveit.openExtra('journal')" />
-						<button id="journalsubmit" label="&ProveIt.save;" onclick="com.elclab.proveit.addCitation('journal');"/>
+						<button id="journalsubmit" label="&ProveIt.createnewsave;" onclick="com.elclab.proveit.addCitation('journal');"/>
+						<button label="&ProveIt.canceladd;" onclick="com.elclab.proveit.cancelAdd()" />
 					</hbox>
 				</vbox>
 				<vbox id="conference" hidden="true">
 					<hbox pack="center" align="center" flex="1" >
-						<label control="conferencename" value="&ProveIt.addname;" width="145"/>
+						<label control="conferencename" value="&ProveIt.refName;" flex="1" minwidth="145"/>
 						<textbox id="conferencename" />
 					</hbox>
 					<hbox pack="center" align="center" flex="1" >
-						<label control="conferencetitle" value="&ProveIt.addtitle;" width="145"/>
+						<label control="conferencetitle" value="&ProveIt.addtitle;" flex="1" minwidth="145"/>
 						<textbox id="conferencetitle" />
 					</hbox>
 					<hbox pack="center" align="center" flex="1" >
-						<label control="conferenceauthor" value="&ProveIt.addauthor;" width="145"/>
+						<label control="conferenceauthor" value="&ProveIt.addauthor;" flex="1" minwidth="145"/>
 						<textbox id="conferenceauthor" />
 					</hbox>
 					<hbox pack="center" align="center" flex="1" >
-						<label control="conferencecoauthors" value="&ProveIt.addcoauth;" width="145"/>
+						<label control="conferencecoauthors" value="&ProveIt.addcoauth;" flex="1" minwidth="145"/>
 						<textbox id="conferencecoauthors" />
 					</hbox>
 					<hbox pack="center" align="center" flex="1" >
-						<label control="conferencebooktitle" value="&ProveIt.addbooktitle;" width="145"/>
+						<label control="conferencebooktitle" value="&ProveIt.addbooktitle;" flex="1" minwidth="145"/>
 						<textbox id="conferencebooktitle" />
 					</hbox>
 					<hbox pack="center" align="center" flex="1" >
-						<label control="conferencepublisher" value="&ProveIt.addpublisher;" width="145"/>
+						<label control="conferencepublisher" value="&ProveIt.addpublisher;" flex="1" minwidth="145"/>
 						<textbox id="conferencepublisher" />
 					</hbox>
 					<hbox pack="center" align="center" flex="1" >
-						<label control="conferencedate" value="&ProveIt.adddate;" width="145"/>
+						<label control="conferencedate" value="&ProveIt.adddate;" flex="1" minwidth="145"/>
 						<textbox id="conferencedate" />
 					</hbox>
 					<hbox pack="center" align="center" flex="1" >
-						<label control="conferencelocation" value="&ProveIt.addlocation;" width="145"/>
+						<label control="conferencelocation" value="&ProveIt.addlocation;" flex="1" minwidth="145"/>
 						<textbox id="conferencelocation" />
 					</hbox>
 					<hbox pack="center" align="center" flex="1" >
-						<label control="conferencepages" value="&ProveIt.addpages;" width="145"/>
+						<label control="conferencepages" value="&ProveIt.addpages;" flex="1" minwidth="145"/>
 						<textbox id="conferencepages" />
 					</hbox>
 					<hbox pack="center" align="center" flex="1" >
-						<label control="conferenceurl" value="&ProveIt.addurl;" width="145"/>
+						<label control="conferenceurl" value="&ProveIt.addurl;" flex="1" minwidth="145"/>
 						<textbox id="conferenceurl" />
 					</hbox>
 					<hbox pack="center" align="center" flex="1" >
-						<label control="conferenceaccessdate" value="&ProveIt.addadate;" width="145"/>
+						<label control="conferenceaccessdate" value="&ProveIt.addadate;" flex="1" minwidth="145"/>
 						<textbox id="conferenceaccessdate" />
 					</hbox>
 					<hbox>
@@ -244,32 +254,33 @@
 					</hbox>
 					<hbox pack="end">
 						<button id="conferenceexpand" label="&ProveIt.addother;" onclick="com.elclab.proveit.openExtra('conference')" />
-						<button id="conferencesubmit" label="&ProveIt.save;" onclick="com.elclab.proveit.addCitation('conference');"/>
+						<button id="conferencesubmit" label="&ProveIt.createnewsave;" onclick="com.elclab.proveit.addCitation('conference');"/>
+						<button label="&ProveIt.canceladd;" onclick="com.elclab.proveit.cancelAdd()" />
 					</hbox>
 				</vbox>
 				<vbox id="encyclopedia" hidden="true">
 					<hbox pack="center" align="center" flex="1" >
-						<label control="encyclopedianame" value="&ProveIt.addname;" width="145"/>
+						<label control="encyclopedianame" value="&ProveIt.refName;" flex="1" minwidth="145"/>
 						<textbox id="encyclopedianame" />
 					</hbox>
 					<hbox pack="center" align="center" flex="1" >
-						<label control="encyclopediatitle" value="&ProveIt.addtitle;" width="145"/>
+						<label control="encyclopediatitle" value="&ProveIt.addtitle;" flex="1" minwidth="145"/>
 						<textbox id="encyclopediatitle" />
 					</hbox>
 					<hbox pack="center" align="center" flex="1" >
-						<label control="encyclopediaencyclopedia" value="&ProveIt.addencyclopedia;" width="145"/>
+						<label control="encyclopediaencyclopedia" value="&ProveIt.addencyclopedia;" flex="1" minwidth="145"/>
 						<textbox id="encyclopediaencyclopedia" />
 					</hbox>
 					<hbox pack="center" align="center" flex="1" >
-						<label control="encyclopediapublisher" value="&ProveIt.addpublisher;" width="145"/>
+						<label control="encyclopediapublisher" value="&ProveIt.addpublisher;" flex="1" minwidth="145"/>
 						<textbox id="encyclopediapublisher" />
 					</hbox>
 					<hbox pack="center" align="center" flex="1" >
-						<label control="encyclopediayear" value="&ProveIt.addyear;" width="145"/>
+						<label control="encyclopediayear" value="&ProveIt.addyear;" flex="1" minwidth="145"/>
 						<textbox id="encyclopediayear" />
 					</hbox>
 					<hbox pack="center" align="center" flex="1" >
-						<label control="encyclopedialocation" value="&ProveIt.addlocation;" width="145"/>
+						<label control="encyclopedialocation" value="&ProveIt.addlocation;" flex="1" minwidth="145"/>
 						<textbox id="encyclopedialocation" />
 					</hbox>
 					<hbox>
@@ -277,40 +288,41 @@
 					</hbox>
 					<hbox pack="end">
 						<button id="encyclopediaexpand" label="&ProveIt.addother;" onclick="com.elclab.proveit.openExtra('encyclopedia')" />
-						<button id="encyclopediasubmit" label="&ProveIt.save;" onclick="com.elclab.proveit.addCitation('encyclopedia');"/>
+						<button id="encyclopediasubmit" label="&ProveIt.createnewsave;" onclick="com.elclab.proveit.addCitation('encyclopedia');"/>
+						<button label="&ProveIt.canceladd;" onclick="com.elclab.proveit.cancelAdd()" />
 					</hbox>
 				</vbox>
 				<vbox id="news" hidden="true">
 					<hbox pack="center" align="center" flex="1" >
-						<label control="newsname" value="&ProveIt.addname;" width="145"/>
+						<label control="newsname" value="&ProveIt.refName;" flex="1" minwidth="145"/>
 						<textbox id="newsname" />
 					</hbox>
 					<hbox pack="center" align="center" flex="1" >
-						<label control="newstitle" value="&ProveIt.addtitle;" width="145"/>
+						<label control="newstitle" value="&ProveIt.addtitle;" flex="1" minwidth="145"/>
 						<textbox id="newstitle" />
 					</hbox>
 					<hbox pack="center" align="center" flex="1" >
-						<label control="newsauthor" value="&ProveIt.addauthor;" width="145"/>
+						<label control="newsauthor" value="&ProveIt.addauthor;" flex="1" minwidth="145"/>
 						<textbox id="newsauthor" />
 					</hbox>
 					<hbox pack="center" align="center" flex="1" >
-						<label control="newspublisher" value="&ProveIt.addpublisher;" width="145"/>
+						<label control="newspublisher" value="&ProveIt.addpublisher;" flex="1" minwidth="145"/>
 						<textbox id="newspublisher" />
 					</hbox>
 					<hbox pack="center" align="center" flex="1" >
-						<label control="newsurl" value="&ProveIt.addurl;" width="145"/>
+						<label control="newsurl" value="&ProveIt.addurl;" flex="1" minwidth="145"/>
 						<textbox id="newsurl" />
 					</hbox>
 					<hbox pack="center" align="center" flex="1" >
-						<label control="newsdate" value="&ProveIt.adddate;" width="145"/>
+						<label control="newsdate" value="&ProveIt.adddate;" flex="1" minwidth="145"/>
 						<textbox id="newsdate" />
 					</hbox>
 					<hbox pack="center" align="center" flex="1" >
-						<label control="newsaccessdate" value="&ProveIt.addadate;" width="145"/>
+						<label control="newsaccessdate" value="&ProveIt.addadate;" flex="1" minwidth="145"/>
 						<textbox id="newsaccessdate" />
 					</hbox>
 					<hbox pack="center" align="center" flex="1" >
-						<label control="newswork" value="Work:" width="145"/>
+						<label control="newswork" value="&ProveIt.addwork;" flex="1" minwidth="145"/>
 						<textbox id="newswork" />
 					</hbox>
 					<hbox>
@@ -318,40 +330,41 @@
 					</hbox>
 					<hbox pack="end">
 						<button id="newsexpand" label="&ProveIt.addother;" onclick="com.elclab.proveit.openExtra('news')" />
-						<button id="newssubmit" label="&ProveIt.save;" onclick="com.elclab.proveit.addCitation('news');"/>
+						<button id="newssubmit" label="&ProveIt.createnewsave;" onclick="com.elclab.proveit.addCitation('news');"/>
+						<button label="&ProveIt.canceladd;" onclick="com.elclab.proveit.cancelAdd()" />
 					</hbox>
 				</vbox>
 				<vbox id="web" hidden="false">
 					<hbox pack="center" align="center" flex="1" >
-						<label control="webname" value="&ProveIt.addname;" width="145"/>
+						<label control="webname" value="&ProveIt.refName;" flex="1" minwidth="145"/>
 						<textbox id="webname" />
 					</hbox>
 					<hbox pack="center" align="center" flex="1" >
-						<label control="webtitle" value="&ProveIt.addtitle;" width="145"/>
+						<label control="webtitle" value="&ProveIt.addtitle;" flex="1" minwidth="145"/>
 						<textbox id="webtitle" />
 					</hbox>
 					<hbox pack="center" align="center" flex="1" >
-						<label control="webauthor" value="&ProveIt.addauthor;" width="145"/>
+						<label control="webauthor" value="&ProveIt.addauthor;" flex="1" minwidth="145"/>
 						<textbox id="webauthor" />
 					</hbox>
 					<hbox pack="center" align="center" flex="1" >
-						<label control="webpublisher" value="&ProveIt.addpublisher;" width="145"/>
+						<label control="webpublisher" value="&ProveIt.addpublisher;" flex="1" minwidth="145"/>
 						<textbox id="webpublisher" />
 					</hbox>
 					<hbox pack="center" align="center" flex="1" >
-						<label control="weburl" value="&ProveIt.addurl;" width="145"/>
+						<label control="weburl" value="&ProveIt.addurl;" flex="1" minwidth="145"/>
 						<textbox id="weburl" />
 					</hbox>
 					<hbox pack="center" align="center" flex="1" >
-						<label control="webdate" value="&ProveIt.adddate;" width="145"/>
+						<label control="webdate" value="&ProveIt.adddate;" flex="1" minwidth="145"/>
 						<textbox id="webdate" />
 					</hbox>
 					<hbox pack="center" align="center" flex="1" >
-						<label control="webaccessdate" value="&ProveIt.addadate;" width="145"/>
+						<label control="webaccessdate" value="&ProveIt.addadate;" flex="1" minwidth="145"/>
 						<textbox id="webaccessdate" />
 					</hbox>
 					<hbox pack="center" align="center" flex="1" >
-						<label control="webwork" value="Work:" width="145"/>
+						<label control="webwork" value="&ProveIt.addwork;" flex="1" minwidth="145"/>
 						<textbox id="webwork" />
 					</hbox>
 					<hbox>
@@ -359,36 +372,37 @@
 					</hbox>
 					<hbox pack="end">
 						<button id="webexpand" label="&ProveIt.addother;" onclick="com.elclab.proveit.openExtra('web')" />
-						<button id="websubmit" label="&ProveIt.save;" onclick="com.elclab.proveit.addCitation('web');"/>
+						<button id="websubmit" label="&ProveIt.createnewsave;" onclick="com.elclab.proveit.addCitation('web');"/>
+						<button label="&ProveIt.canceladd;" onclick="com.elclab.proveit.cancelAdd()" />
 					</hbox>
 				</vbox>
 				<vbox id="newsgroup" hidden="true">
 					<hbox pack="center" align="center" flex="1" >
-						<label control="newsgroupname" value="&ProveIt.addname;" width="145"/>
+						<label control="newsgroupname" value="&ProveIt.refName;" flex="1" minwidth="145"/>
 						<textbox id="newsgroupname" />
 					</hbox>
 					<hbox pack="center" align="center" flex="1" >
-						<label control="newsgrouptitle" value="&ProveIt.addtitle;" width="145"/>
+						<label control="newsgrouptitle" value="&ProveIt.addtitle;" flex="1" minwidth="145"/>
 						<textbox id="newsgrouptitle" />
 					</hbox>
 					<hbox pack="center" align="center" flex="1" >
-						<label control="newsgroupauthor" value="&ProveIt.addauthor;" width="145"/>
+						<label control="newsgroupauthor" value="&ProveIt.addauthor;" flex="1" minwidth="145"/>
 						<textbox id="newsgroupauthor" />
 					</hbox>
 					<hbox pack="center" align="center" flex="1" >
-						<label control="newsgroupnewsgroup" value="&ProveIt.addnewsgroup;" width="145"/>
+						<label control="newsgroupnewsgroup" value="&ProveIt.addnewsgroup;" flex="1" minwidth="145"/>
 						<textbox id="newsgroupnewsgroup" />
 					</hbox>
 					<hbox pack="center" align="center" flex="1" >
-						<label control="newsgroupurl" value="&ProveIt.addurl;" width="145"/>
+						<label control="newsgroupurl" value="&ProveIt.addurl;" flex="1" minwidth="145"/>
 						<textbox id="newsgroupurl" />
 					</hbox>
 					<hbox pack="center" align="center" flex="1" >
-						<label control="newsgroupdate" value="&ProveIt.adddate;" width="145"/>
+						<label control="newsgroupdate" value="&ProveIt.adddate;" flex="1" minwidth="145"/>
 						<textbox id="newsgroupdate" />
 					</hbox>
 					<hbox pack="center" align="center" flex="1" >
-						<label control="newsgroupaccessdate" value="&ProveIt.addadate;" width="145"/>
+						<label control="newsgroupaccessdate" value="&ProveIt.addadate;" flex="1" minwidth="145"/>
 						<textbox id="newsgroupaccessdate" />
 					</hbox>
 					<hbox>
@@ -396,48 +410,49 @@
 					</hbox>
 					<hbox pack="end">
 						<button id="newsgroupexpand" label="&ProveIt.addother;" onclick="com.elclab.proveit.openExtra('newsgroup')" />
-						<button id="newsgroupsubmit" label="&ProveIt.save;" onclick="com.elclab.proveit.addCitation('newsgroup');"/>
+						<button id="newsgroupsubmit" label="&ProveIt.createnewsave;" onclick="com.elclab.proveit.addCitation('newsgroup');"/>
+						<button label="&ProveIt.canceladd;" onclick="com.elclab.proveit.cancelAdd()" />
 					</hbox>
 				</vbox>
 				<vbox id="paper" hidden="true">
 					<hbox pack="center" align="center" flex="1" >
-						<label control="papername" value="&ProveIt.addname;" width="145"/>
+						<label control="papername" value="&ProveIt.refName;" flex="1" minwidth="145"/>
 						<textbox id="papername" />
 					</hbox>
 					<hbox pack="center" align="center" flex="1" >
-						<label control="papertitle" value="&ProveIt.addtitle;" width="145"/>
+						<label control="papertitle" value="&ProveIt.addtitle;" flex="1" minwidth="145"/>
 						<textbox id="papertitle" />
 					</hbox>
 					<hbox pack="center" align="center" flex="1" >
-						<label control="paperauthor" value="&ProveIt.addauthor;" width="145"/>
+						<label control="paperauthor" value="&ProveIt.addauthor;" flex="1" minwidth="145"/>
 						<textbox id="paperauthor" />
 					</hbox>
 					<hbox pack="center" align="center" flex="1" >
-						<label control="papercoauthours" value="&ProveIt.addcoauth;" width="145"/>
+						<label control="papercoauthours" value="&ProveIt.addcoauth;" flex="1" minwidth="145"/>
 						<textbox id="papercoauthors" />
 					</hbox>
 					<hbox pack="center" align="center" flex="1" >
-						<label control="paperpublisher" value="&ProveIt.addpublisher;" width="145"/>
+						<label control="paperpublisher" value="&ProveIt.addpublisher;" flex="1" minwidth="145"/>
 						<textbox id="paperpublisher" />
 					</hbox>
 					<hbox pack="center" align="center" flex="1" >
-						<label control="paperversion" value="&ProveIt.addversion;" width="145"/>
+						<label control="paperversion" value="&ProveIt.addversion;" flex="1" minwidth="145"/>
 						<textbox id="paperversion" />
 					</hbox>
 					<hbox pack="center" align="center" flex="1" >
-						<label control="paperpages" value="&ProveIt.addpages;" width="145"/>
+						<label control="paperpages" value="&ProveIt.addpages;" flex="1" minwidth="145"/>
 						<textbox id="paperpages" />
 					</hbox>
 					<hbox pack="center" align="center" flex="1" >
-						<label control="paperurl" value="&ProveIt.addurl;" width="145"/>
+						<label control="paperurl" value="&ProveIt.addurl;" flex="1" minwidth="145"/>
 						<textbox id="paperurl" />
 					</hbox>
 					<hbox pack="center" align="center" flex="1" >
-						<label control="paperdate" value="&ProveIt.adddate;" width="145"/>
+						<label control="paperdate" value="&ProveIt.adddate;" flex="1" minwidth="145"/>
 						<textbox id="paperdate" />
 					</hbox>
 					<hbox pack="center" align="center" flex="1" >
-						<label control="paperaccessdate" value="&ProveIt.addadate;" width="145"/>
+						<label control="paperaccessdate" value="&ProveIt.addadate;" flex="1" minwidth="145"/>
 						<textbox id="paperaccessdate" />
 					</hbox>
 					<hbox>
@@ -445,32 +460,33 @@
 					</hbox>
 					<hbox pack="end">
 						<button id="paperexpand" label="&ProveIt.addother;" onclick="com.elclab.proveit.openExtra('paper')" />
-						<button id="papersubmit" label="&ProveIt.save;" onclick="com.elclab.proveit.addCitation('paper');"/>
+						<button id="papersubmit" label="&ProveIt.createnewsave;" onclick="com.elclab.proveit.addCitation('paper');"/>
+						<button label="&ProveIt.canceladd;" onclick="com.elclab.proveit.cancelAdd()" />
 					</hbox>
 				</vbox>
 				<vbox id="press release" hidden="true">
 					<hbox pack="center" align="center" flex="1" >
-						<label control="press releasename" value="&ProveIt.addname;" width="145"/>
+						<label control="press releasename" value="&ProveIt.refName;" flex="1" minwidth="145"/>
 						<textbox id="press releasename" />
 					</hbox>
 					<hbox pack="center" align="center" flex="1" >
-						<label control="press releasetitle" value="&ProveIt.addtitle;" width="145"/>
+						<label control="press releasetitle" value="&ProveIt.addtitle;" flex="1" minwidth="145"/>
 						<textbox id="press releasetitle" />
 					</hbox>
 					<hbox pack="center" align="center" flex="1" >
-						<label control="press releasepublisher" value="&ProveIt.addpublisher;" width="145"/>
+						<label control="press releasepublisher" value="&ProveIt.addpublisher;" flex="1" minwidth="145"/>
 						<textbox id="press releasepublisher" />
 					</hbox>
 					<hbox pack="center" align="center" flex="1" >
-						<label control="press releaseurl" value="&ProveIt.addurl;" width="145"/>
+						<label control="press releaseurl" value="&ProveIt.addurl;" flex="1" minwidth="145"/>
 						<textbox id="press releaseurl" />
 					</hbox>
 					<hbox pack="center" align="center" flex="1" >
-						<label control="press releasedate" value="&ProveIt.adddate;" width="145"/>
+						<label control="press releasedate" value="&ProveIt.adddate;" flex="1" minwidth="145"/>
 						<textbox id="press releasedate" />
 					</hbox>
 					<hbox pack="center" align="center" flex="1" >
-						<label control="press releaseaccessdate" value="&ProveIt.addadate;" width="145"/>
+						<label control="press releaseaccessdate" value="&ProveIt.addadate;" flex="1" minwidth="145"/>
 						<textbox id="press releaseaccessdate" />
 					</hbox>
 					<hbox>
@@ -478,7 +494,8 @@
 					</hbox>
 					<hbox pack="end">
 						<button id="press releaseexpand" label="&ProveIt.addother;" onclick="com.elclab.proveit.openExtra('press release')" />
-						<button id="press releasesubmit" label="&ProveIt.save;" onclick="com.elclab.proveit.addCitation('press release');"/>
+						<button id="press releasesubmit" label="&ProveIt.createnewsave;" onclick="com.elclab.proveit.addCitation('press release');"/>
+						<button label="&ProveIt.canceladd;" onclick="com.elclab.proveit.cancelAdd()" />
 					</hbox>
 				</vbox>
 			</vbox>
@@ -496,30 +513,30 @@
 					</menupopup>
 				</menulist>
 			</hbox>
-			<vbox id="citationpanes">
+			<vbox id="citationpanes" flex="1" minwidth="500">
 				<vbox id="webc" hidden="false">
 					<hbox pack="center" align="center" flex="1" >
-						<label control="webcname" value="&ProveIt.addname;" width="145"/>
+						<label control="webcname" value="&ProveIt.refName;" flex="1" minwidth="145"/>
 						<textbox id="webcname" />
 					</hbox>
 					<hbox pack="center" align="center" flex="1" >
-						<label control="webcurl" value="&ProveIt.addsite;" width="145"/>
+						<label control="webcurl" value="&ProveIt.addsite;" flex="1" minwidth="145"/>
 						<textbox id="webcurl" />
 					</hbox>
 					<hbox pack="center" align="center" flex="1" >
-						<label control="webcauthor" value="&ProveIt.addauthor;" width="145"/>
+						<label control="webcauthor" value="&ProveIt.addauthor;" flex="1" minwidth="145"/>
 						<textbox id="webcauthor" />
 					</hbox>
 					<hbox pack="center" align="center" flex="1" >
-						<label control="webctitle" value="&ProveIt.addtitle;" width="145"/>
+						<label control="webctitle" value="&ProveIt.addtitle;" flex="1" minwidth="145"/>
 						<textbox id="webctitle" />
 					</hbox>
 					<hbox pack="center" align="center" flex="1" >
-						<label control="webcdate" value="&ProveIt.adddate;" width="145"/>
+						<label control="webcdate" value="&ProveIt.adddate;" flex="1" minwidth="145"/>
 						<textbox id="webcdate" />
 					</hbox>
 					<hbox pack="center" align="center" flex="1" >
-						<label control="webcaccessdate" value="&ProveIt.addadate;" width="145"/>
+						<label control="webcaccessdate" value="&ProveIt.addadate;" flex="1" minwidth="145"/>
 						<textbox id="webcaccessdate" />
 					</hbox>
 					<hbox>
@@ -527,44 +544,45 @@
 					</hbox>
 					<hbox pack="end">
 						<button id="webcexpand" label="&ProveIt.addother;" onclick="com.elclab.proveit.openExtra('webc')" />
-						<button id="webcsubmit" label="&ProveIt.save;" onclick="com.elclab.proveit.addCitation('webc');"/>
+						<button id="webcsubmit" label="&ProveIt.createnewsave;" onclick="com.elclab.proveit.addCitation('webc');"/>
+						<button label="&ProveIt.canceladd;" onclick="com.elclab.proveit.cancelAdd()" />
 					</hbox>
 				</vbox>
 				<vbox id="newsc" hidden="true">
 					<hbox pack="center" align="center" flex="1" >
-						<label control="newscname" value="&ProveIt.addname;" width="145"/>
+						<label control="newscname" value="&ProveIt.refName;" flex="1" minwidth="145"/>
 						<textbox id="newscname" />
 					</hbox>
 					<hbox pack="center" align="center" flex="1" >
-						<label control="newscauthor" value="&ProveIt.addauthor;" width="145"/>
+						<label control="newscauthor" value="&ProveIt.addauthor;" flex="1" minwidth="145"/>
 						<textbox id="newscauthor" />
 					</hbox>
 					<hbox pack="center" align="center" flex="1" >
-						<label control="newsctitle" value="&ProveIt.addtitle;" width="145"/>
+						<label control="newsctitle" value="&ProveIt.addtitle;" flex="1" minwidth="145"/>
 						<textbox id="newsctitle" />
 					</hbox>
 					<hbox pack="center" align="center" flex="1" >
-						<label control="newscnewspaper" value="&ProveIt.addnewspaper;" width="145"/>
+						<label control="newscnewspaper" value="&ProveIt.addnewspaper;" flex="1" minwidth="145"/>
 						<textbox id="newscnewspaper" />
 					</hbox>
 					<hbox pack="center" align="center" flex="1" >
-						<label control="newscpublication-place" value="&ProveIt.addpubplace;" width="145"/>
+						<label control="newscpublication-place" value="&ProveIt.addpubplace;" flex="1" minwidth="145"/>
 						<textbox id="newscpublication-place" />
 					</hbox>
 					<hbox pack="center" align="center" flex="1" >
-						<label control="newscvolume" value="&ProveIt.addvolume;" width="145"/>
+						<label control="newscvolume" value="&ProveIt.addvolume;" flex="1" minwidth="145"/>
 						<textbox id="newscvolume" />
 					</hbox>
 					<hbox pack="center" align="center" flex="1" >
-						<label control="newscissue" value="&ProveIt.addissue;" width="145"/>
+						<label control="newscissue" value="&ProveIt.addissue;" flex="1" minwidth="145"/>
 						<textbox id="newscissue" />
 					</hbox>
 					<hbox pack="center" align="center" flex="1" >
-						<label control="newscdate" value="&ProveIt.adddate;" width="145"/>
+						<label control="newscdate" value="&ProveIt.adddate;" flex="1" minwidth="145"/>
 						<textbox id="newscdate" />
 					</hbox>
 					<hbox pack="center" align="center" flex="1" >
-						<label control="newscpages" value="&ProveIt.addpages;" width="145"/>
+						<label control="newscpages" value="&ProveIt.addpages;" flex="1" minwidth="145"/>
 						<textbox id="newscpages" />
 					</hbox>
 					<hbox>
@@ -572,48 +590,49 @@
 					</hbox>
 					<hbox pack="end">
 						<button id="newscexpand" label="&ProveIt.addother;" onclick="com.elclab.proveit.openExtra('newsc')" />
-						<button id="newscsubmit" label="&ProveIt.save;" onclick="com.elclab.proveit.addCitation('newsc');"/>
+						<button id="newscsubmit" label="&ProveIt.createnewsave;" onclick="com.elclab.proveit.addCitation('newsc');"/>
+						<button label="&ProveIt.canceladd;" onclick="com.elclab.proveit.cancelAdd()" />
 					</hbox>
 				</vbox>
 				<vbox id="encyclopediac" hidden="true">
 					<hbox pack="center" align="center" flex="1" >
-						<label control="encyclopediacname" value="&ProveIt.addname;" width="145"/>
+						<label control="encyclopediacname" value="&ProveIt.refName;" flex="1" minwidth="145"/>
 						<textbox id="encyclopediacname" />
 					</hbox>
 					<hbox pack="center" align="center" flex="1" >
-						<label control="encyclopediacauthor" value="&ProveIt.addauthor;" width="145"/>
+						<label control="encyclopediacauthor" value="&ProveIt.addauthor;" flex="1" minwidth="145"/>
 						<textbox id="encyclopediacauthor" />
 					</hbox>
 					<hbox pack="center" align="center" flex="1" >
-						<label control="encyclopediaceditor" value="&ProveIt.addeditor;" width="145"/>
+						<label control="encyclopediaceditor" value="&ProveIt.addeditor;" flex="1" minwidth="145"/>
 						<textbox id="encyclopediaceditor" />
 					</hbox>
 					<hbox pack="center" align="center" flex="1" >
-						<label control="encyclopediaccontribution" value="&ProveIt.addarticle;" width="145"/>
+						<label control="encyclopediaccontribution" value="&ProveIt.addarticle;" flex="1" minwidth="145"/>
 						<textbox id="encyclopediaccontribution" />
 					</hbox>
 					<hbox pack="center" align="center" flex="1" >
-						<label control="encyclopediactitle" value="&ProveIt.addtitle;" width="145"/>
+						<label control="encyclopediactitle" value="&ProveIt.addtitle;" flex="1" minwidth="145"/>
 						<textbox id="encyclopediactitle" />
 					</hbox>
 					<hbox pack="center" align="center" flex="1" >
-						<label control="encyclopediacpublisher" value="&ProveIt.addpublisher;" width="145"/>
+						<label control="encyclopediacpublisher" value="&ProveIt.addpublisher;" flex="1" minwidth="145"/>
 						<textbox id="encyclopediacpublisher" />
 					</hbox>
 					<hbox pack="center" align="center" flex="1" >
-						<label control="encyclopediacplace" value="&ProveIt.addpubplace;" width="145"/>
+						<label control="encyclopediacplace" value="&ProveIt.addpubplace;" flex="1" minwidth="145"/>
 						<textbox id="encyclopediacplace" />
 					</hbox>
 					<hbox pack="center" align="center" flex="1" >
-						<label control="encyclopediacpyear" value="&ProveIt.addpubyear;" width="145"/>
+						<label control="encyclopediacpyear" value="&ProveIt.addpubyear;" flex="1" minwidth="145"/>
 						<textbox id="encyclopediacyear" />
 					</hbox>
 					<hbox pack="center" align="center" flex="1" >
-						<label control="encyclopediacvolume" value="&ProveIt.addvolume;" width="145"/>
+						<label control="encyclopediacvolume" value="&ProveIt.addvolume;" flex="1" minwidth="145"/>
 						<textbox id="encyclopediacvolume" />
 					</hbox>
 					<hbox pack="center" align="center" flex="1" >
-						<label control="encyclopediacpages" value="&ProveIt.addpages;" width="145"/>
+						<label control="encyclopediacpages" value="&ProveIt.addpages;" flex="1" minwidth="145"/>
 						<textbox id="encyclopediacpages" />
 					</hbox>
 					<hbox>
@@ -621,32 +640,33 @@
 					</hbox>
 					<hbox pack="end">
 						<button id="encyclopediacexpand" label="&ProveIt.addother;" onclick="com.elclab.proveit.openExtra('encyclopediac')" />
-						<button id="encyclopediacsubmit" label="&ProveIt.save;" onclick="com.elclab.proveit.addCitation('encyclopediac');"/>
+						<button id="encyclopediacsubmit" label="&ProveIt.createnewsave;" onclick="com.elclab.proveit.addCitation('encyclopediac');"/>
+						<button label="&ProveIt.canceladd;" onclick="com.elclab.proveit.cancelAdd()" />
 					</hbox>
 				</vbox>
 				<vbox id="bookc" hidden="true">
 					<hbox pack="center" align="center" flex="1" >
-						<label control="bookcname" value="&ProveIt.addname;" width="145"/>
+						<label control="bookcname" value="&ProveIt.refName;" flex="1" minwidth="145"/>
 						<textbox id="bookcname" />
 					</hbox>
 					<hbox pack="center" align="center" flex="1" >
-						<label control="bookcauthor" value="&ProveIt.addauthor;" width="145"/>
+						<label control="bookcauthor" value="&ProveIt.addauthor;" flex="1" minwidth="145"/>
 						<textbox id="bookcauthor" />
 					</hbox>
 					<hbox pack="center" align="center" flex="1" >
-						<label control="bookctitle" value="&ProveIt.addtitle;" width="145"/>
+						<label control="bookctitle" value="&ProveIt.addtitle;" flex="1" minwidth="145"/>
 						<textbox id="bookctitle" />
 					</hbox>
 					<hbox pack="center" align="center" flex="1" >
-						<label control="bookcpublisher" value="&ProveIt.addpublisher;" width="145"/>
+						<label control="bookcpublisher" value="&ProveIt.addpublisher;" flex="1" minwidth="145"/>
 						<textbox id="bookcpublisher" />
 					</hbox>
 					<hbox pack="center" align="center" flex="1" >
-						<label control="bookcplace" value="&ProveIt.addpubplace;" width="145"/>
+						<label control="bookcplace" value="&ProveIt.addpubplace;" flex="1" minwidth="145"/>
 						<textbox id="bookcplace" />
 					</hbox>
 					<hbox pack="center" align="center" flex="1" >
-						<label control="bookcyear" value="&ProveIt.addyear;" width="145"/>
+						<label control="bookcyear" value="&ProveIt.addyear;" flex="1" minwidth="145"/>
 						<textbox id="bookcyear" />
 					</hbox>
 					<hbox>
@@ -654,40 +674,41 @@
 					</hbox>
 					<hbox pack="end">
 						<button id="bookcexpand" label="&ProveIt.addother;" onclick="com.elclab.proveit.openExtra('bookc')" />
-						<button id="bookcsubmit" label="&ProveIt.save;" onclick="com.elclab.proveit.addCitation('bookc');"/>
+						<button id="bookcsubmit" label="&ProveIt.createnewsave;" onclick="com.elclab.proveit.addCitation('bookc');"/>
+						<button label="&ProveIt.canceladd;" onclick="com.elclab.proveit.cancelAdd()" />
 					</hbox>
 				</vbox>
 				<vbox id="journalc" hidden="true">
 					<hbox pack="center" align="center" flex="1" >
-						<label control="journalcname" value="&ProveIt.addname;" width="145"/>
+						<label control="journalcname" value="&ProveIt.refName;" flex="1" minwidth="145"/>
 						<textbox id="journalcname" />
 					</hbox>
 					<hbox pack="center" align="center" flex="1" >
-						<label control="journalcauthor" value="&ProveIt.addauthor;" width="145"/>
+						<label control="journalcauthor" value="&ProveIt.addauthor;" flex="1" minwidth="145"/>
 						<textbox id="journalcauthor" />
 					</hbox>
 					<hbox pack="center" align="center" flex="1" >
-						<label control="journalctitle" value="&ProveIt.addtitle;" width="145"/>
+						<label control="journalctitle" value="&ProveIt.addtitle;" flex="1" minwidth="145"/>
 						<textbox id="journalctitle" />
 					</hbox>
 					<hbox pack="center" align="center" flex="1" >
-						<label control="journalcjournal" value="&ProveIt.addjournal;" width="145"/>
+						<label control="journalcjournal" value="&ProveIt.addjournal;" flex="1" minwidth="145"/>
 						<textbox id="journalcjournal" />
 					</hbox>
 					<hbox pack="center" align="center" flex="1" >
-						<label control="journalcvolume" value="&ProveIt.addvolume;" width="145"/>
+						<label control="journalcvolume" value="&ProveIt.addvolume;" flex="1" minwidth="145"/>
 						<textbox id="journalcvolume" />
 					</hbox>
 					<hbox pack="center" align="center" flex="1" >
-						<label control="journalcissue" value="&ProveIt.addissue;" width="145"/>
+						<label control="journalcissue" value="&ProveIt.addissue;" flex="1" minwidth="145"/>
 						<textbox id="journalcissue" />
 					</hbox>
 					<hbox pack="center" align="center" flex="1" >
-						<label control="journalcyear" value="&ProveIt.addyear;" width="145"/>
+						<label control="journalcyear" value="&ProveIt.addyear;" flex="1" minwidth="145"/>
 						<textbox id="journalcyear" />
 					</hbox>
 					<hbox pack="center" align="center" flex="1" >
-						<label control="journalcpages" value="&ProveIt.addpages;" width="145"/>
+						<label control="journalcpages" value="&ProveIt.addpages;" flex="1" minwidth="145"/>
 						<textbox id="journalcpages" />
 					</hbox>
 					<hbox>
@@ -695,32 +716,33 @@
 					</hbox>
 					<hbox pack="end">
 						<button id="journalcexpand" label="&ProveIt.addother;" onclick="com.elclab.proveit.openExtra('journalc')" />
-						<button id="journalcsubmit" label="&ProveIt.save;" onclick="com.elclab.proveit.addCitation('journalc');"/>
+						<button id="journalcsubmit" label="&ProveIt.createnewsave;" onclick="com.elclab.proveit.addCitation('journalc');"/>
+						<button label="&ProveIt.canceladd;" onclick="com.elclab.proveit.cancelAdd()" />
 					</hbox>
 				</vbox>
 				<vbox id="patentc" hidden="true">
 					<hbox pack="center" align="center" flex="1" >
-						<label control="patentcname" value="&ProveIt.addname;" width="145"/>
+						<label control="patentcname" value="&ProveIt.refName;" flex="1" minwidth="145"/>
 						<textbox id="patentcname" />
 					</hbox>
 					<hbox pack="center" align="center" flex="1" >
-						<label control="patentcinventor" value="&ProveIt.addinventor;" width="145"/>
+						<label control="patentcinventor" value="&ProveIt.addinventor;" flex="1" minwidth="145"/>
 						<textbox id="patentcinventor" />
 					</hbox>
 					<hbox pack="center" align="center" flex="1" >
-						<label control="patentctitle" value="&ProveIt.addtitle;" width="145"/>
+						<label control="patentctitle" value="&ProveIt.addtitle;" flex="1" minwidth="145"/>
 						<textbox id="patentctitle" />
 					</hbox>
 					<hbox pack="center" align="center" flex="1" >
-						<label control="patentcissue-date" value="&ProveIt.addidate;" width="145"/>
+						<label control="patentcissue-date" value="&ProveIt.addidate;" flex="1" minwidth="145"/>
 						<textbox id="patentcissue-date" />
 					</hbox>
 					<hbox pack="center" align="center" flex="1" >
-						<label control="patentcpatent-number" value="&ProveIt.addpnumber;" width="145"/>
+						<label control="patentcpatent-number" value="&ProveIt.addpnumber;" flex="1" minwidth="145"/>
 						<textbox id="patentcpatent-number" />
 					</hbox>
 					<hbox pack="center" align="center" flex="1" >
-						<label control="patentccountry-code" value="&ProveIt.addcountry;" width="145"/>
+						<label control="patentccountry-code" value="&ProveIt.addcountry;" flex="1" minwidth="145"/>
 						<textbox id="patentccountry-code" />
 					</hbox>
 					<hbox>
@@ -728,7 +750,8 @@
 					</hbox>
 					<hbox pack="end">
 						<button id="patentcexpand" label="&ProveIt.addother;" onclick="com.elclab.proveit.openExtra('patentc')" />
-						<button id="patentcsubmit" label="&ProveIt.save;" onclick="com.elclab.proveit.addCitation('patentc');"/>
+						<button id="patentcsubmit" label="&ProveIt.createnewsave;" onclick="com.elclab.proveit.addCitation('patentc');"/>
+						<button label="&ProveIt.canceladd;" onclick="com.elclab.proveit.cancelAdd()" />
 					</hbox>
 				</vbox>
 			</vbox>
@@ -743,11 +766,13 @@
 				<textbox id="editprimeright"/>				
 			</hbox>
 			<vbox id="main_edit">
+				<!--<vbox>-->
 				<hbox id="edit_refname" value="">
-					<label id="edit_refname_label" value="&lt;ref&gt; name"/>
+					<label id="edit_refname_label" value="&ProveIt.refName;" flex="1" />
 					<label value="=" />
-					<textbox id="edit_refname_value" value=""/>
+					<textbox id="edit_refname_value" value="" />
 				</hbox>
+				<!--</vbox>-->
 				<vbox id="editlist">
 				
 				</vbox>
@@ -756,7 +781,7 @@
 			<textbox id="editextra" multiline="true" rows="5" />
 			<hbox>
 				<button id="editcancel" label="&ProveIt.cancel;" onclick="com.elclab.proveit.cancelEdit()"/>
-				<button id="editsubmit" label="&ProveIt.savechanges;" onclick="com.elclab.proveit.editSave()"/>
+				<button id="editsubmit" label="&ProveIt.editapply;" onclick="com.elclab.proveit.editSave()"/>
 			</hbox>
 		</vbox>
 	</panel>

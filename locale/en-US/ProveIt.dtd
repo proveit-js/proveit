@@ -12,22 +12,22 @@
 <!ENTITY ProveIt.scta3 "throughout">
 <!ENTITY ProveIt.scta4 "article">
 <!ENTITY ProveIt.addnew "Add a New Reference">
-<!ENTITY ProveIt.save "Save">
+<!ENTITY ProveIt.createnewsave "Insert">
 <!ENTITY ProveIt.addother "Add other fields">
 
-<!ENTITY ProveIt.Website "WebSite">
+<!ENTITY ProveIt.Website "Web Site">
 <!ENTITY ProveIt.Book "Book">
 <!ENTITY ProveIt.Journal "Journal">
 <!ENTITY ProveIt.Conference "Conference">
 <!ENTITY ProveIt.Encyclopedia "Encyclopedia">
 <!ENTITY ProveIt.News "News">
 <!ENTITY ProveIt.Newsgroup "Newsgroup">
-<!ENTITY ProveIt.Paper "Paper(Scientific)">
+<!ENTITY ProveIt.Paper "Scientific Paper">
 <!ENTITY ProveIt.Press "Press Release">
 <!ENTITY ProveIt.Patent "Patent">
 
 <!ENTITY ProveIt.addname "Name:">
-<!ENTITY ProveIt.addauthor "Author(l,f):">
+<!ENTITY ProveIt.addauthor "Author (l,f):">
 <!ENTITY ProveIt.addtitle "Title:">
 <!ENTITY ProveIt.addpublisher "Publisher:">
 <!ENTITY ProveIt.addyear "Year:">
@@ -57,7 +57,11 @@
 <!ENTITY ProveIt.addidate "Issue Date(YYYY-MM-DD):">
 <!ENTITY ProveIt.addpnumber "Patent Number:">
 <!ENTITY ProveIt.addcountry "Country(US):">
+<!ENTITY ProveIt.addwork "Work:">
 
 <!ENTITY ProveIt.newvalues "New Values: (name=value, name=value, etc.)">
 <!ENTITY ProveIt.cancel "Cancel">
-<!ENTITY ProveIt.savechanges "Save Changes">
+<!ENTITY ProveIt.canceladd "Cancel">
+<!ENTITY ProveIt.editapply "Apply Changes">
+
+<!ENTITY ProveIt.refName "&lt;ref&gt; name">
