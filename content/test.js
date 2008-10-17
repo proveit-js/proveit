@@ -665,6 +665,9 @@ com.elclab.proveit = {
 				// FIX: Equal signs can be part of fields.  This can probably be fixed just 
 				// by taking the first equal once comma split is worked out.
 				var split = textSplit[i].split(/\=/i);
+				if(split[0] == null || split[1] == null)
+				    return false;
+
 				var paramName = split[0].trim();
 				var paramVal = split[1].trim();	
 				/*if (paramName == "name") {
