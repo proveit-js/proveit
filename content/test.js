@@ -61,12 +61,15 @@ com.elclab.proveit = {
 			i++;
 		}
 		
-		var index;
+		var correctAction;
 		
 		if(found)
 		{
-			index = path.indexOf("action=edit");	
-			if(index != -1)
+			// FIX
+			// This means the page can change without the location changing (e.g. action=submit -> action=submit).
+			
+			correctAction = (path.indexOf("action=edit") != -1) || (path.indexOf("action=submit") != -1);	
+			if(correctAction)
 				isMediaWiki = true;
 		}
 		else
@@ -297,6 +300,54 @@ com.elclab.proveit = {
 		return top.window.content.document.getElementById(textareaname);
 	},
 	
+	/**
+	 * Return edit form DOM object
+	 */
+	getEditForm : function()
+	{
+		return top.window.content.document.getElementById("editform");
+	},
+	
+	/**
+	 * Runs a given function on submission of edit form
+	 */
+	addOnsubmit : function(subFunc)
+	{
+		//com.elclab.proveit.log("Entering addOnsubmit.");
+		com.elclab.proveit.getEditForm().addEventListener("submit", subFunc, false);
+	},
+	
+	/**
+	 * Returns edit summary DOM object
+	 */
+	getEditSummary : function()
+	{
+		return top.window.content.document.getElementById("wpSummary");
+	},
+	
+	summaryActionAdded : false,
+	
+	/**
+	 * Specifies to include ProveIt edit summary on next save.
+	 */
+	includeProveItEditSummary : function()
+	{
+		if(!com.elclab.proveit.summaryActionAdded)
+		{
+			com.elclab.proveit.addOnsubmit(function()
+			{
+				var summary = com.elclab.proveit.getEditSummary(); // Surprisingly, this works.
+				
+				if(summary.value.indexOf("ProveIt") == -1) 
+					summary.value = summary.value + " (edited by [[User:Superm401/ProveIt|Proveit]])";
+				else
+					com.elclab.proveit.log("ProveIt already in summary.");
+					
+			});
+			com.elclab.proveit.summaryActionAdded = true;
+		}
+	},
+	
 	proveitpreload : function()
 	{
 		//com.elclab.proveit.log("Entering proveitpreload.")
@@ -313,6 +364,8 @@ com.elclab.proveit = {
 				com.elclab.proveit.getRefbox(), "end_before", 0, 0, false,
 				false);
 		com.elclab.proveit.getSidebarDoc().getElementById('edit').hidePopup();
+		
+		com.elclab.proveit.summaryActionAdded = false;
 		
 		// We use click because of event bubbling.
 		// If we use select here, we can't process insert image click before processing select.
@@ -759,6 +812,7 @@ com.elclab.proveit = {
 		    com.elclab.proveit.getRefbox().selectItem(newRichItem);
 		    
 		    com.elclab.proveit.updateInText();
+		    com.elclab.proveit.includeProveItEditSummary();
 		}
 		
 		com.elclab.proveit.log("Leaving editSave.")
@@ -1474,6 +1528,7 @@ com.elclab.proveit = {
 		com.elclab.proveit.insertRef(tag, true); // true means insert full text here, regardless of toggle.
 		tag["save"] = true;
 		tag.inMWEditBox = true;
+		com.elclab.proveit.includeProveItEditSummary();
 		com.elclab.proveit.getRefbox().scrollToIndex(com.elclab.proveit.getRefbox().itemCount - 1);
 		com.elclab.proveit.clearAddCitation(box);
 		com.elclab.proveit.getRefbox().selectedIndex = com.elclab.proveit.getRefbox().itemCount - 1;
