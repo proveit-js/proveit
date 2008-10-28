@@ -208,8 +208,14 @@ com.elclab.proveit = {
 	
 	openSidebar : function()
 	{
+		var mainWindow = window.QueryInterface(Components.interfaces.nsIInterfaceRequestor)
+			 .getInterface(Components.interfaces.nsIWebNavigation)
+			 .QueryInterface(Components.interfaces.nsIDocShellTreeItem)
+			 .rootTreeItem
+			 .QueryInterface(Components.interfaces.nsIInterfaceRequestor)
+			 .getInterface(Components.interfaces.nsIDOMWindow);
 		//com.elclab.proveit.log("Entering openSidebar");
-		toggleSidebar("viewProveItSidebar", true);
+		mainWindow.toggleSidebar("viewProveItSidebar", true);
 		//com.elclab.proveit.isSidebarOpenBool = true;
 	},
 	
@@ -374,8 +380,12 @@ com.elclab.proveit = {
 			com.elclab.proveit.doSelect();
 		}, false);
 		*/
+		
 		if(com.elclab.proveit.isMediaWikiEditPage())
+		{
+			com.elclab.proveit.log("Calling scanRef from proveitonload.");	
 			com.elclab.proveit.scanRef();
+		}
 		
 		return true;
 	},
@@ -385,6 +395,26 @@ com.elclab.proveit = {
 		//top.getBrowser().removeProgressListener(com.elclab.proveit.sendalert);
 		//com.elclab.proveit.isSidebarOpenBool = false;
 	},
+	
+	// Toggles the sidebar closed then open to avoid inconsistent state.
+	respawn : function()
+	{
+		com.elclab.proveit.log("Entering respawn.")
+		window.setTimeout(function()
+		{
+			var mainWindow = window.QueryInterface(Components.interfaces.nsIInterfaceRequestor)
+			 .getInterface(Components.interfaces.nsIWebNavigation)
+			 .QueryInterface(Components.interfaces.nsIDocShellTreeItem)
+			 .rootTreeItem
+			 .QueryInterface(Components.interfaces.nsIInterfaceRequestor)
+			 .getInterface(Components.interfaces.nsIDOMWindow);
+			mainWindow.toggleSidebar("viewProveItSidebar");
+			mainWindow.toggleSidebar("viewProveItSidebar");
+			/*Before, this had no mainWindow, which meant it never executed
+			(if it tried to, it wouldn't have worked).*/
+		}, 0);
+	},
+	
 	/**
 	 * A progress listener that catches events to drive the reloading of the
 	 * citation list.
@@ -393,8 +423,8 @@ com.elclab.proveit = {
 	 */
 	sendalert : {
 		onLocationChange : function(aProgress, aRequest, aURI) {
-			//com.elclab.proveit.log("sendalert.onLocationChange");
-			if (!aProgress.isLoadingDocument) {
+			com.elclab.proveit.log("sendalert.onLocationChange");
+			//if (!aProgress.isLoadingDocument) {
 				// this checks to see if the tab is changed, the isloading check
 				// is
 				// to keep us from double firing in the event the page is still
@@ -415,24 +445,24 @@ com.elclab.proveit = {
 				if(com.elclab.proveit.isSidebarOpen())
 				{
 					com.elclab.proveit.log("Reloading sidebar from onLocationChange.")
-					window.setTimeout(function()
-					{
-						toggleSidebar("viewProveItSidebar");
-						toggleSidebar("viewProveItSidebar");
-					}, 0)
+					com.elclab.proveit.respawn();
 				}
 				//com.elclab.proveit.proveitonload();
-				/*
+				
 				if(com.elclab.proveit.isMediaWikiEditPage())
 					com.elclab.proveit.scanRef();
-				*/
+				
 				/*
 				com.elclab.proveit.log("Calling highlightTargetString");
 				com.elclab.proveit.highlightTargetString("<ref");
 				*/
 				
 				
-			};
+			/*}
+			else
+			{
+				com.elclab.proveit.log("onLocationChange: Still loading.")
+			}*/
 		},
 		onStateChange : function(aProgress, aRequest, aFlag, aStatus) {
 			//com.elclab.proveit.log("sendalert.onStateChange");
@@ -449,8 +479,10 @@ com.elclab.proveit = {
 				
 				com.elclab.proveit.openOnlyForMediawiki();
 				if(com.elclab.proveit.isMediaWikiEditPage())
+				{
+					com.elclab.proveit.log("Calling scanRef from onStateChange.");
 					com.elclab.proveit.scanRef();
-		
+				}
 				/*
 				com.elclab.proveit.log("Calling highlightTargetString");
 				com.elclab.proveit.highlightTargetString("<ref");
@@ -463,13 +495,17 @@ com.elclab.proveit = {
 			}
 		},
 		onSecurityChange : function(aWebProgress, aRequest, aState) {
+			//com.elclab.proveit.log("sendalert.onSecurityChange");
 		},
 		onStatusChange : function(aWebProgress, aRequest, aStatus, aMessage) {
+			//com.elclab.proveit.log("sendalert.onStatusChange");
 		},
 		onProgressChange : function(aWebProgress, aRequest, aCurSelfProgress,
 				aMaxSelfProgress, aCurTotalProgress, aMaxTotalProgress) {
+				//com.elclab.proveit.log("sendalert.onProgressChange");
 		},
 		onLinkIconAvailable : function(a, b) {
+			//com.elclab.proveit.log("sendalert.onLinkIconAvailable");
 		}
 	},
 
@@ -796,12 +832,12 @@ com.elclab.proveit = {
 		    		    
 		    if(ref.baseGenName != newGenName) // is the current gen name same as old, disregarding final possible (1), (2), etc.
 		    {
-			ref.baseGenName = newGenName;
-			newGenName = com.elclab.proveit.genNameWithoutDuplicates(newGenName); // Ensure new name is not already used.
+				ref.baseGenName = newGenName;
+				newGenName = com.elclab.proveit.genNameWithoutDuplicates(newGenName); // Ensure new name is not already used.
 		    }
 		    else
 		    {
-			newGenName = name;
+				newGenName = name;
 		    }
 		    com.elclab.proveit.currentrefs[name] = null;
 		    com.elclab.proveit.currentrefs[newGenName] = ref;
@@ -868,6 +904,7 @@ com.elclab.proveit = {
 		if(!curRef || curRef == null)
 		{
 			com.elclab.proveit.log("doSelect: curRef is not defined.");
+			com.elclab.proveit.respawn();
 			return false;
 		}
 		if(curRef.inMWEditBox)
@@ -1303,6 +1340,12 @@ com.elclab.proveit = {
 						if (name) {
 							//com.elclab.proveit.log("Name is defined: " + name)
 							var text = com.elclab.proveit.addNewElement(citation);
+							if(text == null)
+							{
+								com.elclab.proveit.log("scanRef: addNewElement returned null");
+								com.elclab.proveit.respawn();
+								return false;
+							}
 							//com.elclab.proveit.log("text: " + text);
 							//com.elclab.proveit.log("citation: " + citation);
 							com.elclab.proveit.currentrefs[text] = citation;
@@ -1317,6 +1360,12 @@ com.elclab.proveit = {
 								
 							//com.elclab.proveit.log("Generated name: " + name)
 							var text = com.elclab.proveit.addNewElement(citation);
+							if(text == null)
+							{
+								com.elclab.proveit.log("scanRef: addNewElement returned null");
+								com.elclab.proveit.respawn();
+								return false;
+							}
 							//com.elclab.proveit.log("text: " + text);
 							com.elclab.proveit.currentrefs[text] = citation;
 							//com.elclab.proveit.log("com.elclab.proveit.currentrefs[text]: " + com.elclab.proveit.currentrefs[text]);
@@ -1331,10 +1380,16 @@ com.elclab.proveit = {
 			} else {
 			}
 		}
+		else
+		{
+			com.elclab.proveit.log("scanRef: MW edit box is not defined.");
+			return false;
+		}
 		//document.getElementById('display').value = "";
 		//com.elclab.proveit.log("com.elclab.proveit.currentScan: " + com.elclab.proveit.currentScan)
 		//com.elclab.proveit.log("scanRef currentrefs: " + com.elclab.proveit.currentrefs);
 		//com.elclab.proveit.log("scanRefs currentrefs.length: " + com.elclab.proveit.currentrefs.length);	
+		com.elclab.proveit.log("scanRef returned successfully.");
 	},
 
 	/**
@@ -1701,11 +1756,16 @@ com.elclab.proveit = {
 	genNameWithoutDuplicates : function(generatedName)
 	{
 	    var refbox = com.elclab.proveit.getRefbox();
+	    if(refbox == null)
+	    {
+	    	com.elclab.proveit.log("genNameWithoutDuplicates: refbox is null");
+	    	return null;
+	    }
 	    var bad = false;
 	    for (var i = 0; i < refbox.childNodes.length; i++) {
 		if (refbox.childNodes[i].id == generatedName) {
 		    bad = true;
-		    com.elclab.proveit.log("name: " + generatedName);
+		    com.elclab.proveit.log("genNameWithoutDuplicates: name: " + generatedName);
 		    break;
 		}
 	    }
@@ -1741,7 +1801,12 @@ com.elclab.proveit = {
 		var refbox = com.elclab.proveit.getRefbox();
 		
 		generatedName = com.elclab.proveit.genNameWithoutDuplicates(generatedName);
-
+		if(generatedName == null)
+		{
+			com.elclab.proveit.log("addNewElement: genNameWithoutDuplicates returned null.");
+			return null;
+		}
+		
 		refbox.appendChild(com.elclab.proveit.getRefboxElement(ref, generatedName));
 		
 		return generatedName;
