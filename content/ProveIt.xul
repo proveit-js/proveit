@@ -19,9 +19,9 @@
 			-->
 			<label hidden="true" id="infoholder" value="" />
 			<spacer width="0" />
-			<image src="18.png" id="primeeditimage" width="10" height="10" tooltiptext="Edit" />
+			<image src="18.png" id="primeeditimage" width="10" height="10" tooltiptext="&ProveIt.edit;" />
 			<spacer width="5" />
-			<image src="insert_10x10.png" id="primeinsertimage" width="10" height="10" tooltiptext="Insert" />
+			<image src="insert_10x10.png" id="primeinsertimage" width="10" height="10" tooltiptext="&ProveIt.insert;" />
 			<spacer width="0" />
 		</hbox>
 	</richlistitem>

@@ -991,11 +991,21 @@ com.elclab.proveit = {
 		*/
 		
 		var refNameValue = com.elclab.proveit.getSidebarDoc().getElementById("edit_refname_value");
-		if(current["name"] && current["name"] != null)
+		if(current["name"])
 			refNameValue.value = current["name"];
 		else
 			refNameValue.value = "";
 		
+		// Add default params with blank values.
+		var defaults = current.getDefaultParams();
+		for(var i = 0; i < defaults.length; i++)
+		{
+			if(!current.params[defaults[i]])
+			{
+				current.params[defaults[i]] = "";
+			}
+		}
+			
 		var paramNames = new Array();
 		//First run through just to get names.
 		for(item in current.params)
@@ -1399,7 +1409,7 @@ com.elclab.proveit = {
 		this.name;
 		this.baseGenName; // Generated name, without possible (1), (2), etc.  Shows as label in refbox.
 		this.template = "cite"; // Signifies template type is cite web, news, etc.
-		this.type;
+		this.type; // web, news, book, etc.
 		this.save; 
 		this.inMWEditBox; // true if and only if the ref is in the MW edit box with the same value as this object's orig.
 		this.params = new Object();
@@ -1426,6 +1436,32 @@ com.elclab.proveit = {
 			}
 			returnstring += "}}</ref>";
 			return returnstring;
+		}
+		this.isValid = function()
+		{
+			var req = com.elclab.proveit.citeRequiredParams[this.type];
+			var i = 0;
+			var allFound = true, curFound = false;
+			while(i < req.length && allFound)
+			{
+				curFound = false;
+				for(param in this.params)
+				{
+					if(param == req[i])
+					{
+						curFound = true;
+						break;
+					}
+				}
+				allFound &= curFound;
+				i++;
+			}
+			return allFound;
+		};
+		// Default parameters, to be suggested when editing.
+		this.getDefaultParams = function()
+		{
+			return com.elclab.proveit.citeDefaultParams[this.type];
 		}
 	},
 
@@ -1461,6 +1497,12 @@ com.elclab.proveit = {
 			}
 			returnstring += "}}</ref>";
 			return returnstring;
+		};
+		this.isValid = function(){return true}; // Currently assume all citation objects are valid.
+		// Default parameters, to be suggested when editing.
+		this.getDefaultParams = function()
+		{
+			return com.elclab.proveit.citationDefaultParams;
 		}
 	},
 
@@ -1674,6 +1716,10 @@ com.elclab.proveit = {
 			return false;
 		}
 		var newchild = dummy.cloneNode(true);
+		if(!ref.isValid())
+		{
+			newchild.style.backgroundColor = "red"; // mark red for invalid.	
+		}
 		// grab the nodes that need changed out of it
 		var newlabel = newchild.firstChild.childNodes[0];
 		var infoholder = newchild.firstChild.childNodes[1];
@@ -1822,6 +1868,37 @@ com.elclab.proveit = {
 		com.elclab.proveit.clearAddCitation(box);
 		com.elclab.proveit.getSidebarDoc().getElementById('createnew').hidePopup();
 	},
+	
+	// References without these parameters will be flagged in red.
+	citeRequiredParams :
+	{
+		web : [ "url", "title"],
+		book : [ "title" ],
+		journal : [ "title" ],
+		conference : [ "title", "booktitle" ],
+		encyclopedia: [ "title", "encyclopedia" ],
+		news: [ "title" ],
+		newsgroup : [ "title" ],
+		paper : [ "title" ],
+		"press release"	: [ "title" ]	
+	},
+	
+	// These paramaters will be auto-suggested when editing.
+	citeDefaultParams :
+	{
+		web : [ "url", "title", "accessdate", "work", "publisher", "date"],
+		book : [ "title", "author", "authorlink", "year", "isbn" ],
+		journal : [ "title", "author", "journal", "volume", "year", "month", "pages" ],
+		conference : [ "title", "booktitle", "author", "year", "month", "url", "id", "accessdate" ],
+		encyclopedia: [ "title", "encyclopedia", "author", "editor", "accessdate", "edition", "year", 
+		"publisher", "volume", "location", "pages" ],
+		news: [ "title", "author", "url", "publisher", "date", "accessdate" ],
+		newsgroup : [ "title", "author", "date", "newsgroup", "id", "url", "accessdate" ],
+		paper : [ "title", "author", "title", "date", "url", "accessdate" ],
+		"press release"	: [ "title", "url", "publisher", "date", "accessdate" ]	
+	},
+	
+	citationDefaultParams: [ "author", "title", "publisher", "place", "year", "url", "accessdate" ],
 	
 	citeParamKey : 
 	{

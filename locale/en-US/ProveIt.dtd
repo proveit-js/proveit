@@ -6,6 +6,7 @@
 <!ENTITY ProveIt.markup "wikimarkup:">
 <!ENTITY ProveIt.fullcitation "full citation">
 <!ENTITY ProveIt.nameonly "name only">
+<!ENTITY ProveIt.edit "Edit">
 <!ENTITY ProveIt.insert "Insert">
 <!ENTITY ProveIt.scta1 "save">
 <!ENTITY ProveIt.scta2 "changes">
