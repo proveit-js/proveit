@@ -1,1 +1,23 @@
 /* TODO */
+
+richlistitem.badReference
+{
+	/*background-color : #ff0000;*/ 
+	/* Meant to be white on red, but then you can't tell when it's selected.  Apparently, 
+	   selection selector doesn't work here.  So, currently red on default.*/
+	color: #ff0000;	
+	
+}
+/*
+richlistitem.badReference::-moz-selection
+{
+	background-color: #0000ff;
+	color: #ffffff;
+}
+
+richlistitem.badReference::selection
+{
+	background-color: #0000ff;
+	color: #ffffff;
+}
+*/

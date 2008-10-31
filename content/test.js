@@ -1265,7 +1265,9 @@ com.elclab.proveit = {
 							var valSplit = split.valSplit;
 
 							for (var j = 0; j < nameSplit.length - 1; j++) {
-								var paramName = nameSplit[j].trim();
+								/* Drop blank space, and |'s without params, which are never correct for 
+								   citation templates.*/
+								var paramName = nameSplit[j].trim().replace(/(?:\s*\|)*(.*)/, "$1"); 
 								var paramVal = valSplit[j + 1].trim();
 								// add it to the object
 								if (paramVal != "") {
@@ -1312,7 +1314,9 @@ com.elclab.proveit = {
 							var valSplit = split.valSplit;
 							
 							for (var j = 0; j < nameSplit.length - 1; j++) {
-								var paramName = nameSplit[j].trim();
+								/* Drop blank space, and |'s without params, which are never correct for 
+								   citation templates.*/
+								var paramName = nameSplit[j].trim().replace(/(?:\s*\|)*(.*)/, "$1"); 
 								var paramVal = valSplit[j + 1].trim();
 								// add it to the object
 								if (paramVal != "") {
@@ -1718,7 +1722,8 @@ com.elclab.proveit = {
 		var newchild = dummy.cloneNode(true);
 		if(!ref.isValid())
 		{
-			newchild.style.backgroundColor = "red"; // mark red for invalid.	
+			// Flag as invalid.
+			newchild.className = newchild.className + " badReference";
 		}
 		// grab the nodes that need changed out of it
 		var newlabel = newchild.firstChild.childNodes[0];
