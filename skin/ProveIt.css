@@ -8,6 +8,14 @@ richlistitem.badReference
 	color: #ff0000;	
 	
 }
+
+label.requiredParam
+{
+	color: #ff0000;
+	margin: 0; 
+	padding: 0;
+	width: 20px;
+}
 /*
 richlistitem.badReference::-moz-selection
 {

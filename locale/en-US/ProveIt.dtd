@@ -14,6 +14,7 @@
 <!ENTITY ProveIt.scta4 "article">
 <!ENTITY ProveIt.addnew "Add a New Reference">
 <!ENTITY ProveIt.createnewsave "Insert">
+<!ENTITY ProveIt.starexp "indicates a required parameter.">
 <!ENTITY ProveIt.addother "Add other fields">
 
 <!ENTITY ProveIt.Website "Web Site">

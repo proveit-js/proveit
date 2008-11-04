@@ -765,17 +765,23 @@
 				<label value="="/>
 				<textbox id="editprimeright"/>				
 			</hbox>
+			<label id = "star" class = "requiredParam" style="display: none;" value="*"/>
 			<vbox id="main_edit">
 				<!--<vbox>-->
 				<hbox id="edit_refname" value="">
 					<label id="edit_refname_label" value="&ProveIt.refName;" flex="1" />
 					<label value="=" />
 					<textbox id="edit_refname_value" value="" />
+					<spacer style = "margin: 0; padding: 0; width: 20px"/>
 				</hbox>
 				<!--</vbox>-->
 				<vbox id="editlist">
 				
 				</vbox>
+				<hbox id = "starExp" style = "margin-left: 10px; height: 40px">
+					<label class="requiredParam" value="*"/>			
+					<label value="&ProveIt.starexp;"/>
+				</hbox>
 			</vbox>
 			<label value="&ProveIt.newvalues;"/>
 			<textbox id="editextra" multiline="true" rows="5" />

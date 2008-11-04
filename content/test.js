@@ -49,7 +49,17 @@ com.elclab.proveit = {
 		//com.elclab.proveit.log("Entering isMediaWikiEditPage");
 		var found = false;
 		var i = 0;
-		var host = url.host;
+		var host;
+		try
+		{
+			host = url.host;
+		}
+		catch(NS_ERROR_FAILURE)
+		{
+			host = null;
+			com.elclab.proveit.log("isMediaWikiEditPage: Invalid hostname.");
+			return false;
+		}
 		var path = url.path;
 		
 		//com.elclab.proveit("host: " + host);
@@ -551,6 +561,7 @@ com.elclab.proveit = {
 	 */
 	getInsertionText : function(ref, full)
 	{
+		//com.elclab.proveit.log("Entering getInsertionText.")
 		// Adapted from dispSelect
 		var textToInsert = "";
 		if (ref) {
@@ -583,6 +594,7 @@ com.elclab.proveit = {
 	
 	insertRef : function(ref, full)
 	{
+		//com.elclab.proveit.log("Entering insertRef.")
 		var txtarea = com.elclab.proveit.getMWEditBox();
 		if(!txtarea)
 			return false;
@@ -1005,6 +1017,8 @@ com.elclab.proveit = {
 				current.params[defaults[i]] = "";
 			}
 		}
+		
+		var required = current.getRequiredParams();
 			
 		var paramNames = new Array();
 		//First run through just to get names.
@@ -1013,10 +1027,9 @@ com.elclab.proveit = {
 			paramNames.push(item);
 		}
 		
-		if(current["template"] == "cite")
-			paramNames.sort(com.elclab.proveit.citeParamSorter);
-		else if(current["template"] == "Citation")
-			paramNames.sort(com.elclab.proveit.CitationParamSorter);
+		var sorter = current.getSorter();
+		if(sorter)
+			paramNames.sort(sorter);
 		else
 			paramNames.sort();
 		/* Sort them to provide consistent interface.  Uses custom sort order (which is easily tweaked)
@@ -1024,19 +1037,22 @@ com.elclab.proveit = {
 
 		   Javascript does destructive sorting, which in this case, is convenient...
 		*/
-			
+		
 		for(var i = 0; i < paramNames.length; i++) {
 			//com.elclab.proveit.log("Calling addEditPopupRow on current.params." + item);
-			com.elclab.proveit.addEditPopupRow(current.params, paramNames[i]);
+			com.elclab.proveit.addEditPopupRow(current.params, paramNames[i], required[paramNames[i]]);
 		}
-			
+		
 		//com.elclab.proveit.log("Leaving updateEditPopup");
 	},
 	
 	/**
 	 * Adds a single row of edit popup
+	 * @param list the param list from the reference
+	 * @param item the current param name
+	 * @param req whether the current param name is required
 	 */
-	addEditPopupRow : function(list, item)
+	addEditPopupRow : function(list, item, req)
 	{
 		//com.elclab.proveit.log("Entering addEditPopupRow.");
 		//com.elclab.proveit.log("item: " + item);
@@ -1057,7 +1073,15 @@ com.elclab.proveit = {
 			right.id = "" + item + "value";
 			com.elclab.proveit.getSidebarDoc().getElementById(item + "namec").value = item;
 			
-			com.elclab.proveit.getSidebarDoc().getElementById(item + "value").value = list[item];	
+			com.elclab.proveit.getSidebarDoc().getElementById(item + "value").value = list[item];
+			
+			var label = com.elclab.proveit.getSidebarDoc().getElementById("star").cloneNode(true);
+			label.id = "";
+			label.style.display = "-moz-box"; // back to default display prop.
+			var vis = req ? "visible" : "hidden";
+			label.style.visibility = vis; // Star will appear if field is required.
+			newline.appendChild(label);
+
 	    //}
 	},
 	
@@ -1417,6 +1441,78 @@ com.elclab.proveit = {
 		this.save; 
 		this.inMWEditBox; // true if and only if the ref is in the MW edit box with the same value as this object's orig.
 		this.params = new Object();
+		
+		// References without these parameters will be flagged in red.
+		// True indicates required (null, or undefined, means not required)
+		var requiredParams =
+		{
+			web : { "url": true, "title": true},
+			book : { "title": true },
+			journal : { "title": true },
+			conference : { "title": true, "booktitle": true },
+			encyclopedia: { "title": true, "encyclopedia": true },
+			news: { "title": true },
+			newsgroup : { "title": true },
+			paper : { "title": true },
+			"press release"	: { "title": true }	
+		};
+		
+		// These paramaters will be auto-suggested when editing.
+		var defaultParams =
+		{
+			web : [ "url", "title", "accessdate", "work", "publisher", "date"],
+			book : [ "title", "author", "authorlink", "year", "isbn" ],
+			journal : [ "title", "author", "journal", "volume", "year", "month", "pages" ],
+			conference : [ "title", "booktitle", "author", "year", "month", "url", "id", "accessdate" ],
+			encyclopedia: [ "title", "encyclopedia", "author", "editor", "accessdate", "edition", "year", 
+			"publisher", "volume", "location", "pages" ],
+			news: [ "title", "author", "url", "publisher", "date", "accessdate" ],
+			newsgroup : [ "title", "author", "date", "newsgroup", "id", "url", "accessdate" ],
+			paper : [ "title", "author", "title", "date", "url", "accessdate" ],
+			"press release"	: [ "title", "url", "publisher", "date", "accessdate" ]	
+		};
+		
+		var paramSortKey =
+		{
+			url : 0,
+			title : 1,
+			accessdate : 2,
+			author : 3,
+			last : 4,
+			first : 5,
+			authorlink : 6,
+			coauthors : 7,
+			date : 8,
+			year : 9,
+			month : 10,
+			format : 11,
+			work : 12,
+			publisher : 13,
+			location : 14,
+			pages : 15,
+			language : 16,
+			isbn : 17,
+			doi : 18,
+			archiveurl : 19,
+			archivedate : 20,
+			quote : 21
+		};
+	
+		var sorter = function(paramA, paramB)
+		{
+			if(paramSortKey[paramA] != null && paramSortKey[paramB] != null)
+				return paramSortKey[paramA] - paramSortKey[paramB];
+			else
+			{
+				if(paramA < paramB)
+					return -1
+				else if(paramA == paramB)
+					return 0;
+				else
+					return 1;
+			}
+		};
+
 		this.toString = function() {
 			if (this.name) {
 				var returnstring = "<ref name=\"";
@@ -1440,33 +1536,40 @@ com.elclab.proveit = {
 			}
 			returnstring += "}}</ref>";
 			return returnstring;
-		}
-		this.isValid = function()
+		};
+		
+		this.getSorter = function()
 		{
-			var req = com.elclab.proveit.citeRequiredParams[this.type];
-			var i = 0;
-			var allFound = true, curFound = false;
-			while(i < req.length && allFound)
-			{
-				curFound = false;
-				for(param in this.params)
-				{
-					if(param == req[i])
-					{
-						curFound = true;
-						break;
-					}
-				}
-				allFound &= curFound;
-				i++;
-			}
-			return allFound;
+			return sorter;
+		}
+		
+		// Get required parameters for this citation type
+		this.getRequiredParams = function()
+		{
+			return requiredParams[this.type];
 		};
 		// Default parameters, to be suggested when editing.
 		this.getDefaultParams = function()
 		{
-			return com.elclab.proveit.citeDefaultParams[this.type];
+			return defaultParams[this.type];
 		}
+		this.isValid = function()
+		{
+			var req = this.getRequiredParams();
+			var i = 0;
+			var allFound = true;
+			for(reqParam in req)
+			{
+				/* Ignore parameters in req object that are null, undefined, or false.
+				   They are not required. */
+				if(!req[reqParam])
+					continue;
+				allFound &= (reqParam in this.params);
+				if(!allFound)
+					break;
+			}
+			return allFound;
+		};
 	},
 
 	/**
@@ -1480,6 +1583,56 @@ com.elclab.proveit = {
 		this.save; 
 		this.inMWEditBox; // true if and only if the ref is in the MW edit box with the same value as this object's orig.
 		this.params = new Object();
+		
+		// Default parameters, to be suggested when editing.
+		var defaultParams =
+		[ "author", "title", "publisher", "place", "year", "url", "accessdate" ];
+		
+		var requiredParams = {}; // None currently required;
+		
+		var paramSortKey = 
+		{
+			last : 0,
+			first : 1,
+			"author-link" : 2,
+			last2 : 3,
+			first2 : 4,
+			"author2-link" : 5,
+			"publication-date" : 6,
+			date : 7,
+			year : 8,
+			title : 9,
+			edition : 10,
+			volume : 11,
+			series : 12,
+			"publication-place" : 13,
+			place : 14,
+			publisher : 15,
+			pages : 16,
+			page : 17,
+			id : 18,
+			isbn : 19,
+			doi : 20,
+			oclc : 21,
+			url : 22,
+			accessdate : 23
+		};
+		
+		var sorter = function(paramA, paramB)
+		{
+			if(paramSortKey[paramA] != null && paramSortKey[paramB] != null)
+				return paramSortKey[paramA] - paramSortKey[paramB];
+			else
+			{
+				if(paramA < paramB)
+					return -1
+				else if(paramA == paramB)
+					return 0;
+				else
+					return 1;
+			}
+		};
+		
 		this.toString = function() {
 			if (this.name) {
 				var returnstring = "<ref name=\"";
@@ -1502,12 +1655,25 @@ com.elclab.proveit = {
 			returnstring += "}}</ref>";
 			return returnstring;
 		};
-		this.isValid = function(){return true}; // Currently assume all citation objects are valid.
-		// Default parameters, to be suggested when editing.
+		
+		this.getSorter = function()
+		{
+			return sorter;
+		}
+		
+		this.getRequiredParams = function()
+		{
+			return requiredParams;
+		};
+		
 		this.getDefaultParams = function()
 		{
-			return com.elclab.proveit.citationDefaultParams;
-		}
+			return defaultParams;
+		};
+		
+		this.isValid = function(){return true}; // Currently assume all citation objects are valid.
+		
+		
 	},
 
 	/**
@@ -1872,121 +2038,6 @@ com.elclab.proveit = {
 		var box = com.elclab.proveit.getSidebarDoc().getElementById(com.elclab.proveit.getSidebarDoc().getElementById("citemenu").value);
 		com.elclab.proveit.clearAddCitation(box);
 		com.elclab.proveit.getSidebarDoc().getElementById('createnew').hidePopup();
-	},
-	
-	// References without these parameters will be flagged in red.
-	citeRequiredParams :
-	{
-		web : [ "url", "title"],
-		book : [ "title" ],
-		journal : [ "title" ],
-		conference : [ "title", "booktitle" ],
-		encyclopedia: [ "title", "encyclopedia" ],
-		news: [ "title" ],
-		newsgroup : [ "title" ],
-		paper : [ "title" ],
-		"press release"	: [ "title" ]	
-	},
-	
-	// These paramaters will be auto-suggested when editing.
-	citeDefaultParams :
-	{
-		web : [ "url", "title", "accessdate", "work", "publisher", "date"],
-		book : [ "title", "author", "authorlink", "year", "isbn" ],
-		journal : [ "title", "author", "journal", "volume", "year", "month", "pages" ],
-		conference : [ "title", "booktitle", "author", "year", "month", "url", "id", "accessdate" ],
-		encyclopedia: [ "title", "encyclopedia", "author", "editor", "accessdate", "edition", "year", 
-		"publisher", "volume", "location", "pages" ],
-		news: [ "title", "author", "url", "publisher", "date", "accessdate" ],
-		newsgroup : [ "title", "author", "date", "newsgroup", "id", "url", "accessdate" ],
-		paper : [ "title", "author", "title", "date", "url", "accessdate" ],
-		"press release"	: [ "title", "url", "publisher", "date", "accessdate" ]	
-	},
-	
-	citationDefaultParams: [ "author", "title", "publisher", "place", "year", "url", "accessdate" ],
-	
-	citeParamKey : 
-	{
-		url : 0,
-		title : 1,
-		accessdate : 2,
-		author : 3,
-		last : 4,
-		first : 5,
-		authorlink : 6,
-		coauthors : 7,
-		date : 8,
-		year : 9,
-		month : 10,
-		format : 11,
-		work : 12,
-		publisher : 13,
-		location : 14,
-		pages : 15,
-		language : 16,
-		isbn : 17,
-		doi : 18,
-		archiveurl : 19,
-		archivedate : 20,
-		quote : 21
-	},
-	
-	citeParamSorter : function(paramA, paramB)
-	{
-		if(com.elclab.proveit.citeParamKey[paramA] != null && com.elclab.proveit.citeParamKey[paramB] != null)
-			return com.elclab.proveit.citeParamKey[paramA] - com.elclab.proveit.citeParamKey[paramB];
-		else
-		{
-			if(paramA < paramB)
-				return -1
-			else if(paramA == paramB)
-				return 0;
-			else
-				return 1;
-		}
-	},
-
-	CitationParamKey : 
-	{
-		last : 0,
-		first : 1,
-		"author-link" : 2,
-		last2 : 3,
-		first2 : 4,
-		"author2-link" : 5,
-		"publication-date" : 6,
-		date : 7,
-		year : 8,
-		title : 9,
-		edition : 10,
-		volume : 11,
-		series : 12,
-		"publication-place" : 13,
-		place : 14,
-		publisher : 15,
-		pages : 16,
-		page : 17,
-		id : 18,
-		isbn : 19,
-		doi : 20,
-		oclc : 21,
-		url : 22,
-		accessdate : 23
-	},
-	
-	CitationParamSorter : function(paramA, paramB)
-	{
-		if(com.elclab.proveit.CitationParamKey[paramA] != null && com.elclab.proveit.CitationParamKey[paramB] != null)
-			return com.elclab.proveit.CitationParamKey[paramA] - com.elclab.proveit.CitationParamKey[paramB];
-		else
-		{
-			if(paramA < paramB)
-				return -1
-			else if(paramA == paramB)
-				return 0;
-			else
-				return 1;
-		}
 	}
 }
 
