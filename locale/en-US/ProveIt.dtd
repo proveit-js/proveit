@@ -16,6 +16,7 @@
 <!ENTITY ProveIt.createnewsave "Insert">
 <!ENTITY ProveIt.starexp "indicates a required parameter.">
 <!ENTITY ProveIt.addother "Add other fields">
+<!ENTITY ProveIt.addanother "Add another field">
 
 <!ENTITY ProveIt.Website "Web Site">
 <!ENTITY ProveIt.Book "Book">

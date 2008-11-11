@@ -725,7 +725,7 @@ com.elclab.proveit = {
 	 */
 	cancelEdit : function() {
 		com.elclab.proveit.getSidebarDoc().getElementById('edit').hidePopup();
-		com.elclab.proveit.getSidebarDoc().getElementById('editextra').value = "";
+		//com.elclab.proveit.getSidebarDoc().getElementById('editextra').value = "";
 		com.elclab.proveit.dispSelect();
 	},
 	
@@ -786,11 +786,24 @@ com.elclab.proveit = {
 			}
 		}
 	},
+	
+	editAddField : function()
+	{
+		com.elclab.proveit.log("Entering editAddField");
+		var name = com.elclab.proveit.curRefItem.id;
+		var current = com.elclab.proveit.currentrefs[name];
+		com.elclab.proveit.addEditPopupRow(current.params, "", false, false);
+	},
 
 	editSave : function() {
 		com.elclab.proveit.log("Entering editSave");
+		
+		com.elclab.proveit.getSidebarDoc().getElementById("edit").hidePopup();
+		
 		var name = com.elclab.proveit.getRefbox().selectedItem.id;
 		var list = com.elclab.proveit.getSidebarDoc().getElementById("editlist").getElementsByTagName("hbox");
+		
+		com.elclab.proveit.log("list.length: " + list.length);
 		
 		var refNameValue = com.elclab.proveit.getSidebarDoc().getElementById("edit_refname_value");
 		if(refNameValue.value != "")
@@ -815,8 +828,9 @@ com.elclab.proveit = {
 				com.elclab.proveit.log("node: " + node);
 				delete(com.elclab.proveit.currentrefs[name].params[node]);
 				var paramName = com.elclab.proveit.getSidebarDoc().getElementById(node + "namec").value;
+				com.elclab.proveit.log("paramName: " + paramName);
 				var paramVal = com.elclab.proveit.getSidebarDoc().getElementById(node + "value").value;
-				
+				com.elclab.proveit.log("paramVal: " + paramVal);
 				if (paramName != "" && paramVal != "")
 					com.elclab.proveit.currentrefs[name].params[paramName] = paramVal;
 				/*
@@ -828,10 +842,11 @@ com.elclab.proveit = {
 				*/
 			}
 		}
+		/*
 		var extra = com.elclab.proveit.getSidebarDoc().getElementById("editextra").value;
 		com.elclab.proveit.processCommaSeparated(com.elclab.proveit.currentrefs[name], extra);
 		com.elclab.proveit.getSidebarDoc().getElementById("editextra").value = "";
-		com.elclab.proveit.getSidebarDoc().getElementById("edit").hidePopup();
+		*/
 		if (com.elclab.proveit.currentrefs[name].toString() != com.elclab.proveit.currentrefs[name]["orig"]) {
 			com.elclab.proveit.currentrefs[name]["save"] = false;
 		}
@@ -862,6 +877,8 @@ com.elclab.proveit = {
 		    com.elclab.proveit.updateInText();
 		    com.elclab.proveit.includeProveItEditSummary();
 		}
+		
+		com.elclab.proveit.updateEditPopup();
 		
 		com.elclab.proveit.log("Leaving editSave.")
 	},
@@ -975,10 +992,10 @@ com.elclab.proveit = {
 	 */
 	updateEditPopup : function()
 	{
-		//com.elclab.proveit.log("Entering updateEditPopup.")
+		com.elclab.proveit.log("Entering updateEditPopup.")
 		var box = com.elclab.proveit.getSidebarDoc().getElementById("editlist");
 		var size = box.childNodes.length;
-		// com.elclab.proveit.log(size);
+		com.elclab.proveit.log(size);
 		for (var i = 0; i < size; i++) {
 			var item = box.removeChild(box.childNodes[0]);
 			// com.elclab.proveit.log("Deleting #" + i + ": " + item.id);
@@ -1040,7 +1057,7 @@ com.elclab.proveit = {
 		
 		for(var i = 0; i < paramNames.length; i++) {
 			//com.elclab.proveit.log("Calling addEditPopupRow on current.params." + item);
-			com.elclab.proveit.addEditPopupRow(current.params, paramNames[i], required[paramNames[i]]);
+			com.elclab.proveit.addEditPopupRow(current.params, paramNames[i], required[paramNames[i]], true);
 		}
 		
 		//com.elclab.proveit.log("Leaving updateEditPopup");
@@ -1051,16 +1068,18 @@ com.elclab.proveit = {
 	 * @param list the param list from the reference
 	 * @param item the current param name
 	 * @param req whether the current param name is required
+	 * @param fieldType true for label, false for textbox.
 	 */
-	addEditPopupRow : function(list, item, req)
+	addEditPopupRow : function(list, item, req, fieldType)
 	{
 		//com.elclab.proveit.log("Entering addEditPopupRow.");
 		//com.elclab.proveit.log("item: " + item);
-		/*
+		/*	
 		if (item != "type" && item != "toString" && item != "orig"
 				&& item != "save") {
 		*/
-			var newline = com.elclab.proveit.getSidebarDoc().getElementById("editprime")
+			var id = fieldType ? "editprimelabel" : "editprimetext";
+			var newline = com.elclab.proveit.getSidebarDoc().getElementById(id)
 					.cloneNode(true);
 			var left = newline.childNodes[0];
 			var right = newline.childNodes[2];
@@ -1073,8 +1092,11 @@ com.elclab.proveit = {
 			right.id = "" + item + "value";
 			com.elclab.proveit.getSidebarDoc().getElementById(item + "namec").value = item;
 			
-			com.elclab.proveit.getSidebarDoc().getElementById(item + "value").value = list[item];
-			
+			if(fieldType)
+				com.elclab.proveit.getSidebarDoc().getElementById(item + "value").value = list[item];
+			else
+				com.elclab.proveit.getSidebarDoc().getElementById(item + "value").value = "";
+				
 			var label = com.elclab.proveit.getSidebarDoc().getElementById("star").cloneNode(true);
 			label.id = "";
 			label.style.display = "-moz-box"; // back to default display prop.
@@ -1744,10 +1766,6 @@ com.elclab.proveit = {
 									.substring(type.length);
 							paramVal = box.childNodes[i].childNodes[1].value
 									+ j;
-							//if(paramName != "name")	
-								tag.params[paramName] = paramVal;
-							/*else
-								tag[paramName] = paramVal;*/
 						}
 					}
 				} else {
@@ -1755,19 +1773,37 @@ com.elclab.proveit = {
 							.substring(type.length);
 					paramVal = box.childNodes[i].childNodes[1].value;
 					//if(paramName != "name")	
-						tag.params[paramName] = paramVal;
+					//tag.params[paramName] = paramVal;
 					/*else
 						tag[paramName] = paramVal;*/
 				}
 				//com.elclab.proveit.addNewElement(box.childNodes[i].childNodes[1].value);
-			} else if (box.childNodes[i].childNodes[1]
+			} 
+			else if (box.childNodes[i].childNodes[1]
+					&& box.childNodes[i].childNodes[1].value == "=") // hack
+			{
+				com.elclab.proveit.log("Equal sign hack");
+				paramName = box.childNodes[i].childNodes[0].value;
+				paramVal = box.childNodes[i].childNodes[2].value;
+				
+			}
+			else if (box.childNodes[i].childNodes[1]
 					&& box.childNodes[i].childNodes[1].value != "") {
 				paramName = box.childNodes[i].childNodes[1].id.substring(type.length);
 				paramVal = box.childNodes[i].childNodes[1].value;
 				//if(paramName != "name")	
-					tag.params[paramName] = paramVal;
+				//tag.params[paramName] = paramVal;
 				/*else
 					tag[paramName] = paramVal;*/
+			}
+			//if(paramName != "name")	
+			com.elclab.proveit.log("paramName: " + paramName);	
+			com.elclab.proveit.log("paramVal: " + paramVal);
+			if(paramName != null && paramName != "")
+			{
+				tag.params[paramName] = paramVal;
+			/*else
+			tag[paramName] = paramVal;*/
 			}
 		}
 		
@@ -1819,9 +1855,17 @@ com.elclab.proveit = {
 	 *            type the type/name of the extra field to open.
 	 */
 	openExtra : function(type) {
-		var showable = com.elclab.proveit.getSidebarDoc().getElementById(type + "extra");
+		/*var showable = com.elclab.proveit.getSidebarDoc().getElementById(type + "extra");
 		var current = showable.hidden;
 		showable.hidden = !current;
+		*/
+		com.elclab.proveit.log("Entering openExtra");
+		var newline = com.elclab.proveit.getSidebarDoc().getElementById("dummyCreateRow").cloneNode(true);
+		newline.hidden = false;
+		
+		var wrapper = com.elclab.proveit.getSidebarDoc().getElementById(type);
+		wrapper.insertBefore(newline, wrapper.childNodes[wrapper.childNodes.length - 2]);
+		
 	},
 
 	/**

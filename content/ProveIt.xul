@@ -91,6 +91,11 @@
 	</vbox>
 	
 	<panel id="createnew" style="background-color: #ECE9D8" position="end_after" minwidth="350" flex="1">
+		<hbox pack="center" align="center" flex="1" hidden = "true" id = "dummyCreateRow">
+						<textbox control="" value="" flex="1" minwidth="145"/>
+						<label value="="/>
+						<textbox id="" />
+		</hbox>			
 		<vbox flex="1" hidden="false" id="cite">
 			<hbox pack="center" align="center">
 				<menulist id="citemenu" oncommand="com.elclab.proveit.changeCite()">
@@ -757,14 +762,20 @@
 			</vbox>
 		</vbox>
 	</panel>
-	<panel id="edit" style="background-color: #ECE9D8">
+	<panel id="edit" style="background-color: #ECE9D8"> <!-- noautohide temp for debug-->
 		<vbox id="editpanel" align="center">
 			<label id="editlabel" value="Citation"/>
-			<hbox id="editprime" hidden="true">
-				<textbox id="editprimeleft"/>
+			<hbox id="editprimelabel" hidden="true">
+				<label id="editprimeleftlabel" flex="1" />
 				<label value="="/>
-				<textbox id="editprimeright"/>				
+				<textbox id="editprimerightlabel"/>				
 			</hbox>
+			<hbox id="editprimetext" hidden="true">
+				<textbox id="editprimelefttext"/>
+				<label value="="/>
+				<textbox id="editprimerighttext"/>				
+			</hbox>
+			
 			<label id = "star" class = "requiredParam" style="display: none;" value="*"/>
 			<vbox id="main_edit">
 				<!--<vbox>-->
@@ -783,8 +794,13 @@
 					<label value="&ProveIt.starexp;"/>
 				</hbox>
 			</vbox>
+			<!--
 			<label value="&ProveIt.newvalues;"/>
 			<textbox id="editextra" multiline="true" rows="5" />
+			-->
+			<hbox>
+				<button id="editaddfield" label="&ProveIt.addanother;" onclick="com.elclab.proveit.editAddField()"/>
+			</hbox>
 			<hbox>
 				<button id="editcancel" label="&ProveIt.cancel;" onclick="com.elclab.proveit.cancelEdit()"/>
 				<button id="editsubmit" label="&ProveIt.editapply;" onclick="com.elclab.proveit.editSave()"/>
