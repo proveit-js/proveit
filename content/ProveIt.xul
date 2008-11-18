@@ -762,8 +762,8 @@
 			</vbox>
 		</vbox>
 	</panel>
-	<panel id="edit" style="background-color: #ECE9D8"> <!-- noautohide temp for debug-->
-		<vbox id="editpanel" align="center">
+	<panel id="edit"> <!-- Used to be background color ECE9D8, but seemed to have no effect.--><!-- noautohide can be used temporarily for debugging-->
+		<vbox id="editpanel" align="center" style="background-color: #DCDAD5">
 			<label id="editlabel" value="Citation"/>
 			<hbox id="editprimelabel" hidden="true">
 				<label id="editprimeleftlabel" flex="1" />
