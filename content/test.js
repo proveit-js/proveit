@@ -836,14 +836,16 @@ com.elclab.proveit = {
 				com.elclab.proveit.log("item: " + i);
 				com.elclab.proveit.log("node: " + node);
 				delete(com.elclab.proveit.currentrefs[name].params[node]);
-				var paramName = com.elclab.proveit.getSidebarDoc().getElementById(node + "namec").value;
+				//var paramName = com.elclab.proveit.getSidebarDoc().getElementById(node + "namec").value;
+				var paramName = list[i].childNodes[0].value;
 				com.elclab.proveit.log("paramName: " + paramName);
-				var paramVal = com.elclab.proveit.getSidebarDoc().getElementById(node + "value").value;
+				//var paramVal = com.elclab.proveit.getSidebarDoc().getElementById(node + "value").value;
+				var paramVal = list[i].childNodes[2].value;
 				com.elclab.proveit.log("paramVal: " + paramVal);
-				
+				/*
 				com.elclab.proveit.log("Setting title = test2");
 				com.elclab.proveit.currentrefs[name].params["title"] = "title2";
-				
+				*/
 				if (paramName != "" && paramVal != "")
 				{
 					com.elclab.proveit.log("Setting " + paramName + "= " + paramVal);

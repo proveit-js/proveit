@@ -771,9 +771,9 @@
 				<textbox id="editprimerightlabel"/>				
 			</hbox>
 			<hbox id="editprimetext" hidden="true">
-				<textbox id="editprimelefttext"/>
+				<textbox id="editprimelefttext" minwidth="140" flex="1"/>
 				<label value="="/>
-				<textbox id="editprimerighttext"/>				
+				<textbox id="editprimerighttext" flex="1"/>				
 			</hbox>
 			
 			<label id = "star" class = "requiredParam" style="display: none;" value="*"/>
