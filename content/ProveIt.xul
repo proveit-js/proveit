@@ -91,8 +91,8 @@
 	</vbox>
 	
 	<panel id="createnew" style="background-color: #ECE9D8" position="end_after" minwidth="350" flex="1">
-		<hbox pack="center" align="center" flex="1" hidden = "true" id = "dummyCreateRow">
-						<textbox control="" value="" flex="1" minwidth="145"/>
+		<hbox pack="center" align="center" hidden = "true" id = "dummyCreateRow">
+						<textbox control="" value="" minwidth="145"/>
 						<label value="="/>
 						<textbox id="" />
 		</hbox>			
@@ -794,10 +794,6 @@
 					<label value="&ProveIt.starexp;"/>
 				</hbox>
 			</vbox>
-			<!--
-			<label value="&ProveIt.newvalues;"/>
-			<textbox id="editextra" multiline="true" rows="5" />
-			-->
 			<hbox>
 				<button id="editaddfield" label="&ProveIt.addanother;" onclick="com.elclab.proveit.editAddField()"/>
 			</hbox>

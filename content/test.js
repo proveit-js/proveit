@@ -57,7 +57,7 @@ com.elclab.proveit = {
 		catch(NS_ERROR_FAILURE)
 		{
 			host = null;
-			com.elclab.proveit.log("isMediaWikiEditPage: Invalid hostname.");
+			//com.elclab.proveit.log("isMediaWikiEditPage: Invalid hostname.");
 			return false;
 		}
 		var path = url.path;
@@ -83,8 +83,10 @@ com.elclab.proveit = {
 				isMediaWiki = true;
 		}
 		else
+		{
 			isMediaWiki = false;
-			
+		}
+		
 		//com.elclab.proveit.log("host: " + host);
 		//com.elclab.proveit.log("isMediaWiki: " + isMediaWiki);
         return isMediaWiki;
@@ -97,12 +99,12 @@ com.elclab.proveit = {
 		
 		if(!com.elclab.proveit.isMediaWikiEditPage())
         {
-        	com.elclab.proveit.log("Not MediaWiki");
+        	//com.elclab.proveit.log("Not MediaWiki");
 	    	com.elclab.proveit.closeSidebar();
 		}            
         else
         {
-        	com.elclab.proveit.log("Is MediaWiki");
+        	//com.elclab.proveit.log("Is MediaWiki");
         	//if(!isOpen)
         	com.elclab.proveit.openSidebar();
 	    }
@@ -235,7 +237,7 @@ com.elclab.proveit = {
 	
 	closeSidebar : function()
 	{
-		com.elclab.proveit.log("Entering closeSidebar");
+		//com.elclab.proveit.log("Entering closeSidebar");
 		
 		var isOpen = com.elclab.proveit.isSidebarOpen();
 		if(isOpen)
@@ -282,8 +284,8 @@ com.elclab.proveit = {
 		var startInd = origText.indexOf(target); 
 		if(startInd == -1)
 		{
-			com.elclab.proveit.log("Target string not found!");
-			com.elclab.proveit.log("target: " + target);
+			//com.elclab.proveit.log("Target string not found!");
+			//com.elclab.proveit.log("target: " + target);
 			return false;
 		}
 		var endInd = startInd + target.length; 
@@ -357,8 +359,9 @@ com.elclab.proveit = {
 				if(summary.value.indexOf("ProveIt") == -1) 
 					summary.value = summary.value + " (edited by [[User:Superm401/ProveIt|Proveit]])";
 				else
-					com.elclab.proveit.log("ProveIt already in summary.");
-					
+				{
+					;//com.elclab.proveit.log("ProveIt already in summary.");
+				}	
 			});
 			com.elclab.proveit.summaryActionAdded = true;
 		}
@@ -374,7 +377,7 @@ com.elclab.proveit = {
 	
 	proveitonload : function() {
 		//com.elclab.proveit.isSidebarOpenBool = true;
-		com.elclab.proveit.log("Loading ProveIt.");
+		//com.elclab.proveit.log("Loading ProveIt.");
 		com.elclab.proveit.disableResize();
 		com.elclab.proveit.getSidebarDoc().getElementById("edit").openPopup(
 				com.elclab.proveit.getRefbox(), "end_before", 0, 0, false,
@@ -393,7 +396,7 @@ com.elclab.proveit = {
 		
 		if(com.elclab.proveit.isMediaWikiEditPage())
 		{
-			com.elclab.proveit.log("Calling scanRef from proveitonload.");	
+			//com.elclab.proveit.log("Calling scanRef from proveitonload.");	
 			com.elclab.proveit.scanRef();
 		}
 		
@@ -409,7 +412,7 @@ com.elclab.proveit = {
 	// Toggles the sidebar closed then open to avoid inconsistent state.
 	respawn : function()
 	{
-		com.elclab.proveit.log("Entering respawn.")
+		//com.elclab.proveit.log("Entering respawn.")
 		window.setTimeout(function()
 		{
 			var mainWindow = window.QueryInterface(Components.interfaces.nsIInterfaceRequestor)
@@ -433,7 +436,7 @@ com.elclab.proveit = {
 	 */
 	sendalert : {
 		onLocationChange : function(aProgress, aRequest, aURI) {
-			com.elclab.proveit.log("sendalert.onLocationChange");
+			//com.elclab.proveit.log("sendalert.onLocationChange");
 			//if (!aProgress.isLoadingDocument) {
 				// this checks to see if the tab is changed, the isloading check
 				// is
@@ -454,7 +457,7 @@ com.elclab.proveit = {
 				com.elclab.proveit.openOnlyForMediawiki();
 				if(com.elclab.proveit.isSidebarOpen())
 				{
-					com.elclab.proveit.log("Reloading sidebar from onLocationChange.")
+					//com.elclab.proveit.log("Reloading sidebar from onLocationChange.")
 					com.elclab.proveit.respawn();
 				}
 				//com.elclab.proveit.proveitonload();
@@ -490,7 +493,7 @@ com.elclab.proveit = {
 				com.elclab.proveit.openOnlyForMediawiki();
 				if(com.elclab.proveit.isMediaWikiEditPage())
 				{
-					com.elclab.proveit.log("Calling scanRef from onStateChange.");
+					//com.elclab.proveit.log("Calling scanRef from onStateChange.");
 					com.elclab.proveit.scanRef();
 				}
 				/*
@@ -577,7 +580,7 @@ com.elclab.proveit = {
 					textToInsert = "<ref name=\""
 							+ ref.name + "\" />";
 				} else {
-					com.elclab.proveit.log("Ref lacks name.  Returning empty insertion text");
+					//com.elclab.proveit.log("Ref lacks name.  Returning empty insertion text");
 					textToInsert = "";
 				}
 			}
@@ -585,7 +588,7 @@ com.elclab.proveit = {
 		}
 		else
 		{
-			com.elclab.proveit.log("Invalid item.  Returning empty insertion text");
+			//com.elclab.proveit.log("Invalid item.  Returning empty insertion text");
 			textToInsert = "";
 		}
 		
@@ -638,10 +641,10 @@ com.elclab.proveit = {
 	 * location of the cursor in the document.
 	 */
 	insertSelectedRef : function() {
-		com.elclab.proveit.log("Entering insert.");
+		//com.elclab.proveit.log("Entering insert.");
 		if (com.elclab.proveit.getRefbox().selectedItem) {
 			if(com.elclab.proveit.currentrefs == [])
-				com.elclab.proveit.log("currentrefs is undefined.");
+				//com.elclab.proveit.log("currentrefs is undefined.");
 			//var sel = com.elclab.proveit.getSidebarDoc().getElementById('display').value;
 			/*else
 				com.elclab.proveit.log("currentrefs: " + com.elclab.proveit.currentrefs);*/
@@ -650,11 +653,13 @@ com.elclab.proveit = {
 				
 			var ref = com.elclab.proveit.currentrefs[com.elclab.proveit.getRefbox().selectedItem.parentNode.id];
 			
-			com.elclab.proveit.log("ref: " + ref)
+			//com.elclab.proveit.log("ref: " + ref)
 			com.elclab.proveit.insertRef(ref, com.elclab.proveit.toggleinsert);
 		}
 		else
-			com.elclab.proveit.log("No item selected.");
+		{
+			//com.elclab.proveit.log("No item selected.");
+		}
 	},
 
 	/**
@@ -664,7 +669,7 @@ com.elclab.proveit = {
 
 	updateInText : function() {
 		com.elclab.proveit.curRefItem = com.elclab.proveit.getRefbox().selectedItem;
-		com.elclab.proveit.log("Entering updateInText");
+		//com.elclab.proveit.log("Entering updateInText");
 		var item = com.elclab.proveit.getRefbox().selectedItem.id;
 		
 		var txtarea = com.elclab.proveit.getMWEditBox();
@@ -680,7 +685,7 @@ com.elclab.proveit = {
 		var endPos = txtarea.selectionEnd;
 		var text = txtarea.value;
 		var textScroll = txtarea.scrollTop;
-		com.elclab.proveit.log("Replacing: \n\t" + com.elclab.proveit.currentrefs[item]["orig"] + "\nWith:\n\t" + com.elclab.proveit.currentrefs[item].toString());
+		//com.elclab.proveit.log("Replacing: \n\t" + com.elclab.proveit.currentrefs[item]["orig"] + "\nWith:\n\t" + com.elclab.proveit.currentrefs[item].toString());
 		
 		// This code (the original) had the minor drawback of not working when references contained links.
 		//var regexpstring = com.elclab.proveit.currentrefs[item]["orig"].replace(/\|/g, "\\|");
@@ -734,12 +739,12 @@ com.elclab.proveit = {
 		//com.elclab.proveit.log("Entering processCommaSeparated");
 		if(!(ref && ref != null))
 		{
-			com.elclab.proveit.log("ref is not valid.");
+			//com.elclab.proveit.log("ref is not valid.");
 			return false;
 		}
 		if(!(text && text != null))
 		{
-			com.elclab.proveit.log("text is not valid.");
+			//com.elclab.proveit.log("text is not valid.");
 			return false;
 		}
 		// FIX: Commas can be part of fields.
@@ -789,7 +794,7 @@ com.elclab.proveit = {
 	
 	editAddField : function()
 	{
-		com.elclab.proveit.log("Entering editAddField");
+		//com.elclab.proveit.log("Entering editAddField");
 		var name = com.elclab.proveit.curRefItem.id;
 		var current = com.elclab.proveit.currentrefs[name];
 		com.elclab.proveit.addEditPopupRow(current.params, "", false, false);
@@ -803,7 +808,7 @@ com.elclab.proveit = {
 		var name = com.elclab.proveit.getRefbox().selectedItem.id;
 		var list = com.elclab.proveit.getSidebarDoc().getElementById("editlist").getElementsByTagName("hbox");
 		
-		com.elclab.proveit.log("list.length: " + list.length);
+		//com.elclab.proveit.log("list.length: " + list.length);
 		
 		var refNameValue = com.elclab.proveit.getSidebarDoc().getElementById("edit_refname_value");
 		if(refNameValue.value != "")
@@ -820,19 +825,30 @@ com.elclab.proveit = {
 		        com.elclab.proveit.currentrefs[name]["name"] = null; // Save blank names as null
 		}
 		
+		/*
+		com.elclab.proveit.log("Setting title = test2");
+		com.elclab.proveit.currentrefs[name].params["title"] = "title2";		
+		*/
 		for (var i = 0; i < list.length; i++) {
 			if (list[i]) {
 				// com.elclab.proveit.log(item + ":" + list[item].id);
 				var node = list[i].id;
-				//com.elclab.proveit.log("item: " + i);
+				com.elclab.proveit.log("item: " + i);
 				com.elclab.proveit.log("node: " + node);
 				delete(com.elclab.proveit.currentrefs[name].params[node]);
 				var paramName = com.elclab.proveit.getSidebarDoc().getElementById(node + "namec").value;
 				com.elclab.proveit.log("paramName: " + paramName);
 				var paramVal = com.elclab.proveit.getSidebarDoc().getElementById(node + "value").value;
 				com.elclab.proveit.log("paramVal: " + paramVal);
+				
+				com.elclab.proveit.log("Setting title = test2");
+				com.elclab.proveit.currentrefs[name].params["title"] = "title2";
+				
 				if (paramName != "" && paramVal != "")
+				{
+					com.elclab.proveit.log("Setting " + paramName + "= " + paramVal);
 					com.elclab.proveit.currentrefs[name].params[paramName] = paramVal;
+				}
 				/*
 				else if (node == "name"
 						&& paramVal != "") {
@@ -840,6 +856,7 @@ com.elclab.proveit = {
 					com.elclab.proveit.currentrefs[name][node] = paramVal;
 				}
 				*/
+		
 			}
 		}
 		/*
@@ -878,9 +895,9 @@ com.elclab.proveit = {
 		    com.elclab.proveit.includeProveItEditSummary();
 		}
 		
-		com.elclab.proveit.updateEditPopup();
+		//com.elclab.proveit.updateEditPopup();
 		
-		com.elclab.proveit.log("Leaving editSave.")
+		com.elclab.proveit.log("Leaving editSave.");
 	},
 	
 	ignoreSelection : false,
@@ -905,7 +922,7 @@ com.elclab.proveit = {
 	 */
 	doSelect : function()
 	{
-		com.elclab.proveit.log("Entering doSelect");
+		//com.elclab.proveit.log("Entering doSelect");
 		
 		//com.elclab.proveit.log("Selected item: " + com.elclab.proveit.getRefbox().selectedItem);
 		
@@ -932,7 +949,7 @@ com.elclab.proveit = {
 		var curRef = com.elclab.proveit.currentrefs[com.elclab.proveit.curRefItem.id];
 		if(!curRef || curRef == null)
 		{
-			com.elclab.proveit.log("doSelect: curRef is not defined.");
+			//com.elclab.proveit.log("doSelect: curRef is not defined.");
 			com.elclab.proveit.respawn();
 			return false;
 		}
@@ -954,7 +971,7 @@ com.elclab.proveit = {
 			}
 			else
 			{
-				com.elclab.proveit.log("doSelect not calling highlightTargetString");
+				//com.elclab.proveit.log("doSelect not calling highlightTargetString");
 				com.elclab.proveit.highlightOnSelect = true;
 			}
 			/*var mainWindow = window.QueryInterface(Components.interfaces.nsIInterfaceRequestor)
@@ -995,15 +1012,24 @@ com.elclab.proveit = {
 		com.elclab.proveit.log("Entering updateEditPopup.")
 		var box = com.elclab.proveit.getSidebarDoc().getElementById("editlist");
 		var size = box.childNodes.length;
-		com.elclab.proveit.log(size);
-		for (var i = 0; i < size; i++) {
+		com.elclab.proveit.log("Before size: " + size);
+		//for (var i = 0; i < size; i++) {
+		while(box.childNodes.length > 0) // Above apparently can get into race condition.
+		{
 			var item = box.removeChild(box.childNodes[0]);
-			// com.elclab.proveit.log("Deleting #" + i + ": " + item.id);
-			// com.elclab.proveit.log(size);
+			//com.elclab.proveit.log("Deleting #" + i + ": " + item.id);
+			com.elclab.proveit.log("Deleting" + ": " + item.id);			
+			size = box.childNodes.length;
+			com.elclab.proveit.log("Size: " + size);
 		}
+		
+		size = box.childNodes.length;
+		com.elclab.proveit.log("After size: " + size);
+		
 		
 		//var name = com.elclab.proveit.getRef().selectedItem.id;
 		var name = com.elclab.proveit.curRefItem.id;
+		com.elclab.proveit.log("name: " + name);
 		
 		var current = com.elclab.proveit.currentrefs[name];
 		
@@ -1021,16 +1047,20 @@ com.elclab.proveit = {
 		
 		var refNameValue = com.elclab.proveit.getSidebarDoc().getElementById("edit_refname_value");
 		if(current["name"])
+		{
 			refNameValue.value = current["name"];
+		}
 		else
+		{
 			refNameValue.value = "";
-		
+		}
 		// Add default params with blank values.
 		var defaults = current.getDefaultParams();
 		for(var i = 0; i < defaults.length; i++)
 		{
 			if(!current.params[defaults[i]])
 			{
+				com.elclab.proveit.log("Setting default blank parameter: defaults[i] = " + defaults[i]);
 				current.params[defaults[i]] = "";
 			}
 		}
@@ -1039,28 +1069,43 @@ com.elclab.proveit = {
 			
 		var paramNames = new Array();
 		//First run through just to get names.
+		com.elclab.proveit.log("Adding params to array.");
 		for(item in current.params)
 		{
+			com.elclab.proveit.log(item);
 			paramNames.push(item);
 		}
 		
+		com.elclab.proveit.log("Done adding params to array.");
+		
 		var sorter = current.getSorter();
 		if(sorter)
+		{
 			paramNames.sort(sorter);
+		}
 		else
+		{
 			paramNames.sort();
+		}
 		/* Sort them to provide consistent interface.  Uses custom sort order (which is easily tweaked)
 		   where possible.
 
 		   Javascript does destructive sorting, which in this case, is convenient...
 		*/
 		
+		size = box.childNodes.length;
+		com.elclab.proveit.log("Before size: " + size);
+		
 		for(var i = 0; i < paramNames.length; i++) {
 			//com.elclab.proveit.log("Calling addEditPopupRow on current.params." + item);
+			com.elclab.proveit.log("i: " + i + ", paramNames[i]: " + paramNames[i]);
 			com.elclab.proveit.addEditPopupRow(current.params, paramNames[i], required[paramNames[i]], true);
 		}
 		
-		//com.elclab.proveit.log("Leaving updateEditPopup");
+		size = box.childNodes.length;
+		com.elclab.proveit.log("After size: " + size);
+		
+		com.elclab.proveit.log("Leaving updateEditPopup");
 	},
 	
 	/**
@@ -1072,8 +1117,10 @@ com.elclab.proveit = {
 	 */
 	addEditPopupRow : function(list, item, req, fieldType)
 	{
-		//com.elclab.proveit.log("Entering addEditPopupRow.");
-		//com.elclab.proveit.log("item: " + item);
+		com.elclab.proveit.log("Entering addEditPopupRow.");
+		com.elclab.proveit.log("item: " + item);
+		com.elclab.proveit.log("req: " + req);
+		com.elclab.proveit.log("fieldType: " + fieldType);
 		/*	
 		if (item != "type" && item != "toString" && item != "orig"
 				&& item != "save") {
@@ -1084,6 +1131,9 @@ com.elclab.proveit = {
 			var left = newline.childNodes[0];
 			var right = newline.childNodes[2];
 			//newline.id = "" + item;
+			com.elclab.proveit.log("About to set id of hbox to: " + item);
+			com.elclab.proveit.log("Checking for already existing item.  Should be null: " 
+			+ com.elclab.proveit.getSidebarDoc().getElementById(item));
 			newline.id = item;
 			newline.hidden = false;
 			com.elclab.proveit.getSidebarDoc().getElementById("editlist").appendChild(newline);
@@ -1093,7 +1143,10 @@ com.elclab.proveit = {
 			com.elclab.proveit.getSidebarDoc().getElementById(item + "namec").value = item;
 			
 			if(fieldType)
+			{
+				com.elclab.proveit.log("list[item]: " + list[item]);
 				com.elclab.proveit.getSidebarDoc().getElementById(item + "value").value = list[item];
+			}
 			else
 				com.elclab.proveit.getSidebarDoc().getElementById(item + "value").value = "";
 				
@@ -1219,7 +1272,7 @@ com.elclab.proveit = {
 	 * the display chooser.
 	 */
 	scanRef : function() {
-		com.elclab.proveit.log("Entering scanRef.");
+		//com.elclab.proveit.log("Entering scanRef.");
 		// textValue is the text from the edit box
 		var text;
 		// zero out the old scan, just in case
@@ -1391,8 +1444,8 @@ com.elclab.proveit = {
 								*/
 							}
 						} else {
-							com.elclab.proveit.log("Can't Parse: " + com.elclab.proveit.currentScan[i]);
-							com.elclab.proveit.log("Continue-ing loop");
+							//com.elclab.proveit.log("Can't Parse: " + com.elclab.proveit.currentScan[i]);
+							//com.elclab.proveit.log("Continue-ing loop");
 							var citation = workingstring;
 							continue;
 						}
@@ -1402,7 +1455,7 @@ com.elclab.proveit = {
 							var text = com.elclab.proveit.addNewElement(citation);
 							if(text == null)
 							{
-								com.elclab.proveit.log("scanRef: addNewElement returned null");
+								//com.elclab.proveit.log("scanRef: addNewElement returned null");
 								com.elclab.proveit.respawn();
 								return false;
 							}
@@ -1422,7 +1475,7 @@ com.elclab.proveit = {
 							var text = com.elclab.proveit.addNewElement(citation);
 							if(text == null)
 							{
-								com.elclab.proveit.log("scanRef: addNewElement returned null");
+								//com.elclab.proveit.log("scanRef: addNewElement returned null");
 								com.elclab.proveit.respawn();
 								return false;
 							}
@@ -1442,14 +1495,14 @@ com.elclab.proveit = {
 		}
 		else
 		{
-			com.elclab.proveit.log("scanRef: MW edit box is not defined.");
+			//com.elclab.proveit.log("scanRef: MW edit box is not defined.");
 			return false;
 		}
 		//document.getElementById('display').value = "";
 		//com.elclab.proveit.log("com.elclab.proveit.currentScan: " + com.elclab.proveit.currentScan)
 		//com.elclab.proveit.log("scanRef currentrefs: " + com.elclab.proveit.currentrefs);
 		//com.elclab.proveit.log("scanRefs currentrefs.length: " + com.elclab.proveit.currentrefs.length);	
-		com.elclab.proveit.log("scanRef returned successfully.");
+		//com.elclab.proveit.log("scanRef returned successfully.");
 	},
 
 	/**
@@ -1740,7 +1793,7 @@ com.elclab.proveit = {
 
 		var extraTextbox= com.elclab.proveit.getSidebarDoc().getElementById(type + "extra");
 		if (extraTextbox != null && extraTextbox.value != null) {
-				com.elclab.proveit.log("Calling processCommaSeparated");
+				//com.elclab.proveit.log("Calling processCommaSeparated");
 				com.elclab.proveit.processCommaSeparated(tag, extraTextbox.value);
 
 		}
@@ -1754,7 +1807,7 @@ com.elclab.proveit = {
 		}
 		
 		for (var i = 1; i < box.childNodes.length - 2; i++) {
-			com.elclab.proveit.log("box.childNodes[i].childNodes[1].id: " + box.childNodes[i].childNodes[1].id)
+			//com.elclab.proveit.log("box.childNodes[i].childNodes[1].id: " + box.childNodes[i].childNodes[1].id)
 			if (box.childNodes[i].childNodes[1]
 					&& box.childNodes[i].childNodes[1].id == (type + "name")) {
 				if (com.elclab.proveit.currentrefs[com.elclab.proveit.getSidebarDoc().getElementById(type + "name").value]) {
@@ -1797,8 +1850,8 @@ com.elclab.proveit = {
 					tag[paramName] = paramVal;*/
 			}
 			//if(paramName != "name")	
-			com.elclab.proveit.log("paramName: " + paramName);	
-			com.elclab.proveit.log("paramVal: " + paramVal);
+			//com.elclab.proveit.log("paramName: " + paramName);	
+			//com.elclab.proveit.log("paramVal: " + paramVal);
 			if(paramName != null && paramName != "")
 			{
 				tag.params[paramName] = paramVal;
@@ -1859,7 +1912,7 @@ com.elclab.proveit = {
 		var current = showable.hidden;
 		showable.hidden = !current;
 		*/
-		com.elclab.proveit.log("Entering openExtra");
+		//com.elclab.proveit.log("Entering openExtra");
 		var newline = com.elclab.proveit.getSidebarDoc().getElementById("dummyCreateRow").cloneNode(true);
 		newline.hidden = false;
 		
@@ -1992,7 +2045,7 @@ com.elclab.proveit = {
 		*/
 		
 		newinsertimage.addEventListener("click", function() {
-			com.elclab.proveit.log("Entering newinsertimage click handler and setting highlightOnSelect false");
+			//com.elclab.proveit.log("Entering newinsertimage click handler and setting highlightOnSelect false");
 			com.elclab.proveit.highlightOnSelect = false;
 		}, false);
 		
@@ -2019,14 +2072,14 @@ com.elclab.proveit = {
 	    var refbox = com.elclab.proveit.getRefbox();
 	    if(refbox == null)
 	    {
-	    	com.elclab.proveit.log("genNameWithoutDuplicates: refbox is null");
+	    	//com.elclab.proveit.log("genNameWithoutDuplicates: refbox is null");
 	    	return null;
 	    }
 	    var bad = false;
 	    for (var i = 0; i < refbox.childNodes.length; i++) {
 		if (refbox.childNodes[i].id == generatedName) {
 		    bad = true;
-		    com.elclab.proveit.log("genNameWithoutDuplicates: name: " + generatedName);
+		    //com.elclab.proveit.log("genNameWithoutDuplicates: name: " + generatedName);
 		    break;
 		}
 	    }
@@ -2064,7 +2117,7 @@ com.elclab.proveit = {
 		generatedName = com.elclab.proveit.genNameWithoutDuplicates(generatedName);
 		if(generatedName == null)
 		{
-			com.elclab.proveit.log("addNewElement: genNameWithoutDuplicates returned null.");
+			//com.elclab.proveit.log("addNewElement: genNameWithoutDuplicates returned null.");
 			return null;
 		}
 		
