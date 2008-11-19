@@ -597,10 +597,12 @@ com.elclab.proveit = {
 	
 	insertRef : function(ref, full)
 	{
-		//com.elclab.proveit.log("Entering insertRef.")
+		com.elclab.proveit.log("Entering insertRef.");
 		var txtarea = com.elclab.proveit.getMWEditBox();
 		if(!txtarea)
+		{
 			return false;
+		}
 		var sel = com.elclab.proveit.getInsertionText(ref, full);
 
 		// var start = top.window.content.document
@@ -641,10 +643,12 @@ com.elclab.proveit = {
 	 * location of the cursor in the document.
 	 */
 	insertSelectedRef : function() {
-		//com.elclab.proveit.log("Entering insert.");
+		com.elclab.proveit.log("Entering insertSelectedRef.");
 		if (com.elclab.proveit.getRefbox().selectedItem) {
 			if(com.elclab.proveit.currentrefs == [])
-				//com.elclab.proveit.log("currentrefs is undefined.");
+			{
+				com.elclab.proveit.log("currentrefs is undefined.");
+			}
 			//var sel = com.elclab.proveit.getSidebarDoc().getElementById('display').value;
 			/*else
 				com.elclab.proveit.log("currentrefs: " + com.elclab.proveit.currentrefs);*/
@@ -832,12 +836,15 @@ com.elclab.proveit = {
 		for (var i = 0; i < list.length; i++) {
 			if (list[i]) {
 				// com.elclab.proveit.log(item + ":" + list[item].id);
-				var node = list[i].id;
-				com.elclab.proveit.log("item: " + i);
-				com.elclab.proveit.log("node: " + node);
-				delete(com.elclab.proveit.currentrefs[name].params[node]);
-				//var paramName = com.elclab.proveit.getSidebarDoc().getElementById(node + "namec").value;
+				//var node = list[i].id;
+				//com.elclab.proveit.log("item: " + i);
 				var paramName = list[i].childNodes[0].value;
+				//com.elclab.proveit.log("node: " + node);
+				
+				//delete(com.elclab.proveit.currentrefs[name].params[node]);
+				delete(com.elclab.proveit.currentrefs[name].params[paramName]);
+				
+				//var paramName = com.elclab.proveit.getSidebarDoc().getElementById(node + "namec").value;
 				com.elclab.proveit.log("paramName: " + paramName);
 				//var paramVal = com.elclab.proveit.getSidebarDoc().getElementById(node + "value").value;
 				var paramVal = list[i].childNodes[2].value;
@@ -1014,7 +1021,7 @@ com.elclab.proveit = {
 		com.elclab.proveit.log("Entering updateEditPopup.")
 		var box = com.elclab.proveit.getSidebarDoc().getElementById("editlist");
 		var size = box.childNodes.length;
-		com.elclab.proveit.log("Before size: " + size);
+		//com.elclab.proveit.log("Before size: " + size);
 		//for (var i = 0; i < size; i++) {
 		while(box.childNodes.length > 0) // Above apparently can get into race condition.
 		{
@@ -1026,12 +1033,12 @@ com.elclab.proveit = {
 		}
 		
 		size = box.childNodes.length;
-		com.elclab.proveit.log("After size: " + size);
+		//com.elclab.proveit.log("After size: " + size);
 		
 		
 		//var name = com.elclab.proveit.getRef().selectedItem.id;
 		var name = com.elclab.proveit.curRefItem.id;
-		com.elclab.proveit.log("name: " + name);
+		//com.elclab.proveit.log("name: " + name);
 		
 		var current = com.elclab.proveit.currentrefs[name];
 		
@@ -1056,14 +1063,22 @@ com.elclab.proveit = {
 		{
 			refNameValue.value = "";
 		}
+		
+		// Don't contaminate actual object with junk params.
+		var tempParams = {};
+		for(e in current.params)
+		{
+			tempParams[e] = current.params[e];	
+		}
+		
 		// Add default params with blank values.
 		var defaults = current.getDefaultParams();
 		for(var i = 0; i < defaults.length; i++)
 		{
-			if(!current.params[defaults[i]])
+			if(!tempParams[defaults[i]])
 			{
-				com.elclab.proveit.log("Setting default blank parameter: defaults[i] = " + defaults[i]);
-				current.params[defaults[i]] = "";
+				//com.elclab.proveit.log("Setting default blank parameter: defaults[i] = " + defaults[i]);
+				tempParams[defaults[i]] = "";
 			}
 		}
 		
@@ -1071,14 +1086,14 @@ com.elclab.proveit = {
 			
 		var paramNames = new Array();
 		//First run through just to get names.
-		com.elclab.proveit.log("Adding params to array.");
-		for(item in current.params)
+		//com.elclab.proveit.log("Adding params to array.");
+		for(item in tempParams)
 		{
-			com.elclab.proveit.log(item);
+			//com.elclab.proveit.log(item);
 			paramNames.push(item);
 		}
 		
-		com.elclab.proveit.log("Done adding params to array.");
+		//com.elclab.proveit.log("Done adding params to array.");
 		
 		var sorter = current.getSorter();
 		if(sorter)
@@ -1096,18 +1111,18 @@ com.elclab.proveit = {
 		*/
 		
 		size = box.childNodes.length;
-		com.elclab.proveit.log("Before size: " + size);
+		//com.elclab.proveit.log("Before size: " + size);
 		
 		for(var i = 0; i < paramNames.length; i++) {
-			//com.elclab.proveit.log("Calling addEditPopupRow on current.params." + item);
-			com.elclab.proveit.log("i: " + i + ", paramNames[i]: " + paramNames[i]);
-			com.elclab.proveit.addEditPopupRow(current.params, paramNames[i], required[paramNames[i]], true);
+			//com.elclab.proveit.log("Calling addEditPopupRow on tempParams." + item);
+			//com.elclab.proveit.log("i: " + i + ", paramNames[i]: " + paramNames[i]);
+			com.elclab.proveit.addEditPopupRow(tempParams, paramNames[i], required[paramNames[i]], true);
 		}
 		
-		size = box.childNodes.length;
-		com.elclab.proveit.log("After size: " + size);
+		//size = box.childNodes.length;
+		//com.elclab.proveit.log("After size: " + size);
 		
-		com.elclab.proveit.log("Leaving updateEditPopup");
+		//com.elclab.proveit.log("Leaving updateEditPopup");
 	},
 	
 	/**
@@ -1119,10 +1134,13 @@ com.elclab.proveit = {
 	 */
 	addEditPopupRow : function(list, item, req, fieldType)
 	{
+		/*
 		com.elclab.proveit.log("Entering addEditPopupRow.");
 		com.elclab.proveit.log("item: " + item);
 		com.elclab.proveit.log("req: " + req);
 		com.elclab.proveit.log("fieldType: " + fieldType);
+		*/
+		
 		/*	
 		if (item != "type" && item != "toString" && item != "orig"
 				&& item != "save") {
@@ -1133,10 +1151,12 @@ com.elclab.proveit = {
 			var left = newline.childNodes[0];
 			var right = newline.childNodes[2];
 			//newline.id = "" + item;
+			/*
 			com.elclab.proveit.log("About to set id of hbox to: " + item);
 			com.elclab.proveit.log("Checking for already existing item.  Should be null: " 
 			+ com.elclab.proveit.getSidebarDoc().getElementById(item));
 			newline.id = item;
+			*/
 			newline.hidden = false;
 			com.elclab.proveit.getSidebarDoc().getElementById("editlist").appendChild(newline);
 	
