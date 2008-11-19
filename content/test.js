@@ -1140,18 +1140,20 @@ com.elclab.proveit = {
 			newline.hidden = false;
 			com.elclab.proveit.getSidebarDoc().getElementById("editlist").appendChild(newline);
 	
-			left.id = "" + item + "namec";
-			right.id = "" + item + "value";
-			com.elclab.proveit.getSidebarDoc().getElementById(item + "namec").value = item;
-			
 			if(fieldType)
 			{
+				left.id = "" + item + "namec";
+				right.id = "" + item + "value";
+				com.elclab.proveit.getSidebarDoc().getElementById(item + "namec").value = item;
+			
 				com.elclab.proveit.log("list[item]: " + list[item]);
 				com.elclab.proveit.getSidebarDoc().getElementById(item + "value").value = list[item];
 			}
 			else
-				com.elclab.proveit.getSidebarDoc().getElementById(item + "value").value = "";
-				
+			{
+				//com.elclab.proveit.getSidebarDoc().getElementById(item + "value").value = "";
+			}
+			
 			var label = com.elclab.proveit.getSidebarDoc().getElementById("star").cloneNode(true);
 			label.id = "";
 			label.style.display = "-moz-box"; // back to default display prop.
