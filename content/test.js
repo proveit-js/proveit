@@ -1796,7 +1796,7 @@ com.elclab.proveit = {
 		}*/
 
 		var extraTextbox= com.elclab.proveit.getSidebarDoc().getElementById(type + "extra");
-		if (extraTextbox != null && extraTextbox.value != null) {
+		if (extraTextbox != null && extraTextbox.value != null && extraTextbox.value != "") {
 				//com.elclab.proveit.log("Calling processCommaSeparated");
 				com.elclab.proveit.processCommaSeparated(tag, extraTextbox.value);
 
@@ -1898,6 +1898,12 @@ com.elclab.proveit = {
 	clearAddCitation : function(box)
 	{
 		//com.elclab.proveit.log("Entering clearAddCitation.")
+		for(var i = box.childNodes.length - 3; i >= 1; i--)
+		{
+			if(box.childNodes[i].id == "dummyCreateRow")
+				box.removeChild(box.childNodes[i]);
+		}
+		
 		var fields = box.getElementsByTagName("textbox");
 		for(var i = 0; i < fields.length; i++)
 		{
