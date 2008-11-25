@@ -803,6 +803,12 @@ com.elclab.proveit = {
 		var current = com.elclab.proveit.currentrefs[name];
 		com.elclab.proveit.addEditPopupRow(current.params, "", false, false);
 	},
+	
+	editRemoveField : function()
+	{
+		var wrap = com.elclab.proveit.getSidebarDoc().getElementById("editlist");
+		wrap.removeChild(wrap.childNodes[wrap.childNodes.length - 1]);
+	},
 
 	editSave : function() {
 		com.elclab.proveit.log("Entering editSave");
@@ -1949,6 +1955,11 @@ com.elclab.proveit = {
 		var wrapper = com.elclab.proveit.getSidebarDoc().getElementById(type);
 		wrapper.insertBefore(newline, wrapper.childNodes[wrapper.childNodes.length - 2]);
 		
+	},
+	
+	newRemoveField : function(type){
+		var wrapper = com.elclab.proveit.getSidebarDoc().getElementById(type);
+		wrapper.removeChild(wrapper.childNodes[wrapper.childNodes.length - 3]);
 	},
 
 	/**
