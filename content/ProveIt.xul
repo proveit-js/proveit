@@ -33,6 +33,26 @@
 		</hbox>
 		<label />
 	</tooltip>
+	<hbox id="dummyCiteParam" pack="center" align="center" flex="1" hidden="true">
+		<!--<label control="dummyparam" value="&ProveIt.addparam;" flex="1" minwidth="145"/>-->
+		<textbox id="dummyparam" />
+	</hbox>
+	<vbox id="dummyCitePane" hidden="true">
+		<hbox pack="center" align="center" flex="1" >
+			<label control="dummyname" value="&ProveIt.refName;" flex="1" minwidth="145"/>
+			<textbox id="dummyname" />
+		</hbox>
+		<hbox>
+			<textbox id="dummyextra" hidden="true" multiline="true" rows="7" flex="1" />
+			</hbox>
+		<hbox pack="end">
+			<button id="dummyexpand" label="&ProveIt.addother;" onclick="com.elclab.proveit.openExtra('dummy');" />
+			<button id="removeRow" label="Remove field" onclick="com.elclab.proveit.newRemoveField('dummy');" />
+			<button id="dummysubmit" label="&ProveIt.createnewsave;" onclick="com.elclab.proveit.addCitation('dummy');"/>
+			<button label="&ProveIt.canceladd;" onclick="com.elclab.proveit.cancelAdd()" />
+		</hbox>
+	</vbox>	
+				
 	
 	<vbox flex="1">
 		<hbox flex="1" maxwidth="800">
@@ -113,6 +133,7 @@
 				</menulist>
 			</hbox>
 			<vbox id="citepanes" flex="1" minwidth="500">
+				<!--
 				<vbox id="book" hidden="true">
 					<hbox pack="center" align="center" flex="1" >
 						<label control="bookname" value="&ProveIt.refName;" flex="1" minwidth="145"/>
@@ -513,6 +534,7 @@
 						<button label="&ProveIt.canceladd;" onclick="com.elclab.proveit.cancelAdd()" />
 					</hbox>
 				</vbox>
+				-->
 			</vbox>
 		</vbox>
 		<vbox flex="1" hidden="true" id="citation">

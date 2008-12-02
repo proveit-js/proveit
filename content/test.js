@@ -1646,6 +1646,46 @@ com.elclab.proveit = {
 		this.getSorter = function()
 		{
 			return sorter;
+		};
+		
+		this.getDescriptions = function()
+		{
+			var desc = 
+			{
+				name : "Name",
+				author: "Author (l,f)",
+				title: "Title",
+				publisher: "Publisher",
+				year: "Year",
+				location: "Location",
+				isbn: "ISBN",
+				pages: "Pages",
+				month: "Month",
+				journal: "Journal",
+				volume: "Volume",
+				issue: "Issue",
+				url: "URL",
+				date: "Date(YYYY-MM-DD)",
+				adate: "Access Date(YYYY-MM-DD)",
+				coauth: "Co-Authors",
+				booktitle: "Book Title",
+				encyclopedia: "Encyclopedia",
+				newsgroup: "Newsgroup",
+				version: "Version",
+				site: "Site",
+				newspaper: "Newspaper",
+				pubplace: "Publication Place",
+				editor: "Editor(l,f)",
+				article: "Article",
+				pubplace: "Publisher Place",
+				pubyear: "Publication Year",
+				inventor: "Inventor(l,f)",
+				idate: "Issue Date(YYYY-MM-DD)",
+				pnumber: "Patent Number",
+				country: "Country(US)",
+				work: "Work",
+			};
+			return desc;
 		}
 		
 		// Get required parameters for this citation type
@@ -1966,7 +2006,17 @@ com.elclab.proveit = {
 	 * Changes the panel for the cite entry panel to the correct type of entry
 	 */
 	changeCite : function() {
-		//com.elclab.proveit.log("Entering changeCite");
+		com.elclab.proveit.log("Entering changeCite");
+		var citePanes = com.elclab.proveit.getSidebarDoc().getElementById("citepanes");
+		for(var i = 0; i < citePanes.childNodes.length; i++)
+		{
+			if(citePanes.childNodes.hidden == "false")
+			{
+				citePanes.removeChild(citePanes.childNodes[i]);
+				com.elclab.proveit.log("changeCite: Remove child at index " + i);
+			}
+		}
+		/*
 		var that = com.elclab.proveit.getSidebarDoc().getElementById("citemenu").value;
 		that = com.elclab.proveit.getSidebarDoc().getElementById(that);
 		var childlist = com.elclab.proveit.getSidebarDoc().getElementById("citepanes").childNodes;
@@ -1975,6 +2025,51 @@ com.elclab.proveit = {
 		}
 		com.elclab.proveit.clearAddCitation(that);
 		that.hidden = false;
+		*/
+		var citeType = com.elclab.proveit.getSidebarDoc().getElementById("citemenu").value;
+		com.elclab.proveit.log("citeType: " + citeType);
+		var genPane = com.elclab.proveit.getSidebarDoc().getElementById("dummyCitePane").cloneNode(true);
+		genPane.id = citeType;
+		var nameHbox = genPane.firstChild;
+		nameHbox.childNodes[0].setAttribute("control", citeType + "name");
+		nameHbox.childNodes[1].id = citeType + "name";
+		// The extraHbox will probably get eliminated altogether later.
+		var extraHbox = genPane.childNodes[genPane.childNodes.length - 2];
+		extraHbox.firstChild.id = citeType + "extra";
+		var endHbox = genPane.childNodes[genPane.childNodes.length - 1];
+		var addButton = endHbox.childNodes[0];
+		addButton.id = citeType + "expand";
+		addButton.setAttribute("onclick", "com.elclab.proveit.openExtra('" + citeType + "');");
+		endHbox.childNodes[1].setAttribute("onclick", "com.elclab.proveit.newRemoveField('" + citeType + "');");
+		var submitButton = endHbox.childNodes[2];
+		submitButton.id = citeType + "submit";
+		submitButton.setAttribute("onclick", "com.elclab.proveit.addCitation('" + citeType + "');");
+		
+		var citeObj = new com.elclab.proveit.Cite();
+		citeObj.type = citeType;
+		var desc = citeObj.getDescriptions();
+		var defaultParams = citeObj.getDefaultParams().slice(0); // copy
+		defaultParams.sort(citeObj.getSorter())
+		for(var i = 0; i < defaultParams.length; i++)
+		{
+			var param = defaultParams[i];
+			var paramBox = com.elclab.proveit.getSidebarDoc().getElementById("dummyCiteParam").cloneNode(true);
+			var label = com.elclab.proveit.getSidebarDoc().createElement("label");
+			label.setAttribute("value", "<ref> name");
+			label.setAttribute("flex", "1");
+			label.setAttribute("minwidth", "145");
+			paramBox.insertBefore(label, paramBox.firstChild); //bug
+			paramBox.id = "";
+			// Basically the same code as nameHbox above
+			var paramLabel = paramBox.childNodes[0];
+			paramLabel.setAttribute("control", citeType + param);
+			paramLabel.setAttribute("value", desc[param] + ": ");
+			paramBox.childNodes[1].id = citeType + param;
+			paramBox.hidden = false;
+			genPane.insertBefore(paramBox, extraHbox);
+		}
+		genPane.hidden = false;
+		citePanes.insertBefore(genPane, citePanes.firstChild);
 	},
 
 	/**
