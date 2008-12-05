@@ -19,6 +19,8 @@ com.elclab.proveit = {
 
 	knownSites : ["wiktionary.org",	"wikipedia.org", "wikinews.org"],
 	
+	LANG : "en", // currently used only for descriptions.
+	
 	logEnum :
 	{
 		console : 0,
@@ -398,6 +400,9 @@ com.elclab.proveit = {
 		{
 			//com.elclab.proveit.log("Calling scanRef from proveitonload.");	
 			com.elclab.proveit.scanRef();
+			
+			// Load initial box for add new cite.
+			com.elclab.proveit.changeCite(com.elclab.proveit.getSidebarDoc().getElementById("citemenu"));
 		}
 		
 		return true;
@@ -597,7 +602,7 @@ com.elclab.proveit = {
 	
 	insertRef : function(ref, full)
 	{
-		com.elclab.proveit.log("Entering insertRef.");
+		//com.elclab.proveit.log("Entering insertRef.");
 		var txtarea = com.elclab.proveit.getMWEditBox();
 		if(!txtarea)
 		{
@@ -1229,6 +1234,7 @@ com.elclab.proveit = {
 
 	toggleinsert : true,
 
+	// This whole function is something of a hack.
 	flipToggle : function(toggle) {
 		var label = com.elclab.proveit.getSidebarDoc().getElementById(toggle + "toggle");
 		label.setAttribute("style", "font-weight: bold");
@@ -1248,12 +1254,17 @@ com.elclab.proveit = {
 			com.elclab.proveit.togglestyle = true;
 			com.elclab.proveit.getSidebarDoc().getElementById('citation').hidden = true;
 			com.elclab.proveit.getSidebarDoc().getElementById('cite').hidden = false;
+			com.elclab.proveit.clearCitePanes(com.elclab.proveit.getSidebarDoc().getElementById("citationpanes"));
+			com.elclab.proveit.changeCite(com.elclab.proveit.getSidebarDoc().getElementById("citemenu"));
 		} else if (toggle == "citation") {
 			com.elclab.proveit.getSidebarDoc().getElementById('citetoggle').setAttribute("style",
 					"font-weight: normal");
 			com.elclab.proveit.togglestyle = false;
 			com.elclab.proveit.getSidebarDoc().getElementById('cite').hidden = true;
 			com.elclab.proveit.getSidebarDoc().getElementById('citation').hidden = false;
+			com.elclab.proveit.clearCitePanes(com.elclab.proveit.getSidebarDoc().getElementById("citepanes"));
+			com.elclab.proveit.changeCite(com.elclab.proveit.getSidebarDoc().getElementById("citationmenu"));
+		
 		}
 	},
 
@@ -1534,6 +1545,51 @@ com.elclab.proveit = {
 		//com.elclab.proveit.log("scanRefs currentrefs.length: " + com.elclab.proveit.currentrefs.length);	
 		//com.elclab.proveit.log("scanRef returned successfully.");
 	},
+	
+	// Used to map between parameter name and human-readable.
+	descriptions :
+	{
+		en : 
+			{
+				name : "Name",
+				author: "Author (l,f)",
+				authorlink: "Author article name",
+				title: "Title",
+				publisher: "Publisher",
+				year: "Year",
+				location: "Location",
+				place: "Locale of work",
+				isbn: "ISBN",
+				id: "ID",
+				pages: "Pages",
+				month: "Month",
+				journal: "Journal",
+				edition: "Edition",
+				volume: "Volume",
+				issue: "Issue",
+				url: "URL",
+				date: "Date(YYYY-MM-DD)",
+				accessdate: "Access Date(YYYY-MM-DD)",
+				coauth: "Co-Authors",
+				booktitle: "Book Title",
+				contribution: "Contribution/Chapter",
+				encyclopedia: "Encyclopedia",
+				newsgroup: "Newsgroup",
+				version: "Version",
+				site: "Site",
+				newspaper: "Newspaper",
+				"publication-place": "Publication Place",
+				editor: "Editor(l,f)",
+				article: "Article",
+				pubplace: "Publisher Place",
+				pubyear: "Publication Year",
+				inventor: "Inventor(l,f)",
+				"issue-date": "Issue Date(YYYY-MM-DD)",
+				"patent-number": "Patent Number",
+				"country-code": "Country(US)",
+				work: "Work"
+			}
+	},
 
 	/**
 	 * A function for Cite style tags.
@@ -1578,35 +1634,37 @@ com.elclab.proveit = {
 		};
 		
 		var paramSortKey =
-		{
-			url : 0,
-			title : 1,
-			accessdate : 2,
-			author : 3,
-			last : 4,
-			first : 5,
-			authorlink : 6,
-			coauthors : 7,
-			date : 8,
-			year : 9,
-			month : 10,
-			format : 11,
-			work : 12,
-			publisher : 13,
-			location : 14,
-			pages : 15,
-			language : 16,
-			isbn : 17,
-			doi : 18,
-			archiveurl : 19,
-			archivedate : 20,
-			quote : 21
-		};
+		[
+			"url",
+			"title",
+			"accessdate",
+			"author",
+			"last",
+			"first",
+			"authorlink",
+			"coauthors",
+			"date",
+			"year",
+			"month",
+			"format",
+			"work",
+			"publisher",
+			"location",
+			"pages",
+			"language",
+			"isbn",
+			"doi",
+			"archiveurl",
+			"archivedate",
+			"quote"
+		];
 	
 		var sorter = function(paramA, paramB)
 		{
-			if(paramSortKey[paramA] != null && paramSortKey[paramB] != null)
-				return paramSortKey[paramA] - paramSortKey[paramB];
+			var aInd = paramSortKey.indexOf(paramA);
+			var bInd = paramSortKey.indexOf(paramB);
+			if(aInd != -1 && bInd != -1)
+				return aInd - bInd;
 			else
 			{
 				if(paramA < paramB)
@@ -1650,43 +1708,8 @@ com.elclab.proveit = {
 		
 		this.getDescriptions = function()
 		{
-			var desc = 
-			{
-				name : "Name",
-				author: "Author (l,f)",
-				title: "Title",
-				publisher: "Publisher",
-				year: "Year",
-				location: "Location",
-				isbn: "ISBN",
-				pages: "Pages",
-				month: "Month",
-				journal: "Journal",
-				volume: "Volume",
-				issue: "Issue",
-				url: "URL",
-				date: "Date(YYYY-MM-DD)",
-				adate: "Access Date(YYYY-MM-DD)",
-				coauth: "Co-Authors",
-				booktitle: "Book Title",
-				encyclopedia: "Encyclopedia",
-				newsgroup: "Newsgroup",
-				version: "Version",
-				site: "Site",
-				newspaper: "Newspaper",
-				pubplace: "Publication Place",
-				editor: "Editor(l,f)",
-				article: "Article",
-				pubplace: "Publisher Place",
-				pubyear: "Publication Year",
-				inventor: "Inventor(l,f)",
-				idate: "Issue Date(YYYY-MM-DD)",
-				pnumber: "Patent Number",
-				country: "Country(US)",
-				work: "Work",
-			};
-			return desc;
-		}
+			return com.elclab.proveit.descriptions[com.elclab.proveit.LANG]; //this could be made Cite-specific if needed.
+		};
 		
 		// Get required parameters for this citation type
 		this.getRequiredParams = function()
@@ -1725,48 +1748,68 @@ com.elclab.proveit = {
 		this.name;
 		this.baseGenName; // Generated name, without possible (1), (2), etc.  Shows as label in refbox.
 		this.template = "Citation"; // Signifies template type is Citation
+		this.type; // web, news, book, etc.  For Citation, used only for default param generation.
 		this.save; 
 		this.inMWEditBox; // true if and only if the ref is in the MW edit box with the same value as this object's orig.
 		this.params = new Object();
 		
 		// Default parameters, to be suggested when editing.
 		var defaultParams =
-		[ "author", "title", "publisher", "place", "year", "url", "accessdate" ];
+		{
+			web : [ "url", "author", "title", "date", "accessdate"],
+			news : [ "author", "title", "newspaper", "url", "publication-place", "volume", "issue", "date", "pages"],
+			encyclopedia : ["author", "editor", "contribution", "title", "publisher", "place", "year", "volume", "pages"],
+			book : ["author", "title", "publisher", "place", "year"],
+			journal : ["author", "title", "journal", "volume", "issue", "year", "pages"],
+			patent : ["inventor", "title", "issue-date", "patent-number", "country-code"]
+		}
 		
 		var requiredParams = {}; // None currently required;
 		
 		var paramSortKey = 
-		{
-			last : 0,
-			first : 1,
-			"author-link" : 2,
-			last2 : 3,
-			first2 : 4,
-			"author2-link" : 5,
-			"publication-date" : 6,
-			date : 7,
-			year : 8,
-			title : 9,
-			edition : 10,
-			volume : 11,
-			series : 12,
-			"publication-place" : 13,
-			place : 14,
-			publisher : 15,
-			pages : 16,
-			page : 17,
-			id : 18,
-			isbn : 19,
-			doi : 20,
-			oclc : 21,
-			url : 22,
-			accessdate : 23
-		};
+		[
+			"last",
+			"first",
+			"url",
+			"author",
+			"editor",
+			"contribution",
+			"author-link",
+			"last2",
+			"first2",
+			"author2-link",
+			"publication-date",
+			"inventor",
+			"title",
+			"issue-date",
+			"patent-number",
+			"country-code",
+			"journal",
+			"volume",
+			"newspaper",
+			"issue",
+			"date",
+			"publisher",
+			"place",
+			"year",
+			"edition",
+			"publication-place",
+			"series",
+			"pages",
+			"page",
+			"id",
+			"isbn",
+			"doi",
+			"oclc",
+			"accessdate"
+		];
 		
 		var sorter = function(paramA, paramB)
 		{
-			if(paramSortKey[paramA] != null && paramSortKey[paramB] != null)
-				return paramSortKey[paramA] - paramSortKey[paramB];
+			var aInd = paramSortKey.indexOf(paramA);
+			var bInd = paramSortKey.indexOf(paramB);
+			if(aInd != -1 && bInd != -1)
+				return aInd - bInd;
 			else
 			{
 				if(paramA < paramB)
@@ -1813,7 +1856,12 @@ com.elclab.proveit = {
 		
 		this.getDefaultParams = function()
 		{
-			return defaultParams;
+			return defaultParams[this.type];
+		};
+		
+		this.getDescriptions = function()
+		{
+			return com.elclab.proveit.descriptions[com.elclab.proveit.LANG]; //this could be made Citation-specific if needed.
 		};
 		
 		this.isValid = function(){return true}; // Currently assume all citation objects are valid.
@@ -1830,6 +1878,8 @@ com.elclab.proveit = {
 	 *            used will hand this to the function.
 	 */
 	addCitation : function(type) {
+		com.elclab.proveit.log("Entering addCitation.");
+		com.elclab.proveit.log("type: " + type);
 		// get this working, lots of typing here.
 		var box = com.elclab.proveit.getSidebarDoc().getElementById(type);
 		var tag;
@@ -1869,6 +1919,11 @@ com.elclab.proveit = {
 		}
 		
 		var refNameValue = com.elclab.proveit.getSidebarDoc().getElementById(type + "name");
+		if(refNameValue == null)
+		{
+			com.elclab.proveit.log("refNameValue null for type: " + type);
+			return false;
+		}
 		if(refNameValue.value != "")
 		{
 			var newName = refNameValue.value;
@@ -1964,6 +2019,11 @@ com.elclab.proveit = {
 	clearAddCitation : function(box)
 	{
 		//com.elclab.proveit.log("Entering clearAddCitation.")
+		if(box == null)
+		{
+			com.elclab.proveit.log("clearAddCitation is null.  Returning false.");
+			return false;
+		}
 		for(var i = box.childNodes.length - 3; i >= 1; i--)
 		{
 			if(box.childNodes[i].id == "dummyCreateRow")
@@ -2002,20 +2062,40 @@ com.elclab.proveit = {
 		wrapper.removeChild(wrapper.childNodes[wrapper.childNodes.length - 3]);
 	},
 
+	clearCitePanes : function(citePanes)
+	{
+		//com.elclab.proveit.log("Entering clear cite panes");
+		//com.elclab.proveit.log("citePanes.childNodes.length: " + citePanes.childNodes.length);
+		
+		for(var i = 0; i < citePanes.childNodes.length; i++)
+		{
+			// id and hidden temp only for debugging.
+			/*
+			var id = citePanes.childNodes[i].id
+			var hidden = citePanes.childNodes[i].hidden;
+			*/
+			if(citePanes.childNodes[i].hidden == false)
+			{
+				citePanes.removeChild(citePanes.childNodes[i]);
+				//com.elclab.proveit.log("clearCitePanes: Removing child at index " + i + ", id: " + id);
+			}
+			/*
+			else
+			{
+				com.elclab.proveit.log("clearCitePanes: Not removing child at index " + i + ", id: " + id + ", hidden = " + hidden);
+			}
+			*/
+		}
+	},
+	
 	/**
 	 * Changes the panel for the cite entry panel to the correct type of entry
 	 */
-	changeCite : function() {
-		com.elclab.proveit.log("Entering changeCite");
-		var citePanes = com.elclab.proveit.getSidebarDoc().getElementById("citepanes");
-		for(var i = 0; i < citePanes.childNodes.length; i++)
-		{
-			if(citePanes.childNodes.hidden == "false")
-			{
-				citePanes.removeChild(citePanes.childNodes[i]);
-				com.elclab.proveit.log("changeCite: Remove child at index " + i);
-			}
-		}
+	changeCite : function(menu) {
+		//com.elclab.proveit.log("Entering changeCite");
+		//com.elclab.proveit.log("menu.id: " + menu.id);
+		var citePanes = menu.parentNode.nextSibling;
+		com.elclab.proveit.clearCitePanes(citePanes);
 		/*
 		var that = com.elclab.proveit.getSidebarDoc().getElementById("citemenu").value;
 		that = com.elclab.proveit.getSidebarDoc().getElementById(that);
@@ -2026,8 +2106,8 @@ com.elclab.proveit = {
 		com.elclab.proveit.clearAddCitation(that);
 		that.hidden = false;
 		*/
-		var citeType = com.elclab.proveit.getSidebarDoc().getElementById("citemenu").value;
-		com.elclab.proveit.log("citeType: " + citeType);
+		var citeType = menu.value;
+		//com.elclab.proveit.log("citeType: " + citeType);
 		var genPane = com.elclab.proveit.getSidebarDoc().getElementById("dummyCitePane").cloneNode(true);
 		genPane.id = citeType;
 		var nameHbox = genPane.firstChild;
@@ -2045,11 +2125,20 @@ com.elclab.proveit = {
 		submitButton.id = citeType + "submit";
 		submitButton.setAttribute("onclick", "com.elclab.proveit.addCitation('" + citeType + "');");
 		
-		var citeObj = new com.elclab.proveit.Cite();
+		// Somewhat hackish.  What's a better way?
+		var citeObj;
+		if(menu.id == "citemenu") 
+		{
+			citeObj = new com.elclab.proveit.Cite();
+		}
+		else
+		{
+			citeObj = new com.elclab.proveit.Citation();
+		}
 		citeObj.type = citeType;
 		var desc = citeObj.getDescriptions();
 		var defaultParams = citeObj.getDefaultParams().slice(0); // copy
-		defaultParams.sort(citeObj.getSorter())
+		defaultParams.sort(citeObj.getSorter());
 		for(var i = 0; i < defaultParams.length; i++)
 		{
 			var param = defaultParams[i];
@@ -2063,6 +2152,10 @@ com.elclab.proveit = {
 			// Basically the same code as nameHbox above
 			var paramLabel = paramBox.childNodes[0];
 			paramLabel.setAttribute("control", citeType + param);
+			if(desc[param] == undefined)
+			{
+				com.elclab.proveit.log("undefined param: " + param);
+			}
 			paramLabel.setAttribute("value", desc[param] + ": ");
 			paramBox.childNodes[1].id = citeType + param;
 			paramBox.hidden = false;
@@ -2076,6 +2169,7 @@ com.elclab.proveit = {
 	 * changes the panel for the citation entry panel to the correct type of
 	 * entry
 	 */
+	/*
 	changeCitation : function() {
 		var that = com.elclab.proveit.getSidebarDoc().getElementById("citationmenu").value;
 		that = com.elclab.proveit.getSidebarDoc().getElementById(that);
@@ -2085,6 +2179,7 @@ com.elclab.proveit = {
 		}
 		that.hidden = false;
 	},
+	*/
 	
 	/**
 	 * Generates rich list item and all children, to be used by addNewElement, and when updating
