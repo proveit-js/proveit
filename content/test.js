@@ -1921,7 +1921,7 @@ com.elclab.proveit = {
 		var refNameValue = com.elclab.proveit.getSidebarDoc().getElementById(type + "name");
 		if(refNameValue == null)
 		{
-			com.elclab.proveit.log("refNameValue null for type: " + type);
+			com.elclab.proveit.log("addCitation: Error: refNameValue null for type: " + type);
 			return false;
 		}
 		if(refNameValue.value != "")
@@ -2092,7 +2092,7 @@ com.elclab.proveit = {
 	 * Changes the panel for the cite entry panel to the correct type of entry
 	 */
 	changeCite : function(menu) {
-		//com.elclab.proveit.log("Entering changeCite");
+		com.elclab.proveit.log("Entering changeCite");
 		//com.elclab.proveit.log("menu.id: " + menu.id);
 		var citePanes = menu.parentNode.nextSibling;
 		com.elclab.proveit.clearCitePanes(citePanes);
@@ -2119,7 +2119,12 @@ com.elclab.proveit = {
 		var endHbox = genPane.childNodes[genPane.childNodes.length - 1];
 		var addButton = endHbox.childNodes[0];
 		addButton.id = citeType + "expand";
-		addButton.setAttribute("onclick", "com.elclab.proveit.openExtra('" + citeType + "');");
+		com.elclab.proveit.log("Modifying onclick handlers.");
+		addButton.onclick = null; // regular set attribute onclick caused inconsistent state.  Try this.
+		addButton.onclick = function()
+		{
+			com.elclab.proveit.openExtra(citeType);
+		}
 		endHbox.childNodes[1].setAttribute("onclick", "com.elclab.proveit.newRemoveField('" + citeType + "');");
 		var submitButton = endHbox.childNodes[2];
 		submitButton.id = citeType + "submit";
