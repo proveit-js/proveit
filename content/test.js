@@ -17,6 +17,7 @@ com.elclab.proveit = {
 	STATE_START : Components.interfaces.nsIWebProgressListener.STATE_START,
 	STATE_STOP : Components.interfaces.nsIWebProgressListener.STATE_STOP,
 
+	// Currently requires you be on one of these hard-coded domains.
 	knownSites : ["wiktionary.org",	"wikipedia.org", "wikinews.org"],
 	
 	LANG : "en", // currently used only for descriptions.
@@ -30,6 +31,7 @@ com.elclab.proveit = {
 	logType : 0, // apparently this can not be set to a previous variable.  
 	             // It only seemed to work before because it interpreted window.alert when I meant logEnum.alert
 	
+	// Convenience log function
 	log : function(str)
 	{
 		if(com.elclab.proveit.logType == com.elclab.proveit.logEnum.alert)
@@ -42,6 +44,7 @@ com.elclab.proveit = {
 		}
 	},
 	
+	// Returns true if we are on a known domain, and the action is set to edit or submit
 	isMediaWikiEditPage : function ()
 	{
 		var isMediaWiki = null;
@@ -94,6 +97,9 @@ com.elclab.proveit = {
         return isMediaWiki;
 	},
 	
+	/* If we are currently on a MediaWiki page as determined by isMediaWikiEditPage()
+	   open the sidebar.
+	*/
 	openOnlyForMediawiki : function ()
 	{
 		//com.elclab.proveit.log("Entering openOnlyForMediawiki");
@@ -129,9 +135,10 @@ com.elclab.proveit = {
   		window.top.document.getElementById("sidebar-box").width = width;
 	},
 	
+	// Default width, which should be big enough to prevent being cut off.
 	DEFAULT_SIDEBAR_WIDTH : 300,
 	
-	/**
+	/*
 	 * Sets sidebar to hopefully sufficient default width, because resize will be disabled.
 	 */
 	setDefaultSidebarWidth : function()
@@ -140,7 +147,7 @@ com.elclab.proveit = {
 	},
 	
 	
-	/**
+	/*
 	 * Removes splitter, disabling resize, to avoid awkward GUI behavior
 	 */
 	disableResize : function()
@@ -155,7 +162,7 @@ com.elclab.proveit = {
          mainWindow.document.getElementById("sidebar-splitter").hidden = true;
 	},
 	
-	/**
+	/*
 	 * Make splitter visible again.  Meant to be called upon unload.
 	 */
 	
@@ -172,6 +179,7 @@ com.elclab.proveit = {
 	
 	//isSidebarOpenBool : false, // keep track of toggling via variable rather than URL.
 	
+	// Convenience function.  Returns the sidebar's document object.
 	getSidebarDoc : function()
 	{
 		return window.QueryInterface(Components.interfaces.nsIInterfaceRequestor)
@@ -182,12 +190,13 @@ com.elclab.proveit = {
          .getInterface(Components.interfaces.nsIDOMWindow).document.getElementById("sidebar").contentWindow.document;
 	},
 	
+	// Convenience function.   Returns the refbox element.
 	getRefbox : function()
 	{
 		return com.elclab.proveit.getSidebarDoc().getElementById("refbox");
 	},
 	
-	/**
+	/*
 	 * Returns true if and only if ProveIt sidebar is open.
 	 */
 	isSidebarOpen : function()
@@ -216,10 +225,7 @@ com.elclab.proveit = {
 		return isOpen;
 	},
 	
-	/**
-	 * Ensures ProveIt sidebar is open.
-	 */
-	
+	// Ensures ProveIt sidebar is open.	
 	openSidebar : function()
 	{
 		var mainWindow = window.QueryInterface(Components.interfaces.nsIInterfaceRequestor)
@@ -233,9 +239,7 @@ com.elclab.proveit = {
 		//com.elclab.proveit.isSidebarOpenBool = true;
 	},
 	
-	/**
-	 * Ensures ProveIt sidebar is closed.
-	 */
+	// Ensures ProveIt sidebar is closed.
 	
 	closeSidebar : function()
 	{
@@ -264,6 +268,7 @@ com.elclab.proveit = {
 		}
 	},
 	
+	/*
 	blurSidebar : function()
 	{
 		var mainWindow = window.QueryInterface(Components.interfaces.nsIInterfaceRequestor)
@@ -275,9 +280,12 @@ com.elclab.proveit = {
 		mainWindow.document.getElementById("sidebar").blur();
 		mainWindow.document.getElementById("sidebar-box").blur();
 	},
+	*/
 	
+	// Hard coded constant representing the number of vertical pixels half of textarea takes place.
 	HALF_EDIT_BOX_IN_PIXELS : 204,
 	
+	// Highlights a given string in the MediaWiki edit box.
 	highlightTargetString : function(target)
 	{
 		//com.elclab.proveit.log("Entering highlightTargetString");
@@ -304,6 +312,7 @@ com.elclab.proveit = {
 		//alert(curScrollTop);
 	},
 		
+	// Conveience function.  Returns MediaWiki text area.
 	getMWEditBox : function()
 	{
 		if (top.window.content.document.getElementById('wikEdTextarea')) {
@@ -320,36 +329,33 @@ com.elclab.proveit = {
 		return top.window.content.document.getElementById(textareaname);
 	},
 	
-	/**
-	 * Return edit form DOM object
-	 */
+	// Returns edit form DOM object
+
 	getEditForm : function()
 	{
 		return top.window.content.document.getElementById("editform");
 	},
 	
-	/**
-	 * Runs a given function on submission of edit form
-	 */
+	// Runs a given function on submission of edit form
 	addOnsubmit : function(subFunc)
 	{
 		//com.elclab.proveit.log("Entering addOnsubmit.");
 		com.elclab.proveit.getEditForm().addEventListener("submit", subFunc, false);
 	},
 	
-	/**
-	 * Returns edit summary DOM object
-	 */
+	// Returns edit summary DOM object
+
 	getEditSummary : function()
 	{
 		return top.window.content.document.getElementById("wpSummary");
 	},
 	
+	/* Keep track of whether we have already added an onsubmit function to include ProveIt in the summary.
+	 * This guarantees the function will not be run twice.
+	 */
 	summaryActionAdded : false,
 	
-	/**
-	 * Specifies to include ProveIt edit summary on next save.
-	 */
+	// Specifies to include ProveIt edit summary on next save.
 	includeProveItEditSummary : function()
 	{
 		if(!com.elclab.proveit.summaryActionAdded)
@@ -369,6 +375,7 @@ com.elclab.proveit = {
 		}
 	},
 	
+	// This function sets things up so ProveIt will automatically load on a MediaWiki site.
 	proveitpreload : function()
 	{
 		//com.elclab.proveit.log("Entering proveitpreload.")
@@ -377,6 +384,7 @@ com.elclab.proveit = {
 		return true; // Is this necessary to ensure Firefox doesn't gray out buttons?
 	},
 	
+	// Runs when we actually want to load the sidebar
 	proveitonload : function() {
 		//com.elclab.proveit.isSidebarOpenBool = true;
 		//com.elclab.proveit.log("Loading ProveIt.");
@@ -408,6 +416,7 @@ com.elclab.proveit = {
 		return true;
 	},
 
+	// Runs when the sidebar is being unloaded.
 	proveitonunload : function() {
 		com.elclab.proveit.enableResize();
 		//top.getBrowser().removeProgressListener(com.elclab.proveit.sendalert);
@@ -527,7 +536,7 @@ com.elclab.proveit = {
 		}
 	},
 
-	/**
+	/*
 	 * This function is designed to clear the richlistbox in preparation for
 	 * loading a new page. It is simply a recursive call to remove all children
 	 * from any nodes inside the richlist box, Garbage collection should then
@@ -563,7 +572,7 @@ com.elclab.proveit = {
 	},
 
 	/**
-	 * 
+	 * Gets insertion text from reference object.
 	 * @param {Reference to insert} ref
 	 * @param {If full is true, insert full text, otherwise ref name only} full
 	 */
@@ -600,6 +609,10 @@ com.elclab.proveit = {
 		return textToInsert;
 	},
 	
+	/** Does insertion into edit box.
+	 * @param ref Reference to insert
+	 * @param full Whether to insert the full text.
+	 */
 	insertRef : function(ref, full)
 	{
 		//com.elclab.proveit.log("Entering insertRef.");
@@ -643,8 +656,8 @@ com.elclab.proveit = {
 		
 	},
 	
-	/**
-	 * this function takes the text from the display area and inserts it to the
+	/*
+	 * this function inserts the currently selected reference at the
 	 * location of the cursor in the document.
 	 */
 	insertSelectedRef : function() {
@@ -671,11 +684,10 @@ com.elclab.proveit = {
 		}
 	},
 
-	/**
-	 * This function takes the currently selected or editted reference and
+	/*
+	 * This function takes the currently selected or edited reference and
 	 * updates it in the edit box.
 	 */
-
 	updateInText : function() {
 		com.elclab.proveit.curRefItem = com.elclab.proveit.getRefbox().selectedItem;
 		//com.elclab.proveit.log("Entering updateInText");
@@ -733,7 +745,7 @@ com.elclab.proveit = {
 
 	},
 
-	/**
+	/*
 	 * this is the cancel button code for the edit panel. It just closes the
 	 * window and resets the values.
 	 */
@@ -743,6 +755,10 @@ com.elclab.proveit = {
 		com.elclab.proveit.dispSelect();
 	},
 	
+	/**
+	 * @deprecated
+	 * Processes a list of comma separated values, such as foo=bar,goo=gai
+	 */ 
 	processCommaSeparated : function(ref, text)
 	{
 		//com.elclab.proveit.log("Entering processCommaSeparated");
@@ -801,6 +817,7 @@ com.elclab.proveit = {
 		}
 	},
 	
+	// Adds a new blank row to the edit popup.
 	editAddField : function()
 	{
 		//com.elclab.proveit.log("Entering editAddField");
@@ -809,12 +826,14 @@ com.elclab.proveit = {
 		com.elclab.proveit.addEditPopupRow(current.params, "", false, false);
 	},
 	
+	// Remove field from the edit popup.
 	editRemoveField : function()
 	{
 		var wrap = com.elclab.proveit.getSidebarDoc().getElementById("editlist");
 		wrap.removeChild(wrap.childNodes[wrap.childNodes.length - 1]);
 	},
 
+	// Saves the changes the user made in the edit popup.
 	editSave : function() {
 		com.elclab.proveit.log("Entering editSave");
 		
@@ -920,10 +939,19 @@ com.elclab.proveit = {
 		com.elclab.proveit.log("Leaving editSave.");
 	},
 	
+	/** @deprecated
+	 * Whether to ignore the next select event.
+	 * @type Boolean
+	 */
 	ignoreSelection : false,
 	
+	/**
+	 * Whether the next select event should cause a reference to be highlighted in the MW box.
+	 * @type Boolean
+	 */
 	highlightOnSelect : true,
 
+	/*
 	restoreSelection : function()
 	{
 		//com.elclab.proveit.log("Entering restoreSelection.")
@@ -934,12 +962,15 @@ com.elclab.proveit = {
 			com.elclab.proveit.getRefbox().selectItem(com.elclab.proveit.curRefItem);
 		}
 	},
-	
-	curRefItem : null,
+	*/
 	
 	/**
-	 * Selects reference in main article, as well as showing below (for now)
+	 * The item currently selected in the refbox.
+	 * @type Node 
 	 */
+	curRefItem : null,
+	
+	// Selects reference in main article
 	doSelect : function()
 	{
 		//com.elclab.proveit.log("Entering doSelect");
@@ -984,7 +1015,7 @@ com.elclab.proveit = {
 				return;
 			}
 			*/
-			if(com.elclab.proveit.highlightOnSelect == true)
+			if(com.elclab.proveit.highlightOnSelect)
 			{
 				//com.elclab.proveit.log("doSelect calling highlightTargetString");
 				com.elclab.proveit.highlightTargetString(curRefText);
@@ -1023,7 +1054,7 @@ com.elclab.proveit = {
 		//com.elclab.proveit.log("Leaving doSelect");
 	},
 		
-	/**
+	/*
 	 * Updates the edit window (popup that appears when you click pencil icon).
 	 * Moved from doSelect/dispSelect
 	 */
@@ -1195,15 +1226,15 @@ com.elclab.proveit = {
 	    //}
 	},
 	
-	/**
-	 * and puts the text in the small display window.
+	/*
+	 * Puts the text in the small display window.
 	 */
-	
+	/*
 	dispSelect : function() {
 		//com.elclab.proveit.log("Entering dispSelect");
 		
 		if (com.elclab.proveit.getRefbox().selectedItem) {
-			/*
+			
 			var name = com.elclab.proveit.getRefbox().selectedItem.id;
 			if (com.elclab.proveit.toggleinsert) {
 				// com.elclab.proveit.log(name);
@@ -1217,7 +1248,7 @@ com.elclab.proveit = {
 					document.getElementById('display').value = "There is no name for this reference.";
 				}
 			}
-			*/
+			
 		} else {
 			return;
 		}
@@ -1225,6 +1256,7 @@ com.elclab.proveit = {
 		// either enable or disable the save changes text
 		
 	},
+	*/
 
 	/*
 	 * these are the current style and insert values to denote which one is
@@ -1234,7 +1266,9 @@ com.elclab.proveit = {
 
 	toggleinsert : true,
 
-	// This whole function is something of a hack.
+	/* This whole function is something of a hack.  Basically, it detects the current state of the "physical" toggle,
+	 * and updates variables accordingly.
+	 */
 	flipToggle : function(toggle) {
 		var label = com.elclab.proveit.getSidebarDoc().getElementById(toggle + "toggle");
 		label.setAttribute("style", "font-weight: bold");
@@ -1268,8 +1302,17 @@ com.elclab.proveit = {
 		}
 	},
 
+	/**
+	 * "Associative array" of all references, indexed by generated name (see getGeneratedName).
+	 * @type Object
+	 */
 	currentrefs : [],
 	
+	/**
+	 * Overly clever regex to parse template string (e.g. |last=Smith|first=John|title=My Life Story) into name and value pairs.
+	 * @param {} workingstring
+	 * @return {}
+	 */
 	splitNameVals : function (workingstring)
 	{
 		var split = {};
