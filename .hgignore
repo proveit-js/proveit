@@ -1,0 +1,7 @@
+syntax: glob
+
+.metadata
+chrome/ProveIt.jar
+chrome/ProveIt.xpi
+dist
+**.*~
