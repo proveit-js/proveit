@@ -1310,8 +1310,13 @@ com.elclab.proveit = {
 	
 	/**
 	 * Overly clever regex to parse template string (e.g. |last=Smith|first=John|title=My Life Story) into name and value pairs.
-	 * @param {} workingstring
-	 * @return {}
+	 * @param workingstring template string to parse.
+	 * @return Object with two properties, nameSplit and valSplit.
+	 * nameSplit is an array of all names, and valSplit is an array of all values.
+	 * While the length of nameSplit is equal to the number of name/value pairs (as expected),
+	 * the length of valSplit is one greater due to a blank element at the beginning.
+	 * Thus nameSplit[i] corresponds to valSplit[i+1].
+	 * Calling code must take this into account.
 	 */
 	splitNameVals : function (workingstring)
 	{
@@ -1323,7 +1328,7 @@ com.elclab.proveit = {
 	
 	/**
 	 * Generates name from reference using title, author, etc.
-	 * @param {} citation Citation to generate name for.
+	 * @param citation Citation to generate name for.
 	 */
 	getGeneratedName : function(citation)
 	{
@@ -1589,7 +1594,12 @@ com.elclab.proveit = {
 		//com.elclab.proveit.log("scanRef returned successfully.");
 	},
 	
-	// Used to map between parameter name and human-readable.
+	/* Used to map between parameter name and human-readable.  It can be
+	 * internationalized easily.  Add descriptions.xx , where xx is
+	 * the ISO 639-1 code for a language, then set com.elclab.proveit.LANG to "xx"
+	 * to use the new descriptions.
+	 */
+	
 	descriptions :
 	{
 		en : 
@@ -1634,16 +1644,21 @@ com.elclab.proveit = {
 			}
 	},
 
-	/**
-	 * A function for Cite style tags.
-	 */
+	// A function representing a Cite style template.
 	Cite : function() {
+		// Ref name.
 		this.name;
-		this.baseGenName; // Generated name, without possible (1), (2), etc.  Shows as label in refbox.
-		this.template = "cite"; // Signifies template type is cite web, news, etc.
-		this.type; // web, news, book, etc.
+		// Generated name, without possible (1), (2), etc.  Shows as label in refbox.
+		this.baseGenName; 
+		// Signifies template type is cite web, news, etc, as opposed to Citation.
+		this.template = "cite"; 
+		// Signifies template type is cite web, news, etc.
+		this.type;
+		// false indicates "dirty" citation that has yet to be updated in text and metadata.
 		this.save; 
-		this.inMWEditBox; // true if and only if the ref is in the MW edit box with the same value as this object's orig.
+		// true if and only if the ref is in the MW edit box with the same value as this object's orig.
+		this.inMWEditBox; 
+		// associative array holding all name/value pairs.
 		this.params = new Object();
 		
 		// References without these parameters will be flagged in red.
@@ -1676,6 +1691,7 @@ com.elclab.proveit = {
 			"press release"	: [ "title", "url", "publisher", "date", "accessdate" ]	
 		};
 		
+		// This is the order fields will be displayed or outputted.
 		var paramSortKey =
 		[
 			"url",
@@ -1702,6 +1718,7 @@ com.elclab.proveit = {
 			"quote"
 		];
 	
+		// Sorter uses paramSortKey first, then falls back on alphabetical order.
 		var sorter = function(paramA, paramB)
 		{
 			var aInd = paramSortKey.indexOf(paramA);
@@ -1719,6 +1736,7 @@ com.elclab.proveit = {
 			}
 		};
 
+		// Returns this object as a string.
 		this.toString = function() {
 			if (this.name) {
 				var returnstring = "<ref name=\"";
@@ -1744,14 +1762,17 @@ com.elclab.proveit = {
 			return returnstring;
 		};
 		
+		// Convenience method.  Returns sorter.
 		this.getSorter = function()
 		{
 			return sorter;
 		};
 		
+		// Returns descriptions for the current language.
 		this.getDescriptions = function()
 		{
-			return com.elclab.proveit.descriptions[com.elclab.proveit.LANG]; //this could be made Cite-specific if needed.
+			//this could be made Cite-specific if needed.
+			return com.elclab.proveit.descriptions[com.elclab.proveit.LANG];
 		};
 		
 		// Get required parameters for this citation type
@@ -1759,11 +1780,14 @@ com.elclab.proveit = {
 		{
 			return requiredParams[this.type];
 		};
+		
 		// Default parameters, to be suggested when editing.
 		this.getDefaultParams = function()
 		{
 			return defaultParams[this.type];
 		}
+		
+		// Returns true if this object is valid, false otherwise.
 		this.isValid = function()
 		{
 			var req = this.getRequiredParams();
@@ -1788,15 +1812,25 @@ com.elclab.proveit = {
 	 */
 
 	Citation : function() {
+		// Ref name.
 		this.name;
-		this.baseGenName; // Generated name, without possible (1), (2), etc.  Shows as label in refbox.
-		this.template = "Citation"; // Signifies template type is Citation
-		this.type; // web, news, book, etc.  For Citation, used only for default param generation.
+		// Generated name, without possible (1), (2), etc.  Shows as label in refbox.
+		this.baseGenName; 
+		// Signifies template type is Citation.
+		this.template = "Citation"; 
+		// web, news, book, etc.  For Citation, used only for default param generation.
+		this.type;
+		// false indicates "dirty" citation that has yet to be updated in text and metadata.
 		this.save; 
-		this.inMWEditBox; // true if and only if the ref is in the MW edit box with the same value as this object's orig.
+		// true if and only if the ref is in the MW edit box with the same value as this object's orig.
+		this.inMWEditBox; 
+		// associative array holding all name/value pairs.
 		this.params = new Object();
 		
-		// Default parameters, to be suggested when editing.
+		// None currently required;
+		var requiredParams = {};
+		
+		// These paramaters will be auto-suggested when editing.
 		var defaultParams =
 		{
 			web : [ "url", "author", "title", "date", "accessdate"],
@@ -1807,8 +1841,7 @@ com.elclab.proveit = {
 			patent : ["inventor", "title", "issue-date", "patent-number", "country-code"]
 		}
 		
-		var requiredParams = {}; // None currently required;
-		
+		// This is the order fields will be displayed or outputted.
 		var paramSortKey = 
 		[
 			"last",
@@ -1847,6 +1880,7 @@ com.elclab.proveit = {
 			"accessdate"
 		];
 		
+		// Sorter uses paramSortKey first, then falls back on alphabetical order.
 		var sorter = function(paramA, paramB)
 		{
 			var aInd = paramSortKey.indexOf(paramA);
@@ -1864,6 +1898,7 @@ com.elclab.proveit = {
 			}
 		};
 		
+		// Returns this object as a string.
 		this.toString = function() {
 			if (this.name) {
 				var returnstring = "<ref name=\"";
@@ -1887,37 +1922,41 @@ com.elclab.proveit = {
 			return returnstring;
 		};
 		
+		// Convenience method.  Returns sorter.
 		this.getSorter = function()
 		{
 			return sorter;
 		}
 		
+		// Returns descriptions for the current language.
+		this.getDescriptions = function()
+		{
+			//this could be made Citation-specific if needed.
+			return com.elclab.proveit.descriptions[com.elclab.proveit.LANG];
+		};
+		
+		//this could be made Citation-specific if needed.
 		this.getRequiredParams = function()
 		{
 			return requiredParams;
 		};
 		
+		// Default parameters, to be suggested when editing.
 		this.getDefaultParams = function()
 		{
 			return defaultParams[this.type];
 		};
 		
-		this.getDescriptions = function()
-		{
-			return com.elclab.proveit.descriptions[com.elclab.proveit.LANG]; //this could be made Citation-specific if needed.
-		};
-		
-		this.isValid = function(){return true}; // Currently assume all citation objects are valid.
-		
-		
+		// Returns true if this object is valid, false otherwise.
+		// Currently assume all citation objects are valid.
+		this.isValid = function(){return true}; 
 	},
 
 	/**
-	 * Called from the actual add citation panel, this is the function used to
+	 * Called from the add citation panel, this is the function used to
 	 * add the actual citation.
 	 * 
-	 * @param {}
-	 *            type the type of citation being added, the particular button
+	 * @param type the type of citation being added, the particular button
 	 *            used will hand this to the function.
 	 */
 	addCitation : function(type) {
@@ -2059,6 +2098,7 @@ com.elclab.proveit = {
 		//com.elclab.proveit.log("Exiting addCitation.");
 	},
 	
+	// Clears the add citation box.
 	clearAddCitation : function(box)
 	{
 		//com.elclab.proveit.log("Entering clearAddCitation.")
@@ -2081,7 +2121,7 @@ com.elclab.proveit = {
 	},
 
 	/**
-	 * Opens and closes the the extra field window
+	 * Add new row to add new citation box.
 	 * 
 	 * @param {}
 	 *            type the type/name of the extra field to open.
@@ -2100,11 +2140,13 @@ com.elclab.proveit = {
 		
 	},
 	
+	// Removes the last field in the add new citation box.
 	newRemoveField : function(type){
 		var wrapper = com.elclab.proveit.getSidebarDoc().getElementById(type);
 		wrapper.removeChild(wrapper.childNodes[wrapper.childNodes.length - 3]);
 	},
 
+	// Clear all rows of passed in add citation panes.
 	clearCitePanes : function(citePanes)
 	{
 		//com.elclab.proveit.log("Entering clear cite panes");
@@ -2232,7 +2274,8 @@ com.elclab.proveit = {
 	/**
 	 * Generates rich list item and all children, to be used by addNewElement, and when updating
 	 * 
-	 * @param {} ref
+	 * @param ref reference to generate from
+	 * @param generatedName name to use.
 	 * @return
 	 */
 	getRefboxElement : function(ref, generatedName)
@@ -2346,6 +2389,7 @@ com.elclab.proveit = {
 		return newchild;
 	},
 	
+	// Ensures the generated name is not already used by adding numeric suffix.
 	genNameWithoutDuplicates : function(generatedName)
 	{
 	    var refbox = com.elclab.proveit.getRefbox();
@@ -2380,9 +2424,8 @@ com.elclab.proveit = {
 	/**
 	 * Only to be used internally to add the citations to the list
 	 * 
-	 * @param {}
-	 *            ref the reference to add
-	 * @return {} the id of the child so that we can add info to it, will be
+	 * @param ref the reference to add
+	 * @return the id of the child so that we can add info to it, will be
 	 *         used to tie the meta-data to the list.
 	 */
 	addNewElement : function(ref) {
@@ -2405,9 +2448,7 @@ com.elclab.proveit = {
 		return generatedName;
 	},
 	
-	/**
-	 * Closes add new citation pane without adding anything.
-	 */
+	// Closes add new citation pane without adding anything.
 	
 	cancelAdd : function()
 	{
@@ -2420,22 +2461,9 @@ com.elclab.proveit = {
 /**
  * Generic trim function, trims all leading and trailing whitespace.
  * 
- * @return {} the trimmed string
+ * @return the trimmed string
  */
-
 String.prototype.trim = function() {
 	return this.replace(/^\s+|\s+$/g, "");
 }
-
-Array.prototype.toString = function() {
-	str = "";
-	
-	for(e in this)
-	{
-		str += e.toString() + ", ";
-	}
-	
-	return str.substring(0, str.length - 1);
-}
-
 
