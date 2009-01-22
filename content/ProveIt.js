@@ -951,7 +951,6 @@ com.elclab.proveit = {
 	 */
 	highlightOnSelect : true,
 
-	/*
 	restoreSelection : function()
 	{
 		//com.elclab.proveit.log("Entering restoreSelection.")
@@ -962,7 +961,6 @@ com.elclab.proveit = {
 			com.elclab.proveit.getRefbox().selectItem(com.elclab.proveit.curRefItem);
 		}
 	},
-	*/
 	
 	/**
 	 * The item currently selected in the refbox.
