@@ -9,7 +9,7 @@
 <page id="ProveIt" title="&ProveIt.title;" 
 	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" onload="com.elclab.proveit.proveitonload()" onunload="com.elclab.proveit.proveitonunload()" onclick="com.elclab.proveit.restoreSelection()">
 	
-	<script type="application/x-javascript" src="chrome://proveit/content/test.js"/>
+	<script type="application/x-javascript" src="chrome://proveit/content/ProveIt.js"/>
 	
 	<richlistitem id="prime" hidden="true">
 		<hbox flex="1" align="center">
