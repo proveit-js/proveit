@@ -12,21 +12,35 @@ li { list-style-type: lower-alpha }
 <body>
 <h2>User guide</h2>
 <h3>Labelled interface</h3>
+<p>
+<a href="sidebar_labelled.png"><img src="sidebar_labelled.png" width="200" alt="Labelled screenshot of sidebar."/></a>
+<a href="open_edit_popup_cropped_labelled.png"><img src="open_edit_popup_cropped_labelled.png" width="400" alt="Labelled screenshot of edit popup" /></a>
+<a href="open_new_reference_menu_cropped_labelled.png"><img src="open_new_reference_menu_cropped_labelled.png" width="400" alt="Labelled screenshot of new reference popup" /></a>
+</p>
 <ol>
-<li>Edit reference button</li>
-<li>Insert reference button</li>
-<li>Incomplete reference</li>
-<li>Markup toggle</li>
-<li>New reference button</li>
-<li>Tag style toggle</li>
-<li>Reference edit popup</li>
-<li>New reference popup</li>
-<li>Reference type menu</li>
-<li>Add field button</li>
-<li>Remove field button</li>
+<li>Edit reference button - This appears next to every reference.  When you click it, the ProveIt edit popup appears so you can easily modify the reference parameters.</li>
+<li>Insert reference button - Inserts the reference at the caret (text cursor)</li>
+<li>Incomplete reference - Red text indicates a reference is missing a required parameter or otherwise invalid.</li>
+<li><p>Markup toggle - This toggles the kind of markup generated when a new instance of a reference is inserted.  When <em>full citation</em> is selected, the complete reference will be outputted.  An example would be:<br/>
+<code>&lt;ref name="Smith"&gt;{{cite book|last=Smith|First=John|Adventures with an anonymous name}}&lt;/ref&gt;</code></p>
+If <em>name only</em> is selected, a shortened form will be outputted, such as:<br/>
+<code>&lt;ref name="Smith" /&gt;</code>
+
+<p>The second is generally preferable (it eliminates redundancy in the wikisource).  However, if a &lt;ref name&gt; was not used originally (it is optional by highly recommended), the second form can not be used.  That means you must use the full form, or first add a name by editing the reference (you may use the ProveIt edit popup for this).</p>
+</li>
+<li>New reference button - This launches the new referenc popup, allowing you to add a new reference.</li>
+<li>Tag style toggle - This toggles between Wikipedia's two main forms of reference tags, {{cite}} (e.g. {{<a href="http://en.wikipedia.org/wiki/Template:Cite_web">cite web</a>}}, {{<a href="http://en.wikipedia.org/wiki/Template:Cite_web">cite news</a>}}, etc.) and {{<a href="http://en.wikipedia.org/wiki/Template:Citation">Citation</a>}}.</li>
+<li>Reference edit popup - This is the reference edit popup.  It is the GUI for adding, changing, or removing fields from a reference.</li>
+<li>Remove edit field - This will remove the last field of the reference.  It is sometimes useful when you add too many blank lines (though these will be ignored if you apply with them there).</li>
+<li>Add edit field - This will add an additional blank field.  You then fill in both the field name and value.</li>
+<li>Cancel edit - This cancels your edit without applying any changes.</li>
+<li>Apply Changes - This applies your edit to the reference in the edit box.  However, the changes will only be saved to the wiki servers when you manually click the Save button below the MediaWiki text box.</li>
+<li>New reference popup - This is the new edit popup.  It is the GUI for adding a new reference.</li>
+<li>Reference type menu - This allows you to select the available reference types.  This determines the available fields, and in the case of {{cite}}, which tag is generated (e.g. Web Site means {{<a href="http://en.wikipedia.org/wiki/Template:Cite_web">cite web</a>}}).</li>
+<li>Add field button - This will add an additional blank field.  You then fill in both the field name and value.</li></li>
+<li>Remove field button - This will remove the last field of the reference.  It is sometimes useful when you add too many blank lines (though these will be ignored if you create the reference with them still there).</li></li>
+<li>Insert new reference - This will insert the new reference at the caret, as well as causing it to be added to the list in the sidebar.</li>
+<li>Cancel new reference - This exits the dialog without adding a new reference.</li>
 </ol>
-<img src="sidebar_labelled.png" width="400"/>
-<img src="open_edit_popup_cropped_labelled.png" width="400" />
-<img src="open_new_reference_menu_cropped_labelled.png" width="400" />
 </body>
 </html>

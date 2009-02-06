@@ -12,7 +12,7 @@
    id="svg2"
    sodipodi:version="0.32"
    inkscape:version="0.46"
-   width="533.34998"
+   width="365.73999"
    height="981"
    version="1.0"
    sodipodi:docname="sidebar_labelled.svg"
@@ -40,7 +40,7 @@
   </defs>
   <sodipodi:namedview
      inkscape:window-height="970"
-     inkscape:window-width="1103"
+     inkscape:window-width="1392"
      inkscape:pageshadow="2"
      inkscape:pageopacity="1"
      guidetolerance="10.0"
@@ -56,7 +56,9 @@
      inkscape:cy="743.11803"
      inkscape:window-x="0"
      inkscape:window-y="0"
-     inkscape:current-layer="svg2" />
+     inkscape:current-layer="svg2"
+     showguides="true"
+     inkscape:guide-bbox="true" />
   <image
      xlink:href="only_sidebar.png"
      sodipodi:absref="only_sidebar.png"
@@ -77,22 +79,22 @@
      transform="matrix(0.8,0,0,0.8,39.049785,13.893992)" />
   <path
      style="fill:none;fill-opacity:1;stroke:#0000ff;stroke-width:1.5;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-     d="M 210.09335,432.60837 C 433.23927,432.60837 433.23927,431.55579 433.23927,431.55579"
+     d="M 210.09335,432.60837 C 325.87662,432.60837 325.87662,431.55579 325.87662,431.55579"
      id="path3160" />
   <flowRoot
      xml:space="preserve"
      id="flowRoot3162"
-     style="font-size:12px;font-style:normal;font-weight:normal;fill:#0000ff;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Serif"
-     transform="translate(-8,0)"><flowRegion
+     style="font-size:25px;font-style:normal;font-weight:normal;fill:#0000ff;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Serif"
+     transform="translate(-138.95509,-7.578326)"><flowRegion
        id="flowRegion3164"><rect
          id="rect3166"
-         width="70.52253"
-         height="21.051502"
+         width="93.679184"
+         height="41.050426"
          x="470.50107"
          y="27.366953"
-         style="fill:#0000ff" /></flowRegion><flowPara
+         style="font-size:25px;fill:#0000ff" /></flowRegion><flowPara
        id="flowPara3168"
-       style="font-size:14px;fill:#0000ff">a</flowPara></flowRoot>  <path
+       style="font-size:25px;fill:#0000ff">a</flowPara></flowRoot>  <path
      sodipodi:type="arc"
      style="fill:none;fill-opacity:1;stroke:#0000ff;stroke-width:1.875;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
      id="path3170"
@@ -104,22 +106,22 @@
      transform="matrix(0.8,0,0,0.8,53.291962,34.945492)" />
   <path
      style="fill:none;fill-opacity:1;stroke:#0000ff;stroke-width:1.5;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-     d="M 245.38703,58.944203 C 468.53295,58.944203 468.53295,57.891628 468.53295,57.891628"
+     d="M 245.38703,58.944203 C 326.43532,58.944203 326.43532,57.891628 326.43532,57.891628"
      id="path3172" />
   <flowRoot
      xml:space="preserve"
      id="flowRoot3174"
-     style="font-size:12px;font-style:normal;font-weight:normal;fill:#0000ff;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Serif"
-     transform="translate(6.2421771,21.0515)"><flowRegion
+     style="font-size:25px;font-style:normal;font-weight:normal;fill:#0000ff;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Serif"
+     transform="translate(-139.66034,16.736049)"><flowRegion
        id="flowRegion3176"><rect
          id="rect3178"
-         width="70.52253"
-         height="21.051502"
+         width="134.72961"
+         height="65.259659"
          x="470.50107"
          y="27.366953"
-         style="fill:#0000ff" /></flowRegion><flowPara
+         style="font-size:25px;fill:#0000ff" /></flowRegion><flowPara
        id="flowPara3180"
-       style="font-size:14px;fill:#0000ff">b</flowPara></flowRoot>  <rect
+       style="font-size:25px;fill:#0000ff">b</flowPara></flowRoot>  <rect
      style="fill:none;fill-opacity:1;stroke:#0000ff;stroke-width:1.5;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
      id="rect3182"
      width="199.98927"
@@ -129,17 +131,17 @@
   <flowRoot
      xml:space="preserve"
      id="flowRoot3184"
-     style="font-size:12px;font-style:normal;font-weight:normal;fill:#0000ff;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Serif"
-     transform="translate(-30.643871,394.39297)"><flowRegion
+     style="font-size:25px;font-style:normal;font-weight:normal;fill:#0000ff;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Serif"
+     transform="translate(-141.38866,386.39297)"><flowRegion
        id="flowRegion3186"><rect
          id="rect3188"
-         width="70.52253"
-         height="21.051502"
+         width="128.41415"
+         height="69.469955"
          x="470.50107"
          y="27.366953"
-         style="fill:#0000ff" /></flowRegion><flowPara
+         style="font-size:25px;fill:#0000ff" /></flowRegion><flowPara
        id="flowPara3190"
-       style="font-size:14px;fill:#0000ff">c</flowPara></flowRoot>  <rect
+       style="font-size:25px;fill:#0000ff">c</flowPara></flowRoot>  <rect
      style="fill:none;fill-opacity:1;stroke:#0000ff;stroke-width:1.5;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
      id="rect3192"
      width="196.83154"
@@ -148,22 +150,22 @@
      y="800.48334" />
   <path
      style="fill:none;fill-opacity:1;stroke:#0000ff;stroke-width:1.49999988;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-     d="M 255.35514,783.64217 C 486.92165,783.64217 486.92165,782.58959 486.92165,782.58959"
+     d="M 255.35515,783.64217 C 324.82511,783.64217 324.82511,782.58959 324.82511,782.58959"
      id="path3194" />
   <flowRoot
      xml:space="preserve"
      id="flowRoot3196"
-     style="font-size:12px;font-style:normal;font-weight:normal;fill:#0000ff;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Serif"
-     transform="translate(20.999672,744.36712)"><flowRegion
+     style="font-size:25px;font-style:normal;font-weight:normal;fill:#0000ff;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Serif"
+     transform="translate(-141.74512,740.36712)"><flowRegion
        id="flowRegion3198"><rect
          id="rect3200"
-         width="70.52253"
-         height="21.051502"
+         width="116.83583"
+         height="55.78648"
          x="470.50107"
          y="27.366953"
-         style="fill:#0000ff" /></flowRegion><flowPara
+         style="font-size:25px;fill:#0000ff" /></flowRegion><flowPara
        id="flowPara3202"
-       style="font-size:14px;fill:#0000ff">d</flowPara></flowRoot>  <rect
+       style="font-size:25px;fill:#0000ff">d</flowPara></flowRoot>  <rect
      style="fill:none;fill-opacity:1;stroke:#0000ff;stroke-width:1.49999988;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
      id="rect3204"
      width="243.14484"
@@ -172,22 +174,22 @@
      y="772.0639" />
   <path
      style="fill:none;fill-opacity:1;stroke:#0000ff;stroke-width:1.5;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-     d="M 238.00754,814.70021 C 461.15346,814.70021 461.15346,813.64763 461.15346,813.64763"
+     d="M 238.00755,814.70021 C 323.26614,814.70021 323.26614,813.64763 323.26614,813.64763"
      id="path3206" />
   <flowRoot
      xml:space="preserve"
      id="flowRoot3208"
-     style="font-size:12px;font-style:normal;font-weight:normal;fill:#0000ff;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Serif"
-     transform="translate(-4.7685315,775.42516)"><flowRegion
+     style="font-size:25px;font-style:normal;font-weight:normal;fill:#0000ff;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Serif"
+     transform="translate(-141.51332,769.42516)"><flowRegion
        id="flowRegion3210"><rect
          id="rect3212"
-         width="70.52253"
-         height="21.051502"
+         width="122.09871"
+         height="47.365879"
          x="470.50107"
          y="27.366953"
-         style="fill:#0000ff" /></flowRegion><flowPara
+         style="font-size:25px;fill:#0000ff" /></flowRegion><flowPara
        id="flowPara3214"
-       style="font-size:14px;fill:#0000ff">e</flowPara></flowRoot>  <rect
+       style="font-size:25px;fill:#0000ff">e</flowPara></flowRoot>  <rect
      style="fill:none;fill-opacity:1;stroke:#0000ff;stroke-width:1.50000012;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
      id="rect3216"
      width="221.04079"
@@ -196,23 +198,23 @@
      y="839.42865" />
   <path
      style="fill:none;fill-opacity:1;stroke:#0000ff;stroke-width:1.5;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-     d="M 233.81567,854.6981 C 512.74807,854.6981 512.74807,853.64552 512.74807,853.64552"
+     d="M 233.81567,854.6981 C 323.28454,854.6981 323.28454,853.64552 323.28454,853.64552"
      id="path3218" />
   <flowRoot
      xml:space="preserve"
      id="flowRoot3220"
-     style="font-size:12px;font-style:normal;font-weight:normal;fill:#0000ff;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Serif"
-     transform="translate(46.826079,815.42305)"><flowRegion
+     style="font-size:25px;font-style:normal;font-weight:normal;fill:#0000ff;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Serif"
+     transform="translate(-139.91871,811.42305)"><flowRegion
        id="flowRegion3222"><rect
          id="rect3224"
-         width="70.52253"
-         height="21.051502"
+         width="119.99356"
+         height="56.839054"
          x="470.50107"
          y="27.366953"
-         style="fill:#0000ff" /></flowRegion><flowPara
+         style="font-size:25px;fill:#0000ff" /></flowRegion><flowPara
        id="flowPara3226"
-       style="font-size:14px;fill:#0000ff">f</flowPara></flowRoot>  <path
+       style="font-size:25px;fill:#0000ff">f</flowPara></flowRoot>  <path
      style="fill:none;fill-opacity:1;stroke:#0000ff;stroke-width:1.5;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-     d="M 230.51395,39.471566 C 453.65987,39.471566 453.65987,38.418991 453.65987,38.418991"
+     d="M 229.66846,38.753964 C 326.50538,38.753964 326.50538,39.136595 326.50538,39.136595"
      id="path3248" />
 </svg>

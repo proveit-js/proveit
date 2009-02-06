@@ -1260,8 +1260,13 @@ com.elclab.proveit = {
 	 * these are the current style and insert values to denote which one is
 	 * currently active
 	 */
+	
+	// togglestyle true signifies cite-style references, citation-style otherwise.  Used when creating a reference.
 	togglestyle : true,
 
+	/* toggleinsert true signifies full references, name-only otherwise.  Used when inserting.
+	 * Note that new references are always inserted in full.
+	 */
 	toggleinsert : true,
 
 	/* This whole function is something of a hack.  Basically, it detects the current state of the "physical" toggle,
@@ -2086,7 +2091,7 @@ com.elclab.proveit = {
 		 */
 		
 		com.elclab.proveit.curRefItem = com.elclab.proveit.getRefbox().selectedItem;
-		com.elclab.proveit.insertRef(tag, true); // true means insert full text here, regardless of toggle.
+		com.elclab.proveit.insertRef(tag, true); // true means insert full text here, regardless of global toggle.
 		tag["save"] = true;
 		tag.inMWEditBox = true;
 		com.elclab.proveit.includeProveItEditSummary();

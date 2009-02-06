@@ -4,4 +4,4 @@ syntax: glob
 chrome/ProveIt.jar
 chrome/ProveIt.xpi
 dist
-**.*~
+***~
