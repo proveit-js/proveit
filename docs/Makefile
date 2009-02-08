@@ -1,4 +1,7 @@
-all: png
+all: zip
+
+zip: png $(wildcard *.html)
+	zip ../dist/ProveItDocs.zip *.html *.png *.css
 
 png: sidebar_labelled.png open_edit_popup_cropped_labelled.png open_new_reference_menu_cropped_labelled.png
 
