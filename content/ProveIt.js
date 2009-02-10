@@ -1169,7 +1169,7 @@ com.elclab.proveit = {
 	 * Adds a single row of edit popup
 	 * @param list the param list from the reference
 	 * @param item the current param name
-	 * @param req whether the current param name is required
+	 * @param req true if current param name is required, otherwise not required.
 	 * @param fieldType true for label, false for textbox.
 	 */
 	addEditPopupRow : function(list, item, req, fieldType)
@@ -1447,7 +1447,7 @@ com.elclab.proveit = {
 							var type = cutupstring[0].substring(typestart + 1);
 							// trim the type
 							type = type.trim();
-							citation["type"] = type;
+							citation.setType(type);
 							// the rest of the cutup are the attributes, cycle
 							// through them and parse them
 							
@@ -1664,34 +1664,30 @@ com.elclab.proveit = {
 		// associative array holding all name/value pairs.
 		this.params = new Object();
 		
-		// References without these parameters will be flagged in red.
-		// True indicates required (null, or undefined, means not required)
-		var requiredParams =
+		/* Mostly an identity mapping, except for redirects.  I think
+		 * having the self-mappings is better than some kind of special case array.
+		 */
+		var typeNameMappings =
 		{
-			web : { "url": true, "title": true},
-			book : { "title": true },
-			journal : { "title": true },
-			conference : { "title": true, "booktitle": true },
-			encyclopedia: { "title": true, "encyclopedia": true },
-			news: { "title": true },
-			newsgroup : { "title": true },
-			paper : { "title": true },
-			"press release"	: { "title": true }	
+			web:"web",
+			book:"book",
+			journal:"journal",
+			conference:"conference",
+			encyclopedia:"encyclopedia",
+			news:"news",
+			newsgroup:"newsgroup",
+			paper:"paper",
+			"press release":"press release",
+			"pressrelease":"press release"
 		};
 		
-		// These paramaters will be auto-suggested when editing.
-		var defaultParams =
+		this.setType = function(rawType)
 		{
-			web : [ "url", "title", "accessdate", "work", "publisher", "date"],
-			book : [ "title", "author", "authorlink", "year", "isbn" ],
-			journal : [ "title", "author", "journal", "volume", "year", "month", "pages" ],
-			conference : [ "title", "booktitle", "author", "year", "month", "url", "id", "accessdate" ],
-			encyclopedia: [ "title", "encyclopedia", "author", "editor", "accessdate", "edition", "year", 
-			"publisher", "volume", "location", "pages" ],
-			news: [ "title", "author", "url", "publisher", "date", "accessdate" ],
-			newsgroup : [ "title", "author", "date", "newsgroup", "id", "url", "accessdate" ],
-			paper : [ "title", "author", "title", "date", "url", "accessdate" ],
-			"press release"	: [ "title", "url", "publisher", "date", "accessdate" ]	
+			var mappedType = typeNameMappings[rawType];
+			if(mappedType != null)
+				this.type = mappedType;
+			else
+				this.type = rawType; // Use naive type as fallback.
 		};
 		
 		// This is the order fields will be displayed or outputted.
@@ -1778,16 +1774,58 @@ com.elclab.proveit = {
 			return com.elclab.proveit.descriptions[com.elclab.proveit.LANG];
 		};
 		
-		// Get required parameters for this citation type
-		this.getRequiredParams = function()
+		// References without these parameters will be flagged in red.
+		// True indicates required (null, or undefined, means not required)
+		var requiredParams =
 		{
-			return requiredParams[this.type];
+			web : { "url": true, "title": true},
+			book : { "title": true },
+			journal : { "title": true },
+			conference : { "title": true, "booktitle": true },
+			encyclopedia: { "title": true, "encyclopedia": true },
+			news: { "title": true },
+			newsgroup : { "title": true },
+			paper : { "title": true },
+			"press release"	: { "title": true }	
 		};
 		
-		// Default parameters, to be suggested when editing.
+		/* Get required parameters for this citation type.
+		   NOTE: This will be null if this.type is unknown.
+		*/
+		this.getRequiredParams = function()
+		{
+			var curReq = requiredParams[this.type];
+			if(curReq)
+				return curReq;
+			else
+				return {}; // Return empty object rather than null to avoid dereferencing null.
+		};
+		
+		// These paramaters will be auto-suggested when editing.
+		var defaultParams =
+		{
+			web : [ "url", "title", "accessdate", "work", "publisher", "date"],
+			book : [ "title", "author", "authorlink", "year", "isbn" ],
+			journal : [ "title", "author", "journal", "volume", "year", "month", "pages" ],
+			conference : [ "title", "booktitle", "author", "year", "month", "url", "id", "accessdate" ],
+			encyclopedia: [ "title", "encyclopedia", "author", "editor", "accessdate", "edition", "year", 
+			"publisher", "volume", "location", "pages" ],
+			news: [ "title", "author", "url", "publisher", "date", "accessdate" ],
+			newsgroup : [ "title", "author", "date", "newsgroup", "id", "url", "accessdate" ],
+			paper : [ "title", "author", "title", "date", "url", "accessdate" ],
+			"press release"	: [ "title", "url", "publisher", "date", "accessdate" ]	
+		};
+		
+		/* Default parameters, to be suggested when editing.
+		 * NOTE: This will be null if this.type is unknown.
+		*/
 		this.getDefaultParams = function()
 		{
-			return defaultParams[this.type];
+			var curDefault = defaultParams[this.type];
+			if(curDefault)
+				return curDefault;
+			else
+				return []; // Return empty array rather than null to avoid dereferencing null.
 		}
 		
 		// Returns true if this object is valid, false otherwise.
