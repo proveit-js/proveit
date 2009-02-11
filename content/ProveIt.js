@@ -752,7 +752,7 @@ com.elclab.proveit = {
 	cancelEdit : function() {
 		com.elclab.proveit.getSidebarDoc().getElementById('edit').hidePopup();
 		//com.elclab.proveit.getSidebarDoc().getElementById('editextra').value = "";
-		com.elclab.proveit.dispSelect();
+		com.elclab.proveit.doSelect();
 	},
 	
 	/**
@@ -906,7 +906,7 @@ com.elclab.proveit = {
 		if (com.elclab.proveit.currentrefs[name].toString() != com.elclab.proveit.currentrefs[name]["orig"]) {
 			com.elclab.proveit.currentrefs[name]["save"] = false;
 		}
-		//com.elclab.proveit.dispSelect();
+		//com.elclab.proveit.doSelect();
 		
 		if(com.elclab.proveit.currentrefs[name]["save"] == false)
 		{
@@ -981,7 +981,7 @@ com.elclab.proveit = {
 			com.elclab.proveit.ignoreSelection = false;
 			return; //ignore event thrown by scripted select or clearSelection.
 		}
-		//com.elclab.proveit.dispSelect();
+		//com.elclab.proveit.doSelect();
 		
 		//if(com.elclab.proveit.getRefbox().selectedItem != null)
 		//{
@@ -1279,12 +1279,12 @@ com.elclab.proveit = {
 			com.elclab.proveit.getSidebarDoc().getElementById('nametoggle').setAttribute("style",
 					"font-weight: normal");
 			com.elclab.proveit.toggleinsert = true;
-			com.elclab.proveit.dispSelect();
+			com.elclab.proveit.doSelect();
 		} else if (toggle == "name") {
 			com.elclab.proveit.getSidebarDoc().getElementById('fulltoggle').setAttribute("style",
 					"font-weight: normal");
 			com.elclab.proveit.toggleinsert = false;
-			com.elclab.proveit.dispSelect();
+			com.elclab.proveit.doSelect();
 		} else if (toggle == "cite") {
 			com.elclab.proveit.getSidebarDoc().getElementById('citationtoggle').setAttribute("style",
 					"font-weight: normal");
