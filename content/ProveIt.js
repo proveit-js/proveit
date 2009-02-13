@@ -661,7 +661,7 @@ com.elclab.proveit = {
 	 * location of the cursor in the document.
 	 */
 	insertSelectedRef : function() {
-		com.elclab.proveit.log("Entering insertSelectedRef.");
+		//com.elclab.proveit.log("Entering insertSelectedRef.");
 		if (com.elclab.proveit.getRefbox().selectedItem) {
 			if(com.elclab.proveit.currentrefs == [])
 			{
@@ -835,7 +835,7 @@ com.elclab.proveit = {
 
 	// Saves the changes the user made in the edit popup.
 	editSave : function() {
-		com.elclab.proveit.log("Entering editSave");
+		//com.elclab.proveit.log("Entering editSave");
 		
 		com.elclab.proveit.getSidebarDoc().getElementById("edit").hidePopup();
 		
@@ -1058,7 +1058,7 @@ com.elclab.proveit = {
 	 */
 	updateEditPopup : function()
 	{
-		com.elclab.proveit.log("Entering updateEditPopup.")
+		//com.elclab.proveit.log("Entering updateEditPopup.")
 		var box = com.elclab.proveit.getSidebarDoc().getElementById("editlist");
 		var size = box.childNodes.length;
 		//com.elclab.proveit.log("Before size: " + size);
@@ -1067,9 +1067,8 @@ com.elclab.proveit = {
 		{
 			var item = box.removeChild(box.childNodes[0]);
 			//com.elclab.proveit.log("Deleting #" + i + ": " + item.id);
-			com.elclab.proveit.log("Deleting" + ": " + item.id);			
 			size = box.childNodes.length;
-			com.elclab.proveit.log("Size: " + size);
+			//com.elclab.proveit.log("Size: " + size);
 		}
 		
 		size = box.childNodes.length;
@@ -1206,7 +1205,7 @@ com.elclab.proveit = {
 				right.id = "" + item + "value";
 				com.elclab.proveit.getSidebarDoc().getElementById(item + "namec").value = item;
 			
-				com.elclab.proveit.log("list[item]: " + list[item]);
+				//com.elclab.proveit.log("list[item]: " + list[item]);
 				com.elclab.proveit.getSidebarDoc().getElementById(item + "value").value = list[item];
 			}
 			else
@@ -2001,7 +2000,7 @@ com.elclab.proveit = {
 	 *            used will hand this to the function.
 	 */
 	addCitation : function(type) {
-		com.elclab.proveit.log("Entering addCitation.");
+		//com.elclab.proveit.log("Entering addCitation.");
 		com.elclab.proveit.log("type: " + type);
 		// get this working, lots of typing here.
 		var box = com.elclab.proveit.getSidebarDoc().getElementById(type);
@@ -2218,7 +2217,7 @@ com.elclab.proveit = {
 	 * Changes the panel for the cite entry panel to the correct type of entry
 	 */
 	changeCite : function(menu) {
-		com.elclab.proveit.log("Entering changeCite");
+		//com.elclab.proveit.log("Entering changeCite");
 		//com.elclab.proveit.log("menu.id: " + menu.id);
 		var citePanes = menu.parentNode.nextSibling;
 		com.elclab.proveit.clearCitePanes(citePanes);
@@ -2245,7 +2244,7 @@ com.elclab.proveit = {
 		var endHbox = genPane.childNodes[genPane.childNodes.length - 1];
 		var addButton = endHbox.childNodes[0];
 		addButton.id = citeType + "expand";
-		com.elclab.proveit.log("Modifying onclick handlers.");
+		//com.elclab.proveit.log("Modifying onclick handlers.");
 		addButton.onclick = null; // regular set attribute onclick caused inconsistent state.  Try this.
 		addButton.onclick = function()
 		{
