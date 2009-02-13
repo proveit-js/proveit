@@ -803,7 +803,7 @@
 			</vbox>
 		</vbox>
 	</panel>
-	<panel id="edit" noautohide="true"> <!-- Used to be background color ECE9D8, but seemed to have no effect.-->
+	<panel id="edit"> <!-- Used to be background color ECE9D8, but seemed to have no effect.-->
 		<vbox id="editpanel" align="center" style="background-color: #DCDAD5">
 			<label id="editlabel" value="Citation"/>
 			<hbox id="editprimelabel" hidden="true">
