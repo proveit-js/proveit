@@ -7,10 +7,9 @@
 
 
 <page id="ProveIt" title="&ProveIt.title;" 
-	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" onload="com.elclab.proveit.proveitonload()" onunload="com.elclab.proveit.proveitonunload()" onclick="com.elclab.proveit.restoreSelection()">
+	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 	
 	<script type="application/x-javascript" src="chrome://proveit/content/ProveIt.js"/>
-	
 	<richlistitem id="prime" hidden="true">
 		<hbox flex="1" align="center">
 			<label control="prime" id="primelabel" value="" crop="end" minwidth="200" maxwidth="200"/>
@@ -845,4 +844,19 @@
 			</hbox>
 		</vbox>
 	</panel>
+      <script type="text/javascript">
+      com.elclab.proveit.proveitonload();
+      document.documentElement.addEventListener("click", function()
+      {
+	  com.elclab.proveit.restoreSelection();
+      }, false);
+	
+      document.documentElement.addEventListener("unload", function()
+      {
+	  com.elclab.proveit.proveitonunload();
+      }, false);
+
+
+      </script>
+	
 </page>
