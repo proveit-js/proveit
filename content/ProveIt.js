@@ -30,7 +30,7 @@ com.elclab.proveit = {
 	// Currently requires you be on one of these hard-coded domains.
 	knownSites : ["wiktionary.org",	"wikipedia.org", "wikinews.org"],
 
-	// Preferences object (nsIPrefBranch)
+	// Preferences object (nsIPrefBranch)
 	prefs : null,
 
 	LANG : "en", // currently used only for descriptions.
@@ -373,7 +373,7 @@ com.elclab.proveit = {
 	 */
 	summaryActionAdded : false,
 
-	/** Does the user want us to ever add summary actions?
+	/** Does the user want us to ever add summary actions?
 	 */
 	shouldAddSummary : null,
 
