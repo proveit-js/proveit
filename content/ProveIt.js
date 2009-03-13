@@ -1,3 +1,13 @@
+/*
+ * Copyright 2008, 2009
+ *
+ * Georgia Tech Research Corporation
+ *
+ * Atlanta, GA 30332-0415
+ *
+ * ALL RIGHTS RESERVED
+ */
+
 var com;
 if (!com)
 	com = {};
@@ -577,7 +587,7 @@ com.elclab.proveit = {
 			}
 			catch(e if e.name == "NS_ERROR_FAILURE")
 			{
-				com.elclab.proveit.log("Was unable to determine hostname or path of either path or request. e.message: " + e.message + ". Returning from onStatechange now.");
+				com.elclab.proveit.log("Was unable to determine hostname or path of either path or request. e.message: " + e.message + ". Returning from onStateChange now.");
 				return false;
 			}
 			catch(e)
