@@ -336,7 +336,7 @@ com.elclab.proveit = {
 		}
 		else
 		{
-			return;
+			return null;
 		}
 
 		return top.window.content.document.getElementById(textareaname);
@@ -898,7 +898,7 @@ com.elclab.proveit = {
 		//com.elclab.proveit.log("Entering editAddField");
 		var name = com.elclab.proveit.curRefItem.id;
 		var current = com.elclab.proveit.currentrefs[name];
-		com.elclab.proveit.addEditPopupRow(current.params, "", false, false);
+		com.elclab.proveit.addEditPopupRow(current.params, null, "", false, false);
 	},
 
 	// Remove field from the edit popup.
@@ -1230,7 +1230,7 @@ com.elclab.proveit = {
 		for(var i = 0; i < paramNames.length; i++) {
 			//com.elclab.proveit.log("Calling addEditPopupRow on tempParams." + item);
 			//com.elclab.proveit.log("i: " + i + ", paramNames[i]: " + paramNames[i]);
-			com.elclab.proveit.addEditPopupRow(tempParams, paramNames[i], required[paramNames[i]], true);
+			com.elclab.proveit.addEditPopupRow(tempParams, current.getDescriptions(), paramNames[i], required[paramNames[i]], true);
 		}
 
 		//size = box.childNodes.length;
@@ -1242,11 +1242,12 @@ com.elclab.proveit = {
 	/**
 	 * Adds a single row of edit popup
 	 * @param list the param list from the reference
+	 * @param descs description array to use, or null for no description
 	 * @param item the current param name
 	 * @param req true if current param name is required, otherwise not required.
 	 * @param fieldType true for label, false for textbox.
 	 */
-	addEditPopupRow : function(list, item, req, fieldType)
+	addEditPopupRow : function(list, descs, item, req, fieldType)
 	{
 		/*
 		com.elclab.proveit.log("Entering addEditPopupRow.");
@@ -1278,7 +1279,13 @@ com.elclab.proveit = {
 			{
 				left.id = "" + item + "namec";
 				right.id = "" + item + "value";
-				com.elclab.proveit.getSidebarDoc().getElementById(item + "namec").value = item;
+				var desc = descs[item];
+				if(!desc)
+				{
+					com.elclab.proveit.log("Undefined description for param: " + item + ".  Using directly as descripition.");
+					desc = item;
+				}
+				com.elclab.proveit.getSidebarDoc().getElementById(item + "namec").value = desc;
 
 				//com.elclab.proveit.log("list[item]: " + list[item]);
 				com.elclab.proveit.getSidebarDoc().getElementById(item + "value").value = list[item];
@@ -1681,8 +1688,10 @@ com.elclab.proveit = {
 	{
 		en :
 			{
-				name : "Name",
+				name: "Name",
 				author: "Author (l,f)",
+				last: "Last name",
+				first: "First name",
 				authorlink: "Author article name",
 				title: "Title",
 				publisher: "Publisher",
@@ -1692,16 +1701,17 @@ com.elclab.proveit = {
 				isbn: "ISBN",
 				id: "ID",
 				pages: "Pages",
+				quote: "Quote",
 				month: "Month",
 				journal: "Journal",
 				edition: "Edition",
 				volume: "Volume",
 				issue: "Issue",
 				url: "URL",
-				date: "Date(YYYY-MM-DD)",
-				accessdate: "Access Date(YYYY-MM-DD)",
-				coauth: "Co-Authors",
-				booktitle: "Book Title",
+				date: "Date (YYYY-MM-DD)",
+				accessdate: "Access Date (YYYY-MM-DD)",
+				coauthors: "Co-Authors",
+				booktitle: "Title of Proceedings",
 				contribution: "Contribution/Chapter",
 				encyclopedia: "Encyclopedia",
 				newsgroup: "Newsgroup",
@@ -1717,7 +1727,8 @@ com.elclab.proveit = {
 				"issue-date": "Issue Date(YYYY-MM-DD)",
 				"patent-number": "Patent Number",
 				"country-code": "Country(US)",
-				work: "Work"
+				work: "Work",
+				format: "File format"
 			}
 	},
 
@@ -2341,7 +2352,7 @@ com.elclab.proveit = {
 			citeObj = new com.elclab.proveit.Citation();
 		}
 		citeObj.type = citeType;
-		var desc = citeObj.getDescriptions();
+		var descs = citeObj.getDescriptions();
 		var defaultParams = citeObj.getDefaultParams().slice(0); // copy
 		defaultParams.sort(citeObj.getSorter());
 		for(var i = 0; i < defaultParams.length; i++)
@@ -2357,11 +2368,11 @@ com.elclab.proveit = {
 			// Basically the same code as nameHbox above
 			var paramLabel = paramBox.childNodes[0];
 			paramLabel.setAttribute("control", citeType + param);
-			if(desc[param] == undefined)
+			if(!descs[param])
 			{
-				com.elclab.proveit.log("undefined param: " + param);
+				com.elclab.proveit.log("Undefined descsription for param: " + param);
 			}
-			paramLabel.setAttribute("value", desc[param] + ": ");
+			paramLabel.setAttribute("value", descs[param]);
 			paramBox.childNodes[1].id = citeType + param;
 			paramBox.hidden = false;
 			genPane.insertBefore(paramBox, extraHbox);
