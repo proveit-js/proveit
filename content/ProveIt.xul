@@ -49,15 +49,23 @@
 		<hbox pack="center" align="center" flex="1" >
 			<label control="dummyname" value="&ProveIt.refName;" flex="1" minwidth="145"/>
 			<textbox id="dummyname" />
+			<spacer style = "margin: 0; padding: 0; width: 20px"/>
 		</hbox>
+		<!--
 		<hbox>
-			<textbox id="dummyextra" hidden="true" multiline="true" rows="7" flex="1" />
-			</hbox>
+		  <textbox id="dummyextra" hidden="true" multiline="true" rows="7" flex="1" />
+		</hbox>
+		-->
+		<hbox id = "starExpNew" style = "margin-left: 10px; height: 40px">
+		  <label class="requiredParam" value="*"/>			
+		  <label value="&ProveIt.starexp;"/>
+		</hbox>
+		
 		<hbox pack="end">
-			<button id="dummyexpand" label="&ProveIt.addother;" onclick="com.elclab.proveit.openExtra('dummy');" />
-			<button id="removeRow" label="Remove field" onclick="com.elclab.proveit.newRemoveField('dummy');" />
-			<button id="dummysubmit" label="&ProveIt.createnewsave;" onclick="com.elclab.proveit.addCitation('dummy');"/>
-			<button label="&ProveIt.canceladd;" onclick="com.elclab.proveit.cancelAdd()" />
+		  <button id="dummyexpand" label="&ProveIt.addother;" onclick="com.elclab.proveit.openExtra('dummy');" />
+		  <button id="removeRow" label="Remove field" onclick="com.elclab.proveit.newRemoveField('dummy');" />
+		  <button id="dummysubmit" label="&ProveIt.createnewsave;" onclick="com.elclab.proveit.addCitation('dummy');"/>
+		  <button label="&ProveIt.canceladd;" onclick="com.elclab.proveit.cancelAdd()" />
 		</hbox>
 	</vbox>	
 				

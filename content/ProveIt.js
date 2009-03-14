@@ -457,10 +457,10 @@ com.elclab.proveit = {
 		{
 			//com.elclab.proveit.log("Calling scanRef from proveitonload.");
 			com.elclab.proveit.scanRef();
-
-			// Load initial box for add new cite.
-			com.elclab.proveit.changeCite(com.elclab.proveit.getSidebarDoc().getElementById("citemenu"));
 		}
+
+		// Load initial box for add new cite.
+		com.elclab.proveit.changeCite(com.elclab.proveit.getSidebarDoc().getElementById("citemenu"));
 
 		return true;
 	},
@@ -1298,8 +1298,7 @@ com.elclab.proveit = {
 			var label = com.elclab.proveit.getSidebarDoc().getElementById("star").cloneNode(true);
 			label.id = "";
 			label.style.display = "-moz-box"; // back to default display prop.
-			var vis = req ? "visible" : "hidden";
-			label.style.visibility = vis; // Star will appear if field is required.
+			label.style.visibility = (req ? "visible" : "hidden"); // Star will appear if field is required.
 			newline.appendChild(label);
 
 	    //}
@@ -1447,7 +1446,7 @@ com.elclab.proveit = {
 	scanRef : function() {
 		//com.elclab.proveit.log("Entering scanRef.");
 		// textValue is the text from the edit box
-		var text;
+
 		// zero out the old scan, just in case
 		//com.elclab.proveit.currentScan = [];
 		this.currentScan = [];
@@ -1625,7 +1624,7 @@ com.elclab.proveit = {
 						//com.elclab.proveit.log("Adding: " + name);
 						if (name) {
 							//com.elclab.proveit.log("Name is defined: " + name)
-							var text = com.elclab.proveit.addNewElement(citation);
+							text = com.elclab.proveit.addNewElement(citation);
 							if(text == null)
 							{
 								//com.elclab.proveit.log("scanRef: addNewElement returned null");
@@ -1645,7 +1644,7 @@ com.elclab.proveit = {
 							//name = com.elclab.proveit.getGeneratedName(citation);
 
 							//com.elclab.proveit.log("Generated name: " + name)
-							var text = com.elclab.proveit.addNewElement(citation);
+							text = com.elclab.proveit.addNewElement(citation);
 							if(text == null)
 							{
 								//com.elclab.proveit.log("scanRef: addNewElement returned null");
@@ -2355,6 +2354,7 @@ com.elclab.proveit = {
 		var descs = citeObj.getDescriptions();
 		var defaultParams = citeObj.getDefaultParams().slice(0); // copy
 		defaultParams.sort(citeObj.getSorter());
+		var required = citeObj.getRequiredParams();
 		for(var i = 0; i < defaultParams.length; i++)
 		{
 			var param = defaultParams[i];
@@ -2370,9 +2370,16 @@ com.elclab.proveit = {
 			paramLabel.setAttribute("control", citeType + param);
 			if(!descs[param])
 			{
-				com.elclab.proveit.log("Undefined descsription for param: " + param);
+				throw new Error("Undefined description for param: " + param);
 			}
 			paramLabel.setAttribute("value", descs[param]);
+
+			var star = com.elclab.proveit.getSidebarDoc().getElementById("star").cloneNode(true);
+			star.id = "";
+			star.style.display = "-moz-box";
+			star.style.visibility = (required[param] ? "visible" : "hidden"); // CurStar will appear if field is required."
+			paramBox.appendChild(star);
+
 			paramBox.childNodes[1].id = citeType + param;
 			paramBox.hidden = false;
 			genPane.insertBefore(paramBox, extraHbox);
@@ -2471,13 +2478,17 @@ com.elclab.proveit = {
 		newchild.firstChild.appendChild(newTooltip);
 		newchild.firstChild.childNodes[0].setAttribute("tooltip", newTooltip.id);
 
-		neweditimage.id = generatedName + "image";
-		neweditimage.addEventListener("click", function() {
-			com.elclab.proveit.getRefbox().selectItem(this.parentNode);
+		var doEdit = function() {
+			com.elclab.proveit.getRefbox().selectItem(newchild);
 			//com.elclab.proveit.log("Item edit clicked");
-			com.elclab.proveit.getSidebarDoc().getElementById("edit").openPopup(this, "end_before", 0, 0,
+			com.elclab.proveit.getSidebarDoc().getElementById("edit").openPopup(neweditimage, "end_before", 0, 0,
 					false, false);
-		}, false);
+		};
+
+		newchild.addEventListener("dblclick", doEdit, false);
+
+		neweditimage.id = generatedName + "image";
+		neweditimage.addEventListener("click", doEdit, false);
 
 		newinsertimage.id = generatedName + "insertimage"; // probably isn't necessary
 		newinsertimage.addEventListener("click", function() {
