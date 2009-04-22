@@ -21,7 +21,10 @@
 				<include name="content/**" />
 				<include name="locale/**" />
 				<include name="skin/**" />
+				<exclude name="content/.metadata/" />
 				<exclude name="**/.*" />
+				<exclude name="**/*.orig" />
+				<exclude name="**/*~" />
 				<exclude name="**/CVS/**" />
 			</fileset>
 		</zip>
