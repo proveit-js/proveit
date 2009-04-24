@@ -1275,6 +1275,12 @@ com.elclab.proveit = {
 			newline.hidden = false;
 			com.elclab.proveit.getSidebarDoc().getElementById("editlist").appendChild(newline);
 
+			var label = com.elclab.proveit.getSidebarDoc().getElementById("star").cloneNode(true);
+			label.id = "";
+			label.style.display = "-moz-box"; // back to default display prop.
+			label.style.visibility = (req ? "visible" : "hidden"); // Star will appear if field is required.
+			newline.insertBefore(label, newline.firstChild);
+
 			if(fieldType)
 			{
 				left.id = "" + item + "namec";
@@ -1294,13 +1300,6 @@ com.elclab.proveit = {
 			{
 				//com.elclab.proveit.getSidebarDoc().getElementById(item + "value").value = "";
 			}
-
-			var label = com.elclab.proveit.getSidebarDoc().getElementById("star").cloneNode(true);
-			label.id = "";
-			label.style.display = "-moz-box"; // back to default display prop.
-			label.style.visibility = (req ? "visible" : "hidden"); // Star will appear if field is required.
-			newline.appendChild(label);
-
 	    //}
 	},
 
@@ -2364,9 +2363,17 @@ com.elclab.proveit = {
 			label.setAttribute("flex", "1");
 			label.setAttribute("minwidth", "145");
 			paramBox.insertBefore(label, paramBox.firstChild); //bug
+
+			var star = com.elclab.proveit.getSidebarDoc().getElementById("star").cloneNode(true);
+			star.id = "";
+			star.style.display = "-moz-box";
+			star.style.visibility = (required[param] ? "visible" : "hidden"); // CurStar will appear if field is required."
+			paramBox.insertBefore(star, label);
+
+
 			paramBox.id = "";
 			// Basically the same code as nameHbox above
-			var paramLabel = paramBox.childNodes[0];
+			var paramLabel = paramBox.childNodes[1];
 			paramLabel.setAttribute("control", citeType + param);
 			if(!descs[param])
 			{
@@ -2374,13 +2381,7 @@ com.elclab.proveit = {
 			}
 			paramLabel.setAttribute("value", descs[param]);
 
-			var star = com.elclab.proveit.getSidebarDoc().getElementById("star").cloneNode(true);
-			star.id = "";
-			star.style.display = "-moz-box";
-			star.style.visibility = (required[param] ? "visible" : "hidden"); // CurStar will appear if field is required."
-			paramBox.appendChild(star);
-
-			paramBox.childNodes[1].id = citeType + param;
+			paramBox.childNodes[2].id = citeType + param;
 			paramBox.hidden = false;
 			genPane.insertBefore(paramBox, extraHbox);
 		}

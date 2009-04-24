@@ -44,19 +44,20 @@
 	<hbox id="dummyCiteParam" pack="center" align="center" flex="1" hidden="true">
 		<!--<label control="dummyparam" value="&ProveIt.addparam;" flex="1" minwidth="145"/>-->
 		<textbox id="dummyparam" />
+		<button width="5px">-</button>
 	</hbox>
 	<vbox id="dummyCitePane" hidden="true">
 		<hbox pack="center" align="center" flex="1" >
+		        <spacer style = "margin: 0; padding: 0; width: 25px"/>
 			<label control="dummyname" value="&ProveIt.refName;" flex="1" minwidth="145"/>
 			<textbox id="dummyname" />
-			<spacer style = "margin: 0; padding: 0; width: 20px"/>
 		</hbox>
 		<!--
 		<hbox>
 		  <textbox id="dummyextra" hidden="true" multiline="true" rows="7" flex="1" />
 		</hbox>
 		-->
-		<hbox id = "starExpNew" style = "margin-left: 10px; height: 40px">
+		<hbox id = "starExpNew" style = "margin-left: 0px; height: 40px">
 		  <label class="requiredParam" value="*"/>			
 		  <label value="&ProveIt.starexp;"/>
 		</hbox>
@@ -132,6 +133,7 @@
 						<textbox control="" value="" minwidth="145"/>
 						<label value="="/>
 						<textbox id="" />
+						<button width="5px">-</button>
 		</hbox>			
 		<vbox flex="1" hidden="false" id="cite">
 			<hbox pack="center" align="center">
@@ -837,16 +839,16 @@
 			<vbox id="main_edit">
 				<!--<vbox>-->
 				<hbox id="edit_refname" value="">
+				  	<spacer style = "margin: 0; padding: 0; width: 25px"/>
 					<label id="edit_refname_label" value="&ProveIt.refName;" flex="1" />
 					<label value="=" />
 					<textbox id="edit_refname_value" value="" />
-					<spacer style = "margin: 0; padding: 0; width: 20px"/>
 				</hbox>
 				<!--</vbox>-->
 				<vbox id="editlist">
 				
 				</vbox>
-				<hbox id = "starExp" style = "margin-left: 10px; height: 40px">
+				<hbox id = "starExp" style = "margin-left: 0px; height: 40px">
 					<label class="requiredParam" value="*"/>			
 					<label value="&ProveIt.starexp;"/>
 				</hbox>
