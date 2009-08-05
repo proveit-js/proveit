@@ -5,7 +5,7 @@
 
 	<Description about="urn:mozilla:install-manifest">
 		<em:name>ProveIt</em:name>
-		<em:version>1.0.682</em:version>
+		<em:version>1.0.683</em:version>
 		<em:description>A Extension to facilitate the insertion of citation tags in Wikipedia.</em:description>
 		<em:creator>Christopher Jordan and Matthew Flaschen</em:creator>
 		<em:id>ProveIt@gatech.edu</em:id>
@@ -15,7 +15,7 @@
 			<Description>
 				<em:id>{ec8030f7-c20a-464f-9b0e-13a3a9e97384}</em:id>
 				<em:minVersion>2.9</em:minVersion>
-				<em:maxVersion>3.0.*</em:maxVersion>
+				<em:maxVersion>3.5.*</em:maxVersion>
 			</Description>
 		</em:targetApplication>
 	
