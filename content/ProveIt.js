@@ -1403,8 +1403,9 @@ com.elclab.proveit = {
 	splitNameVals : function (workingstring)
 	{
 		var split = {};
-		split.nameSplit = workingstring.substring(workingstring.indexOf("|") + 1).split(/=(?:[^\[\|]*?(?:\[\[[^\|\]]*(?:\|(?:[^\|\]]*))?\]\])?)+(?:\||\}\})/);
-		split.valSplit = workingstring.substring(workingstring.indexOf("|"), workingstring.indexOf("}}")).split(/\|[^\|=]*=/);
+		split.nameSplit = workingstring.substring(workingstring.indexOf("|") + 1).split(/=(?:[^\[|]*?(?:\[\[[^|\]]*(?:\|(?:[^|\]]*))?\]\])?)+(?:\||\}\})/
+);
+		split.valSplit = workingstring.substring(workingstring.indexOf("|"), workingstring.indexOf("}}")).split(/\|[^|=]*=/);
 		return split;
 	},
 
