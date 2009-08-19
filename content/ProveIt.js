@@ -462,12 +462,27 @@ com.elclab.proveit = {
 		// Load initial box for add new cite.
 		com.elclab.proveit.changeCite(com.elclab.proveit.getSidebarDoc().getElementById("citemenu"));
 
+		window.QueryInterface(Components.interfaces.nsIInterfaceRequestor)
+			.getInterface(Components.interfaces.nsIWebNavigation)
+			.QueryInterface(Components.interfaces.nsIDocShellTreeItem)
+			.rootTreeItem
+			.QueryInterface(Components.interfaces.nsIInterfaceRequestor)
+			.getInterface(Components.interfaces.nsIDOMWindow).document.getElementById("ProveIt-status-bar").className = "open";
+
 		return true;
 	},
 
 	// Runs when the sidebar is being unloaded.
 	proveitonunload : function() {
 		com.elclab.proveit.enableResize();
+
+		window.QueryInterface(Components.interfaces.nsIInterfaceRequestor)
+			.getInterface(Components.interfaces.nsIWebNavigation)
+			.QueryInterface(Components.interfaces.nsIDocShellTreeItem)
+			.rootTreeItem
+			.QueryInterface(Components.interfaces.nsIInterfaceRequestor)
+			.getInterface(Components.interfaces.nsIDOMWindow).document.getElementById("ProveIt-status-bar").className = "closed";
+
 		//top.getBrowser().removeProgressListener(com.elclab.proveit.sendalert);
 		//com.elclab.proveit.isSidebarOpenBool = false;
 	},
@@ -910,14 +925,14 @@ com.elclab.proveit = {
 
 	// Saves the changes the user made in the edit popup.
 	editSave : function() {
-		//com.elclab.proveit.log("Entering editSave");
+		com.elclab.proveit.log("Entering editSave");
 
 		com.elclab.proveit.getSidebarDoc().getElementById("edit").hidePopup();
 
 		var name = com.elclab.proveit.getRefbox().selectedItem.id;
 		var list = com.elclab.proveit.getSidebarDoc().getElementById("editlist").getElementsByTagName("hbox");
 
-		//com.elclab.proveit.log("list.length: " + list.length);
+		com.elclab.proveit.log("list.length: " + list.length);
 
 		var refNameValue = com.elclab.proveit.getSidebarDoc().getElementById("edit_refname_value");
 		if(refNameValue.value != "")
@@ -943,19 +958,23 @@ com.elclab.proveit = {
 				// com.elclab.proveit.log(item + ":" + list[item].id);
 				//var node = list[i].id;
 				//com.elclab.proveit.log("item: " + i);
-				var paramName = list[i].childNodes[0].value;
+
+				var paramNameId = list[i].childNodes[3].id;
+				var paramName = paramNameId.substring(0, paramNameId.lastIndexOf("value")); // Hack
+
 				//com.elclab.proveit.log("node: " + node);
 
 				//delete(com.elclab.proveit.currentrefs[name].params[node]);
 				delete(com.elclab.proveit.currentrefs[name].params[paramName]);
 
 				//var paramName = com.elclab.proveit.getSidebarDoc().getElementById(node + "namec").value;
-				//com.elclab.proveit.log("paramName: " + paramName);
+				com.elclab.proveit.log("paramName: " + paramName);
 				//var paramVal = com.elclab.proveit.getSidebarDoc().getElementById(node + "value").value;
-				var paramVal = list[i].childNodes[2].value;
-				/*
+				var paramVal = list[i].childNodes[3].value;
+
 				 com.elclab.proveit.log("paramVal: " + paramVal);
-				 com.elclab.proveit.log("Setting title = test2");
+				/*
+				com.elclab.proveit.log("Setting title = test2");
 				 com.elclab.proveit.currentrefs[name].params["title"] = "title2";
 				*/
 				if (paramName != "" && paramVal != "")
@@ -1291,6 +1310,7 @@ com.elclab.proveit = {
 					com.elclab.proveit.log("Undefined description for param: " + item + ".  Using directly as descripition.");
 					desc = item;
 				}
+
 				com.elclab.proveit.getSidebarDoc().getElementById(item + "namec").value = desc;
 
 				//com.elclab.proveit.log("list[item]: " + list[item]);
@@ -2085,8 +2105,8 @@ com.elclab.proveit = {
 	 *            used will hand this to the function.
 	 */
 	addCitation : function(type) {
-		//com.elclab.proveit.log("Entering addCitation.");
-		//com.elclab.proveit.log("type: " + type);
+		com.elclab.proveit.log("Entering addCitation.");
+		com.elclab.proveit.log("type: " + type);
 		// get this working, lots of typing here.
 		var box = com.elclab.proveit.getSidebarDoc().getElementById(type);
 		var tag;
@@ -2140,23 +2160,25 @@ com.elclab.proveit = {
 
 		for (var i = 1; i < box.childNodes.length - 2; i++) {
 			//com.elclab.proveit.log("box.childNodes[i].childNodes[1].id: " + box.childNodes[i].childNodes[1].id)
-			if (box.childNodes[i].childNodes[1]
-					&& box.childNodes[i].childNodes[1].id == (type + "name")) {
+			if (box.childNodes[i].childNodes[2]
+					&& box.childNodes[i].childNodes[2].id == (type + "name")) {
 				if (com.elclab.proveit.currentrefs[com.elclab.proveit.getSidebarDoc().getElementById(type + "name").value]) {
 					for (var j = 2; true; j++) {
 						if (!com.elclab.proveit.currentrefs[com.elclab.proveit.getSidebarDoc().getElementById(type
 								+ "name").value
 								+ j]) {
-							paramName = box.childNodes[i].childNodes[1].id
+							paramName = box.childNodes[i].childNodes[2].id
 									.substring(type.length);
-							paramVal = box.childNodes[i].childNodes[1].value
+							paramVal = box.childNodes[i].childNodes[2].value
 									+ j;
 						}
 					}
-				} else {
-					paramName = box.childNodes[i].childNodes[1].id
+				} // Above always infinite, apparently
+
+				else {
+					paramName = box.childNodes[i].childNodes[2].id
 							.substring(type.length);
-					paramVal = box.childNodes[i].childNodes[1].value;
+					paramVal = box.childNodes[i].childNodes[2].value;
 					//if(paramName != "name")
 					//tag.params[paramName] = paramVal;
 					/*else
@@ -2172,10 +2194,10 @@ com.elclab.proveit = {
 				paramVal = box.childNodes[i].childNodes[2].value;
 
 			}
-			else if (box.childNodes[i].childNodes[1]
-					&& box.childNodes[i].childNodes[1].value != "") {
-				paramName = box.childNodes[i].childNodes[1].id.substring(type.length);
-				paramVal = box.childNodes[i].childNodes[1].value;
+			else if (box.childNodes[i].childNodes[2] // Textbox exists
+					&& box.childNodes[i].childNodes[2].value != "") { // Non-blank
+				paramName = box.childNodes[i].childNodes[2].id.substring(type.length);
+				paramVal = box.childNodes[i].childNodes[2].value;
 				//if(paramName != "name")
 				//tag.params[paramName] = paramVal;
 				/*else
@@ -2258,6 +2280,7 @@ com.elclab.proveit = {
 		*/
 		//com.elclab.proveit.log("Entering openExtra");
 		var newline = com.elclab.proveit.getSidebarDoc().getElementById("dummyCreateRow").cloneNode(true);
+		com.elclab.proveit.activateRemove(newLine);
 		newline.hidden = false;
 
 		var wrapper = com.elclab.proveit.getSidebarDoc().getElementById(type);
@@ -2265,12 +2288,20 @@ com.elclab.proveit = {
 
 	},
 
+	activateRemove : function(row)
+	{
+		row.childNodes[row.childNodes.length - 1].addEventListener("click", function()
+		{
+			row.parentNode.removeChild(row);
+		}, false); // Activate remove button
+	},
+/*
 	// Removes the last field in the add new citation box.
 	newRemoveField : function(type){
 		var wrapper = com.elclab.proveit.getSidebarDoc().getElementById(type);
 		wrapper.removeChild(wrapper.childNodes[wrapper.childNodes.length - 3]);
 	},
-
+*/
 	// Clear all rows of passed in add citation panes.
 	clearCitePanes : function(citePanes)
 	{
@@ -2321,15 +2352,15 @@ com.elclab.proveit = {
 		var genPane = com.elclab.proveit.getSidebarDoc().getElementById("dummyCitePane").cloneNode(true);
 		genPane.id = citeType;
 		var nameHbox = genPane.firstChild;
-		nameHbox.childNodes[0].setAttribute("control", citeType + "name");
-		nameHbox.childNodes[1].id = citeType + "name";
+		nameHbox.childNodes[1].setAttribute("control", citeType + "name"); // Label for ref name
+		nameHbox.childNodes[2].id = citeType + "name"; // ref name textbox itself.
 		// The extraHbox will probably get eliminated altogether later.
 		var extraHbox = genPane.childNodes[genPane.childNodes.length - 2];
 		extraHbox.firstChild.id = citeType + "extra";
 		var endHbox = genPane.childNodes[genPane.childNodes.length - 1];
 		var addButton = endHbox.childNodes[0];
 		addButton.id = citeType + "expand";
-		//com.elclab.proveit.log("Modifying onclick handlers.");
+		//com.elColour matchingclab.proveit.log("Modifying onclick handlers.");
 		addButton.onclick = null; // regular set attribute onclick caused inconsistent state.  Try this.
 		addButton.onclick = function()
 		{
@@ -2359,6 +2390,7 @@ com.elclab.proveit = {
 		{
 			var param = defaultParams[i];
 			var paramBox = com.elclab.proveit.getSidebarDoc().getElementById("dummyCiteParam").cloneNode(true);
+			com.elclab.proveit.activateRemove(paramBox);
 			var label = com.elclab.proveit.getSidebarDoc().createElement("label");
 			label.setAttribute("value", "<ref> name");
 			label.setAttribute("flex", "1");

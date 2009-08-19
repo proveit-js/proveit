@@ -44,13 +44,14 @@
 	<hbox id="dummyCiteParam" pack="center" align="center" flex="1" hidden="true">
 		<!--<label control="dummyparam" value="&ProveIt.addparam;" flex="1" minwidth="145"/>-->
 		<textbox id="dummyparam" />
-		<button width="5px">-</button>
+		<button>X</button>
 	</hbox>
 	<vbox id="dummyCitePane" hidden="true">
 		<hbox pack="center" align="center" flex="1" >
 		        <spacer style = "margin: 0; padding: 0; width: 25px"/>
-			<label control="dummyname" value="&ProveIt.refName;" flex="1" minwidth="145"/>
+			<label control="dummyname" value="&ProveIt.refName;" minwidth="100"/>
 			<textbox id="dummyname" />
+			<spacer flex="1" />
 		</hbox>
 		<!--
 		<hbox>
@@ -128,12 +129,14 @@
 		</hbox>
 	</vbox>
 	
-	<panel id="createnew" style="background-color: #ECE9D8" position="end_after" minwidth="350" flex="1" noautohide="true">
+	<!-- minwidth=350 -->
+	<panel id="createnew" style="background-color: #ECE9D8" position="end_after" flex="1" noautohide="true">
 		<hbox pack="center" align="center" hidden = "true" id = "dummyCreateRow">
 						<textbox control="" value="" minwidth="145"/>
 						<label value="="/>
 						<textbox id="" />
-						<button width="5px">-</button>
+						<button>X</button><!-- Remove row -->
+						<spacer flex="1"/>
 		</hbox>			
 		<vbox flex="1" hidden="false" id="cite">
 			<hbox pack="center" align="center">

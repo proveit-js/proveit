@@ -16,6 +16,18 @@ label.requiredParam
 	padding: 0;
 	width: 15px;
 }
+
+statusbarpanel.open
+{
+	color: #00FF00
+}
+
+statusbarpanel.closed
+{
+	color: #FF0000
+}
+
+
 /*
 richlistitem.badReference::-moz-selection
 {

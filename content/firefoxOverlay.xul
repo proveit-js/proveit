@@ -9,6 +9,9 @@
     ALL RIGHTS RESERVED
   -->
 <!DOCTYPE overlay SYSTEM "chrome://ProveIt/locale/ProveIt.dtd" >
+
+<?xml-stylesheet href="chrome://ProveIt/skin/ProveIt.css" type="text/css"?>
+
 <overlay id="ProveItOverlay"
 	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 	
@@ -50,9 +53,10 @@
 	-->
 	
 	<statusbar id="status-bar">
-	<statusbarpanel id="status-bar-sample-1"
+	<statusbarpanel id="ProveIt-status-bar"
+		class="closed"
 		label="ProveIt"
-		tooltiptext="Sample status bar item"
+		onclick="toggleSidebar('viewProveItSidebar');"
 	/>
 	</statusbar>
 

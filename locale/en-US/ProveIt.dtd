@@ -67,4 +67,4 @@
 <!ENTITY ProveIt.canceladd "Cancel">
 <!ENTITY ProveIt.editapply "Apply Changes">
 
-<!ENTITY ProveIt.refName "&lt;ref&gt; name">
+<!ENTITY ProveIt.refName "&lt;ref&gt; name (abbr. code)">
