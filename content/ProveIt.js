@@ -1885,7 +1885,7 @@ com.elclab.proveit = {
 			web : { "url": true, "title": true},
 			book : { "title": true },
 			journal : { "title": true },
-			conference : { "title": true, "booktitle": true },
+			conference : { "title": true },
 			encyclopedia: { "title": true, "encyclopedia": true },
 			news: { "title": true },
 			newsgroup : { "title": true },
