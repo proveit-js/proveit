@@ -64,10 +64,9 @@
 		</hbox>
 		
 		<hbox pack="end">
-		  <button id="dummyexpand" label="&ProveIt.addother;" onclick="com.elclab.proveit.openExtra('dummy');" />
-		  <button id="removeRow" label="Remove field" onclick="com.elclab.proveit.newRemoveField('dummy');" />
+		  <button id="dummyexpand" label="&ProveIt.addanother;" onclick="com.elclab.proveit.openExtra('dummy');" />
 		  <button id="dummysubmit" label="&ProveIt.createnewsave;" onclick="com.elclab.proveit.addCitation('dummy');"/>
-		  <button label="&ProveIt.canceladd;" onclick="com.elclab.proveit.cancelAdd()" />
+		  <button id="dummycancel" label="&ProveIt.cancel;" onclick="com.elclab.proveit.cancelAdd()" />
 		</hbox>
 	</vbox>	
 				
@@ -130,7 +129,7 @@
 	</vbox>
 	
 	<!-- minwidth=350 -->
-	<panel id="createnew" style="background-color: #ECE9D8" position="end_after" flex="1" noautohide="true">
+	<panel id="createnew" style="background-color: #ECE9D8" position="end_after" flex="1" noautohide="true" onpopupshown="com.elclab.proveit.changeCite(document.getElementById('citemenu'))">
 		<hbox pack="center" align="center" hidden = "true" id = "dummyCreateRow">
 						<textbox control="" value="" minwidth="145"/>
 						<label value="="/>
@@ -193,10 +192,10 @@
 						<textbox id="bookextra" hidden="true" multiline="true" rows="7" flex="1" />
 					</hbox>
 					<hbox pack="end">
-						<button id="bookexpand" label="&ProveIt.addother;" onclick="com.elclab.proveit.openExtra('book')" />
+						<button id="bookexpand" label="&ProveIt.addanother;" onclick="com.elclab.proveit.openExtra('book')" />
 						<button id="removeRow" label="Remove field" onclick="com.elclab.proveit.newRemoveField('book');" />
 						<button id="booksubmit" label="&ProveIt.createnewsave;" onclick="com.elclab.proveit.addCitation('book');"/>
-						<button label="&ProveIt.canceladd;" onclick="com.elclab.proveit.cancelAdd()" />
+						<button label="&ProveIt.cancel;" onclick="com.elclab.proveit.cancelAdd()" />
 					</hbox>
 				</vbox>
 				<vbox id="journal" hidden="true">
@@ -248,10 +247,10 @@
 						<textbox id="journalextra" hidden="true" multiline="true" rows="7" flex="1" />
 					</hbox>
 					<hbox pack="end">
-						<button id="journalexpand" label="&ProveIt.addother;" onclick="com.elclab.proveit.openExtra('journal')" />
+						<button id="journalexpand" label="&ProveIt.addanother;" onclick="com.elclab.proveit.openExtra('journal')" />
 						<button id="removeRow" label="Remove field" onclick="com.elclab.proveit.newRemoveField('journal');" />
 						<button id="journalsubmit" label="&ProveIt.createnewsave;" onclick="com.elclab.proveit.addCitation('journal');"/>
-						<button label="&ProveIt.canceladd;" onclick="com.elclab.proveit.cancelAdd()" />
+						<button label="&ProveIt.cancel;" onclick="com.elclab.proveit.cancelAdd()" />
 					</hbox>
 				</vbox>
 				<vbox id="conference" hidden="true">
@@ -303,10 +302,10 @@
 						<textbox id="conferenceextra" hidden="true" multiline="true" rows="7" flex="1" />
 					</hbox>
 					<hbox pack="end">
-						<button id="conferenceexpand" label="&ProveIt.addother;" onclick="com.elclab.proveit.openExtra('conference')" />
+						<button id="conferenceexpand" label="&ProveIt.addanother;" onclick="com.elclab.proveit.openExtra('conference')" />
 						<button id="removeRow" label="Remove field" onclick="com.elclab.proveit.newRemoveField('conference');" />
 						<button id="conferencesubmit" label="&ProveIt.createnewsave;" onclick="com.elclab.proveit.addCitation('conference');"/>
-						<button label="&ProveIt.canceladd;" onclick="com.elclab.proveit.cancelAdd()" />
+						<button label="&ProveIt.cancel;" onclick="com.elclab.proveit.cancelAdd()" />
 					</hbox>
 				</vbox>
 				<vbox id="encyclopedia" hidden="true">
@@ -338,11 +337,11 @@
 						<textbox id="encyclopediaextra" hidden="true" multiline="true" rows="7" flex="1" />
 					</hbox>
 					<hbox pack="end">
-						<button id="encyclopediaexpand" label="&ProveIt.addother;" onclick="com.elclab.proveit.openExtra('encyclopedia')" />
+						<button id="encyclopediaexpand" label="&ProveIt.addanother;" onclick="com.elclab.proveit.openExtra('encyclopedia')" />
 						<button id="removeRow" label="Remove field" onclick="com.elclab.proveit.newRemoveField('encyclopedia');" />
 						
 						<button id="encyclopediasubmit" label="&ProveIt.createnewsave;" onclick="com.elclab.proveit.addCitation('encyclopedia');"/>
-						<button label="&ProveIt.canceladd;" onclick="com.elclab.proveit.cancelAdd()" />
+						<button label="&ProveIt.cancel;" onclick="com.elclab.proveit.cancelAdd()" />
 					</hbox>
 				</vbox>
 				<vbox id="news" hidden="true">
@@ -382,10 +381,10 @@
 						<textbox id="newsextra" hidden="true" multiline="true" rows="7" flex="1" />
 					</hbox>
 					<hbox pack="end">
-						<button id="newsexpand" label="&ProveIt.addother;" onclick="com.elclab.proveit.openExtra('news')" />
+						<button id="newsexpand" label="&ProveIt.addanother;" onclick="com.elclab.proveit.openExtra('news')" />
 						<button id="removeRow" label="Remove field" onclick="com.elclab.proveit.newRemoveField('news');" />
 						<button id="newssubmit" label="&ProveIt.createnewsave;" onclick="com.elclab.proveit.addCitation('news');"/>
-						<button label="&ProveIt.canceladd;" onclick="com.elclab.proveit.cancelAdd()" />
+						<button label="&ProveIt.cancel;" onclick="com.elclab.proveit.cancelAdd()" />
 					</hbox>
 				</vbox>
 				<vbox id="web" hidden="false">
@@ -425,10 +424,10 @@
 						<textbox id="webextra" hidden="true" multiline="true" rows="7" flex="1" />
 					</hbox>
 					<hbox pack="end">
-						<button id="webexpand" label="&ProveIt.addother;" onclick="com.elclab.proveit.openExtra('web')" />
+						<button id="webexpand" label="&ProveIt.addanother;" onclick="com.elclab.proveit.openExtra('web')" />
 						<button id="removeRow" label="Remove field" onclick="com.elclab.proveit.newRemoveField('web');" />
 						<button id="websubmit" label="&ProveIt.createnewsave;" onclick="com.elclab.proveit.addCitation('web');"/>
-						<button label="&ProveIt.canceladd;" onclick="com.elclab.proveit.cancelAdd()" />
+						<button label="&ProveIt.cancel;" onclick="com.elclab.proveit.cancelAdd()" />
 					</hbox>
 				</vbox>
 				<vbox id="newsgroup" hidden="true">
@@ -464,10 +463,10 @@
 						<textbox id="newsgroupextra" hidden="true" multiline="true" rows="7" flex="1" />
 					</hbox>
 					<hbox pack="end">
-						<button id="newsgroupexpand" label="&ProveIt.addother;" onclick="com.elclab.proveit.openExtra('newsgroup')" />
+						<button id="newsgroupexpand" label="&ProveIt.addanother;" onclick="com.elclab.proveit.openExtra('newsgroup')" />
 						<button id="removeRow" label="Remove field" onclick="com.elclab.proveit.newRemoveField('newsgroup');" />
 						<button id="newsgroupsubmit" label="&ProveIt.createnewsave;" onclick="com.elclab.proveit.addCitation('newsgroup');"/>
-						<button label="&ProveIt.canceladd;" onclick="com.elclab.proveit.cancelAdd()" />
+						<button label="&ProveIt.cancel;" onclick="com.elclab.proveit.cancelAdd()" />
 					</hbox>
 				</vbox>
 				<vbox id="paper" hidden="true">
@@ -515,10 +514,10 @@
 						<textbox id="paperextra" hidden="true" multiline="true" rows="7" flex="1" />
 					</hbox>
 					<hbox pack="end">
-						<button id="paperexpand" label="&ProveIt.addother;" onclick="com.elclab.proveit.openExtra('paper')" />
+						<button id="paperexpand" label="&ProveIt.addanother;" onclick="com.elclab.proveit.openExtra('paper')" />
 						<button id="removeRow" label="Remove field" onclick="com.elclab.proveit.newRemoveField('paper');" />
 						<button id="papersubmit" label="&ProveIt.createnewsave;" onclick="com.elclab.proveit.addCitation('paper');"/>
-						<button label="&ProveIt.canceladd;" onclick="com.elclab.proveit.cancelAdd()" />
+						<button label="&ProveIt.cancel;" onclick="com.elclab.proveit.cancelAdd()" />
 					</hbox>
 				</vbox>
 				<vbox id="press release" hidden="true">
@@ -550,10 +549,10 @@
 						<textbox id="press releaseextra" hidden="true" multiline="true" rows="7" flex="1" />
 					</hbox>
 					<hbox pack="end">
-						<button id="press releaseexpand" label="&ProveIt.addother;" onclick="com.elclab.proveit.openExtra('press release')" />
+						<button id="press releaseexpand" label="&ProveIt.addanother;" onclick="com.elclab.proveit.openExtra('press release')" />
 						<button id="removeRow" label="Remove field" onclick="com.elclab.proveit.newRemoveField('press release');" />
 						<button id="press releasesubmit" label="&ProveIt.createnewsave;" onclick="com.elclab.proveit.addCitation('press release');"/>
-						<button label="&ProveIt.canceladd;" onclick="com.elclab.proveit.cancelAdd()" />
+						<button label="&ProveIt.cancel;" onclick="com.elclab.proveit.cancelAdd()" />
 					</hbox>
 				</vbox>
 				-->
@@ -603,10 +602,10 @@
 						<textbox id="webextra" hidden="true" multiline="true" rows="7" flex="1" />
 					</hbox>
 					<hbox pack="end">
-						<button id="webexpand" label="&ProveIt.addother;" onclick="com.elclab.proveit.openExtra('web')" />
+						<button id="webexpand" label="&ProveIt.addanother;" onclick="com.elclab.proveit.openExtra('web')" />
 						<button id="removeRow" label="Remove field" onclick="com.elclab.proveit.newRemoveField('web');" />
 						<button id="websubmit" label="&ProveIt.createnewsave;" onclick="com.elclab.proveit.addCitation('web');"/>
-						<button label="&ProveIt.canceladd;" onclick="com.elclab.proveit.cancelAdd()" />
+						<button label="&ProveIt.cancel;" onclick="com.elclab.proveit.cancelAdd()" />
 					</hbox>
 				</vbox>
 				<vbox id="news" hidden="true">
@@ -650,10 +649,10 @@
 						<textbox id="newsextra" hidden="true" multiline="true" rows="7" flex="1" />
 					</hbox>
 					<hbox pack="end">
-						<button id="newsexpand" label="&ProveIt.addother;" onclick="com.elclab.proveit.openExtra('news')" />
+						<button id="newsexpand" label="&ProveIt.addanother;" onclick="com.elclab.proveit.openExtra('news')" />
 						<button id="removeRow" label="Remove field" onclick="com.elclab.proveit.newRemoveField('news');" />
 						<button id="newssubmit" label="&ProveIt.createnewsave;" onclick="com.elclab.proveit.addCitation('news');"/>
-						<button label="&ProveIt.canceladd;" onclick="com.elclab.proveit.cancelAdd()" />
+						<button label="&ProveIt.cancel;" onclick="com.elclab.proveit.cancelAdd()" />
 					</hbox>
 				</vbox>
 				<vbox id="encyclopedia" hidden="true">
@@ -701,10 +700,10 @@
 						<textbox id="encyclopediaextra" hidden="true" multiline="true" rows="7" flex="1" />
 					</hbox>
 					<hbox pack="end">
-						<button id="encyclopediaexpand" label="&ProveIt.addother;" onclick="com.elclab.proveit.openExtra('encyclopedia')" />
+						<button id="encyclopediaexpand" label="&ProveIt.addanother;" onclick="com.elclab.proveit.openExtra('encyclopedia')" />
 						<button id="removeRow" label="Remove field" onclick="com.elclab.proveit.newRemoveField('encyclopedia');" />
 						<button id="encyclopediasubmit" label="&ProveIt.createnewsave;" onclick="com.elclab.proveit.addCitation('encyclopedia');"/>
-						<button label="&ProveIt.canceladd;" onclick="com.elclab.proveit.cancelAdd()" />
+						<button label="&ProveIt.cancel;" onclick="com.elclab.proveit.cancelAdd()" />
 					</hbox>
 				</vbox>
 				<vbox id="book" hidden="true">
@@ -736,10 +735,10 @@
 						<textbox id="bookextra" hidden="true" multiline="true" rows="7" flex="1" />
 					</hbox>
 					<hbox pack="end">
-						<button id="bookexpand" label="&ProveIt.addother;" onclick="com.elclab.proveit.openExtra('book')" />
+						<button id="bookexpand" label="&ProveIt.addanother;" onclick="com.elclab.proveit.openExtra('book')" />
 						<button id="removeRow" label="Remove field" onclick="com.elclab.proveit.newRemoveField('book');" />
 						<button id="booksubmit" label="&ProveIt.createnewsave;" onclick="com.elclab.proveit.addCitation('book');"/>
-						<button label="&ProveIt.canceladd;" onclick="com.elclab.proveit.cancelAdd()" />
+						<button label="&ProveIt.cancel;" onclick="com.elclab.proveit.cancelAdd()" />
 					</hbox>
 				</vbox>
 				<vbox id="journal" hidden="true">
@@ -779,10 +778,10 @@
 						<textbox id="journalextra" hidden="true" multiline="true" rows="7" flex="1" />
 					</hbox>
 					<hbox pack="end">
-						<button id="journalexpand" label="&ProveIt.addother;" onclick="com.elclab.proveit.openExtra('journal')" />
+						<button id="journalexpand" label="&ProveIt.addanother;" onclick="com.elclab.proveit.openExtra('journal')" />
 						<button id="removeRow" label="Remove field" onclick="com.elclab.proveit.newRemoveField('journal');" />
 						<button id="journalsubmit" label="&ProveIt.createnewsave;" onclick="com.elclab.proveit.addCitation('journal');"/>
-						<button label="&ProveIt.canceladd;" onclick="com.elclab.proveit.cancelAdd()" />
+						<button label="&ProveIt.cancel;" onclick="com.elclab.proveit.cancelAdd()" />
 					</hbox>
 				</vbox>
 				<vbox id="patent" hidden="true">
@@ -814,10 +813,10 @@
 						<textbox id="patentextra" hidden="true" multiline="true" rows="7" flex="1" />
 					</hbox>
 					<hbox pack="end">
-						<button id="patentexpand" label="&ProveIt.addother;" onclick="com.elclab.proveit.openExtra('patent')" />
+						<button id="patentexpand" label="&ProveIt.addanother;" onclick="com.elclab.proveit.openExtra('patent')" />
 						<button id="removeRow" label="Remove field" onclick="com.elclab.proveit.newRemoveField('patent');" />
 						<button id="patentsubmit" label="&ProveIt.createnewsave;" onclick="com.elclab.proveit.addCitation('patent');"/>
-						<button label="&ProveIt.canceladd;" onclick="com.elclab.proveit.cancelAdd()" />
+						<button label="&ProveIt.cancel;" onclick="com.elclab.proveit.cancelAdd()" />
 					</hbox>
 				</vbox>
 				-->

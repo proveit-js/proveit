@@ -15,7 +15,6 @@
 <!ENTITY ProveIt.addnew "Add a New Reference">
 <!ENTITY ProveIt.createnewsave "Insert">
 <!ENTITY ProveIt.starexp "Required">
-<!ENTITY ProveIt.addother "Add other fields">
 <!ENTITY ProveIt.addanother "Add another field">
 
 <!ENTITY ProveIt.Website "Web Site">
@@ -64,7 +63,6 @@
 
 <!ENTITY ProveIt.newvalues "New Values: (name=value, name=value, etc.)">
 <!ENTITY ProveIt.cancel "Cancel">
-<!ENTITY ProveIt.canceladd "Cancel">
 <!ENTITY ProveIt.editapply "Apply Changes">
 
 <!ENTITY ProveIt.refName "&lt;ref&gt; name (abbr. code)">
