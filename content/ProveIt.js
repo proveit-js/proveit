@@ -1541,10 +1541,14 @@ com.elclab.proveit = {
 							// find the start location on the type
 							var typestart = cutupstring[0].toLowerCase()
 									.indexOf('e');
+							// First end curly brace
+							var rightcurly = cutupstring[0].indexOf('}');
+							// Usually, rightcurly will be -1.  But this takes into account empty references like <ref>{{cite web}}</ref>
+							var typeend = rightcurly != -1 ? rightcurly : cutupstring[0].length;
 							// grab the type, this should only return the type
 							// with
 							// possible whitespace around it
-							var type = cutupstring[0].substring(typestart + 1);
+							var type = cutupstring[0].substring(typestart + 1, typeend);
 							// trim the type
 							type = type.trim();
 							citation.setType(type);
@@ -2366,8 +2370,7 @@ com.elclab.proveit = {
 		{
 			com.elclab.proveit.openExtra(citeType);
 		};
-		endHbox.childNodes[1].setAttribute("onclick", "com.elclab.proveit.newRemoveField('" + citeType + "');");
-		var submitButton = endHbox.childNodes[2];
+		var submitButton = endHbox.childNodes[1];
 		submitButton.id = citeType + "submit";
 		submitButton.setAttribute("onclick", "com.elclab.proveit.addCitation('" + citeType + "');");
 
@@ -2392,7 +2395,6 @@ com.elclab.proveit = {
 			var paramBox = com.elclab.proveit.getSidebarDoc().getElementById("dummyCiteParam").cloneNode(true);
 			com.elclab.proveit.activateRemove(paramBox);
 			var label = com.elclab.proveit.getSidebarDoc().createElement("label");
-			label.setAttribute("value", "<ref> name");
 			label.setAttribute("flex", "1");
 			label.setAttribute("minwidth", "145");
 			paramBox.insertBefore(label, paramBox.firstChild); //bug
@@ -2406,13 +2408,12 @@ com.elclab.proveit = {
 
 			paramBox.id = "";
 			// Basically the same code as nameHbox above
-			var paramLabel = paramBox.childNodes[1];
-			paramLabel.setAttribute("control", citeType + param);
+			label.setAttribute("control", citeType + param);
 			if(!descs[param])
 			{
 				throw new Error("Undefined description for param: " + param);
 			}
-			paramLabel.setAttribute("value", descs[param]);
+			label.setAttribute("value", descs[param]);
 
 			paramBox.childNodes[2].id = citeType + param;
 			paramBox.hidden = false;
