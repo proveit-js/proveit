@@ -1731,7 +1731,7 @@ com.elclab.proveit = {
 				volume: "Volume",
 				issue: "Issue",
 				url: "URL",
-				date: "Date (YYYY-MM-DD)",
+				date: "Publication date (YYYY-MM-DD)",
 				accessdate: "Access Date (YYYY-MM-DD)",
 				coauthors: "Co-Authors",
 				booktitle: "Title of Proceedings",
