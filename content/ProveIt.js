@@ -2284,7 +2284,7 @@ com.elclab.proveit = {
 		*/
 		//com.elclab.proveit.log("Entering openExtra");
 		var newline = com.elclab.proveit.getSidebarDoc().getElementById("dummyCreateRow").cloneNode(true);
-		com.elclab.proveit.activateRemove(newLine);
+		com.elclab.proveit.activateRemove(newline);
 		newline.hidden = false;
 
 		var wrapper = com.elclab.proveit.getSidebarDoc().getElementById(type);
