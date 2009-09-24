@@ -53,7 +53,7 @@ com.elclab.proveit = {
 		{
 			var consoleService = Components.classes["@mozilla.org/consoleservice;1"]
                                  .getService(Components.interfaces.nsIConsoleService);
-  			consoleService.logStringMessage(str);
+  			consoleService.logStringMessage("[ProveIt] " + str);
 		}
 	},
 
@@ -1437,7 +1437,7 @@ com.elclab.proveit = {
 	{
 		var name = "";
 
-		//com.elclab.proveit.log("citation: " + citation);
+		com.elclab.proveit.log("getGeneratedName: citation: " + citation);
 		if (citation.params["author"]) {
 			name = citation.params["author"] + "; ";
 		} else if (citation.params["last"]) {
@@ -1732,7 +1732,7 @@ com.elclab.proveit = {
 				issue: "Issue",
 				url: "URL",
 				date: "Publication date (YYYY-MM-DD)",
-				accessdate: "Access Date (YYYY-MM-DD)",
+				accessdate: "Access date (YYYY-MM-DD)",
 				coauthors: "Co-Authors",
 				booktitle: "Title of Proceedings",
 				contribution: "Contribution/Chapter",
@@ -2102,17 +2102,18 @@ com.elclab.proveit = {
 	},
 
 	/**
-	 * Called from the add citation panel, this is the function used to
-	 * add the actual citation.
-	 *
-	 * @param type the type of citation being added, the particular button
-	 *            used will hand this to the function.
+	 * Convert the current contents of the add citation panel to a citation obj (i.e Cite(), Citation())
+         * @return Cite object or null if no panel exists yet.
 	 */
-	addCitation : function(type) {
-		com.elclab.proveit.log("Entering addCitation.");
-		com.elclab.proveit.log("type: " + type);
-		// get this working, lots of typing here.
+	citationObjFromAddPopup : function(type)
+	{
+		com.elclab.proveit.log("Entering citationObjFromAddPopup");
+		com.elclab.proveit.log("citationObjFromAddPopup: type: " + type);
+                // get this working, lots of typing here.
+
+		// var box = com.elclab.proveit.getSidebarDoc().getElementById("citepanes").firstChild;
 		var box = com.elclab.proveit.getSidebarDoc().getElementById(type);
+
 		var tag;
 		if (com.elclab.proveit.togglestyle) {
 			tag = new com.elclab.proveit.Cite();
@@ -2152,8 +2153,8 @@ com.elclab.proveit = {
 		var refNameValue = com.elclab.proveit.getSidebarDoc().getElementById(type + "name");
 		if(refNameValue == null)
 		{
-			com.elclab.proveit.log("addCitation: Error: refNameValue null for type: " + type);
-			return false;
+			com.elclab.proveit.log("citationObjFromAddPopup: Error: refNameValue null for type: " + type);
+			return null;
 		}
 		if(refNameValue.value != "")
 		{
@@ -2217,11 +2218,34 @@ com.elclab.proveit = {
 			tag[paramName] = paramVal;*/
 			}
 		}
+		return tag;
+	},
+
+	/**
+	 * Called from the add citation panel, this is the function used to
+	 * add the actual citation.
+	 *
+	 * @param type the type of citation being added, the particular button
+	 *            used will hand this to the function.
+	 */
+	addCitation : function(type) {
+		com.elclab.proveit.log("Entering addCitation.");
+		com.elclab.proveit.log("addCitation: type: " + type);
+		// get this working, lots of typing here.
+
+		// This assignment is also in citationObjFromAddPopup.  Way to re-factor?
+		// var box = com.elclab.proveit.getSidebarDoc().getElementById("citepanes").firstChild;
+		var box = com.elclab.proveit.getSidebarDoc().getElementById(type);
+
+		var tag = com.elclab.proveit.citationObjFromAddPopup(type);
 
 		var id;
 		/*if(tag["name"] != null)
 		{*/
 			id = com.elclab.proveit.addNewElement(tag);
+
+		com.elclab.proveit.log("addCitation: " + id);
+
 		/*}
 		else
 		{
@@ -2337,7 +2361,7 @@ com.elclab.proveit = {
 	 * Changes the panel for the cite entry panel to the correct type of entry
 	 */
 	changeCite : function(menu) {
-		//com.elclab.proveit.log("Entering changeCite");
+		com.elclab.proveit.log("Entering changeCite");
 		//com.elclab.proveit.log("menu.id: " + menu.id);
 		var citePanes = menu.parentNode.nextSibling;
 		com.elclab.proveit.clearCitePanes(citePanes);
@@ -2352,7 +2376,7 @@ com.elclab.proveit = {
 		that.hidden = false;
 		*/
 		var citeType = menu.value;
-		//com.elclab.proveit.log("citeType: " + citeType);
+		com.elclab.proveit.log("changeCite: citeType: " + citeType);
 		var genPane = com.elclab.proveit.getSidebarDoc().getElementById("dummyCitePane").cloneNode(true);
 		genPane.id = citeType;
 		var nameHbox = genPane.firstChild;
@@ -2372,7 +2396,7 @@ com.elclab.proveit = {
 		};
 		var submitButton = endHbox.childNodes[1];
 		submitButton.id = citeType + "submit";
-		submitButton.setAttribute("onclick", "com.elclab.proveit.addCitation('" + citeType + "');");
+		submitButton.addEventListener("click", function(){com.elclab.proveit.addCitation(citeType);}, false);
 
 		// Somewhat hackish.  What's a better way?
 		var citeObj;

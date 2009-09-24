@@ -65,7 +65,7 @@
 		
 		<hbox pack="end">
 		  <button id="dummyexpand" label="&ProveIt.addanother;" onclick="com.elclab.proveit.openExtra('dummy');" />
-		  <button id="dummysubmit" label="&ProveIt.createnewsave;" onclick="com.elclab.proveit.addCitation('dummy');"/>
+		  <button id="dummysubmit" label="&ProveIt.createnewsave;"/>
 		  <button id="dummycancel" label="&ProveIt.cancel;" onclick="com.elclab.proveit.cancelAdd()" />
 		</hbox>
 	</vbox>	
