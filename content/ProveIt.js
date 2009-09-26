@@ -28,26 +28,35 @@ com.elclab.proveit = {
 	STATE_STOP : Components.interfaces.nsIWebProgressListener.STATE_STOP,
 
 	// Currently requires you be on one of these hard-coded domains.
-	knownSites : ["wiktionary.org",	"wikipedia.org", "wikinews.org"],
+	KNOWN_SITES : ["wiktionary.org", "wikipedia.org", "wikinews.org"],
+
+	LANG : "en", // currently used only for descriptions.
+
+	LOG_ENUM :
+	{
+		CONSOLE : 0,
+		ALERT: 1
+	},
+
+	LOG_TYPE : 0, // apparently this can not be set to a previous variable.
+	             // It only seemed to work before because it interpreted window.alert when I meant LOG_ENUM.alert
+
+	// Default width, which should be big enough to prevent being cut off.
+	DEFAULT_SIDEBAR_WIDTH : 300,
 
 	// Preferences object (nsIPrefBranch)
 	prefs : null,
 
-	LANG : "en", // currently used only for descriptions.
-
-	logEnum :
-	{
-		console : 0,
-		alert: 1
-	},
-
-	logType : 0, // apparently this can not be set to a previous variable.
-	             // It only seemed to work before because it interpreted window.alert when I meant logEnum.alert
+	/*
+	 * This is a global to hold the list of citations, As it needs to be seen by
+	 * all methods for this page, globality is necessary.
+	 */
+	currentScan : [],
 
 	// Convenience log function
 	log : function(str)
 	{
-		if(com.elclab.proveit.logType == com.elclab.proveit.logEnum.alert)
+		if(com.elclab.proveit.LOG_TYPE == com.elclab.proveit.LOG_ENUM.ALERT)
 			alert(str);
 		else
 		{
@@ -82,9 +91,9 @@ com.elclab.proveit = {
 
 		//com.elclab.proveit("host: " + host);
 
-		while(!found && i < com.elclab.proveit.knownSites.length)
+		while(!found && i < com.elclab.proveit.KNOWN_SITES.length)
 		{
-			if(host.indexOf(com.elclab.proveit.knownSites[i]) != -1)
+			if(host.indexOf(com.elclab.proveit.KNOWN_SITES[i]) != -1)
 				found = true;
 			i++;
 		}
@@ -131,11 +140,6 @@ com.elclab.proveit = {
 	    }
 	},
 
-	/*
-	 * This is a global to hold the list of citations, As it needs to be seen by
-	 * all methods for this page, globality is necessary.
-	 */
-	currentScan : [],
 
 	/*
 	 * onload and onunload event handlers tied to the sidebar. These tie the
@@ -147,9 +151,6 @@ com.elclab.proveit = {
 	{
   		window.top.document.getElementById("sidebar-box").width = width;
 	},
-
-	// Default width, which should be big enough to prevent being cut off.
-	DEFAULT_SIDEBAR_WIDTH : 300,
 
 	/*
 	 * Sets sidebar to hopefully sufficient default width, because resize will be disabled.
@@ -1437,7 +1438,7 @@ com.elclab.proveit = {
 	{
 		var name = "";
 
-		com.elclab.proveit.log("getGeneratedName: citation: " + citation);
+		//com.elclab.proveit.log("getGeneratedName: citation: " + citation);
 		if (citation.params["author"]) {
 			name = citation.params["author"] + "; ";
 		} else if (citation.params["last"]) {
@@ -2111,8 +2112,12 @@ com.elclab.proveit = {
 		com.elclab.proveit.log("citationObjFromAddPopup: type: " + type);
                 // get this working, lots of typing here.
 
-		// var box = com.elclab.proveit.getSidebarDoc().getElementById("citepanes").firstChild;
-		var box = com.elclab.proveit.getSidebarDoc().getElementById(type);
+		var box = com.elclab.proveit.getSidebarDoc().getElementById("citepanes").firstChild;
+		if(box == null)
+		{
+			com.elclab.proveit.log("citationObjFromAddPopup: Error: box null.");
+			return null;
+		}
 
 		var tag;
 		if (com.elclab.proveit.togglestyle) {
@@ -2123,99 +2128,22 @@ com.elclab.proveit = {
 		}
 		var paramName, paramVal;
 
-		//tag["save"] = true;
-		//tag.inMWEditBox = false;
-		// What is this + j?  Also, what is with true as loop guard?  How can it be right?
-		/*
-		if (com.elclab.proveit.currentrefs[com.elclab.proveit.getSidebarDoc().getElementById(type + "name").value]) {
-			for (var j = 2; true; j++) {
-				if (!com.elclab.proveit.currentrefs[com.elclab.proveit.getSidebarDoc().getElementById(type + "name").value
-						+ j]) {
-					paramName = box.childNodes[i].childNodes[1].id
-							.substring(type.length);
-					paramVal = box.childNodes[i].childNodes[1].value
-							+ j;
-					//if(paramName != "name")
-						tag.params[paramName] = paramVal;
-					/*else
-						tag[paramName] = paramVal;*//*
-				}
-			}
-		}*/
+		var refNameValue = box.firstChild.childNodes[2]; // name textbox
 
-		var extraTextbox= com.elclab.proveit.getSidebarDoc().getElementById(type + "extra");
-		if (extraTextbox != null && extraTextbox.value != null && extraTextbox.value != "") {
-				//com.elclab.proveit.log("Calling processCommaSeparated");
-				com.elclab.proveit.processCommaSeparated(tag, extraTextbox.value);
-
-		}
-
-		var refNameValue = com.elclab.proveit.getSidebarDoc().getElementById(type + "name");
-		if(refNameValue == null)
-		{
-			com.elclab.proveit.log("citationObjFromAddPopup: Error: refNameValue null for type: " + type);
-			return null;
-		}
 		if(refNameValue.value != "")
 		{
 			var newName = refNameValue.value;
 			tag["name"] = newName;
-			//com.elclab.proveit.log("com.elclab.proveit.currentrefs[name][\"name\"]: " + com.elclab.proveit.currentrefs[name]["name"]);
 		}
 
 		for (var i = 1; i < box.childNodes.length - 2; i++) {
-			//com.elclab.proveit.log("box.childNodes[i].childNodes[1].id: " + box.childNodes[i].childNodes[1].id)
-			if (box.childNodes[i].childNodes[2]
-					&& box.childNodes[i].childNodes[2].id == (type + "name")) {
-				if (com.elclab.proveit.currentrefs[com.elclab.proveit.getSidebarDoc().getElementById(type + "name").value]) {
-					for (var j = 2; true; j++) {
-						if (!com.elclab.proveit.currentrefs[com.elclab.proveit.getSidebarDoc().getElementById(type
-								+ "name").value
-								+ j]) {
-							paramName = box.childNodes[i].childNodes[2].id
-									.substring(type.length);
-							paramVal = box.childNodes[i].childNodes[2].value
-									+ j;
-						}
-					}
-				} // Above always infinite, apparently
+			var textbox = box.childNodes[i].childNodes[2];
+			if (textbox // Textbox exists
+					&& textbox.value != "") { // Non-blank
+				paramName = textbox.id.substring(type.length);
+				paramVal = textbox.value;
 
-				else {
-					paramName = box.childNodes[i].childNodes[2].id
-							.substring(type.length);
-					paramVal = box.childNodes[i].childNodes[2].value;
-					//if(paramName != "name")
-					//tag.params[paramName] = paramVal;
-					/*else
-						tag[paramName] = paramVal;*/
-				}
-				//com.elclab.proveit.addNewElement(box.childNodes[i].childNodes[1].value);
-			}
-			else if (box.childNodes[i].childNodes[1]
-					&& box.childNodes[i].childNodes[1].value == "=") // hack
-			{
-				com.elclab.proveit.log("Equal sign hack");
-				paramName = box.childNodes[i].childNodes[0].value;
-				paramVal = box.childNodes[i].childNodes[2].value;
-
-			}
-			else if (box.childNodes[i].childNodes[2] // Textbox exists
-					&& box.childNodes[i].childNodes[2].value != "") { // Non-blank
-				paramName = box.childNodes[i].childNodes[2].id.substring(type.length);
-				paramVal = box.childNodes[i].childNodes[2].value;
-				//if(paramName != "name")
-				//tag.params[paramName] = paramVal;
-				/*else
-					tag[paramName] = paramVal;*/
-			}
-			//if(paramName != "name")
-			//com.elclab.proveit.log("paramName: " + paramName);
-			//com.elclab.proveit.log("paramVal: " + paramVal);
-			if(paramName != null && paramName != "")
-			{
 				tag.params[paramName] = paramVal;
-			/*else
-			tag[paramName] = paramVal;*/
 			}
 		}
 		return tag;
@@ -2363,6 +2291,12 @@ com.elclab.proveit = {
 	changeCite : function(menu) {
 		com.elclab.proveit.log("Entering changeCite");
 		//com.elclab.proveit.log("menu.id: " + menu.id);
+
+		var citeType = menu.value;
+		com.elclab.proveit.log("changeCite: Calling citationObjFromAddPopup");
+		var oldCite = com.elclab.proveit.citationObjFromAddPopup(citeType);
+		com.elclab.proveit.log("changeCite: oldCite: " + oldCite);
+
 		var citePanes = menu.parentNode.nextSibling;
 		com.elclab.proveit.clearCitePanes(citePanes);
 		/*
@@ -2375,7 +2309,6 @@ com.elclab.proveit = {
 		com.elclab.proveit.clearAddCitation(that);
 		that.hidden = false;
 		*/
-		var citeType = menu.value;
 		com.elclab.proveit.log("changeCite: citeType: " + citeType);
 		var genPane = com.elclab.proveit.getSidebarDoc().getElementById("dummyCitePane").cloneNode(true);
 		genPane.id = citeType;
