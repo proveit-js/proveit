@@ -44,6 +44,9 @@ com.elclab.proveit = {
 	// Default width, which should be big enough to prevent being cut off.
 	DEFAULT_SIDEBAR_WIDTH : 300,
 
+	//Text before param name (e.g. url, title, etc.), to avoid collisions with unrelated ids.
+	PARAM_PREFIX : "param",
+
 	// Preferences object (nsIPrefBranch)
 	prefs : null,
 
@@ -2076,7 +2079,7 @@ com.elclab.proveit = {
 		this.getSorter = function()
 		{
 			return sorter;
-		}
+		};
 
 		// Returns descriptions for the current language.
 		this.getDescriptions = function()
@@ -2106,11 +2109,10 @@ com.elclab.proveit = {
 	 * Convert the current contents of the add citation panel to a citation obj (i.e Cite(), Citation())
          * @return Cite object or null if no panel exists yet.
 	 */
-	citationObjFromAddPopup : function(type)
+	citationObjFromAddPopup : function()
 	{
 		com.elclab.proveit.log("Entering citationObjFromAddPopup");
-		com.elclab.proveit.log("citationObjFromAddPopup: type: " + type);
-                // get this working, lots of typing here.
+		// get this working, lots of typing here.
 
 		var box = com.elclab.proveit.getSidebarDoc().getElementById("citepanes").firstChild;
 		if(box == null)
@@ -2118,6 +2120,8 @@ com.elclab.proveit = {
 			com.elclab.proveit.log("citationObjFromAddPopup: Error: box null.");
 			return null;
 		}
+
+		var type = box.id;
 
 		var tag;
 		if (com.elclab.proveit.togglestyle) {
@@ -2140,7 +2144,7 @@ com.elclab.proveit = {
 			var textbox = box.childNodes[i].childNodes[2];
 			if (textbox // Textbox exists
 					&& textbox.value != "") { // Non-blank
-				paramName = textbox.id.substring(type.length);
+				paramName = textbox.id.substring(com.elclab.proveit.PARAM_PREFIX.length);
 				paramVal = textbox.value;
 
 				tag.params[paramName] = paramVal;
@@ -2165,7 +2169,7 @@ com.elclab.proveit = {
 		// var box = com.elclab.proveit.getSidebarDoc().getElementById("citepanes").firstChild;
 		var box = com.elclab.proveit.getSidebarDoc().getElementById(type);
 
-		var tag = com.elclab.proveit.citationObjFromAddPopup(type);
+		var tag = com.elclab.proveit.citationObjFromAddPopup();
 
 		var id;
 		/*if(tag["name"] != null)
@@ -2229,7 +2233,7 @@ com.elclab.proveit = {
 	 * @param {}
 	 *            type the type/name of the extra field to open.
 	 */
-	openExtra : function(type) {
+	addExtraRow : function(type) {
 		/*var showable = com.elclab.proveit.getSidebarDoc().getElementById(type + "extra");
 		var current = showable.hidden;
 		showable.hidden = !current;
@@ -2292,44 +2296,20 @@ com.elclab.proveit = {
 		com.elclab.proveit.log("Entering changeCite");
 		//com.elclab.proveit.log("menu.id: " + menu.id);
 
-		var citeType = menu.value;
+
+		// Correct (for old) is below, except that it makes more sense to do this in citationObjFromAddPopup.
+		//var citeType = com.elclab.proveit.getSidebarDoc().getElementById("citepanes").firstChild
 		com.elclab.proveit.log("changeCite: Calling citationObjFromAddPopup");
-		var oldCite = com.elclab.proveit.citationObjFromAddPopup(citeType);
+		var oldCite = com.elclab.proveit.citationObjFromAddPopup();
 		com.elclab.proveit.log("changeCite: oldCite: " + oldCite);
 
 		var citePanes = menu.parentNode.nextSibling;
 		com.elclab.proveit.clearCitePanes(citePanes);
-		/*
-		var that = com.elclab.proveit.getSidebarDoc().getElementById("citemenu").value;
-		that = com.elclab.proveit.getSidebarDoc().getElementById(that);
-		var childlist = com.elclab.proveit.getSidebarDoc().getElementById("citepanes").childNodes;
-		for (var i = 0; i < childlist.length; i++) {
-			childlist[i].hidden = true;
-		}
-		com.elclab.proveit.clearAddCitation(that);
-		that.hidden = false;
-		*/
-		com.elclab.proveit.log("changeCite: citeType: " + citeType);
+
+		var newCiteType = menu.value;
+
 		var genPane = com.elclab.proveit.getSidebarDoc().getElementById("dummyCitePane").cloneNode(true);
-		genPane.id = citeType;
-		var nameHbox = genPane.firstChild;
-		nameHbox.childNodes[1].setAttribute("control", citeType + "name"); // Label for ref name
-		nameHbox.childNodes[2].id = citeType + "name"; // ref name textbox itself.
-		// The extraHbox will probably get eliminated altogether later.
-		var extraHbox = genPane.childNodes[genPane.childNodes.length - 2];
-		extraHbox.firstChild.id = citeType + "extra";
-		var endHbox = genPane.childNodes[genPane.childNodes.length - 1];
-		var addButton = endHbox.childNodes[0];
-		addButton.id = citeType + "expand";
-		//com.elColour matchingclab.proveit.log("Modifying onclick handlers.");
-		addButton.onclick = null; // regular set attribute onclick caused inconsistent state.  Try this.
-		addButton.onclick = function()
-		{
-			com.elclab.proveit.openExtra(citeType);
-		};
-		var submitButton = endHbox.childNodes[1];
-		submitButton.id = citeType + "submit";
-		submitButton.addEventListener("click", function(){com.elclab.proveit.addCitation(citeType);}, false);
+		genPane.id = newCiteType;
 
 		// Somewhat hackish.  What's a better way?
 		var citeObj;
@@ -2341,11 +2321,12 @@ com.elclab.proveit = {
 		{
 			citeObj = new com.elclab.proveit.Citation();
 		}
-		citeObj.type = citeType;
+		citeObj.type = newCiteType;
 		var descs = citeObj.getDescriptions();
 		var defaultParams = citeObj.getDefaultParams().slice(0); // copy
 		defaultParams.sort(citeObj.getSorter());
 		var required = citeObj.getRequiredParams();
+		var explanation = genPane.childNodes[1];
 		for(var i = 0; i < defaultParams.length; i++)
 		{
 			var param = defaultParams[i];
@@ -2359,22 +2340,21 @@ com.elclab.proveit = {
 			var star = com.elclab.proveit.getSidebarDoc().getElementById("star").cloneNode(true);
 			star.id = "";
 			star.style.display = "-moz-box";
-			star.style.visibility = (required[param] ? "visible" : "hidden"); // CurStar will appear if field is required."
+			star.style.visibility = (required[param] ? "visible" : "hidden"); // star will appear if field is required."
 			paramBox.insertBefore(star, label);
-
 
 			paramBox.id = "";
 			// Basically the same code as nameHbox above
-			label.setAttribute("control", citeType + param);
+			label.setAttribute("control", com.elclab.proveit.PARAM_PREFIX + param);
 			if(!descs[param])
 			{
 				throw new Error("Undefined description for param: " + param);
 			}
 			label.setAttribute("value", descs[param]);
 
-			paramBox.childNodes[2].id = citeType + param;
+			paramBox.childNodes[2].id = com.elclab.proveit.PARAM_PREFIX + param;
 			paramBox.hidden = false;
-			genPane.insertBefore(paramBox, extraHbox);
+			genPane.insertBefore(paramBox, explanation);
 		}
 		genPane.hidden = false;
 		citePanes.insertBefore(genPane, citePanes.firstChild);

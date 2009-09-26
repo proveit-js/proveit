@@ -49,24 +49,19 @@
 	<vbox id="dummyCitePane" hidden="true">
 		<hbox pack="center" align="center" flex="1" >
 		        <spacer style = "margin: 0; padding: 0; width: 25px"/>
-			<label control="dummyname" value="&ProveIt.refName;" minwidth="100"/>
-			<textbox id="dummyname" />
+			<label control="citerefname" value="&ProveIt.refName;" minwidth="100"/>
+			<textbox id="citerefname" />
 			<spacer flex="1" />
 		</hbox>
-		<!--
-		<hbox>
-		  <textbox id="dummyextra" hidden="true" multiline="true" rows="7" flex="1" />
-		</hbox>
-		-->
 		<hbox id = "starExpNew" style = "margin-left: 0px; height: 40px">
 		  <label class="requiredParam" value="*"/>			
 		  <label value="&ProveIt.starexp;"/>
 		</hbox>
 		
 		<hbox pack="end">
-		  <button id="dummyexpand" label="&ProveIt.addanother;" onclick="com.elclab.proveit.openExtra('dummy');" />
-		  <button id="dummysubmit" label="&ProveIt.createnewsave;"/>
-		  <button id="dummycancel" label="&ProveIt.cancel;" onclick="com.elclab.proveit.cancelAdd()" />
+		  <button label="&ProveIt.addanother;" oncommand="com.elclab.proveit.addExtraRow();" />
+		  <button label="&ProveIt.createnewsave;" oncommand="com.elclab.proveit.addCitation()"/>
+		  <button label="&ProveIt.cancel;" oncommand="com.elclab.proveit.cancelAdd()" />
 		</hbox>
 	</vbox>	
 				
