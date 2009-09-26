@@ -2103,21 +2103,30 @@ com.elclab.proveit = {
 		// Returns true if this object is valid, false otherwise.
 		// Currently assume all citation objects are valid.
 		this.isValid = function(){return true};
-	},
-
-	/**
-	 * Convert the current contents of the add citation panel to a citation obj (i.e Cite(), Citation())
-         * @return Cite object or null if no panel exists yet.
-	 */
+	},
+
+	/**
+	 * getAddCitePane : function()
+	 * @return the current cite pane box for adding new references.  This contains the ref name, parameter rows, and buttons.
+	 */
+	getAddCitePane : function()
+	{
+		return com.elclab.proveit.getSidebarDoc().getElementById("citepanes").firstChild;
+	},
+
+	/**
+	 * Convert the current contents of the add citation panel to a citation obj (i.e Cite(), Citation())
+         * @return Cite object or null if no panel exists yet.
+	 */
 	citationObjFromAddPopup : function()
 	{
-		com.elclab.proveit.log("Entering citationObjFromAddPopup");
-		// get this working, lots of typing here.
-
-		var box = com.elclab.proveit.getSidebarDoc().getElementById("citepanes").firstChild;
-		if(box == null)
-		{
-			com.elclab.proveit.log("citationObjFromAddPopup: Error: box null.");
+		com.elclab.proveit.log("Entering citationObjFromAddPopup");
+		// get this working, lots of typing here.
+
+		var box = com.elclab.proveit.getAddCitePane();
+		if(box == null)
+		{
+			com.elclab.proveit.log("citationObjFromAddPopup: Error: box null.");
 			return null;
 		}
 
@@ -2132,25 +2141,38 @@ com.elclab.proveit = {
 		}
 		var paramName, paramVal;
 
-		var refNameValue = box.firstChild.childNodes[2]; // name textbox
-
-		if(refNameValue.value != "")
-		{
-			var newName = refNameValue.value;
-			tag["name"] = newName;
-		}
-
-		for (var i = 1; i < box.childNodes.length - 2; i++) {
-			var textbox = box.childNodes[i].childNodes[2];
-			if (textbox // Textbox exists
-					&& textbox.value != "") { // Non-blank
-				paramName = textbox.id.substring(com.elclab.proveit.PARAM_PREFIX.length);
-				paramVal = textbox.value;
-
-				tag.params[paramName] = paramVal;
-			}
-		}
-		return tag;
+
+		var refNameValue = box.firstChild.childNodes[2]; // name textbox
+
+		var name;
+		if(refNameValue.value != "")
+		{
+			name = refNameValue.value;
+			tag["name"] = name;
+		}
+		com.elclab.proveit.log("citationObjFromAddPopup: name: " + name);
+		com.elclab.proveit.log("citationObjFromAddPopup: box.childNodes.length: " + box.childNodes.length);
+		for (var i = 1; i < box.childNodes.length - 2; i++) {
+			com.elclab.proveit.log("citationObjFromAddPopup: i: " + i);
+			var textbox = box.childNodes[i].childNodes[2];
+			if (textbox // Textbox exists
+					&& (textbox.value != "")) { // Non-blank
+				paramName = textbox.id.substring(com.elclab.proveit.PARAM_PREFIX.length);
+				paramVal = textbox.value;
+
+				tag.params[paramName] = paramVal;
+				com.elclab.proveit.log("citationObjFromAddPopup: paramName: " + paramName + "; paramVal: " + paramVal);
+			}
+			else
+			{
+				com.elclab.proveit.log("citationObjFromAddPopup: box.childNodes[i].childNodes.length: " + box.childNodes[i].childNodes.length);
+				com.elclab.proveit.log("citationObjFromAddPopup: textbox: " + textbox);
+				com.elclab.proveit.log("citationObjFromAddPopup: textbox.tagName: " + textbox.tagName);
+				com.elclab.proveit.log("citationObjFromAddPopup: textbox.value != \"\": " + (textbox.value != ""));
+
+			}
+		}
+		return tag;
 	},
 
 	/**
@@ -2202,33 +2224,12 @@ com.elclab.proveit = {
 		com.elclab.proveit.getRefbox().scrollToIndex(com.elclab.proveit.getRefbox().itemCount - 1);
 		com.elclab.proveit.clearAddCitation(box);
 		com.elclab.proveit.getRefbox().selectedIndex = com.elclab.proveit.getRefbox().itemCount - 1;
-		//com.elclab.proveit.log("Exiting addCitation.");
-	},
-
-	// Clears the add citation box.
-	clearAddCitation : function(box)
-	{
-		//com.elclab.proveit.log("Entering clearAddCitation.")
-		if(box == null)
-		{
-			com.elclab.proveit.log("clearAddCitation is null.  Returning false.");
-			return false;
-		}
-		for(var i = box.childNodes.length - 3; i >= 1; i--)
-		{
-			if(box.childNodes[i].id == "dummyCreateRow")
-				box.removeChild(box.childNodes[i]);
-		}
-
-		var fields = box.getElementsByTagName("textbox");
-		for(var i = 0; i < fields.length; i++)
-		{
-			fields[i].value = "";
-		}
-	},
-
-	/**
-	 * Add new row to add new citation box.
+		//com.elclab.proveit.log("Exiting addCitation.");
+	},
+
+
+	/**
+	 * Add new row to add new citation box.
 	 *
 	 * @param {}
 	 *            type the type/name of the extra field to open.
@@ -2259,12 +2260,36 @@ com.elclab.proveit = {
 	// Removes the last field in the add new citation box.
 	newRemoveField : function(type){
 		var wrapper = com.elclab.proveit.getSidebarDoc().getElementById(type);
-		wrapper.removeChild(wrapper.childNodes[wrapper.childNodes.length - 3]);
-	},
-*/
-	// Clear all rows of passed in add citation panes.
-	clearCitePanes : function(citePanes)
-	{
+		wrapper.removeChild(wrapper.childNodes[wrapper.childNodes.length - 3]);
+	},
+*/
+
+	// Clears the add citation box.
+	clearAddCitation : function(box)
+	{
+		//com.elclab.proveit.log("Entering clearAddCitation.")
+		if(box == null)
+		{
+			com.elclab.proveit.log("clearAddCitation is null.  Returning false.");
+			return false;
+		}
+		for(var i = box.childNodes.length - 3; i >= 1; i--)
+		{
+			if(box.childNodes[i].id == "dummyCreateRow")
+				box.removeChild(box.childNodes[i]);
+		}
+
+		var fields = box.getElementsByTagName("textbox");
+		for(var i = 0; i < fields.length; i++)
+		{
+			fields[i].value = "";
+		}
+	},
+
+
+	// Clear all rows of passed in add citation panes.
+	clearCitePanes : function(citePanes)
+	{
 		//com.elclab.proveit.log("Entering clear cite panes");
 		//com.elclab.proveit.log("citePanes.childNodes.length: " + citePanes.childNodes.length);
 
