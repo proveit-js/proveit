@@ -2184,12 +2184,10 @@ com.elclab.proveit = {
 	 */
 	addCitation : function(type) {
 		com.elclab.proveit.log("Entering addCitation.");
-		com.elclab.proveit.log("addCitation: type: " + type);
+		//com.elclab.proveit.log("addCitation: type: " + type);
 		// get this working, lots of typing here.
 
-		// This assignment is also in citationObjFromAddPopup.  Way to re-factor?
-		// var box = com.elclab.proveit.getSidebarDoc().getElementById("citepanes").firstChild;
-		var box = com.elclab.proveit.getSidebarDoc().getElementById(type);
+		var box = com.elclab.proveit.getAddCitePane();
 
 		var tag = com.elclab.proveit.citationObjFromAddPopup();
 
@@ -2350,13 +2348,38 @@ com.elclab.proveit = {
 		var descs = newCite.getDescriptions();
 		var defaultParams = newCite.getDefaultParams().slice(0); // copy
 		defaultParams.sort(newCite.getSorter());
-		var required = newCite.getRequiredParams();
+		//var required = newCite.getRequiredParams();
 
 		// Possibly, Cite objects should automatically include default parameters in their param maps.  That would seem to make this simpler.
-		var explanation = genPane.childNodes[1];
 		for(var i = 0; i < defaultParams.length; i++)
+                {
+			newCite.params[defaultParams[i]] = "";
+		}
+
+		// This check could be avoided if citationObjFromAddPopup returned a blank cite object.  Consider.
+		if(oldCite != null)
 		{
-			var param = defaultParams[i];
+			for(oldParam in oldCite.params)
+			{
+				newCite.params[oldParam] = oldCite.params[oldParam]; // Copy existing values to new cite object
+			}
+		}
+
+		com.elclab.proveit.log("changeCite: newCite: " + newCite);
+
+		// Should there be a getParamKeys or similar function for this, or even getSortedParamKeys?
+		var newParams = [];
+		for(param in newCite.params)
+		{
+			newParams.push(param);
+		}
+		newParams.sort(newCite.getSorter());
+		var required = newCite.getRequiredParams();
+
+		var explanation = genPane.childNodes[1];
+		for(var i = 0; i < newParams.length; i++)
+		{
+			var param = newParams[i];
 			var paramBox = com.elclab.proveit.getSidebarDoc().getElementById("dummyCiteParam").cloneNode(true);
 			com.elclab.proveit.activateRemove(paramBox);
 			var label = com.elclab.proveit.getSidebarDoc().createElement("label");
@@ -2380,7 +2403,7 @@ com.elclab.proveit = {
 			label.setAttribute("value", descs[param]);
 
 			paramBox.childNodes[2].id = com.elclab.proveit.PARAM_PREFIX + param;
-			//paramBox.childNodes[2].value = newCite.params[param];
+			//paramBox.childNodes[2].value = newCite.params[param]; // Causes parameters to disappear.  Why?
 			paramBox.hidden = false;
 			genPane.insertBefore(paramBox, explanation);
 		}
