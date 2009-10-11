@@ -42,8 +42,8 @@
 		<label />
 	</tooltip>
 	<hbox id="dummyCiteParam" pack="center" align="center" flex="1" hidden="true">
-		<!--<label control="dummyparam" value="&ProveIt.addparam;" flex="1" minwidth="145"/>-->
-		<textbox id="dummyparam" />
+		<label control="dummyparam" class="paramdesc" flex="1" minwidth="145"/>
+		<textbox id="dummyparam" class="paramvalue" />
 		<button>X</button>
 	</hbox>
 	<vbox id="dummyCitePane" hidden="true">
@@ -53,7 +53,7 @@
 			<textbox id="citerefname" />
 			<spacer flex="1" />
 		</hbox>
-		<hbox id = "starExpNew" style = "margin-left: 0px; height: 40px">
+		<hbox class="starexp" style = "margin-left: 0px; height: 40px">
 		  <label class="requiredParam" value="*"/>			
 		  <label value="&ProveIt.starexp;"/>
 		</hbox>
@@ -84,22 +84,6 @@
 						<label id="nametoggle" class="plain" value="&ProveIt.nameonly;" onclick="com.elclab.proveit.flipToggle('name')"/>
 					</hbox>
 				</hbox>
-				<!--
-				<hbox align="start" minheight="30">
-				<hbox align="start" minheight="150">
-					<textbox id="display" multiline="true" readonly="true" minheight="150" maxheight="500" flex="1" />
-					<vbox width="35" height="150" align="center">
-					<vbox width="35" height="25" align="center">
-						<vbox pack="center" align="center" id="insertnew" width="28" height="28" style="border-style: ridge" onclick="com.elclab.proveit.insert()">
-							<spacer height="4" />
-							<image id="insert" src="35.png" />
-							<label value="&ProveIt.insert;" />
-						</vbox>
-						<spacer flex="1" />
-					</vbox>
-				</hbox>
-				<separator class="groove" />
-				-->
 				<hbox height="50" pack="center" align="center">
 					<!--<button id="addnewitembutton" height="25" width="150" popup="createnew">-->
 					<button id="addnewitembutton" height="30" popup="createnew">
@@ -124,12 +108,11 @@
 	</vbox>
 	
 	<panel id="createnew" style="background-color: #ECE9D8" position="end_after" flex="1" noautohide="true" onpopupshown="com.elclab.proveit.changeCite(document.getElementById('citemenu'))">
-		<hbox pack="center" align="center" hidden = "true" id = "dummyCreateRow">
-						<textbox control="" value="" minwidth="145"/>
+		<hbox pack="center" align="center" hidden="true" class="addedrow" id="dummyCreateRow">
+						<textbox class="paramname" minwidth="145"/>
 						<label value="="/>
-						<textbox id="" />
+						<textbox class="paramvalue" />
 						<button>X</button><!-- Remove row -->
-						<spacer flex="1"/>
 		</hbox>			
 		<vbox flex="1" hidden="false" id="cite">
 			<hbox pack="center" align="center">
@@ -169,19 +152,20 @@
 		<vbox id="editpanel" align="center" style="background-color: #DCDAD5">
 			<label id="editlabel" value="Citation"/>
 			<hbox id="editprimelabel" hidden="true">
-				<label id="editprimeleftlabel" flex="1" />
-				<label value="="/>
-				<textbox id="editprimerightlabel"/>				
+				<label class="paramdesc" flex="1" />
+				<textbox class="paramvalue" />
+				<button>X</button>
 			</hbox>
-			<hbox id="editprimetext" hidden="true">
-				<textbox id="editprimelefttext" minwidth="140" flex="1"/>
+			<hbox id="editprimetext" class="addedrow" hidden="true">
+				<textbox class="paramname" minwidth="140" flex="1"/>
 				<label value="="/>
-				<textbox id="editprimerighttext" flex="1"/>				
+				<textbox class="paramvalue" flex="1"/>
+				<button>X</button>
 			</hbox>
-			
-			<label id = "star" class = "requiredParam" style="display: none;" value="*"/>
-			<vbox id="main_edit">
+			<label id ="star" class = "requiredParam" style="display: none;" value="*"/>
+			<vbox>
 				<!--<vbox>-->
+				<!-- Add ref name tooltip -->
 				<hbox id="edit_refname" value="">
 				  	<spacer style = "margin: 0; padding: 0; width: 25px"/>
 					<label id="edit_refname_label" value="&ProveIt.refName;" flex="1" />
@@ -192,18 +176,15 @@
 				<vbox id="editlist">
 				
 				</vbox>
-				<hbox id = "starExp" style = "margin-left: 0px; height: 40px">
+				<hbox class="starexp" style = "margin-left: 0px; height: 40px">
 					<label class="requiredParam" value="*"/>			
 					<label value="&ProveIt.starexp;"/>
 				</hbox>
 			</vbox>
 			<hbox>
 				<button id="editaddfield" label="&ProveIt.addanother;" onclick="com.elclab.proveit.editAddField()"/>
-				<button id="editnewRemoveField" label="Remove field" onclick="com.elclab.proveit.editRemoveField()"/>
-			</hbox>
-			<hbox>
-				<button id="editcancel" label="&ProveIt.cancel;" onclick="com.elclab.proveit.cancelEdit()"/>
 				<button id="editsubmit" label="&ProveIt.editapply;" onclick="com.elclab.proveit.editSave()"/>
+				<button id="editcancel" label="&ProveIt.cancel;" onclick="com.elclab.proveit.cancelEdit()"/>
 			</hbox>
 		</vbox>
 	</panel>
