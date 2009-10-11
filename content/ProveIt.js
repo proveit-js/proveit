@@ -2168,7 +2168,7 @@ com.elclab.proveit = {
 
 	activateRemove : function(row)
 	{
-		row.childNodes[row.childNodes.length - 1].addEventListener("click", function()
+		row.childNodes[row.childNodes.length - 1].addEventListener("command", function()
 		{
 			row.parentNode.removeChild(row);
 		}, false); // Activate remove button
