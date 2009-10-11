@@ -66,3 +66,4 @@
 <!ENTITY ProveIt.editapply "Apply Changes">
 
 <!ENTITY ProveIt.refName "&lt;ref&gt; name (abbr. code)">
+<!ENTITY ProveIt.refNameTooltip "This is an identifier that can be used to refer to this reference elsewhere on the page.  It should be short and memorable.">

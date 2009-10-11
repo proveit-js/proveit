@@ -1234,7 +1234,7 @@ com.elclab.proveit = {
 		com.elclab.proveit.log("fieldType: " + fieldType);
 		*/
 
-		var id = fieldType ? "editprimelabel" : "editprimetext";
+		var id = fieldType ? "preloadedparamrow" : "addedparamrow";
 		var newline = com.elclab.proveit.getSidebarDoc().getElementById(id)
 			.cloneNode(true);
 		newline.id = "";
@@ -1335,7 +1335,6 @@ com.elclab.proveit = {
 			com.elclab.proveit.togglestyle = true;
 			com.elclab.proveit.getSidebarDoc().getElementById('citation').hidden = true;
 			com.elclab.proveit.getSidebarDoc().getElementById('cite').hidden = false;
-			com.elclab.proveit.clearCitePanes(com.elclab.proveit.getSidebarDoc().getElementById("citationpanes"));
 			com.elclab.proveit.changeCite(com.elclab.proveit.getSidebarDoc().getElementById("citemenu"));
 		} else if (toggle == "citation") {
 			com.elclab.proveit.getSidebarDoc().getElementById('citetoggle').setAttribute("style",
@@ -1343,9 +1342,7 @@ com.elclab.proveit = {
 			com.elclab.proveit.togglestyle = false;
 			com.elclab.proveit.getSidebarDoc().getElementById('cite').hidden = true;
 			com.elclab.proveit.getSidebarDoc().getElementById('citation').hidden = false;
-			com.elclab.proveit.clearCitePanes(com.elclab.proveit.getSidebarDoc().getElementById("citepanes"));
 			com.elclab.proveit.changeCite(com.elclab.proveit.getSidebarDoc().getElementById("citationmenu"));
-
 		}
 	},
 
@@ -2052,12 +2049,12 @@ com.elclab.proveit = {
 	 */
 	getAddCitePane : function()
 	{
-		return com.elclab.proveit.getSidebarDoc().getElementById("citepanes").firstChild;
+		return com.elclab.proveit.getSidebarDoc().getElementById(com.elclab.proveit.togglestyle ? "citepanes": "citationpanes").firstChild;
 	},
 
 	/**
 	 * Convert the current contents of the add citation panel to a citation obj (i.e Cite(), Citation())
-         * @return Cite object or null if no panel exists yet.
+         * @return cite object or null if no panel exists yet.
 	 */
 	citationObjFromAddPopup : function()
 	{
@@ -2076,10 +2073,11 @@ com.elclab.proveit = {
 		var tag;
 		if (com.elclab.proveit.togglestyle) {
 			tag = new com.elclab.proveit.Cite();
-			tag["type"] = type;
 		} else {
 			tag = new com.elclab.proveit.Citation();
 		}
+		tag["type"] = type;
+
 		var paramName, paramVal;
 		var refNameValue = box.firstChild.childNodes[2]; // name textbox
 		var name;
@@ -2149,7 +2147,7 @@ com.elclab.proveit = {
 		tag.inMWEditBox = true;
 		com.elclab.proveit.includeProveItEditSummary();
 		com.elclab.proveit.getRefbox().scrollToIndex(com.elclab.proveit.getRefbox().itemCount - 1);
-		com.elclab.proveit.clearAddCitation(box);
+		com.elclab.proveit.clearCitePanes(box.parentNode);
 		com.elclab.proveit.getRefbox().selectedIndex = com.elclab.proveit.getRefbox().itemCount - 1;
 		//com.elclab.proveit.log("Exiting addCitation.");
 	},
@@ -2157,12 +2155,10 @@ com.elclab.proveit = {
 
 	/**
 	 * Add new row to add new citation box.
-	 *
-	 * @param {}
-	 *            type the type/name of the extra field to open.
 	 */
 	addExtraRow : function() {
-		var newline = com.elclab.proveit.getSidebarDoc().getElementById("dummyCreateRow").cloneNode(true);
+		var newline = com.elclab.proveit.getSidebarDoc().getElementById("addedparamrow").cloneNode(true);
+		newline.id = "";
 		com.elclab.proveit.activateRemove(newline);
 		newline.hidden = false;
 
@@ -2177,61 +2173,13 @@ com.elclab.proveit = {
 			row.parentNode.removeChild(row);
 		}, false); // Activate remove button
 	},
-/*
-	// Removes the last field in the add new citation box.
-	newRemoveField : function(type){
-		var wrapper = com.elclab.proveit.getSidebarDoc().getElementById(type);
-		wrapper.removeChild(wrapper.childNodes[wrapper.childNodes.length - 3]);
-	},
-*/
-
-	// Clears the add citation box.
-	clearAddCitation : function(box)
-	{
-		//com.elclab.proveit.log("Entering clearAddCitation.")
-		if(box == null)
-		{
-			com.elclab.proveit.log("clearAddCitation is null.  Returning false.");
-			return false;
-		}
-		for(var i = box.childNodes.length - 3; i >= 1; i--)
-		{
-			if(box.childNodes[i].id == "dummyCreateRow")
-				box.removeChild(box.childNodes[i]);
-		}
-
-		var fields = box.getElementsByTagName("textbox");
-		for(var i = 0; i < fields.length; i++)
-		{
-			fields[i].value = "";
-		}
-	},
-
 
 	// Clear all rows of passed in add citation panes.
 	clearCitePanes : function(citePanes)
 	{
-		//com.elclab.proveit.log("Entering clear cite panes");
-		//com.elclab.proveit.log("citePanes.childNodes.length: " + citePanes.childNodes.length);
-
-		for(var i = 0; i < citePanes.childNodes.length; i++)
+		if(citePanes.hasChildNodes())
 		{
-			// id and hidden temp only for debugging.
-			/*
-			var id = citePanes.childNodes[i].id
-			var hidden = citePanes.childNodes[i].hidden;
-			*/
-			if(citePanes.childNodes[i].hidden == false)
-			{
-				citePanes.removeChild(citePanes.childNodes[i]);
-				//com.elclab.proveit.log("clearCitePanes: Removing child at index " + i + ", id: " + id);
-			}
-			/*
-			else
-			{
-				com.elclab.proveit.log("clearCitePanes: Not removing child at index " + i + ", id: " + id + ", hidden = " + hidden);
-			}
-			*/
+			citePanes.removeChild(citePanes.firstChild);
 		}
 	},
 
@@ -2242,16 +2190,12 @@ com.elclab.proveit = {
 		com.elclab.proveit.log("Entering changeCite");
 		//com.elclab.proveit.log("menu.id: " + menu.id);
 
-
-		// Correct (for old) is below, except that it makes more sense to do this in citationObjFromAddPopup.
-		//var citeType = com.elclab.proveit.getSidebarDoc().getElementById("citepanes").firstChild
 		com.elclab.proveit.log("changeCite: Calling citationObjFromAddPopup");
 		var oldCite = com.elclab.proveit.citationObjFromAddPopup();
 		com.elclab.proveit.log("changeCite: oldCite: " + oldCite);
 
 		var citePanes = menu.parentNode.nextSibling;
 		com.elclab.proveit.clearCitePanes(citePanes);
-
 		var newCiteType = menu.value;
 
 		var genPane = com.elclab.proveit.getSidebarDoc().getElementById("dummyCitePane").cloneNode(true);
@@ -2282,6 +2226,7 @@ com.elclab.proveit = {
 		// This check could be avoided if citationObjFromAddPopup returned a blank cite object.  Consider.
 		if(oldCite != null)
 		{
+			newCite.name = oldCite.name;
 			for(oldParam in oldCite.params)
 			{
 				newCite.params[oldParam] = oldCite.params[oldParam]; // Copy existing values to new cite object
@@ -2303,26 +2248,35 @@ com.elclab.proveit = {
 		for(var i = 0; i < newParams.length; i++)
 		{
 			var param = newParams[i];
-			var paramBox = com.elclab.proveit.getSidebarDoc().getElementById("dummyCiteParam").cloneNode(true);
-			com.elclab.proveit.activateRemove(paramBox);
-			var label = paramBox.getElementsByClassName("paramdesc")[0];
+			var paramBox;
 
 			var star = com.elclab.proveit.getSidebarDoc().getElementById("star").cloneNode(true);
 			star.id = "";
 			star.style.display = "-moz-box";
 			star.style.visibility = (required[param] ? "visible" : "hidden"); // star will appear if field is required."
-			paramBox.insertBefore(star, label);
 
-			paramBox.id = "";
-			// Basically the same code as nameHbox above
-			label.setAttribute("control", com.elclab.proveit.NEW_PARAM_PREFIX + param);
-			if(!descs[param])
+			if(descs[param])
 			{
-				throw new Error("Undefined description for param: " + param);
+				paramBox = com.elclab.proveit.getSidebarDoc().getElementById("preloadedparamrow").cloneNode(true);
+				var label = paramBox.getElementsByClassName("paramdesc")[0];
+				label.setAttribute("value", descs[param]);
+				// Basically the same code as nameHbox above
+				label.setAttribute("control", com.elclab.proveit.NEW_PARAM_PREFIX + param);
+				paramBox.insertBefore(star, label);
 			}
-			label.setAttribute("value", descs[param]);
+			else
+			{
+				// Throwing an error here doesn't make sense if user-added fields can be copied over.
+				// throw new Error("Undefined description for param: " + param);
+				paramBox = com.elclab.proveit.getSidebarDoc().getElementById("addedparamrow").cloneNode(true);
+				var nameTextbox = paramBox.getElementsByClassName("paramname")[0];
+				nameTextbox.setAttribute("value", param);
+				paramBox.insertBefore(star, nameTextbox);
+			}
+			paramBox.id = "";
+			com.elclab.proveit.activateRemove(paramBox);
 
-			paramBox.childNodes[2].id = com.elclab.proveit.NEW_PARAM_PREFIX + param;
+			paramBox.getElementsByClassName("paramvalue")[0].id = com.elclab.proveit.NEW_PARAM_PREFIX + param;
 			com.elclab.proveit.log("changeCite: param: " + param + "; newCite.params[param]: " + newCite.params[param]);
 			//paramBox.childNodes[2].value = newCite.params[param]; // Causes parameters to disappear.  Why?
 			paramBox.hidden = false;
@@ -2348,13 +2302,6 @@ com.elclab.proveit = {
 
 		var refbox = com.elclab.proveit.getRefbox();
 
-		/*
-		if(refName == "Prime")
-		{
-			com.elclab.proveit.log("Prime detected.");
-			refName = "";
-		}*/
-
 		// grab the list
 		// refbox.rows = 5;
 		// get the number of rows, used to give id's to the new item
@@ -2367,6 +2314,7 @@ com.elclab.proveit = {
 			return false;
 		}
 		var newchild = dummy.cloneNode(true);
+		newchild.id = generatedName;
 		if(!ref.isValid())
 		{
 			// Flag as invalid.
@@ -2380,7 +2328,6 @@ com.elclab.proveit = {
 		// change the necessary information in those nodes, as well as
 		// change the dummy node to not hidden. note the use of num in id's
 
-		newchild.id = generatedName;
 		newchild.hidden = false;
 
 		var newTooltip = com.elclab.proveit.getSidebarDoc().getElementById("dummy_tooltip").cloneNode(true);
@@ -2495,7 +2442,6 @@ com.elclab.proveit = {
 	 *         used to tie the meta-data to the list.
 	 */
 	addNewElement : function(ref) {
-
 		var generatedName = com.elclab.proveit.getGeneratedName(ref);
 		ref.baseGenName = generatedName;
 
@@ -2518,8 +2464,8 @@ com.elclab.proveit = {
 
 	cancelAdd : function()
 	{
-		var box = com.elclab.proveit.getSidebarDoc().getElementById(com.elclab.proveit.getSidebarDoc().getElementById("citemenu").value);
-		com.elclab.proveit.clearAddCitation(box);
+		var box = com.elclab.proveit.getAddCitePane();
+		com.elclab.proveit.clearCitePanes(box.parentNode);
 		com.elclab.proveit.getSidebarDoc().getElementById('createnew').hidePopup();
 	}
 }

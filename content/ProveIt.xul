@@ -41,27 +41,32 @@
 		</hbox>
 		<label />
 	</tooltip>
-	<hbox id="dummyCiteParam" pack="center" align="center" flex="1" hidden="true">
-		<label control="dummyparam" class="paramdesc" flex="1" minwidth="145"/>
-		<textbox id="dummyparam" class="paramvalue" />
+	<hbox id="preloadedparamrow" hidden="true">
+		<label class="paramdesc" flex="1" />
+		<textbox class="paramvalue" />
+		<button>X</button>
+	</hbox>
+	<hbox id="addedparamrow" class="addedrow" hidden="true">
+		<textbox class="paramname" minwidth="140" flex="1"/>
+		<label value="="/>
+		<textbox class="paramvalue" flex="1"/>
 		<button>X</button>
 	</hbox>
 	<vbox id="dummyCitePane" hidden="true">
 		<hbox pack="center" align="center" flex="1" >
-		        <spacer style = "margin: 0; padding: 0; width: 25px"/>
-			<label control="citerefname" value="&ProveIt.refName;" minwidth="100"/>
+			<spacer style="margin: 0; padding: 0; width: 25px"/>
+			<label control="citerefname" value="&ProveIt.refName;" tooltiptext="&ProveIt.refNameTooltip;" minwidth="100"/>
 			<textbox id="citerefname" />
 			<spacer flex="1" />
 		</hbox>
 		<hbox class="starexp" style = "margin-left: 0px; height: 40px">
-		  <label class="requiredParam" value="*"/>			
-		  <label value="&ProveIt.starexp;"/>
+			<label class="requiredParam" value="*"/>			
+			<label value="&ProveIt.starexp;"/>
 		</hbox>
-		
-		<hbox pack="end">
-		  <button label="&ProveIt.addanother;" oncommand="com.elclab.proveit.addExtraRow();" />
-		  <button label="&ProveIt.createnewsave;" oncommand="com.elclab.proveit.addCitation()"/>
-		  <button label="&ProveIt.cancel;" oncommand="com.elclab.proveit.cancelAdd()" />
+		<hbox class="buttons" pack="center">
+			<button label="&ProveIt.addanother;" oncommand="com.elclab.proveit.addExtraRow();" />
+			<button label="&ProveIt.createnewsave;" oncommand="com.elclab.proveit.addCitation()"/>
+			<button label="&ProveIt.cancel;" oncommand="com.elclab.proveit.cancelAdd()" />
 		</hbox>
 	</vbox>	
 				
@@ -107,13 +112,7 @@
 		</hbox>
 	</vbox>
 	
-	<panel id="createnew" style="background-color: #ECE9D8" position="end_after" flex="1" noautohide="true" onpopupshown="com.elclab.proveit.changeCite(document.getElementById('citemenu'))">
-		<hbox pack="center" align="center" hidden="true" class="addedrow" id="dummyCreateRow">
-						<textbox class="paramname" minwidth="145"/>
-						<label value="="/>
-						<textbox class="paramvalue" />
-						<button>X</button><!-- Remove row -->
-		</hbox>			
+	<panel id="createnew" style="background-color: #ECE9D8" position="end_after" flex="1" noautohide="true" onpopupshown="com.elclab.proveit.changeCite(document.getElementById(com.elclab.proveit.togglestyle ? 'citemenu' : 'citationmenu'))">
 		<vbox flex="1" hidden="false" id="cite">
 			<hbox pack="center" align="center">
 				<menulist id="citemenu" oncommand="com.elclab.proveit.changeCite(this)">
@@ -151,37 +150,25 @@
 	<panel id="edit">
 		<vbox id="editpanel" align="center" style="background-color: #DCDAD5">
 			<label id="editlabel" value="Citation"/>
-			<hbox id="editprimelabel" hidden="true">
-				<label class="paramdesc" flex="1" />
-				<textbox class="paramvalue" />
-				<button>X</button>
-			</hbox>
-			<hbox id="editprimetext" class="addedrow" hidden="true">
-				<textbox class="paramname" minwidth="140" flex="1"/>
-				<label value="="/>
-				<textbox class="paramvalue" flex="1"/>
-				<button>X</button>
-			</hbox>
 			<label id ="star" class = "requiredParam" style="display: none;" value="*"/>
 			<vbox>
 				<!--<vbox>-->
 				<!-- Add ref name tooltip -->
 				<hbox id="edit_refname" value="">
 				  	<spacer style = "margin: 0; padding: 0; width: 25px"/>
-					<label id="edit_refname_label" value="&ProveIt.refName;" flex="1" />
+					<label id="edit_refname_label" value="&ProveIt.refName;" tooltiptext="&ProveIt.refNameTooltip;" flex="1" />
 					<label value="=" />
 					<textbox id="edit_refname_value" value="" />
 				</hbox>
 				<!--</vbox>-->
 				<vbox id="editlist">
-				
 				</vbox>
 				<hbox class="starexp" style = "margin-left: 0px; height: 40px">
 					<label class="requiredParam" value="*"/>			
 					<label value="&ProveIt.starexp;"/>
 				</hbox>
 			</vbox>
-			<hbox>
+			<hbox class="buttons" pack="center">
 				<button id="editaddfield" label="&ProveIt.addanother;" onclick="com.elclab.proveit.editAddField()"/>
 				<button id="editsubmit" label="&ProveIt.editapply;" onclick="com.elclab.proveit.editSave()"/>
 				<button id="editcancel" label="&ProveIt.cancel;" onclick="com.elclab.proveit.cancelEdit()"/>
