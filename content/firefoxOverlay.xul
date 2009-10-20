@@ -16,8 +16,7 @@
 	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 	
 	<script type="application/x-javascript" src="chrome://proveit/content/ProveIt.js"/>
-	
-	
+		
 	<script type="text/javascript">
 	  
 	  window.addEventListener("load", com.elclab.proveit.proveitpreload, true);
@@ -53,13 +52,19 @@
 	-->
 	
 	<statusbar id="status-bar">
-	<statusbarpanel id="ProveIt-status-bar"
-		class="closed"
-		label="ProveIt"
-		onclick="toggleSidebar('viewProveItSidebar');"
-	/>
+	  <statusbarpanel id="ProveIt-status-bar"
+			  class="closed"
+			  label="ProveIt"
+			  onclick="if(event.button == 0){ toggleSidebar('viewProveItSidebar'); }" 
+			  context="proveit-status-popup"
+			  /> <!-- event.button == 0 - Left click -->
+	  <popupset>
+	    <menupopup id="proveit-status-popup">
+	      <menuitem label="&ProveIt.options;" oncommand="window.openDialog('chrome://ProveIt/content/options.xul');"/>
+	      <menuitem label="&ProveIt.toggleSidebar;" oncommand="toggleSidebar('viewProveItSidebar');"/>
+	    </menupopup>
+	  </popupset>
 	</statusbar>
-
 
 	<menupopup id="viewSidebarMenu" >
 		<menuitem key="key_openProveItSidebar" observes="viewProveItSidebar" />

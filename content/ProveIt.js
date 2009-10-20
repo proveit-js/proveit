@@ -467,6 +467,10 @@ com.elclab.proveit = {
 
 	// Runs when the sidebar is being unloaded.
 	proveitonunload : function() {
+		if(com.elclab.proveit.prefs)
+		{
+			com.elclab.proveit.prefs.removeObserver("", com.elclab.proveit);
+		}
 		com.elclab.proveit.enableResize();
 
 		window.QueryInterface(Components.interfaces.nsIInterfaceRequestor)
@@ -505,9 +509,7 @@ com.elclab.proveit = {
      		{
      		        com.elclab.proveit.log("Preference change detected.");
      			com.elclab.proveit.shouldAddSummary = com.elclab.proveit.prefs.getBoolPref("shouldAddSummary");
-     			com.elclab.proveit.log("com.elclab.proveit.shouldAddSummary: " + com.elclab.proveit.shouldAddSummary + "\n"
-     				 + "com.elclab.proveit.prefs.getBoolPref(\"shouldAddSummary\"): "
-     				 + com.elclab.proveit.prefs.getBoolPref("shouldAddSummary"));
+     			com.elclab.proveit.log("com.elclab.proveit.shouldAddSummary: " + com.elclab.proveit.shouldAddSummary);
      		}
 	},
 

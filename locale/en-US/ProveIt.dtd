@@ -63,7 +63,10 @@
 
 <!ENTITY ProveIt.newvalues "New Values: (name=value, name=value, etc.)">
 <!ENTITY ProveIt.cancel "Cancel">
-<!ENTITY ProveIt.editapply "Apply Changes">
+<!ENTITY ProveIt.editapply "Apply changes">
 
 <!ENTITY ProveIt.refName "&lt;ref&gt; name (abbr. code)">
 <!ENTITY ProveIt.refNameTooltip "This is an identifier that can be used to refer to this reference elsewhere on the page.  It should be short and memorable.">
+<!ENTITY ProveIt.options "ProveIt Options">
+<!ENTITY ProveIt.addEditSummaryMessage "Add ProveIt message to edit summary">
+<!ENTITY ProveIt.toggleSidebar "Toggle sidebar">
