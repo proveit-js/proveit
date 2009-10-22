@@ -12,8 +12,8 @@
    id="svg2"
    sodipodi:version="0.32"
    inkscape:version="0.46"
-   width="560.021"
-   height="817.26642"
+   width="547.30133"
+   height="505.17926"
    version="1.0"
    sodipodi:docname="open_edit_popup_cropped_labelled.svg"
    inkscape:output_extension="org.inkscape.output.svg.inkscape">
@@ -51,9 +51,9 @@
      pagecolor="#ffffff"
      id="base"
      showgrid="false"
-     inkscape:zoom="0.92736319"
-     inkscape:cx="348"
-     inkscape:cy="243.70172"
+     inkscape:zoom="1.3114896"
+     inkscape:cx="503.29413"
+     inkscape:cy="335.04202"
      inkscape:window-x="0"
      inkscape:window-y="0"
      inkscape:current-layer="svg2" />
@@ -63,24 +63,20 @@
      id="image11"
      x="0"
      y="0"
-     width="510"
-     height="712" />
+     width="547.30133"
+     height="460.2146" />
   <rect
-     style="fill:none;fill-opacity:1;stroke:#0000ff;stroke-width:1.5;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+     style="fill:none;fill-opacity:1;stroke:#0000ff;stroke-width:1.49999988;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
      id="rect2384"
-     width="390.35406"
-     height="436.72214"
-     x="46.918457"
-     y="179.00215" />
-  <path
-     style="fill:none;fill-opacity:1;stroke:#0000ff;stroke-width:1.5;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-     d="M 436.66827,221.15848 C 540.36169,221.15848 540.36169,222.68346 540.36169,222.68346"
-     id="path2388" />
+     width="430.25211"
+     height="352.61267"
+     x="42.980064"
+     y="21.566521" />
   <flowRoot
      xml:space="preserve"
      id="flowRoot2390"
      style="font-size:25px;font-style:normal;font-weight:normal;fill:#0000ff;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Serif"
-     transform="translate(-294,-12)"><flowRegion
+     transform="translate(-339.52315,-77.777904)"><flowRegion
        id="flowRegion2392"><rect
          id="rect2394"
          width="63.666134"
@@ -90,42 +86,38 @@
          style="font-size:25px;fill:#0000ff" /></flowRegion><flowPara
        id="flowPara2396"
        style="font-size:25px;fill:#0000ff">g</flowPara></flowRoot>  <rect
-     style="fill:none;fill-opacity:1;stroke:#0000ff;stroke-width:1.50000024;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+     style="fill:none;fill-opacity:1;stroke:#0000ff;stroke-width:1.5;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
      id="rect3206"
-     width="135.84418"
-     height="27.025782"
-     x="116.47168"
-     y="553.99139" />
+     width="120.2"
+     height="26.1"
+     x="101.14998"
+     y="345.7222" />
   <rect
      style="fill:none;fill-opacity:1;stroke:#0000ff;stroke-width:1.50000024;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
      id="rect3028"
-     width="117.51263"
-     height="27.025782"
-     x="235.08755"
-     y="584.18451" />
+     width="79.232002"
+     height="26.1"
+     x="336.82513"
+     y="345.72226" />
   <rect
      style="fill:none;fill-opacity:1;stroke:#0000ff;stroke-width:1.50000048;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
      id="rect3030"
-     width="104.57273"
+     width="79.193741"
      height="27.025782"
-     x="262.04572"
-     y="553.99139" />
+     x="389.1051"
+     y="261.43024" />
   <rect
      style="fill:none;fill-opacity:1;stroke:#0000ff;stroke-width:1.50000036;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
      id="rect3032"
-     width="94.867775"
-     height="27.025782"
-     x="129.95076"
-     y="583.1062" />
-  <path
-     style="fill:none;fill-opacity:1;stroke:#0000ff;stroke-width:1.5;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-     d="M 367.87245,565.64781 C 539.50041,565.64781 539.50041,567.17279 539.50041,567.17279"
-     id="path3034" />
+     width="100.25941"
+     height="26.1"
+     x="229.37505"
+     y="345.72226" />
   <flowRoot
      xml:space="preserve"
      id="flowRoot3036"
      style="font-size:25px;font-style:normal;font-weight:normal;fill:#0000ff;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Serif"
-     transform="translate(-298.79582,332.48933)"><flowRegion
+     transform="translate(-342.0239,41.92817)"><flowRegion
        id="flowRegion3038"><rect
          id="rect3040"
          width="63.666134"
@@ -135,18 +127,14 @@
          style="font-size:25px;fill:#0000ff" /></flowRegion><flowPara
        id="flowPara3042"
        style="font-size:25px;fill:#0000ff">h</flowPara></flowRoot>  <path
-     style="fill:none;fill-opacity:1;stroke:#0000ff;stroke-width:0.99999988"
-     d="M 125.62392,580.17217 C 125.62392,754.32676 124.54774,754.32676 124.54774,754.32676"
+     style="fill:none;fill-opacity:1;stroke:#0000ff;stroke-width:1"
+     d="M 157.2703,374.21189 C 157.2703,478.27529 156.19412,478.27529 156.19412,478.27529"
      id="path3212" />
-  <path
-     style="fill:none;fill-opacity:1;stroke:#0000ff;stroke-width:0.99999988"
-     d="M 174.14861,612.52191 C 174.14861,756.48334 173.07243,756.48334 173.07243,756.48334"
-     id="path3045" />
   <flowRoot
      xml:space="preserve"
      id="flowRoot3047"
      style="font-size:25px;font-style:normal;font-weight:normal;fill:#0000ff;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Serif"
-     transform="translate(-717.81846,545.78519)"><flowRegion
+     transform="translate(-686.17208,261.19828)"><flowRegion
        id="flowRegion3049"><rect
          id="rect3051"
          width="63.666134"
@@ -159,7 +147,7 @@
      xml:space="preserve"
      id="flowRoot3055"
      style="font-size:25px;font-style:normal;font-weight:normal;fill:#0000ff;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Serif"
-     transform="translate(-670.22376,546.23099)"><flowRegion
+     transform="translate(-560.90141,259.64383)"><flowRegion
        id="flowRegion3057"><rect
          id="rect3059"
          width="63.666134"
@@ -168,15 +156,11 @@
          y="215.05855"
          style="font-size:25px;fill:#0000ff" /></flowRegion><flowPara
        id="flowPara3061"
-       style="font-size:25px;fill:#0000ff">j</flowPara></flowRoot>  <path
-     style="fill:none;fill-opacity:1;stroke:#0000ff;stroke-width:0.99999994"
-     d="M 283.05005,611.38438 C 283.05005,758.58082 281.97387,758.58082 281.97387,758.58082"
-     id="path3063" />
-  <flowRoot
+       style="font-size:25px;fill:#0000ff">j</flowPara></flowRoot>  <flowRoot
      xml:space="preserve"
      id="flowRoot3065"
      style="font-size:25px;font-style:normal;font-weight:normal;fill:#0000ff;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Serif"
-     transform="translate(-562.24399,551.78519)"><flowRegion
+     transform="translate(-471.47207,261.19803)"><flowRegion
        id="flowRegion3067"><rect
          id="rect3069"
          width="63.666134"
@@ -185,4 +169,20 @@
          y="215.05855"
          style="font-size:25px;fill:#0000ff" /></flowRegion><flowPara
        id="flowPara3071"
-       style="font-size:25px;fill:#0000ff">k</flowPara></flowRoot></svg>
+       style="font-size:25px;fill:#0000ff">k</flowPara></flowRoot>  <path
+     style="fill:#0000ff;fill-opacity:1;stroke:#0000ff;stroke-width:1;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+     d="M 498.68004,273.56881 L 473.60896,273.56881"
+     id="path3957" />
+  <path
+     style="fill:#0000ff;fill-opacity:1;stroke:#0000ff;stroke-width:1;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+     d="M 498.86065,156.09314 L 473.78957,156.09314"
+     id="path3959" />
+  <path
+     style="fill:none;fill-opacity:1;stroke:#0000ff;stroke-width:1"
+     d="M 281.85274,374.21164 C 281.85274,478.27504 280.77656,478.27504 280.77656,478.27504"
+     id="path3973" />
+  <path
+     style="fill:none;fill-opacity:1;stroke:#0000ff;stroke-width:1"
+     d="M 375.66792,374.21186 C 375.66792,478.27526 374.59174,478.27526 374.59174,478.27526"
+     id="path3983" />
+</svg>
