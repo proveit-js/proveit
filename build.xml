@@ -5,14 +5,7 @@
 	<property name="dist.dir" value="dist" />
 	<property name="app.name" value="ProveIt" />
 	<property name="app.id" value="${app.name}" /> <!-- extension id like: xxx@xxx.com -->
-	<property name="ff.dir" value="C:\Program Files\Mozilla Firefox3" />
-
-	<condition property="ff.present">
-		<and>
-			<isset property="ff.dir" />
-			<available file="${ff.dir}" type="dir" />
-		</and>
-	</condition>
+	<property name="docs.dir" value="docs" />
 	
 	<target name="chrome">
 		<mkdir dir="${dist.dir}" />
@@ -29,20 +22,6 @@
 			</fileset>
 		</zip>
 	</target>
-
-	<target name="test.chrome" depends="chrome" if="ff.present">
-		<!-- copy to chrome directory -->
-		<copy file="${dist.dir}/${app.name}.jar" todir="${ff.dir}/chrome/chrome" overwrite="true" />
-		<copy file="${src.dir}/chrome.manifest" tofile="${ff.dir}/chrome/${app.name}.manifest" overwrite="true" />
-	</target>
-	
-	<!-- copy to extensions directory -->
-	<!--
-	<target name="test.ext" depends="chrome" if="ff.present">
-		<copy file="${dist.dir}/${app.name}.jar" todir="${ff.dir}/extensions/${app.id}/chrome" overwrite="true" />
-		<copy file="${src.dir}/chrome.manifest" todir="${ff.dir}/extensions/${app.id}" overwrite="true" />
-	</target>
-	-->
 	
 	<target name="dist" depends="chrome">
 		<zip destfile="${dist.dir}/${app.name}.xpi">
@@ -56,15 +35,45 @@
 			</fileset>
 		</zip>
 	</target>
-	
-	<target name="clean">
-		<delete dir="${dist.dir}" />
+
+	<target name="docs" depends="pngs">
+	  <zip destfile="${dist.dir}/ProveItDocs.zip">
+	    <fileset dir="${docs.dir}">
+	      <include name="**/*.html" />
+	      <include name="**/*.png" />
+	      <include name="**/*.css" />
+	    </fileset>
+	  </zip>
 	</target>
 
-	<target name="clean.ff"  if="ff.present">
-		<delete dir="${ff.dir}/extensions/${app.id}" failonerror="false" />
-		<delete file="${ff.dir}/chrome/${app.name}.manifest" failonerror="false" />
-		<delete file="${ff.dir}/chrome/chrome/${app.name}.jar" failonerror="false" />
+	<target name="pngs" depends="sidebar_labelled.png, open_edit_popup_cropped_labelled.png, open_new_reference_menu_cropped_labelled.png" />
+
+	<target name="sidebar_labelled.png">
+	  <exec executable="inkscape">
+	    <arg value="${docs.dir}/sidebar_labelled.svg" />
+	    <arg value="-e" />
+	    <arg value="${docs.dir}/sidebar_labelled.png" />
+	  </exec>
+	</target>
+
+	<target name="open_edit_popup_cropped_labelled.png">
+	  <exec executable="inkscape">
+	    <arg value="${docs.dir}/open_edit_popup_cropped_labelled.svg" />
+	    <arg value="-e" />
+	    <arg value="${docs.dir}/open_edit_popup_cropped_labelled.png" />
+	  </exec>
+	</target>
+	
+	<target name="open_new_reference_menu_cropped_labelled.png">
+	  <exec executable="inkscape">
+	    <arg value="${docs.dir}/open_new_reference_menu_cropped_labelled.svg" />
+	    <arg value="-e" />
+	    <arg value="${docs.dir}/open_new_reference_menu_cropped_labelled.png" />
+	  </exec>
+	</target>
+
+	<target name="clean">
+	  <delete dir="${dist.dir}" />
 	</target>
 
 </project>
