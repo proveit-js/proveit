@@ -3,5 +3,6 @@ syntax: glob
 .metadata
 chrome/ProveIt.jar
 chrome/ProveIt.xpi
+docs/{open_edit_popup_cropped_labelled.png,open_new_reference_menu_cropped_labelled.png,sidebar_labelled.png}
 dist
 ***~
