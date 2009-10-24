@@ -28,7 +28,7 @@ com.elclab.proveit = {
 	STATE_STOP : Components.interfaces.nsIWebProgressListener.STATE_STOP,
 
 	// Currently requires you be on one of these hard-coded domains.
-	KNOWN_SITES : ["wiktionary.org", "wikipedia.org", "wikinews.org"],
+	KNOWN_SITES : ["wiktionary.org", "wikipedia.org", "wikinews.org", "secure.wikimedia.org"],
 
 	LANG : "en", // currently used only for descriptions.
 
@@ -2157,11 +2157,18 @@ com.elclab.proveit = {
 
 	/**
 	 * Add new row to add new citation box.
+	 *
+	 * This method would ideally be consolidated with addEditPopupRow
 	 */
 	addExtraRow : function() {
 		var newline = com.elclab.proveit.getSidebarDoc().getElementById("addedparamrow").cloneNode(true);
 		newline.id = "";
 		com.elclab.proveit.activateRemove(newline);
+		var star = com.elclab.proveit.getSidebarDoc().getElementById("star").cloneNode(true);
+		star.id = "";
+		star.style.display = "-moz-box";
+		star.style.visibility = "hidden";
+		newline.insertBefore(star, newline.firstChild);
 		newline.hidden = false;
 
 		var citePane = com.elclab.proveit.getAddCitePane();

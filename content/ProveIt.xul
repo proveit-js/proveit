@@ -43,13 +43,13 @@
 	</tooltip>
 	<hbox id="preloadedparamrow" hidden="true">
 		<label class="paramdesc" flex="1" />
-		<textbox class="paramvalue" />
+		<textbox class="paramvalue" minwidth="700"/>
 		<button tabindex="-1">X</button>
 	</hbox>
 	<hbox id="addedparamrow" class="addedrow" hidden="true">
 		<textbox class="paramname" minwidth="140" flex="1"/>
 		<label value="="/>
-		<textbox class="paramvalue" flex="1" />
+		<textbox class="paramvalue" minwidth="700" flex="1" />
 		<button tabindex="-1">X</button>
 	</hbox>
 	<vbox id="dummyCitePane" hidden="true">
@@ -63,11 +63,15 @@
 			<label class="requiredParam" value="*"/>			
 			<label value="&ProveIt.starexp;"/>
 		</hbox>
-		<hbox class="buttons" pack="center">
-			<button label="&ProveIt.addanother;" oncommand="com.elclab.proveit.addExtraRow();" />
-			<button label="&ProveIt.createnewsave;" oncommand="com.elclab.proveit.addCitation()"/>
-			<button label="&ProveIt.cancel;" oncommand="com.elclab.proveit.cancelAdd()" />
-		</hbox>
+		<vbox class="buttons">
+		  <hbox pack="center">
+		    <button label="&ProveIt.addanother;" oncommand="com.elclab.proveit.addExtraRow();" />
+		  </hbox>
+		  <hbox pack="center">
+		    <button label="&ProveIt.createnewsave;" oncommand="com.elclab.proveit.addCitation()"/>
+		    <button label="&ProveIt.cancel;" oncommand="com.elclab.proveit.cancelAdd()" />
+		  </hbox>
+		</vbox>
 	</vbox>	
 				
 	
@@ -168,11 +172,15 @@
 					<label value="&ProveIt.starexp;"/>
 				</hbox>
 			</vbox>
-			<hbox class="buttons" pack="center">
+			<vbox class="buttons" pack="center">
+			  <hbox pack="center">
 				<button id="editaddfield" label="&ProveIt.addanother;" onclick="com.elclab.proveit.editAddField()"/>
+			  </hbox>
+			   <hbox pack="center">
 				<button id="editsubmit" label="&ProveIt.editapply;" onclick="com.elclab.proveit.editSave()"/>
 				<button id="editcancel" label="&ProveIt.cancel;" onclick="com.elclab.proveit.cancelEdit()"/>
-			</hbox>
+			   </hbox>
+			</vbox>
 		</vbox>
 	</panel>
 </page>
