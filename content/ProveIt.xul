@@ -70,7 +70,7 @@
 		  </hbox>
 		</vbox>
 	</vbox>	
-	<richlistbox id="refbox" flex="1" onselect="/*com.elclab.proveit.doSelect();*/ /* com.elclab.proveit.restoreSelection();*/" onclick="com.elclab.proveit.doSelect();" />
+	<richlistbox id="refbox" flex="1" onclick="com.elclab.proveit.doSelect();" />
 	<!-- <hbox pack="center" > -->
 <!-- 		<label class="plain" value="&ProveIt.markup;" /> -->
 <!-- 		<label id="fulltoggle" class="plain" value="&ProveIt.fullcitation;" style="font-weight: bold" onclick="com.elclab.proveit.flipToggle('full')" /> -->
@@ -130,7 +130,7 @@
 			<vbox id="citationpanes" flex="1" minwidth="500"></vbox>
 		</vbox>
 	</panel>
-	<panel id="edit" position="end_before">
+	<panel id="edit" position="before_start" noautohide="true">
 		<vbox id="editpanel" align="center" style="background-color: #DCDAD5">
 			<label id="editlabel" value="Citation"/>
 			<label id ="star" class = "requiredParam" style="display: none;" value="*"/>

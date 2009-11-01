@@ -368,10 +368,6 @@ com.elclab.proveit = {
 	proveitonload : function() {
 		this.log("Entering proveitonload");
 		com.elclab.proveit.loadjQuery(com.elclab.proveit);
-
-		com.elclab.proveit.getSidebarDoc().getElementById("edit").openPopup(
-				com.elclab.proveit.getRefbox(), null, 0, 0, false, false);
-		com.elclab.proveit.getSidebarDoc().getElementById('edit').hidePopup();
 		com.elclab.proveit.prefs = Components.classes["@mozilla.org/preferences-service;1"]
 			.getService(Components.interfaces.nsIPrefService)
 			.getBranch("com.elclab.proveit.");
@@ -732,67 +728,6 @@ com.elclab.proveit = {
 		com.elclab.proveit.doSelect();
 	},
 
-	/*
-	 * @deprecated
-	 * Processes a list of comma separated values, such as foo=bar,goo=gai
-	 */
-	processCommaSeparated : function(ref, text)
-	{
-		//this.log("Entering processCommaSeparated");
-		if(!(ref && ref != null))
-		{
-			//this.log("ref is not valid.");
-			return false;
-		}
-		if(!(text && text != null))
-		{
-			//this.log("text is not valid.");
-			return false;
-		}
-		// FIX: Commas can be part of fields.
-		textSplit = text.split(/\,/gi);
-		/*
-		if (textSplit == -1 && text != "") {
-			var split = textSplit[i].split(/\=/i);
-			var paramName = split[0].trim();
-			var paramVal = split[1].trim();
-			if (paramName == "name") {
-				// this.log("Setting name(single): " + split[1].trim());
-				com.elclab.proveit.getSidebarDoc().getElementById(name + "label").value = paramVal;
-				com.elclab.proveit.currentrefs[name][paramName] = paramVal;
-			}
-			else
-			{
-				com.elclab.proveit.currentrefs[name].params[paramName] = paramVal;
-			}
-		} // Can if above ever be executed?  textSplit should not be -1...
-		else
-		*/
-		if (text != "") {
-			for (var i = 0; i < textSplit.length; i++) {
-				// FIX: Equal signs can be part of fields.  This can probably be fixed just
-				// by taking the first equal once comma split is worked out.
-				var split = textSplit[i].split(/\=/i);
-				if(split[0] == null || split[1] == null)
-				    return false;
-
-				var paramName = split[0].trim();
-				var paramVal = split[1].trim();
-				/*if (paramName == "name") {
-					// this.log("Setting name(multi): " + split[1].trim());
-					com.elclab.proveit.getSidebarDoc().getElementById(name + "label").value = paramVal;
-					ref[paramName] = paramVal;
-				}
-				else
-				{*/
-				if(paramName != "" && paramVal != "")
-				{
-				    ref.params[paramName] = paramVal;
-				}
-				//}
-			}
-		}
-	},
 
 	// Adds a new blank row to the edit popup.
 	editAddField : function()
@@ -1167,7 +1102,7 @@ com.elclab.proveit = {
 			var desc = descs[item];
 			if(!desc)
 			{
-				this.log("Undefined description for param: " + item + ".  Using directly as descripition.");
+				this.log("Undefined description for param: " + item + ".  Using directly as description.");
 				desc = item;
 			}
 
@@ -1175,38 +1110,6 @@ com.elclab.proveit = {
 			paramValue.setAttribute("value", list[item]);
 		}
 	},
-
-	/*
-	 * Puts the text in the small display window.
-	 */
-	/*
-	dispSelect : function() {
-		//this.log("Entering dispSelect");
-
-		if (com.elclab.proveit.getRefbox().selectedItem) {
-
-			var name = com.elclab.proveit.getRefbox().selectedItem.id;
-			if (com.elclab.proveit.toggleinsert) {
-				// this.log(name);
-				document.getElementById('display').value = com.elclab.proveit.currentrefs[name]
-						.toString();
-			} else {
-				if (com.elclab.proveit.currentrefs[name].name) {
-					document.getElementById('display').value = "<ref name=\""
-							+ com.elclab.proveit.currentrefs[name].name + "\" />";
-				} else {
-					document.getElementById('display').value = "There is no name for this reference.";
-				}
-			}
-
-		} else {
-			return;
-		}
-
-		// either enable or disable the save changes text
-
-	},
-	*/
 
 	/*
 	 * these are the current style and insert values to denote which one is
@@ -1564,7 +1467,7 @@ com.elclab.proveit = {
 		en :
 			{
 				name: "Name",
-				author: "Author (l,f)",
+				author: "Author (L, F)",
 				last: "Last name",
 				first: "First name",
 				authorlink: "Author article name",
@@ -1572,9 +1475,10 @@ com.elclab.proveit = {
 				publisher: "Publisher",
 				year: "Year",
 				location: "Location",
-				place: "Locale of work",
+				place: "Location of work",
 				isbn: "ISBN",
 				id: "ID",
+				doi: "DOI",
 				pages: "Pages",
 				quote: "Quote",
 				month: "Month",
@@ -1585,7 +1489,7 @@ com.elclab.proveit = {
 				url: "URL",
 				date: "Publication date (YYYY-MM-DD)",
 				accessdate: "Access date (YYYY-MM-DD)",
-				coauthors: "Co-Authors",
+				coauthors: "Co-authors",
 				booktitle: "Title of Proceedings",
 				contribution: "Contribution/Chapter",
 				encyclopedia: "Encyclopedia",
@@ -1593,15 +1497,15 @@ com.elclab.proveit = {
 				version: "Version",
 				site: "Site",
 				newspaper: "Newspaper",
-				"publication-place": "Publication Place",
-				editor: "Editor(l,f)",
+				"publication-place": "Publication location",
+				editor: "Editor (L, F)",
 				article: "Article",
-				pubplace: "Publisher Place",
-				pubyear: "Publication Year",
-				inventor: "Inventor(l,f)",
-				"issue-date": "Issue Date(YYYY-MM-DD)",
+				pubplace: "Publisher location",
+				pubyear: "Publication year",
+				inventor: "Inventor (L, F)",
+				"issue-date": "Issue date (YYYY-MM-DD)",
 				"patent-number": "Patent Number",
-				"country-code": "Country(US)",
+				"country-code": "Country code (XX)",
 				work: "Work",
 				format: "File format"
 			}
