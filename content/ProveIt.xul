@@ -16,30 +16,27 @@
 
 <page id="ProveIt" title="&ProveIt.title;" 
 	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" onload="com.elclab.proveit.proveitonload()" onunload="com.elclab.proveit.proveitonunload()" onclick="com.elclab.proveit.restoreSelection()">
+	<script type="text/javascript" src="ProveIt.js"/>
 	
-	<script type="application/x-javascript" src="chrome://proveit/content/ProveIt.js"/>
-	
-	<richlistitem id="prime" hidden="true">
-		<hbox flex="1" align="center">
-			<label control="prime" id="primelabel" value="" crop="end" minwidth="200" maxwidth="200"/>
-			<!--
-				Having value="Prime" causes this to show up briefly.
-			-->
-			<label hidden="true" id="infoholder" value="" />
-			<spacer width="0" />
-			<image src="18.png" id="primeeditimage" width="10" height="10" tooltiptext="&ProveIt.edit;" />
-			<spacer width="5" />
-			<image src="insert_10x10.png" id="primeinsertimage" width="10" height="10" tooltiptext="&ProveIt.insert;" />
-			<spacer width="0" />
-		</hbox>
+	<richlistitem id="prime" hidden="true" align="center">
+		<spacer width="5" />
+		<image src="pencil_10x10.png" class="richitemedit" style="max-height: 10px; max-width: 10px" tooltiptext="&ProveIt.edit;" />
+		<spacer width="5" />
+		<label value="&ProveIt.ibid;" class="richiteminsert" style="max-height: 10px; max-width: 10px" />
+		<label class="richitemlabel" value="" crop="end"/>
 	</richlistitem>
-	<tooltip id="dummy_tooltip" hidden="true">
-		<hbox>
-			<label value="&ProveIt.refName;"/>
-			<label value=":"/>
-			<label value=""/>	
+	<tooltip id="dummy tooltip" hidden="true">
+		<hbox class="refName row">
+			<label value="&ProveIt.refName; : "/>
+			<label class="refName label" value=""/>	
 		</hbox>
-		<label />
+		<label class="full label"/>
+	</tooltip>
+	<tooltip id="enabled insert tooltip">
+		<label value="&ProveIt.enabledInsert;"/>
+	</tooltip>
+	<tooltip id="disabled insert tooltip">
+		<label value="&ProveIt.disabledInsert;"/>
 	</tooltip>
 	<hbox id="preloadedparamrow" hidden="true">
 		<label class="paramdesc" flex="1" />
@@ -56,10 +53,10 @@
 		<hbox pack="center" align="center" flex="1" >
 			<spacer style="margin: 0; padding: 0; width: 25px"/>
 			<label control="citerefname" value="&ProveIt.refName;" tooltiptext="&ProveIt.refNameTooltip;" minwidth="100"/>
-			<textbox id="citerefname" />
+			<textbox id="citerefname" class="refname" />
 			<spacer flex="1" />
 		</hbox>
-		<hbox class="starexp" style = "margin-left: 0px; height: 40px">
+		<hbox class="starexp" style="margin-left: 0px; height: 40px">
 			<label class="requiredParam" value="*"/>			
 			<label value="&ProveIt.starexp;"/>
 		</hbox>
@@ -73,50 +70,32 @@
 		  </hbox>
 		</vbox>
 	</vbox>	
-				
-	
-	<vbox flex="1">
-		<hbox flex="1" maxwidth="800">
-			<!--<vbox width="250" >-->
-			<vbox width="270">
-				<hbox width="250"  flex="1" >
-					<richlistbox id="refbox" flex="1" onselect="/*com.elclab.proveit.doSelect();*/ /* com.elclab.proveit.restoreSelection();*/" onclick="com.elclab.proveit.doSelect();"/>
-				</hbox>
-				<hbox height="20" align="end" pack="start" >
-					<spacer width="15" />
-					<label class="plain" value="&ProveIt.markup;" />
-					<hbox width="65" pack="center">
-						<label id="fulltoggle" class="plain" value="&ProveIt.fullcitation;" style="font-weight: bold" onclick="com.elclab.proveit.flipToggle('full')" />
-					</hbox>
-					<label class="plain" value="|" />
-					<hbox width="65" pack="center" >
-						<label id="nametoggle" class="plain" value="&ProveIt.nameonly;" onclick="com.elclab.proveit.flipToggle('name')"/>
-					</hbox>
-				</hbox>
-				<hbox height="50" pack="center" align="center">
-					<!--<button id="addnewitembutton" height="25" width="150" popup="createnew">-->
-					<button id="addnewitembutton" height="30" popup="createnew">
-						<image src="toolbar-item-add.png" />
-						<label control="addnewitembutton" value="&ProveIt.addnew;" />
-					</button>
-				</hbox>
-				<hbox height="20" align="end" pack="start" >
-					<spacer width="15" />
-					<label class="plain" value="&ProveIt.Tagstyle;" />
-					<hbox width="65" pack="center">
-						<label id="citetoggle" class="plain" value="{{cite}}" style="font-weight: bold" onclick="com.elclab.proveit.flipToggle('cite')" />
-					</hbox>
-					<label class="plain" value="|" />
-					<hbox width="65" pack="center" >
-						<label id="citationtoggle" class="plain" value="{{Citation}}" onclick="com.elclab.proveit.flipToggle('citation')"/>
-					</hbox>
-				</hbox>
-				
-			</vbox>
+	<richlistbox id="refbox" flex="1" onselect="/*com.elclab.proveit.doSelect();*/ /* com.elclab.proveit.restoreSelection();*/" onclick="com.elclab.proveit.doSelect();" />
+	<!-- <hbox pack="center" > -->
+<!-- 		<label class="plain" value="&ProveIt.markup;" /> -->
+<!-- 		<label id="fulltoggle" class="plain" value="&ProveIt.fullcitation;" style="font-weight: bold" onclick="com.elclab.proveit.flipToggle('full')" /> -->
+<!-- 		<label class="plain" value="|" /> -->
+<!-- 		<label id="nametoggle" class="plain" value="&ProveIt.nameonly;" onclick="com.elclab.proveit.flipToggle('name')"/> -->
+<!-- 	</hbox> -->
+	<spacer height="10" />
+	<button id="addnewitembutton" height="30" popup="createnew">
+		<image src="toolbar-item-add.png" />
+		<label control="addnewitembutton" value="&ProveIt.addnew;" />
+	</button>
+	<spacer height="10" />
+	<hbox align="end" pack="center" >
+		<spacer width="15" />
+		<label class="plain" value="&ProveIt.Tagstyle;" />
+		<hbox width="65" pack="center">
+			<label id="citetoggle" class="plain" value="{{cite}}" style="font-weight: bold" onclick="com.elclab.proveit.flipToggle('cite')" />
 		</hbox>
-	</vbox>
-	
-	<panel id="createnew" style="background-color: #ECE9D8" position="end_after" flex="1" noautohide="true" onpopupshown="com.elclab.proveit.changeCite(document.getElementById(com.elclab.proveit.togglestyle ? 'citemenu' : 'citationmenu'))">
+		<label class="plain" value="|" />
+		<hbox width="65" pack="center" >
+			<label id="citationtoggle" class="plain" value="{{Citation}}" onclick="com.elclab.proveit.flipToggle('citation')"/>
+		</hbox>
+	</hbox>
+		
+	<panel id="createnew" style="background-color: #ECE9D8" position="before_end" noautohide="true" onpopupshown="com.elclab.proveit.changeCite(document.getElementById(com.elclab.proveit.togglestyle ? 'citemenu' : 'citationmenu'))">
 		<vbox flex="1" hidden="false" id="cite">
 			<hbox pack="center" align="center">
 				<menulist id="citemenu" oncommand="com.elclab.proveit.changeCite(this)">
@@ -151,21 +130,21 @@
 			<vbox id="citationpanes" flex="1" minwidth="500"></vbox>
 		</vbox>
 	</panel>
-	<panel id="edit">
+	<panel id="edit" position="end_before">
 		<vbox id="editpanel" align="center" style="background-color: #DCDAD5">
 			<label id="editlabel" value="Citation"/>
 			<label id ="star" class = "requiredParam" style="display: none;" value="*"/>
 			<vbox>
 				<!--<vbox>-->
 				<!-- Add ref name tooltip -->
-				<hbox id="edit_refname" value="">
-				  	<spacer style = "margin: 0; padding: 0; width: 25px"/>
-					<label id="edit_refname_label" value="&ProveIt.refName;" tooltiptext="&ProveIt.refNameTooltip;" flex="1" />
-					<label value="=" />
-					<textbox id="edit_refname_value" value="" />
+				<hbox pack="center" align="center" flex="1" >
+				  <spacer style="margin: 0; padding: 0; width: 25px"/>
+				  <label control="editrefname" value="&ProveIt.refName;" tooltiptext="&ProveIt.refNameTooltip;" minwidth="100"/>
+				  <textbox id="editrefname" class="refname" />
+				  <spacer flex="1" />
 				</hbox>
 				<!--</vbox>-->
-				<vbox id="editlist">
+				<vbox id="editlist" class="paramlist">
 				</vbox>
 				<hbox class="starexp" style = "margin-left: 0px; height: 40px">
 					<label class="requiredParam" value="*"/>			

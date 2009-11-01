@@ -14,9 +14,7 @@
 
 <overlay id="ProveItOverlay"
 	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
-	
-	<script type="application/x-javascript" src="chrome://proveit/content/ProveIt.js"/>
-		
+	<script type="text/javascript" src="ProveIt.js"/>
 	<script type="text/javascript">
 	  
 	  window.addEventListener("load", com.elclab.proveit.proveitpreload, true);
@@ -29,7 +27,7 @@
 	  	{
 	  		//com.elclab.proveit.log("Entering anonymous onload function");
 	  		if(!com.elclab.proveit.isSidebarOpen())
-		  		com.elclab.proveit.openOnlyForMediawiki();
+		  		com.elclab.proveit.openIfSupportedEditPage();
 			else
 			{
 				toggleSidebar("viewProveItSidebar");
@@ -43,6 +41,13 @@
 
 	  //addEventListener("load", loadSidebar, true);
 	  
+	  // Thanks to openAboutDialog at http://getfirebug.com/developer/api/firebug1.5/symbols/src/content_firebug_chrome.js.html
+	 
+	  function openProveItAbout()
+	  {
+	    openDialog("chrome://mozapps/content/extensions/about.xul", "", "chrome,centerscreen,modal", "urn:mozilla:item:ProveIt@gatech.edu", Components.classes["@mozilla.org/extensions/manager;1"].getService(Components.interfaces["nsIExtensionManager"]).datasource);
+	  }
+
 	</script>
 
 	
@@ -60,9 +65,12 @@
 			  /> <!-- event.button == 0 - Left click -->
 	  <popupset>
 	    <menupopup id="proveit-status-popup">
-	      <menuitem label="&ProveIt.options;" oncommand="window.openDialog('chrome://ProveIt/content/options.xul');"/>
 	      <menuitem label="&ProveIt.toggleSidebar;" oncommand="toggleSidebar('viewProveItSidebar');"/>
+	      <menuitem label="&ProveIt.options;" oncommand="window.openDialog('chrome://ProveIt/content/options.xul');"/>
+	      <menuitem label="&ProveIt.homepage;" oncommand="window.open('http://www.cc.gatech.edu/elc/proveit')"/>
+	      <menuitem label="&ProveIt.aboutProveIt;" oncommand="openProveItAbout()"/>
 	    </menupopup>
+
 	  </popupset>
 	</statusbar>
 
