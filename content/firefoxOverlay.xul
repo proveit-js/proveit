@@ -13,40 +13,45 @@
 <?xml-stylesheet href="chrome://ProveIt/skin/ProveIt.css" type="text/css"?>
 
 <overlay id="ProveItOverlay"
-	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
-	<script type="text/javascript" src="ProveIt.js"/>
-	<script type="text/javascript">
-	  
-	  window.addEventListener("load", com.elclab.proveit.proveitpreload, true);
-	  
-	  // Works except when sidebar is already open upon startup
-	  
-	  window.addEventListener("load", function()
-	  {
-	  	window.setTimeout(function()
-	  	{
-	  		//com.elclab.proveit.log("Entering anonymous onload function");
-	  		if(!com.elclab.proveit.isSidebarOpen())
-		  		com.elclab.proveit.openIfSupportedEditPage();
-			else
-			{
-				toggleSidebar("viewProveItSidebar");
-				com.elclab.proveit.log("Reloading sidebar from firefoxOverlay timeout.");
-			}
-	  	}, 500)
-	  }, true); 
-	  
-	  // Even with the load handler, the timeout of 500 (ms) is necessary to ensure the URL is available.  
-	  // This is the lowest timeout that I found reliably works
+        xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+        <script type="text/javascript" src="ProveIt.js"/>
+        <script type="text/javascript">
+          
+          // Anonymous function necessary here to ensure proper context.
 
-	  //addEventListener("load", loadSidebar, true);
-	  
-	  // Thanks to openAboutDialog at http://getfirebug.com/developer/api/firebug1.5/symbols/src/content_firebug_chrome.js.html
-	 
-	  function openProveItAbout()
+          window.addEventListener("load", function()
 	  {
-	    openDialog("chrome://mozapps/content/extensions/about.xul", "", "chrome,centerscreen,modal", "urn:mozilla:item:ProveIt@gatech.edu", Components.classes["@mozilla.org/extensions/manager;1"].getService(Components.interfaces["nsIExtensionManager"]).datasource);
-	  }
+	          com.elclab.proveit.proveitpreload();
+	  }, true);
+          
+          // Works except when sidebar is already open upon startup
+          
+          window.addEventListener("load", function()
+          {
+                  window.setTimeout(function()
+                  {
+                          //com.elclab.proveit.log("Entering anonymous onload function");
+                          if(!com.elclab.proveit.isSidebarOpen())
+                                  com.elclab.proveit.openIfSupportedEditPage();
+                          else
+                          {
+                                  toggleSidebar("viewProveItSidebar");
+                                  com.elclab.proveit.log("Reloading sidebar from firefoxOverlay timeout.");
+                          }
+                  }, 500)
+          }, true); 
+          
+          // Even with the load handler, the timeout of 500 (ms) is necessary to ensure the URL is available.  
+          // This is the lowest timeout that I found reliably works
+
+          //addEventListener("load", loadSidebar, true);
+          
+          // Thanks to openAboutDialog at http://getfirebug.com/developer/api/firebug1.5/symbols/src/content_firebug_chrome.js.html
+         
+          function openProveItAbout()
+          {
+                  openDialog("chrome://mozapps/content/extensions/about.xul", "", "chrome,centerscreen,modal", "urn:mozilla:item:ProveIt@gatech.edu", Components.classes["@mozilla.org/extensions/manager;1"].getService(Components.interfaces["nsIExtensionManager"]).datasource);
+          }
 
 	</script>
 

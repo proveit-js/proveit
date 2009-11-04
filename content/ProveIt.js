@@ -54,9 +54,6 @@ com.elclab.proveit = {
 	// Preferences object (nsIPrefBranch)
 	prefs : null,
 
-	// JQuery library object
-	jQuery : null,
-
 	/*
 	 * This is a global to hold the list of citations, As it needs to be seen by
 	 * all methods for this page, globality is necessary.
@@ -85,7 +82,7 @@ com.elclab.proveit = {
 			var url = top.getBrowser().currentURI;
 			var path = url.path;
 			return this.KNOWN_HOSTS.indexOf(url.host) != -1 && // Known host
-				this.KNOWN_ACTIONS.indexOf(com.elclab.proveit.jQuery.query.load(url.path).get("action")) != -1 && // Known action
+				this.KNOWN_ACTIONS.indexOf(window.content.wrappedJSObject.wgAction) != -1 && // Known action
 				this.KNOWN_NAMESPACES.indexOf(window.content.wrappedJSObject.wgCanonicalNamespace) != -1; // Known namespace
 		}
 		catch(e if e.name == "NS_ERROR_FAILURE")
@@ -336,23 +333,10 @@ com.elclab.proveit = {
 		 */
 	},
 
-	loadjQuery : function(context)
-       {
-	       this.log("Entering loadjQuery");
-               var loader = Components.classes["@mozilla.org/moz/jssubscript-loader;1"]
-                        .getService(Components.interfaces.mozIJSSubScriptLoader);
-               loader.loadSubScript("chrome://proveit/content/jquery.min.js", context);
-               com.elclab.proveit.jQuery = window.jQuery.noConflict(true);
-               loader.loadSubScript("chrome://proveit/content/jquery.query-2.1.7.js", com.elclab.proveit.jQuery);
-       },
-
-
 	// This function sets things up so ProveIt will automatically load on a MediaWiki site.
 	proveitpreload : function()
 	{
 		this.log("Entering proveitpreload.");
-		com.elclab.proveit.loadjQuery(com.elclab.proveit);
-		this.log("this.jQuery: " + this.jQuery + ", com.elclab.proveit.jQuery: " + com.elclab.proveit.jQuery);
 		top.getBrowser().addProgressListener(com.elclab.proveit.sendalert,
 				com.elclab.proveit.NOTIFY_STATE_DOCUMENT);
 		return true; // Is this necessary to ensure Firefox doesn't gray out buttons?
@@ -367,7 +351,6 @@ com.elclab.proveit = {
 	// Runs when we actually want to load the sidebar
 	proveitonload : function() {
 		this.log("Entering proveitonload");
-		com.elclab.proveit.loadjQuery(com.elclab.proveit);
 		com.elclab.proveit.prefs = Components.classes["@mozilla.org/preferences-service;1"]
 			.getService(Components.interfaces.nsIPrefService)
 			.getBranch("com.elclab.proveit.");
@@ -1178,8 +1161,8 @@ com.elclab.proveit = {
 	splitNameVals : function (workingstring)
 	{
 		var split = {};
-		split.nameSplit = workingstring.substring(workingstring.indexOf("|") + 1).split(/=(?:[^\[|]*?(?:\[\[[^|\]]*(?:\|(?:[^|\]]*))?\]\])?)+(?:\||\}\})/
-);
+		split.nameSplit = workingstring.substring(workingstring.indexOf("|") + 1).split(/=(?:[^|]*?(?:\[\[[^|\]]*(?:\|(?:[^|\]]*))?\]\])?)+(?:\||\}\})/
+); // The first component is "ordinary" text (no pipes), while the second is a correctly balanced wikilink, with optional pipe.  Any combination of the two can appear.
 		split.valSplit = workingstring.substring(workingstring.indexOf("|"), workingstring.indexOf("}}")).split(/\|[^|=]*=/);
 		return split;
 	},
@@ -1220,7 +1203,6 @@ com.elclab.proveit = {
 	 */
 	scanRef : function() {
 		this.log("Entering scanRef.");
-		// textValue is the text from the edit box
 
 		// zero out the old scan, just in case
 		//com.elclab.proveit.currentScan = [];
@@ -1239,7 +1221,7 @@ com.elclab.proveit = {
 
 		//this.log("scanRef currentrefs: " + com.elclab.proveit.currentrefs);
 
-		var textValue;
+		var textValue; // text from the edit box
 		if (text) {
 			//this.log("Edit box object is valid.");
 			textValue = text.value;
