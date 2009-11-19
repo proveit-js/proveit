@@ -7,7 +7,7 @@
 <!ENTITY ProveIt.fullcitation "full citation">
 <!ENTITY ProveIt.nameonly "name only">
 <!ENTITY ProveIt.edit "Edit">
-<!ENTITY ProveIt.enabledInsert "Insert">
+<!ENTITY ProveIt.enabledInsert "Click to insert">
 <!ENTITY ProveIt.disabledInsert "Inserting this reference disabled.  It lacks a &lt;ref&gt; name.  You may add one using the edit popup.">
 <!ENTITY ProveIt.scta1 "save">
 <!ENTITY ProveIt.scta2 "changes">

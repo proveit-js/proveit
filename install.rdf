@@ -5,7 +5,7 @@
 
 	<Description about="urn:mozilla:install-manifest">
 		<em:name>ProveIt</em:name>
-		<em:version>1.0.703</em:version>
+		<em:version>1.0.704</em:version>
 		<em:description>A extension to facilitate the insertion of citation tags in Wikipedia.</em:description>
 		<em:creator>Kurt Luther, Matthew Flaschen, Andrea Forte, Christopher Jordan, Amy Bruckman (Georgia Institute of Technology)
 		</em:creator>

@@ -156,7 +156,7 @@
 				<button id="editaddfield" label="&ProveIt.addanother;" onclick="com.elclab.proveit.editAddField()"/>
 			  </hbox>
 			   <hbox pack="center">
-				<button id="editsubmit" label="&ProveIt.editapply;" onclick="com.elclab.proveit.editSave()"/>
+				<button id="editsubmit" label="&ProveIt.editapply;" onclick="com.elclab.proveit.saveEdit()"/>
 				<button id="editcancel" label="&ProveIt.cancel;" onclick="com.elclab.proveit.cancelEdit()"/>
 			   </hbox>
 			</vbox>
