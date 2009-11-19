@@ -213,36 +213,53 @@ com.elclab.proveit = {
 	},
 
 	// Hard coded constant representing the number of vertical pixels half of textarea takes place.
-	HALF_EDIT_BOX_IN_PIXELS : 204,
+	HALF_EDIT_BOX_HEIGHT : 204,
 
-	// Highlights a given string in the MediaWiki edit box.
-	highlightTargetString : function(target)
+	/**
+	 * Provides the x (left) and y (top) offsets to a given element.  From QuirksMode (http://www.quirksmode.org/js/findpos.html), a freely available site by Peter-Paul Koch
+	 * @param node
+	 * @return offsets to node, as object with left and top properties.
+	 */
+	getPosition : function(node)
 	{
-		//this.log("Entering highlightTargetString");
-		var t = com.elclab.proveit.getMWEditBox();
-		var origText = t.value;
-		var startInd = origText.indexOf(target);
-		if(startInd == -1)
+		var left = 0, top = 0;
+		do
 		{
-			//this.log("Target string not found!");
-			//this.log("target: " + target);
-			return false;
-		}
-		var endInd = startInd + target.length;
-		t.value = origText.substring(0, startInd);
-		t.scrollTop = 1000000; //Larger than any real textarea (hopefully)
-		var curScrollTop = t.scrollTop;
-		t.value += origText.substring(startInd);
-		if(curScrollTop > 0)
-		{
-			t.scrollTop = curScrollTop + com.elclab.proveit.HALF_EDIT_BOX_IN_PIXELS;
-		}
-		t.focus();
-		t.setSelectionRange(startInd, endInd);
-		//alert(curScrollTop);
+			left += node.offsetLeft;
+			top += node.offsetTop;
+		} while (node = node.offsetParent);
+		return {"left": left, "top": top};
 	},
 
-	// Conveience function.  Returns MediaWiki text area.
+	// Highlights a given string in the MediaWiki edit box.
+	highlightTargetString : function(targetStr)
+	{
+		//this.log("Entering highlightTargetString");
+		var mwBox = com.elclab.proveit.getMWEditBox();
+		var editTop = this.getPosition(window.content.document.getElementById("editform")).top;
+		content.window.scroll(0, editTop);
+		var origText = mwBox.value;
+		var startInd = origText.indexOf(targetStr);
+		if(startInd == -1)
+		{
+			this.log("Target string \"" + targetStr + "\" not found.");
+			return false;
+		}
+		var endInd = startInd + targetStr.length;
+		mwBox.value = origText.substring(0, startInd);
+		mwBox.scrollTop = 1000000; //Larger than any real textarea (hopefully)
+		var curScrollTop = mwBox.scrollTop;
+		mwBox.value += origText.substring(startInd);
+		if(curScrollTop > 0)
+		{
+			mwBox.scrollTop = curScrollTop + this.HALF_EDIT_BOX_HEIGHT;
+		}
+		mwBox.focus();
+		mwBox.setSelectionRange(startInd, endInd);
+		return true;
+	},
+
+	// Convenience function.  Returns MediaWiki text area.
 	getMWEditBox : function()
 	{
 		if (top.window.content.document.getElementById('wikEdTextarea')) {
