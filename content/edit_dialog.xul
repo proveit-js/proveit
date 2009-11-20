@@ -15,20 +15,17 @@
 
 <dialog id="edit" title="&ProveIt.edit;"
         xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+	onload="editData.proveit.updateEditPopup(window, editData.ref);"
 	buttons="accept, cancel, extra1"
 	buttonlabelaccept="&ProveIt.editapply;"
 	ondialogaccept="return accept();"
         ondialogcancel="return cancel();"
 	buttonlabelextra1="&ProveIt.addanother;"
-	ondialogextra1="editData.proveit.addEditPopupRow(window);"
+	ondialogextra1="editData.proveit.addPopupRow(window);"
 	>
 
 	<script type="text/javascript">
 		var editData = window.arguments[0];
-		window.addEventListener("load", function()
-		{
-		  editData.proveit.updateEditPopup(window, editData.ref);
-		}, false);
 		function accept()
 		{
 		        editData.proveit.citationObjFromEditPopup(editData.ref, document.getElementById("editpanel"));

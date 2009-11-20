@@ -386,9 +386,6 @@ com.elclab.proveit = {
 			com.elclab.proveit.scanRef();
 		}
 
-		// Load initial box for add new cite.
-		com.elclab.proveit.changeCite(com.elclab.proveit.getSidebarDoc().getElementById("citemenu"));
-
 		window.QueryInterface(Components.interfaces.nsIInterfaceRequestor)
 			.getInterface(Components.interfaces.nsIWebNavigation)
 			.QueryInterface(Components.interfaces.nsIDocShellTreeItem)
@@ -976,24 +973,26 @@ com.elclab.proveit = {
 
 		for(var i = 0; i < paramNames.length; i++)
 		{
-			//this.log("Calling addEditPopupRow on tempParams." + item);
+			//this.log("Calling addPopupRow on tempParams." + item);
 			//this.log("i: " + i + ", paramNames[i]: " + paramNames[i]);
-			com.elclab.proveit.addEditPopupRow(editWin, tempParams, ref.getDescriptions(), paramNames[i], required[paramNames[i]], true);
+			com.elclab.proveit.addPopupRow(editWin, tempParams, ref.getDescriptions(), paramNames[i], required[paramNames[i]], true);
 		}
 	},
 
 	/**
-	 * Adds a single row of edit popup
-	 * @param list the param list from the reference
+	 * Adds a single row of popup
+	 * @param rootWin root window for popup
+	 * @param list the param list from the reference, or null for added rows.
 	 * @param descs description array to use, or null for no description
 	 * @param item the current param name
 	 * @param req true if current param name is required, otherwise not required.
 	 * @param fieldType true for label, false for textbox.
 	 */
-	addEditPopupRow : function(editWin, list, descs, item, req, fieldType)
+	addPopupRow : function(rootWin, list, descs, item, req, fieldType)
 	{
+
+		this.log("Entering addPopupRow.");
 		/*
-		this.log("Entering addEditPopupRow.");
 		this.log("item: " + item);
 		this.log("req: " + req);
 		this.log("fieldType: " + fieldType);
@@ -1007,7 +1006,7 @@ com.elclab.proveit = {
 		var paramValue = newline.getElementsByClassName("paramvalue")[0];
 
 		newline.hidden = false;
-		editWin.document.getElementById("editlist").appendChild(newline);
+		rootWin.document.getElementsByClassName("paramlist")[0].appendChild(newline);
 
 		var star = document.getElementById("star").cloneNode(true);
 		star.id = "";
@@ -1032,7 +1031,7 @@ com.elclab.proveit = {
 		}
 		else
 		{
-			editWin.sizeToContent();
+			rootWin.sizeToContent();
 		}
 	},
 
@@ -1069,16 +1068,10 @@ com.elclab.proveit = {
 			com.elclab.proveit.getSidebarDoc().getElementById('citationtoggle').setAttribute("style",
 					"font-weight: normal");
 			com.elclab.proveit.togglestyle = true;
-			com.elclab.proveit.getSidebarDoc().getElementById('citation').hidden = true;
-			com.elclab.proveit.getSidebarDoc().getElementById('cite').hidden = false;
-			com.elclab.proveit.changeCite(com.elclab.proveit.getSidebarDoc().getElementById("citemenu"));
 		} else if (toggle == "citation") {
 			com.elclab.proveit.getSidebarDoc().getElementById('citetoggle').setAttribute("style",
 					"font-weight: normal");
 			com.elclab.proveit.togglestyle = false;
-			com.elclab.proveit.getSidebarDoc().getElementById('cite').hidden = true;
-			com.elclab.proveit.getSidebarDoc().getElementById('citation').hidden = false;
-			com.elclab.proveit.changeCite(com.elclab.proveit.getSidebarDoc().getElementById("citationmenu"));
 		}
 	},
 
@@ -1792,29 +1785,17 @@ com.elclab.proveit = {
 	},
 
 	/**
-	 * getAddCitePane : function()
-	 * @return the current cite pane box for adding new references.  This contains the ref name, parameter rows, and buttons.
-	 */
-	getAddCitePane : function()
-	{
-		return document.getElementById(com.elclab.proveit.togglestyle ? "citepanes": "citationpanes").firstChild;
-	},
-
-	/**
 	 * Convert the current contents of the add citation panel to a citation obj (i.e Cite(), Citation())
-         * @return cite object or null if no panel exists yet.
+	 * @param box typepane root of add GUI (pane for specific type, e.g. journal)
+         *
+	 * TODO: This should be unified with citationObjFromEditPopup
+	 *
+	 * @return cite object or null if no panel exists yet.
 	 */
-	citationObjFromAddPopup : function()
+	citationObjFromAddPopup : function(box)
 	{
 		this.log("Entering citationObjFromAddPopup");
 		// get this working, lots of typing here.
-
-		var box = com.elclab.proveit.getAddCitePane();
-		if(box == null)
-		{
-			this.log("citationObjFromAddPopup: Error: box null.");
-			return null;
-		}
 
 		var type = box.id;
 
@@ -1834,10 +1815,11 @@ com.elclab.proveit = {
 			name = refNameValue.value;
 			tag["name"] = name;
 		}
-		this.log("citationObjFromAddPopup: name: " + name);
-		this.log("citationObjFromAddPopup: box.childNodes.length: " + box.childNodes.length);
-		for (var i = 1; i < box.childNodes.length - 2; i++) {
-			var paramRow =  box.childNodes[i];
+
+		var paramList = box.getElementsByClassName("paramlist")[0];
+		for (var i = 0; i < paramList.childNodes.length; i++)
+		{
+			var paramRow =  paramList.childNodes[i];
 			this.log("citationObjFromAddPopup: i: " + i);
 			var valueTextbox = paramRow.getElementsByClassName("paramvalue")[0];
 
@@ -1865,25 +1847,34 @@ com.elclab.proveit = {
 	},
 
 	/**
+	 * Opens the Add Citation modal dialog window, and handles the user's input.
+	 */
+	openAddCitation : function()
+	{
+		var addData = {"proveit": this, "ref": null}; // ref will be set to the new reference, or remain null if the dialog is cancelled.
+		window.openDialog("add_dialog.xul", "add dialog", "modal", addData);
+		if(addData.ref)
+		{
+			this.addCitation(addData.ref);
+		}
+	},
+
+	/**
 	 * Called from the add citation panel, this is the function used to
 	 * add the actual citation.
 	 *
-	 * @param type the type of citation being added, the particular button
-	 *            used will hand this to the function.
+	 * @param tag tag being added
 	 */
-	addCitation : function() {
+	addCitation : function(tag) {
 		//this.log("Entering addCitation.");
 		// get this working, lots of typing here.
 
-		var box = com.elclab.proveit.getAddCitePane();
-		var tag = com.elclab.proveit.citationObjFromAddPopup();
 		var id = com.elclab.proveit.addNewElement(tag);
 
 		this.log("addCitation: id: " + id);
 		com.elclab.proveit.currentrefs[id] = tag;
 
-		com.elclab.proveit.getSidebarDoc().getElementById('createnew').hidePopup();
-		tag["orig"] = tag.toString();
+		tag.orig = tag.toString();
 		/*
 		 * Cycle through the boxes and grab the id's versus the values, watch
 		 * for the final box and make sure to grab the type as well
@@ -1891,43 +1882,13 @@ com.elclab.proveit = {
 
 		com.elclab.proveit.curRefItem = com.elclab.proveit.getRefbox().selectedItem;
 		com.elclab.proveit.insertRef(tag, true); // true means insert full text here, regardless of global toggle.
-		tag["save"] = true;
+		tag.save = true;
 		tag.inMWEditBox = true;
 		com.elclab.proveit.includeProveItEditSummary();
 		com.elclab.proveit.getRefbox().scrollToIndex(com.elclab.proveit.getRefbox().itemCount - 1);
-		com.elclab.proveit.clearCitePanes(box.parentNode);
 		com.elclab.proveit.getRefbox().selectedIndex = com.elclab.proveit.getRefbox().itemCount - 1;
 		//this.log("Exiting addCitation.");
-	},
-
-
-	/**
-	 * Add new row to add new citation box.
-	 *
-	 * This method would ideally be consolidated with addEditPopupRow
-	 */
-	addExtraRow : function() {
-		var newline = com.elclab.proveit.getSidebarDoc().getElementById("addedparamrow").cloneNode(true);
-		newline.id = "";
-		com.elclab.proveit.activateRemove(newline);
-		var star = com.elclab.proveit.getSidebarDoc().getElementById("star").cloneNode(true);
-		star.id = "";
-		star.style.display = "-moz-box";
-		star.style.visibility = "hidden";
-		newline.insertBefore(star, newline.firstChild);
-		newline.hidden = false;
-
-		var citePane = com.elclab.proveit.getAddCitePane();
-		citePane.insertBefore(newline, citePane.getElementsByClassName("starexp")[0]);
-	},
-
-	activateRemove : function(row)
-	{
-		row.getElementsByClassName("remove")[0].addEventListener("command", function()
-		{
-			row.parentNode.removeChild(row);
-			row.ownerDocument.defaultView.sizeToContent(); // This really only makes sense for the edit dialog, but it shouldn't hurt otherwise.
-		}, false); // Activate remove button
+		this.doSelect();
 	},
 
 	// Clear all rows of passed in add citation panes.
@@ -1939,6 +1900,15 @@ com.elclab.proveit = {
 		}
 	},
 
+	activateRemove : function(row)
+	{
+		row.getElementsByClassName("remove")[0].addEventListener("command", function()
+		{
+			row.parentNode.removeChild(row);
+			row.ownerDocument.defaultView.sizeToContent(); // This really only makes sense for the edit dialog, but it shouldn't hurt otherwise.
+		}, false); // Activate remove button
+	},
+
 	/**
 	 * Changes the panel for the cite entry panel to the correct type of entry
 	 */
@@ -1947,11 +1917,10 @@ com.elclab.proveit = {
 		//this.log("menu.id: " + menu.id);
 
 		this.log("changeCite: Calling citationObjFromAddPopup");
-		var oldCite = com.elclab.proveit.citationObjFromAddPopup();
-		this.log("changeCite: oldCite: " + oldCite);
+		menu.parentNode.parentNode.hidden = false; // cite/citation vbox.
 
 		var citePanes = menu.parentNode.nextSibling;
-		com.elclab.proveit.clearCitePanes(citePanes);
+		this.clearCitePanes(citePanes);
 		var newCiteType = menu.value;
 
 		var genPane = com.elclab.proveit.getSidebarDoc().getElementById("dummyCitePane").cloneNode(true);
@@ -1979,16 +1948,6 @@ com.elclab.proveit = {
 			newCite.params[defaultParams[i]] = "";
 		}
 
-		// This check could be avoided if citationObjFromAddPopup returned a blank cite object.  Consider.
-		if(oldCite != null)
-		{
-			newCite.name = oldCite.name;
-			for(oldParam in oldCite.params)
-			{
-				newCite.params[oldParam] = oldCite.params[oldParam]; // Copy existing values to new cite object
-			}
-		}
-
 		this.log("changeCite: newCite: " + newCite);
 
 		// Should there be a getParamKeys or similar function for this, or even getSortedParamKeys?
@@ -2000,7 +1959,7 @@ com.elclab.proveit = {
 		newParams.sort(newCite.getSorter());
 		var required = newCite.getRequiredParams();
 
-		var explanation = genPane.childNodes[1];
+		var paramList = genPane.getElementsByClassName("paramlist")[0];
 		for(var i = 0; i < newParams.length; i++)
 		{
 			var param = newParams[i];
@@ -2036,10 +1995,11 @@ com.elclab.proveit = {
 			this.log("changeCite: param: " + param + "; newCite.params[param]: " + newCite.params[param]);
 			//paramBox.childNodes[2].value = newCite.params[param]; // Causes parameters to disappear.  Why?
 			paramBox.hidden = false;
-			genPane.insertBefore(paramBox, explanation);
+			paramList.appendChild(paramBox);
 		}
 		genPane.hidden = false;
 		citePanes.insertBefore(genPane, citePanes.firstChild);
+		menu.ownerDocument.defaultView.sizeToContent(); // Resize dialog
 		this.log("Exiting changeCite");
 	},
 
