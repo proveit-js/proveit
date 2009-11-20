@@ -380,14 +380,6 @@ com.elclab.proveit = {
 
 		com.elclab.proveit.summaryActionAdded = false;
 
-		// We use click because of event bubbling.
-		// If we use select here, we can't process insert image click before processing select.
-		/*
-		com.elclab.proveit.getRefbox().addEventListener("click", function() {
-			com.elclab.proveit.doSelect();
-		}, false);
-		*/
-
 		if(com.elclab.proveit.isSupportedEditPage())
 		{
 			//this.log("Calling scanRef from proveitonload.");
@@ -721,30 +713,6 @@ com.elclab.proveit = {
 
 	},
 
-	/*
-	 * this is the cancel button code for the edit panel. It just closes the
-	 * window and resets the values.
-	 */
-// 	cancelEdit : function() {
-// 		com.elclab.proveit.doSelect();
-// 	},
-
-
-	// Adds a new blank row to the edit popup.
-	editAddField : function()
-	{
-		//this.log("Entering editAddField");
-		var name = com.elclab.proveit.curRefItem.id;
-		var current = com.elclab.proveit.currentrefs[name];
-		com.elclab.proveit.addEditPopupRow(current.params, null, "", false, false);
-	},
-
-	// Remove field from the edit popup.
-	editRemoveField : function()
-	{
-		var wrap = com.elclab.proveit.getSidebarDoc().getElementById("editlist");
-		wrap.removeChild(wrap.childNodes[wrap.childNodes.length - 1]);
-	},
 
 	/**
 	 * Modifies citation object from user-edited GUI.  Note that the modification of citeObj is done in-place, so the return value is only for convenience.
@@ -874,33 +842,34 @@ com.elclab.proveit = {
 	{
 		this.log("Entering doSelect");
 
-		//this.log("Selected item: " + com.elclab.proveit.getRefbox().selectedItem);
+		//this.log("Selected item: " + this.getRefbox().selectedItem);
 
 		//if(this.ignoreSelection || this.curRefItem == document.getElementById("refbox").selectedItem)
-		if(com.elclab.proveit.ignoreSelection)
+		if(this.ignoreSelection)
 		{
-			com.elclab.proveit.ignoreSelection = false;
-			return; //ignore event thrown by scripted select or clearSelection.
+			this.ignoreSelection = false;
+			return true; //ignore event thrown by scripted select or clearSelection.
 		}
-		//com.elclab.proveit.doSelect();
+		//this.doSelect();
 
-		//if(com.elclab.proveit.getRefbox().selectedItem != null)
-		//{
-			com.elclab.proveit.curRefItem = com.elclab.proveit.getRefbox().selectedItem; // don't allow overwriting with null selection.
-			/*this.log("selectedItem.localName: " + com.elclab.proveit.getRefbox().selectedItem.localName)
-			this.log("selectedItem.id: " + com.elclab.proveit.getRefbox().selectedItem.id);
+		if(this.getRefbox().selectedItem != null) // don't allow overwriting with null selection.
+		{
+			this.curRefItem = this.getRefbox().selectedItem;
+		}
+			/*this.log("selectedItem.localName: " + this.getRefbox().selectedItem.localName)
+			this.log("selectedItem.id: " + this.getRefbox().selectedItem.id);
 
-			this.log("selectedItem.parentNode.localName: " + com.elclab.proveit.getRefbox().selectedItem.parentNode.localName)
-			this.log("selectedItem.parentNode.id: " + com.elclab.proveit.getRefbox().selectedItem.parentNode.id);*/
+			this.log("selectedItem.parentNode.localName: " + this.getRefbox().selectedItem.parentNode.localName)
+			this.log("selectedItem.parentNode.id: " + this.getRefbox().selectedItem.parentNode.id);*/
 
 		//}
-		this.log("curRefItem: " + com.elclab.proveit.curRefItem + "; curRefItem.id: " + com.elclab.proveit.curRefItem.id);
-		this.log("doSelect currentrefs: " + com.elclab.proveit.currentrefs);
-		var curRef = com.elclab.proveit.currentrefs[com.elclab.proveit.curRefItem.id];
+		this.log("curRefItem: " + this.curRefItem + "; curRefItem.id: " + this.curRefItem.id);
+		this.log("doSelect currentrefs: " + this.currentrefs);
+		var curRef = this.currentrefs[this.curRefItem.id];
 		if(!curRef || curRef == null)
 		{
 			//this.log("doSelect: curRef is not defined.");
-			com.elclab.proveit.respawn();
+			this.respawn();
 			return false;
 		}
 		if(curRef.inMWEditBox)
@@ -914,43 +883,27 @@ com.elclab.proveit = {
 				return;
 			}
 			*/
-			if(com.elclab.proveit.highlightOnSelect)
+			if(this.highlightOnSelect)
 			{
 				//this.log("doSelect calling highlightTargetString");
-				com.elclab.proveit.highlightTargetString(curRefText);
+				this.highlightTargetString(curRefText);
 			}
 			else
 			{
 				//this.log("doSelect not calling highlightTargetString");
-				com.elclab.proveit.highlightOnSelect = true; // Don't highlight, but reset for next time.
+				this.highlightOnSelect = true; // Don't highlight, but reset for next time.
 			}
-			/*var mainWindow = window.QueryInterface(Components.interfaces.nsIInterfaceRequestor)
-			 .getInterface(Components.interfaces.nsIWebNavigation)
-	 		 .QueryInterface(Components.interfaces.nsIDocShellTreeItem)
-	         .rootTreeItem
-	         .QueryInterface(Components.interfaces.nsIInterfaceRequestor)
-	         .getInterface(Components.interfaces.nsIDOMWindow);
-	        */
-	        //mainWindow.focus();
-	        //mainWindow.document.focus();
-			//this.log("About to clear refbox selection.")
+			this.getRefbox().clearSelection(); //Clearing selection throws onSelect!
 
-			//com.elclab.proveit.ignoreSelection = true;
-	        com.elclab.proveit.getRefbox().clearSelection(); //Clearing selection throws onSelect!
-
-	        //com.elclab.proveit.ignoreSelection = true; // Focus event may also have effect on selection.
-	        com.elclab.proveit.getMWEditBox().focus();
-			//this.log("Scrolled and highlighted, and attempted to focus.");
+			//this.ignoreSelection = true; // Focus event may also have effect on selection.
+			this.getMWEditBox().focus();
 		}
 		else
 		{
 			//this.log("Current reference is not yet saved to textbox.")
 		}
-
-		//this.log("Calling updateEditPopup.");
-		//com.elclab.proveit.updateEditPopup();
-
 		//this.log("Leaving doSelect");
+		return true;
 	},
 
 	/*
@@ -961,19 +914,6 @@ com.elclab.proveit = {
 	{
 		this.log("Entering updateEditPopup.");
 		var editlist = editWin.document.getElementById("editlist");
-		var size = editlist.childNodes.length;
-		//this.log("Before size: " + size);
-		//for (var i = 0; i < size; i++) {
-		while(editlist.childNodes.length > 0) // Above apparently can get into race condition.
-		{
-			var item = editlist.removeChild(editlist.childNodes[0]);
-			//this.log("Deleting #" + i + ": " + item.id);
-			size = editlist.childNodes.length;
-			//this.log("Size: " + size);
-		}
-
-		size = editlist.childNodes.length;
-		//this.log("After size: " + size);
 
 		if (ref.template == "cite") {
 			editWin.document.getElementById("editlabel").value = ref.type;
@@ -1012,15 +952,12 @@ com.elclab.proveit = {
 		var required = ref.getRequiredParams();
 
 		var paramNames = new Array();
-		//First run through just to get names.
-		//this.log("Adding params to array.");
-		for(item in tempParams)
+
+		for(item in tempParams)	//First run through just to get names.
 		{
 			//this.log(item);
 			paramNames.push(item);
 		}
-
-		//this.log("Done adding params to array.");
 
 		var sorter = ref.getSorter();
 		if(sorter)
@@ -1037,10 +974,8 @@ com.elclab.proveit = {
 		   Javascript does destructive sorting, which in this case, is convenient...
 		*/
 
-		size = editlist.childNodes.length;
-		//this.log("Before size: " + size);
-
-		for(var i = 0; i < paramNames.length; i++) {
+		for(var i = 0; i < paramNames.length; i++)
+		{
 			//this.log("Calling addEditPopupRow on tempParams." + item);
 			//this.log("i: " + i + ", paramNames[i]: " + paramNames[i]);
 			com.elclab.proveit.addEditPopupRow(editWin, tempParams, ref.getDescriptions(), paramNames[i], required[paramNames[i]], true);
@@ -1095,6 +1030,10 @@ com.elclab.proveit = {
 			paramName.setAttribute("value", desc);
 			paramValue.setAttribute("value", list[item]);
 		}
+		else
+		{
+			editWin.sizeToContent();
+		}
 	},
 
 	/*
@@ -1122,12 +1061,10 @@ com.elclab.proveit = {
 			com.elclab.proveit.getSidebarDoc().getElementById('nametoggle').setAttribute("style",
 					"font-weight: normal");
 			com.elclab.proveit.toggleinsert = true;
-			com.elclab.proveit.doSelect();
 		} else if (toggle == "name") {
 			com.elclab.proveit.getSidebarDoc().getElementById('fulltoggle').setAttribute("style",
 					"font-weight: normal");
 			com.elclab.proveit.toggleinsert = false;
-			com.elclab.proveit.doSelect();
 		} else if (toggle == "cite") {
 			com.elclab.proveit.getSidebarDoc().getElementById('citationtoggle').setAttribute("style",
 					"font-weight: normal");
@@ -1986,9 +1923,10 @@ com.elclab.proveit = {
 
 	activateRemove : function(row)
 	{
-		row.childNodes[row.childNodes.length - 1].addEventListener("command", function()
+		row.getElementsByClassName("remove")[0].addEventListener("command", function()
 		{
 			row.parentNode.removeChild(row);
+			row.ownerDocument.defaultView.sizeToContent(); // This really only makes sense for the edit dialog, but it shouldn't hurt otherwise.
 		}, false); // Activate remove button
 	},
 
@@ -2186,7 +2124,6 @@ com.elclab.proveit = {
 				thisproveit.log("Calling saveEdit");
 				thisproveit.saveEdit(generatedName, ref);
 			}
-			thisproveit.getRefbox().selectItem(newchild);
 			thisproveit.doSelect();
 		};
 

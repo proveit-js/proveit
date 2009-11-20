@@ -41,13 +41,13 @@
 	<hbox id="preloadedparamrow" hidden="true">
 		<label class="paramdesc" flex="1" />
 		<textbox class="paramvalue" minwidth="700"/>
-		<button tabindex="-1">X</button>
+		<button class="remove" tabindex="-1">X</button>
 	</hbox>
 	<hbox id="addedparamrow" class="addedrow" hidden="true">
-		<textbox class="paramname" minwidth="140" flex="1"/>
+		<textbox class="paramname" minwidth="110" flex="1"/>
 		<label value="="/>
 		<textbox class="paramvalue" minwidth="700" flex="1" />
-		<button tabindex="-1">X</button>
+		<button class="remove" tabindex="-1">X</button>
 	</hbox>
 	<vbox id="dummyCitePane" hidden="true">
 		<hbox pack="center" align="center" flex="1" >
