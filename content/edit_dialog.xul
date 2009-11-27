@@ -13,13 +13,15 @@
 
 <!DOCTYPE page SYSTEM "chrome://proveit/locale/ProveIt.dtd">
 
+<!-- TODO: Some sort of scroll, for when there are many parameters. -->
+
 <dialog id="edit" title="&ProveIt.edit;"
         xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
 	onload="editData.proveit.updateEditPopup(window, editData.ref);"
 	buttons="accept, cancel, extra1"
 	buttonlabelaccept="&ProveIt.editapply;"
 	ondialogaccept="return accept();"
-        ondialogcancel="return cancel();"
+        ondialogcancel="return;"
 	buttonlabelextra1="&ProveIt.addanother;"
 	ondialogextra1="editData.proveit.addPopupRow(window);"
 	>
@@ -29,12 +31,8 @@
 		function accept()
 		{
 		        editData.proveit.citationObjFromEditPopup(editData.ref, document.getElementById("editpanel"));
-		        editData.accepted = true;
-		}
-
-		function cancel()
-		{
-		        editData.accepted = false;
+		        editData.proveit.log("Calling saveEdit");
+			editData.proveit.saveEdit(editData.generatedName, editData.ref);
 		}
 	</script>
 	

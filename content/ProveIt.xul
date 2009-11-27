@@ -15,7 +15,7 @@
 
 
 <page id="ProveIt" title="&ProveIt.title;" 
-	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" onload="com.elclab.proveit.proveitonload()" onunload="com.elclab.proveit.proveitonunload()" onclick="com.elclab.proveit.restoreSelection()">
+	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" onload="com.elclab.proveit.proveitonload()" onunload="com.elclab.proveit.proveitonunload()">
 	<script type="text/javascript" src="ProveIt.js"/>
 	
 	<richlistitem id="prime" hidden="true" align="center">
@@ -63,7 +63,7 @@
 			<label class="starexptext" value="&ProveIt.starexp;"/>
 		</hbox>
 	</vbox>	
-	<richlistbox id="refbox" flex="1" onclick="com.elclab.proveit.doSelect();" />
+	<richlistbox id="refbox" flex="1"/>
 	<!-- <hbox pack="center" > -->
 <!-- 		<label class="plain" value="&ProveIt.markup;" /> -->
 <!-- 		<label id="fulltoggle" class="plain" value="&ProveIt.fullcitation;" style="font-weight: bold" onclick="com.elclab.proveit.flipToggle('full')" /> -->

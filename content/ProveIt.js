@@ -54,12 +54,6 @@ com.elclab.proveit = {
 	// Preferences object (nsIPrefBranch)
 	prefs : null,
 
-	/*
-	 * This is a global to hold the list of citations, As it needs to be seen by
-	 * all methods for this page, globality is necessary.
-	 */
-	currentScan : [],
-
 	// Convenience log function
 	log : function(str)
 	{
@@ -129,7 +123,7 @@ com.elclab.proveit = {
 	// Convenience function.   Returns the refbox element.
 	getRefbox : function()
 	{
-		return com.elclab.proveit.getSidebarDoc().getElementById("refbox");
+		return this.getSidebarDoc().getElementById("refbox");
 	},
 
 	/*
@@ -234,9 +228,9 @@ com.elclab.proveit = {
 	// Highlights a given string in the MediaWiki edit box.
 	highlightTargetString : function(targetStr)
 	{
-		//this.log("Entering highlightTargetString");
+		this.log("Entering highlightTargetString");
 		var mwBox = com.elclab.proveit.getMWEditBox();
-		var editTop = this.getPosition(window.content.document.getElementById("editform")).top;
+		var editTop = this.getPosition(this.getEditForm()).top;
 		content.window.scroll(0, editTop);
 		var origText = mwBox.value;
 		var startInd = origText.indexOf(targetStr);
@@ -256,6 +250,7 @@ com.elclab.proveit = {
 		}
 		mwBox.focus();
 		mwBox.setSelectionRange(startInd, endInd);
+		this.log("Exiting highlightTargetString");
 		return true;
 	},
 
@@ -576,41 +571,9 @@ com.elclab.proveit = {
 		}
 		var size = box.childNodes.length;
 		// this.log(size);
-		for (var i = 0; i < size; i++) {
-			var item = box.removeItemAt(box.getIndexOfItem(box.childNodes[0]));
-			// this.log("Deleting #" + i + ": " + item.id);
-			// this.log(size);
-		}
-		//this.log("Clearing currentScan and currentrefs");
-
-		com.elclab.proveit.currentScan = [];
-		com.elclab.proveit.currentrefs = [];
-	},
-
-	/**
-	 * Gets insertion text from reference object.
-	 *
-	 * TODO: Generate a regex object instead (getInsertionRegExp), so highlighting would not fail due to trivial changes (e.g. spacing).
-	 * @param {Reference to insert} ref
-	 * @param {If full is true, insert full text, otherwise ref name only} full
-	 */
-	getInsertionText : function(ref, full)
-	{
-		if (full)
+		for (var i = 0; i < size; i++)
 		{
-			return ref.toString();
-		}
-		else
-		{
-			if (ref.name)
-			{
-				return "<ref name=\""
-					+ ref.name + "\" />";
-			}
-			else
-			{
-				throw new Error("getInsertionText: ref.name is null");
-			}
+			var item = box.removeChild(box.childNodes[0]);
 		}
 	},
 
@@ -626,7 +589,7 @@ com.elclab.proveit = {
 			this.log("insertRef: txtarea is null");
 			return false;
 		}
-		var insertionText = com.elclab.proveit.getInsertionText(ref, full);
+		var insertionText = ref.getInsertionText(full);
 
 		// save textarea scroll position
 		var textScroll = txtarea.scrollTop;
@@ -648,68 +611,6 @@ com.elclab.proveit = {
 
 		com.elclab.proveit.includeProveItEditSummary();
 	},
-
-
-	/*
-	 * This function takes the currently selected or edited reference and
-	 * updates it in the edit box.
-	 */
-	updateInText : function() {
-		com.elclab.proveit.curRefItem = com.elclab.proveit.getRefbox().selectedItem;
-		//this.log("Entering updateInText");
-		var item = com.elclab.proveit.getRefbox().selectedItem.id;
-
-		var txtarea = com.elclab.proveit.getMWEditBox();
-
-		if (!txtarea || txtarea == null)
-			return;
-
-		var sel = com.elclab.proveit.getSidebarDoc().getElementById(item).toString();
-		var textScroll = txtarea.scrollTop;
-		// get current selection
-		txtarea.focus();
-		var startPos = txtarea.selectionStart;
-		var endPos = txtarea.selectionEnd;
-		var text = txtarea.value;
-		//this.log("Replacing: \n\t" + com.elclab.proveit.currentrefs[item]["orig"] + "\nWith:\n\t" + com.elclab.proveit.currentrefs[item].toString());
-
-		// This code (the original) had the minor drawback of not working when references contained links.
-		//var regexpstring = com.elclab.proveit.currentrefs[item]["orig"].replace(/\|/g, "\\|");
-
-		/*
-		This is correct, if you insist on only using replace with regex.
-		var regexpstring = com.elclab.proveit.currentrefs[item]["orig"].replace(/([\[\\\^\$\.\|\?\*\+\(\)\]\{\}])/g, "\\$1");
-		//this.log(regexpstring);
-		//var regex = new RegExp(regexpstring);
-		if(text.search(regex) == -1)
-		{
-			this.log("Existing ref not found!");
-		}
-		text = text.replace(regex, com.elclab.proveit.currentrefs[item].toString());
-		*/
-
-		// This is most reasonable, given that replace works just fine without regex. :)
-		text = text.replace(com.elclab.proveit.currentrefs[item]["orig"], com.elclab.proveit.currentrefs[item].toString());
-
-		// Do replacement in textarea.
-		txtarea.value = text;
-
-		// Baseline for future modifications
-
-		com.elclab.proveit.currentrefs[item]["orig"] = com.elclab.proveit.currentrefs[item].toString();
-		com.elclab.proveit.currentrefs[item]["save"] = true;
-
-		/*
-		// restore textarea scroll position
-		txtarea.scrollTop = textScroll;
-		*/
-		//this.log("Highlighting changes.");
-
-		com.elclab.proveit.highlightTargetString(com.elclab.proveit.currentrefs[item].toString());
-		com.elclab.proveit.getRefbox().selectItem(com.elclab.proveit.curRefItem);
-
-	},
-
 
 	/**
 	 * Modifies citation object from user-edited GUI.  Note that the modification of citeObj is done in-place, so the return value is only for convenience.
@@ -746,14 +647,14 @@ com.elclab.proveit = {
 			var valueTextbox = paramRow.getElementsByClassName("paramvalue")[0];
 			if(paramRow.className == "addedrow") // Added with "Add another field"
 			{
-				paramName = paramRow.getElementsByClassName("paramname")[0].value;
+				paramName = paramRow.getElementsByClassName("paramname")[0].value.trim();
 			}
 			else
 			{
 				paramName = valueTextbox.id.substring(com.elclab.proveit.EDIT_PARAM_PREFIX.length);
 			}
 			this.log("paramName: " + paramName);
-			paramVal = valueTextbox.value;
+			paramVal = valueTextbox.value.trim();
 
 			this.log("paramVal: " + paramVal);
 
@@ -781,7 +682,7 @@ com.elclab.proveit = {
 		//this.log("Entering saveEdit");
 		if(citeObj.save == false)
 		{
-		    var newGenName = com.elclab.proveit.getGeneratedName(citeObj);
+		    var newGenName = citeObj.getGeneratedName();
 
 		    if(citeObj.baseGenName != newGenName) // is the current gen name same as old, disregarding final possible (1), (2), etc.
 		    {
@@ -792,115 +693,14 @@ com.elclab.proveit = {
 		    {
 				newGenName = name;
 		    }
-		    com.elclab.proveit.currentrefs[name] = null;
-		    com.elclab.proveit.currentrefs[newGenName] = citeObj;
-
-		    var newRichItem = com.elclab.proveit.getRefboxElement(citeObj, newGenName);
+		    var newRichItem = com.elclab.proveit.makeRefboxElement(citeObj, newGenName);
 		    var oldRichItem = com.elclab.proveit.getRefbox().selectedItem;
 		    oldRichItem.parentNode.replaceChild(newRichItem, oldRichItem);
 		    com.elclab.proveit.getRefbox().selectItem(newRichItem);
 
-		    com.elclab.proveit.updateInText();
+		    citeObj.updateInText();
 		    com.elclab.proveit.includeProveItEditSummary();
 		}
-	},
-
-	/** @deprecated
-	 * Whether to ignore the next select event.
-	 * @type Boolean
-	 */
-	ignoreSelection : false,
-
-	/**
-	 * Whether the next select event should cause a reference to be highlighted in the MW box.
-	 * @type Boolean
-	 */
-	highlightOnSelect : true,
-
-	restoreSelection : function()
-	{
-		//this.log("Entering restoreSelection.")
-		// Restores selection after edit box is left and sidebar returned to..
-		if(com.elclab.proveit.curRefItem != null)
-		{
-			//com.elclab.proveit.ignoreSelection = true;
-			com.elclab.proveit.getRefbox().selectItem(com.elclab.proveit.curRefItem);
-		}
-	},
-
-	/**
-	 * The item currently selected in the refbox.
-	 * @type Node
-	 */
-	curRefItem : null,
-
-	// Selects reference in main article
-	doSelect : function()
-	{
-		this.log("Entering doSelect");
-
-		//this.log("Selected item: " + this.getRefbox().selectedItem);
-
-		//if(this.ignoreSelection || this.curRefItem == document.getElementById("refbox").selectedItem)
-		if(this.ignoreSelection)
-		{
-			this.ignoreSelection = false;
-			return true; //ignore event thrown by scripted select or clearSelection.
-		}
-		//this.doSelect();
-
-		if(this.getRefbox().selectedItem != null) // don't allow overwriting with null selection.
-		{
-			this.curRefItem = this.getRefbox().selectedItem;
-		}
-			/*this.log("selectedItem.localName: " + this.getRefbox().selectedItem.localName)
-			this.log("selectedItem.id: " + this.getRefbox().selectedItem.id);
-
-			this.log("selectedItem.parentNode.localName: " + this.getRefbox().selectedItem.parentNode.localName)
-			this.log("selectedItem.parentNode.id: " + this.getRefbox().selectedItem.parentNode.id);*/
-
-		//}
-		this.log("curRefItem: " + this.curRefItem + "; curRefItem.id: " + this.curRefItem.id);
-		this.log("doSelect currentrefs: " + this.currentrefs);
-		var curRef = this.currentrefs[this.curRefItem.id];
-		if(!curRef || curRef == null)
-		{
-			//this.log("doSelect: curRef is not defined.");
-			this.respawn();
-			return false;
-		}
-		if(curRef.inMWEditBox)
-		{
-			//this.log("Current ref is in edit box.  Highlighting ref.")
-			var curRefText = curRef["orig"];
-			//this.log("curRefText: " + curRefText);
-			/*
-			if(isStringHighlighted(curRefText))
-			{
-				return;
-			}
-			*/
-			if(this.highlightOnSelect)
-			{
-				//this.log("doSelect calling highlightTargetString");
-				this.highlightTargetString(curRefText);
-			}
-			else
-			{
-				//this.log("doSelect not calling highlightTargetString");
-				this.highlightOnSelect = true; // Don't highlight, but reset for next time.
-			}
-			this.getRefbox().clearSelection(); //Clearing selection throws onSelect!
-
-			//this.ignoreSelection = true; // Focus event may also have effect on selection.
-			this.getMWEditBox().focus();
-		}
-		else
-		{
-			//this.log("Current reference is not yet saved to textbox.")
-		}
-		//this.log("Leaving doSelect");
-		return true;
 	},
 
 	/*
@@ -977,6 +777,7 @@ com.elclab.proveit = {
 			//this.log("i: " + i + ", paramNames[i]: " + paramNames[i]);
 			com.elclab.proveit.addPopupRow(editWin, tempParams, ref.getDescriptions(), paramNames[i], required[paramNames[i]], true);
 		}
+		editWin.sizeToContent();
 	},
 
 	/**
@@ -999,7 +800,8 @@ com.elclab.proveit = {
 		*/
 
 		var id = fieldType ? "preloadedparamrow" : "addedparamrow";
-		var newline = document.getElementById(id).cloneNode(true);
+		this.log("addPopupRow: document: " + document);
+		var newline = this.getSidebarDoc().getElementById(id).cloneNode(true);
 		newline.id = "";
 		com.elclab.proveit.activateRemove(newline);
 		var paramName = newline.getElementsByClassName("paramdesc")[0];
@@ -1008,7 +810,7 @@ com.elclab.proveit = {
 		newline.hidden = false;
 		rootWin.document.getElementsByClassName("paramlist")[0].appendChild(newline);
 
-		var star = document.getElementById("star").cloneNode(true);
+		var star = this.getSidebarDoc().getElementById("star").cloneNode(true);
 		star.id = "";
 		star.style.display = "-moz-box"; // back to default display prop.
 		star.style.visibility = (req ? "visible" : "hidden"); // Star will appear if field is required.
@@ -1054,35 +856,26 @@ com.elclab.proveit = {
 	 * and updates variables accordingly.
 	 */
 	flipToggle : function(toggle) {
-		var label = com.elclab.proveit.getSidebarDoc().getElementById(toggle + "toggle");
+		var label = this.getSidebarDoc().getElementById(toggle + "toggle");
 		label.setAttribute("style", "font-weight: bold");
 		if (toggle == "full") {
-			com.elclab.proveit.getSidebarDoc().getElementById('nametoggle').setAttribute("style",
+			this.getSidebarDoc().getElementById('nametoggle').setAttribute("style",
 					"font-weight: normal");
 			com.elclab.proveit.toggleinsert = true;
 		} else if (toggle == "name") {
-			com.elclab.proveit.getSidebarDoc().getElementById('fulltoggle').setAttribute("style",
+			this.getSidebarDoc().getElementById('fulltoggle').setAttribute("style",
 					"font-weight: normal");
 			com.elclab.proveit.toggleinsert = false;
 		} else if (toggle == "cite") {
-			com.elclab.proveit.getSidebarDoc().getElementById('citationtoggle').setAttribute("style",
+			this.getSidebarDoc().getElementById('citationtoggle').setAttribute("style",
 					"font-weight: normal");
 			com.elclab.proveit.togglestyle = true;
 		} else if (toggle == "citation") {
-			com.elclab.proveit.getSidebarDoc().getElementById('citetoggle').setAttribute("style",
+			this.getSidebarDoc().getElementById('citetoggle').setAttribute("style",
 					"font-weight: normal");
 			com.elclab.proveit.togglestyle = false;
 		}
 	},
-
-	/**
-	 * "Associative array" of all references, indexed by generated name (see getGeneratedName).
-	 *
-	 * TODO: See if we can eliminate this (and gennames, basenames, etc.) using closures.  Alternatively, can the genname be a random slug, so it never has to be modified?
-	 *
-	 * @type Array
- 	 */
-	currentrefs : [],
 
 	/**
 	 * Overly clever regex to parse template string (e.g. |last=Smith|first=John|title=My Life Story) into name and value pairs.
@@ -1106,45 +899,29 @@ com.elclab.proveit = {
 	},
 
 	/**
-	 * Generates name from reference using title, author, etc.
-	 * @param citation Citation to generate name for.
-	 */
-	getGeneratedName : function(citation)
-	{
-		var name = "";
-
-		//this.log("getGeneratedName: citation: " + citation);
-		if (citation.params["author"]) {
-			name = citation.params["author"] + "; ";
-		} else if (citation.params["last"]) {
-			name = citation.params["last"];
-			if (citation.params["first"]) {
-				name += ", " + citation.params["first"];
-			}
-			name += "; ";
-		}
-
-		if (citation.params["title"]) {
-			name += citation.params["title"];
-		}
-
-		if(name == "")
-			name = citation.toString(); //backup
-
-		return name;
-	},
-
-	/**
 	 * This Function accesses the wiki edit box and scans the contained text for
-	 * citation tags. It then puts them into the global currentScan and setsup
-	 * the display chooser.
+	 * citation tags. It then sets up the display chooser.
 	 */
 	scanRef : function() {
 		this.log("Entering scanRef.");
 
-		// zero out the old scan, just in case
-		//com.elclab.proveit.currentScan = [];
-		this.currentScan = [];
+
+		/*
+		 * This is a global to hold the list of citations, As it needs to be seen by
+		 * all methods for this page, globality is necessary.
+		 */
+		var currentScan = [];
+
+
+		/**
+		 * "Associative array" of all references, indexed by generated name (see getGeneratedName).
+		 *
+		 * TODO: See if we can eliminate this (and gennames, basenames, etc.) using closures.  Alternatively, can the genname be a random slug, so it never has to be modified?
+		 *
+		 * @type Array
+		 */
+		var  currentrefs = [];
+
 		// these are strings used to allow the correct parsing of the tag
 		var workingstring;
 		var cutupstring;
@@ -1157,7 +934,7 @@ com.elclab.proveit = {
 		// wikiEd's or the normal one.
 		com.elclab.proveit.clearlist();
 
-		//this.log("scanRef currentrefs: " + com.elclab.proveit.currentrefs);
+		//this.log("scanRef currentrefs: " + currentrefs);
 
 		var textValue; // text from the edit box
 		if (text) {
@@ -1168,22 +945,22 @@ com.elclab.proveit = {
 			var name, orig;
 			// grab the text from the box, wpTextbox1 is the standard boxx name.
 			// scan it for citation tags...
-			com.elclab.proveit.currentScan = textValue
+			currentScan = textValue
 					.match(/<[\s]*ref[^>]*>[\s]*{{+[\s]*(cite|Citation)[^}]*}}+[\s]*<[\s]*\/[\s]*ref[\s]*>/gi);
 			// if there are results,
-			if (com.elclab.proveit.currentScan) {
+			if (currentScan) {
 				//this.log("currentScan is valid.");
 				// just for me and testing, make them easier to read by
 				// replacing
 				// all | with newlines and a tab
-				//this.log("com.elclab.proveit.currentScan.length: " + com.elclab.proveit.currentScan.length);
-				for (var i = 0; i < com.elclab.proveit.currentScan.length; i++) {
-					//this.log("com.elclab.proveit.currentScan[" + i + "]: " + com.elclab.proveit.currentScan[i]);
-					workingstring = com.elclab.proveit.currentScan[i]
+				//this.log("currentScan.length: " + currentScan.length);
+				for (var i = 0; i < currentScan.length; i++) {
+					//this.log("currentScan[" + i + "]: " + currentScan[i]);
+					workingstring = currentScan[i]
 							.match(/{{[\s]*(cite|Citation)[^}]*}}/i)[0];
-					//var name = com.elclab.proveit.currentScan[i].match(/<[\s]*ref[^>]*/i);
+					//var name = currentScan[i].match(/<[\s]*ref[^>]*/i);
 					//name = name[0].split(/\"/gi)[1]; // This only works when double quotes are used, which are not required.
-					var match = com.elclab.proveit.currentScan[i].match(/<[\s]*ref[\s]*name[\s]*=[\s]*(?:(?:\"(.*?)\")|(?:\'(.*?)\')|(?:(.*?)))[\s]*\/?[\s]*>/);
+					var match = currentScan[i].match(/<[\s]*ref[\s]*name[\s]*=[\s]*(?:(?:\"(.*?)\")|(?:\'(.*?)\')|(?:(.*?)))[\s]*\/?[\s]*>/);
 
 					if(match && match != null)
 						name = match[1] || match[2] || match[3];
@@ -1193,24 +970,24 @@ com.elclab.proveit = {
 					if (!name || name == -1) {
 						delete(name);
 					}
-					orig = com.elclab.proveit.currentScan[i];
+					orig = currentScan[i];
 					//this.log("name: " + name);
 					// this.log(workingstring);
-					// this.log(com.elclab.proveit.currentScan[i]);
+					// this.log(currentScan[i]);
 					// /\|/ is not adequate, because of embedded piped links.  However:
 					// /\|(?=(?:(?:[^\[\|\]]+)|(?:\[\[[^\|\]]+(?:\|(?:[^\|\]]*))?\]\]))+(?:\||\}\}))/
 					// would have worked...
 					cutupstring = workingstring.split(/\|/g);
-					//this.log("currentrefs[" + name + "]" + com.elclab.proveit.currentrefs[name]);
-					if (!com.elclab.proveit.currentrefs[name]) {
+					//this.log("currentrefs[" + name + "]" + currentrefs[name]);
+					if (!currentrefs[name]) {
 						if (workingstring.match(/{{[\s]*cite/i) != null) {
 							// create a new cite object
 							var citation = new com.elclab.proveit.Cite();
-							citation["orig"] = orig;
-							citation["save"] = true;
+							citation.orig = orig;
+							citation.save = true;
 							citation.inMWEditBox = true;
 							if (name) {
-								citation["name"] = name;
+								citation.name = name;
 							}
 
 							// find the start location on the type
@@ -1267,10 +1044,10 @@ com.elclab.proveit = {
 						} else if (workingstring.match(/{{[\s]*Citation/i) != null) {
 							var citation = new com.elclab.proveit.Citation();
 							if (name) {
-								citation["name"] = name;
+								citation.name = name;
 							}
-							citation["orig"] = orig;
-							citation["save"] = true;
+							citation.orig = orig;
+							citation.save = true;
 							citation.inMWEditBox = true;
 							/*
 							var citstart = workingstring.indexOf(workingstring.match(/Citation/i));
@@ -1315,7 +1092,7 @@ com.elclab.proveit = {
 								*/
 							}
 						} else {
-							//this.log("Can't Parse: " + com.elclab.proveit.currentScan[i]);
+							//this.log("Can't Parse: " + currentScan[i]);
 							//this.log("Continue-ing loop");
 							var citation = workingstring;
 							continue;
@@ -1332,11 +1109,11 @@ com.elclab.proveit = {
 							}
 							//this.log("text: " + text);
 							//this.log("citation: " + citation);
-							com.elclab.proveit.currentrefs[text] = citation;
-							//this.log("com.elclab.proveit.currentrefs[text]: " + com.elclab.proveit.currentrefs[text]);
-							//this.log("currentrefs.length: " + com.elclab.proveit.currentrefs.length);
+							currentrefs[text] = citation;
+							//this.log("currentrefs[text]: " + currentrefs[text]);
+							//this.log("currentrefs.length: " + currentrefs.length);
 
-							//this.log("currentrefs: " + com.elclab.proveit.currentrefs);
+							//this.log("currentrefs: " + currentrefs);
 
 						} else {
 							//this.log("Name is not defined.")
@@ -1351,11 +1128,11 @@ com.elclab.proveit = {
 								return false;
 							}
 							//this.log("text: " + text);
-							com.elclab.proveit.currentrefs[text] = citation;
-							//this.log("com.elclab.proveit.currentrefs[text]: " + com.elclab.proveit.currentrefs[text]);
-							//this.log("currentrefs.length: " + com.elclab.proveit.currentrefs.length);
+							currentrefs[text] = citation;
+							//this.log("currentrefs[text]: " + currentrefs[text]);
+							//this.log("currentrefs.length: " + currentrefs.length);
 
-							//this.log("currentrefs: " + com.elclab.proveit.currentrefs);
+							//this.log("currentrefs: " + currentrefs);
 
 						}
 					} else {
@@ -1369,66 +1146,206 @@ com.elclab.proveit = {
 			//this.log("scanRef: MW edit box is not defined.");
 			return false;
 		}
-		//document.getElementById('display').value = "";
-		//this.log("com.elclab.proveit.currentScan: " + com.elclab.proveit.currentScan)
-		//this.log("scanRef currentrefs: " + com.elclab.proveit.currentrefs);
-		//this.log("scanRefs currentrefs.length: " + com.elclab.proveit.currentrefs.length);
-		//this.log("scanRef returned successfully.");
 	},
 
-	/* Used to map between parameter name and human-readable.  It can be
-	 * internationalized easily.  Add descriptions.xx , where xx is
-	 * the ISO 639-1 code for a language, then set com.elclab.proveit.LANG to "xx"
-	 * to use the new descriptions.
-	 */
-
-	descriptions :
+	// Root Citation type
+	AbstractCitation : function()
 	{
-		en :
+		/* Used to map between parameter name and human-readable.  It can be
+		 * internationalized easily.  Add descriptions.xx , where xx is
+		 * the ISO 639-1 code for a language, then set com.elclab.proveit.LANG to "xx"
+		 * to use the new descriptions.
+		 */
+
+		var descriptions =
+		{
+			en :
 			{
-				name: "Name",
-				author: "Author (L, F)",
-				last: "Last name",
-				first: "First name",
-				authorlink: "Author article name",
-				title: "Title",
-				publisher: "Publisher",
-				year: "Year",
-				location: "Location",
-				place: "Location of work",
-				isbn: "ISBN",
-				id: "ID",
-				doi: "DOI",
-				pages: "Pages",
-				quote: "Quote",
-				month: "Month",
-				journal: "Journal",
-				edition: "Edition",
-				volume: "Volume",
-				issue: "Issue",
-				url: "URL",
-				date: "Publication date (YYYY-MM-DD)",
-				accessdate: "Access date (YYYY-MM-DD)",
-				coauthors: "Co-authors",
-				booktitle: "Title of Proceedings",
-				contribution: "Contribution/Chapter",
-				encyclopedia: "Encyclopedia",
-				newsgroup: "Newsgroup",
-				version: "Version",
-				site: "Site",
-				newspaper: "Newspaper",
-				"publication-place": "Publication location",
-				editor: "Editor (L, F)",
-				article: "Article",
-				pubplace: "Publisher location",
-				pubyear: "Publication year",
-				inventor: "Inventor (L, F)",
-				"issue-date": "Issue date (YYYY-MM-DD)",
-				"patent-number": "Patent Number",
-				"country-code": "Country code (XX)",
-				work: "Work",
-				format: "File format"
+					name: "Name",
+					author: "Author (L, F)",
+					last: "Last name",
+					first: "First name",
+					authorlink: "Author article name",
+					title: "Title",
+					publisher: "Publisher",
+					year: "Year",
+					location: "Location",
+					place: "Location of work",
+					isbn: "ISBN",
+					id: "ID",
+					doi: "DOI",
+					pages: "Pages",
+					quote: "Quote",
+					month: "Month",
+					journal: "Journal",
+					edition: "Edition",
+					volume: "Volume",
+					issue: "Issue",
+					url: "URL",
+					date: "Publication date (YYYY-MM-DD)",
+					accessdate: "Access date (YYYY-MM-DD)",
+					coauthors: "Co-authors",
+					booktitle: "Title of Proceedings",
+					contribution: "Contribution/Chapter",
+					encyclopedia: "Encyclopedia",
+					newsgroup: "Newsgroup",
+					version: "Version",
+					site: "Site",
+					newspaper: "Newspaper",
+					"publication-place": "Publication location",
+					editor: "Editor (L, F)",
+					article: "Article",
+					pubplace: "Publisher location",
+					pubyear: "Publication year",
+					inventor: "Inventor (L, F)",
+					"issue-date": "Issue date (YYYY-MM-DD)",
+					"patent-number": "Patent Number",
+					"country-code": "Country code (XX)",
+					work: "Work",
+					format: "File format"
 			}
+		};
+
+		// Convenience method.  Returns sorter.
+		this.getSorter = function()
+		{
+			var thisCite = this;
+			// Sorter uses paramSortKey first, then falls back on alphabetical order.
+			return function(paramA, paramB)
+			{
+				var aInd = thisCite.getSortIndex(paramA);
+				var bInd = thisCite.getSortIndex(paramB);
+				if(aInd != -1 && bInd != -1)
+				{
+					return aInd - bInd;
+				}
+				else
+				{
+					if(paramA < paramB)
+					{
+						return -1;
+					}
+					else if(paramA == paramB)
+					{
+						return 0;
+					}
+					else
+					{
+						return 1;
+					}
+				}
+			};
+		};
+
+		// Returns descriptions for the current language.
+		this.getDescriptions = function()
+		{
+			//this could be made Cite-specific if needed.
+			return descriptions[com.elclab.proveit.LANG];
+		};
+
+		// Returns true if this object is valid, false otherwise.
+		// Assume all AbstractCitation objects are valid.  Can be overridden in subtypes.
+		this.isValid = function(){return true};
+
+		/**
+		 * Generates name from reference using title, author, etc.
+		 * @param citation Citation to generate name for.
+		 */
+		this.getGeneratedName = function()
+		{
+			var name = "";
+
+			//this.log("getGeneratedName: this: " + this);
+			if (this.params.author)
+			{
+				name = this.params.author + "; ";
+			}
+			else if (this.params.last)
+			{
+				name = this.params.last;
+				if (this.params.first)
+				{
+					name += ", " + this.params.first;
+				}
+				name += "; ";
+			}
+
+			if (this.params.title)
+			{
+				name += this.params.title;
+			}
+
+			if(name == "")
+			{
+				var value;
+				for each(value in this.params)
+				{
+					break;
+				}
+				name = value;
+			}
+			return name;
+		};
+
+
+		/**
+		 * Gets insertion text from reference object.
+		 *
+		 * TODO: Generate a regex object instead (getInsertionRegExp), so highlighting would not fail due to trivial changes (e.g. spacing).
+		 * @param {If full is true, insert full text, otherwise ref name only} full
+		 */
+		this.getInsertionText = function(full)
+		{
+			com.elclab.proveit.log("getInsertionText");
+			if(full)
+			{
+				return this.toString();
+			}
+			else
+			{
+				if(this.name)
+				{
+					return "<ref name=\""
+						+ this.name + "\" />";
+				}
+				else
+				{
+					throw new Error("getInsertionText: ref.name is null");
+				}
+			}
+		};
+
+		/*
+		 * This function takes the currently selected or edited reference and
+		 * updates it in the edit box.
+		 */
+		this.updateInText = function()
+		{
+			var txtarea = com.elclab.proveit.getMWEditBox();
+
+			if (!txtarea || txtarea == null)
+				return;
+
+			var textScroll = txtarea.scrollTop;
+			// get current selection
+			txtarea.focus();
+			var startPos = txtarea.selectionStart;
+			var endPos = txtarea.selectionEnd;
+			var text = txtarea.value;
+
+			text = text.replace(this.orig, this.toString());
+
+			// Do replacement in textarea.
+			txtarea.value = text;
+
+			// Baseline for future modifications
+
+			this.orig = this.toString();
+			this.save = true;
+
+			com.elclab.proveit.highlightTargetString(this.toString());
+		};
 	},
 
 	// A function representing a Cite style template.
@@ -1441,12 +1358,47 @@ com.elclab.proveit = {
 		this.template = "cite";
 		// Signifies template type is cite web, news, etc.
 		this.type;
+
+		// TODO: Re-examine whether both (or indeed either) of save or inMWEditBox are really necessary.  Can it be determined from context?
+
 		// false indicates "dirty" citation that has yet to be updated in text and metadata.
 		this.save;
 		// true if and only if the ref is in the MW edit box with the same value as this object's orig.
 		this.inMWEditBox;
+
+
 		// associative array holding all name/value pairs.
-		this.params = new Object();
+		this.params = {};
+
+		this.getSortIndex = function(param)
+		{
+			// This is the order fields will be displayed or outputted.
+
+			return [
+				"url",
+				"title",
+				"accessdate",
+				"author",
+				"last",
+				"first",
+				"authorlink",
+				"coauthors",
+				"date",
+				"year",
+				"month",
+				"format",
+				"work",
+				"publisher",
+				"location",
+				"pages",
+				"language",
+				"isbn",
+				"doi",
+				"archiveurl",
+				"archivedate",
+				"quote"
+			].indexOf(param);
+		};
 
 		/* Mostly an identity mapping, except for redirects.  I think
 		 * having the self-mappings is better than some kind of special case array.
@@ -1474,51 +1426,6 @@ com.elclab.proveit = {
 				this.type = rawType; // Use naive type as fallback.
 		};
 
-		// This is the order fields will be displayed or outputted.
-		var paramSortKey =
-		[
-			"url",
-			"title",
-			"accessdate",
-			"author",
-			"last",
-			"first",
-			"authorlink",
-			"coauthors",
-			"date",
-			"year",
-			"month",
-			"format",
-			"work",
-			"publisher",
-			"location",
-			"pages",
-			"language",
-			"isbn",
-			"doi",
-			"archiveurl",
-			"archivedate",
-			"quote"
-		];
-
-		// Sorter uses paramSortKey first, then falls back on alphabetical order.
-		var sorter = function(paramA, paramB)
-		{
-			var aInd = paramSortKey.indexOf(paramA);
-			var bInd = paramSortKey.indexOf(paramB);
-			if(aInd != -1 && bInd != -1)
-				return aInd - bInd;
-			else
-			{
-				if(paramA < paramB)
-					return -1
-				else if(paramA == paramB)
-					return 0;
-				else
-					return 1;
-			}
-		};
-
 		// Returns this object as a string.
 		this.toString = function() {
 			if (this.name) {
@@ -1543,19 +1450,6 @@ com.elclab.proveit = {
 			}
 			returnstring += "}}</ref>";
 			return returnstring;
-		};
-
-		// Convenience method.  Returns sorter.
-		this.getSorter = function()
-		{
-			return sorter;
-		};
-
-		// Returns descriptions for the current language.
-		this.getDescriptions = function()
-		{
-			//this could be made Cite-specific if needed.
-			return com.elclab.proveit.descriptions[com.elclab.proveit.LANG];
 		};
 
 		// References without these parameters will be flagged in red.
@@ -1650,7 +1544,7 @@ com.elclab.proveit = {
 		// true if and only if the ref is in the MW edit box with the same value as this object's orig.
 		this.inMWEditBox;
 		// associative array holding all name/value pairs.
-		this.params = new Object();
+		this.params = {};
 
 		// None currently required;
 		var requiredParams = {};
@@ -1667,60 +1561,45 @@ com.elclab.proveit = {
 		}
 
 		// This is the order fields will be displayed or outputted.
-		var paramSortKey =
-		[
-			"last",
-			"first",
-			"url",
-			"author",
-			"editor",
-			"contribution",
-			"author-link",
-			"last2",
-			"first2",
-			"author2-link",
-			"publication-date",
-			"inventor",
-			"title",
-			"issue-date",
-			"patent-number",
-			"country-code",
-			"journal",
-			"volume",
-			"newspaper",
-			"issue",
-			"date",
-			"publisher",
-			"place",
-			"year",
-			"edition",
-			"publication-place",
-			"series",
-			"pages",
-			"page",
-			"id",
-			"isbn",
-			"doi",
-			"oclc",
-			"accessdate"
-		];
-
-		// Sorter uses paramSortKey first, then falls back on alphabetical order.
-		var sorter = function(paramA, paramB)
+		this.getSortIndex = function(param)
 		{
-			var aInd = paramSortKey.indexOf(paramA);
-			var bInd = paramSortKey.indexOf(paramB);
-			if(aInd != -1 && bInd != -1)
-				return aInd - bInd;
-			else
-			{
-				if(paramA < paramB)
-					return -1
-				else if(paramA == paramB)
-					return 0;
-				else
-					return 1;
-			}
+			// This is the order fields will be displayed or outputted.
+			return [
+				"last",
+				"first",
+				"url",
+				"author",
+				"editor",
+				"contribution",
+				"author-link",
+				"last2",
+				"first2",
+				"author2-link",
+				"publication-date",
+				"inventor",
+				"title",
+				"issue-date",
+				"patent-number",
+				"country-code",
+				"journal",
+				"volume",
+				"newspaper",
+				"issue",
+				"date",
+				"publisher",
+				"place",
+				"year",
+				"edition",
+				"publication-place",
+				"series",
+				"pages",
+				"page",
+				"id",
+				"isbn",
+				"doi",
+				"oclc",
+				"accessdate"
+			].indexOf(param);
 		};
 
 		// Returns this object as a string.
@@ -1747,20 +1626,6 @@ com.elclab.proveit = {
 			return returnstring;
 		};
 
-		// Convenience method.  Returns sorter.
-		this.getSorter = function()
-		{
-			return sorter;
-		};
-
-		// Returns descriptions for the current language.
-		this.getDescriptions = function()
-		{
-			//this could be made Citation-specific if needed.
-			return com.elclab.proveit.descriptions[com.elclab.proveit.LANG];
-		};
-
-		//this could be made Citation-specific if needed.
 		this.getRequiredParams = function()
 		{
 			return requiredParams;
@@ -1778,10 +1643,6 @@ com.elclab.proveit = {
 				return []; // Can't determine defaults when editing a pre-existing Citation.
 			}
 		};
-
-		// Returns true if this object is valid, false otherwise.
-		// Currently assume all citation objects are valid.
-		this.isValid = function(){return true};
 	},
 
 	/**
@@ -1805,7 +1666,7 @@ com.elclab.proveit = {
 		} else {
 			tag = new com.elclab.proveit.Citation();
 		}
-		tag["type"] = type;
+		tag.type = type;
 
 		var paramName, paramVal;
 		var refNameValue = box.getElementsByClassName("refname")[0];
@@ -1813,7 +1674,7 @@ com.elclab.proveit = {
 		if(refNameValue.value != "")
 		{
 			name = refNameValue.value;
-			tag["name"] = name;
+			tag.name = name;
 		}
 
 		var paramList = box.getElementsByClassName("paramlist")[0];
@@ -1825,7 +1686,7 @@ com.elclab.proveit = {
 
 			if(paramRow.className == "addedrow") // Added with "Add another field"
 			{
-				paramName = paramRow.getElementsByClassName("paramname")[0].value;
+				paramName = paramRow.getElementsByClassName("paramname")[0].value.trim();
 			}
 			else
 			{
@@ -1835,7 +1696,7 @@ com.elclab.proveit = {
 			this.log("citationObjFromAddPopup: valueTextbox.tagName: " + valueTextbox.tagName);
 			this.log("citationObjFromAddPopup: valueTextbox.id: " + valueTextbox.id);
 
-			paramVal = valueTextbox.value;
+			paramVal = valueTextbox.value.trim();
 			this.log("citationObjFromAddPopup: paramName: " + paramName + "; paramVal: " + paramVal);
 			if(paramName != "" && paramVal != "")
 			{ // Non-blank
@@ -1851,12 +1712,8 @@ com.elclab.proveit = {
 	 */
 	openAddCitation : function()
 	{
-		var addData = {"proveit": this, "ref": null}; // ref will be set to the new reference, or remain null if the dialog is cancelled.
-		window.openDialog("add_dialog.xul", "add dialog", "modal", addData);
-		if(addData.ref)
-		{
-			this.addCitation(addData.ref);
-		}
+		var addData = {"proveit": this}; // ref will be set to the new reference, or remain null if the dialog is cancelled.
+		window.openDialog("add_dialog.xul", "add dialog", "modal=no", addData);
 	},
 
 	/**
@@ -1872,7 +1729,6 @@ com.elclab.proveit = {
 		var id = com.elclab.proveit.addNewElement(tag);
 
 		this.log("addCitation: id: " + id);
-		com.elclab.proveit.currentrefs[id] = tag;
 
 		tag.orig = tag.toString();
 		/*
@@ -1880,15 +1736,14 @@ com.elclab.proveit = {
 		 * for the final box and make sure to grab the type as well
 		 */
 
-		com.elclab.proveit.curRefItem = com.elclab.proveit.getRefbox().selectedItem;
 		com.elclab.proveit.insertRef(tag, true); // true means insert full text here, regardless of global toggle.
 		tag.save = true;
 		tag.inMWEditBox = true;
 		com.elclab.proveit.includeProveItEditSummary();
 		com.elclab.proveit.getRefbox().scrollToIndex(com.elclab.proveit.getRefbox().itemCount - 1);
 		com.elclab.proveit.getRefbox().selectedIndex = com.elclab.proveit.getRefbox().itemCount - 1;
-		//this.log("Exiting addCitation.");
-		this.doSelect();
+		this.highlightTargetString(tag.orig);
+		this.log("Exiting addCitation.");
 	},
 
 	// Clear all rows of passed in add citation panes.
@@ -2010,11 +1865,11 @@ com.elclab.proveit = {
 	 * @param generatedName name to use.
 	 * @return
 	 */
-	getRefboxElement : function(ref, generatedName)
+	makeRefboxElement : function(ref, generatedName)
 	{
-		// this.log("Entering getRefboxElement.");
+		// this.log("Entering makeRefboxElement.");
 		// this.log("ref: " + ref + "; generatedName: " + generatedName);
-		var refName = ref["name"]; //may be null or blank
+		var refName = ref.name; //may be null or blank
 
 		var refbox = com.elclab.proveit.getRefbox();
 
@@ -2059,8 +1914,7 @@ com.elclab.proveit = {
 			newinsertimage.addEventListener("click", function() {
 			thisproveit.getRefbox().selectItem(this.parentNode);
 			thisproveit.insertRef(ref, thisproveit.toggleinsert);
-			thisproveit.highlightOnSelect = false;
- 			}, false); // True may ensure row is selected prior to attempting to insert.
+			}, false); // True may ensure row is selected prior to attempting to insert.
 			newinsertimage.setAttribute("tooltip", "enabled insert tooltip");
 		}
 		else
@@ -2076,16 +1930,16 @@ com.elclab.proveit = {
 
 		var doEdit = function() {
 			thisproveit.getRefbox().selectItem(newchild);
-			var editData = {"proveit": thisproveit, "ref": ref, "accepted": null};
-			window.openDialog("edit_dialog.xul", "edit dialog", "modal", editData);
-			thisproveit.log("After openDialog.");
-			if(editData.accepted)
-			{
-				thisproveit.log("Calling saveEdit");
-				thisproveit.saveEdit(generatedName, ref);
-			}
-			thisproveit.doSelect();
+			var selectedIndex = thisproveit.getRefbox().selectedIndex;
+			var editData = {"proveit": thisproveit, "ref": ref, "generatedName": generatedName};
+			window.openDialog("edit_dialog.xul", "edit dialog", "modal=no", editData);
+			thisproveit.getRefbox().selectedIndex = selectedIndex;
 		};
+
+		newchild.addEventListener("click", function()
+		{
+			thisproveit.highlightTargetString(ref.orig);
+		}, false);
 
 		newchild.addEventListener("dblclick", doEdit, false);
 
@@ -2101,36 +1955,35 @@ com.elclab.proveit = {
 		return newchild;
 	},
 
-	// Ensures the generated name is not already used by adding numeric suffix.
 	genNameWithoutDuplicates : function(generatedName)
 	{
-	    var refbox = com.elclab.proveit.getRefbox();
-	    if(refbox == null)
-	    {
-	    	//this.log("genNameWithoutDuplicates: refbox is null");
-	    	return null;
-	    }
-	    var bad = false;
-	    for (var i = 0; i < refbox.childNodes.length; i++) {
-		if (refbox.childNodes[i].id == generatedName) {
-		    bad = true;
-		    //this.log("genNameWithoutDuplicates: name: " + generatedName);
-		    break;
+		var refbox = com.elclab.proveit.getRefbox();
+		if(refbox == null)
+		{
+			//this.log("genNameWithoutDuplicates: refbox is null");
+			return null;
 		}
-	    }
-	    // if there is, add a number surrounded by parens to the name at the end
-	    if (com.elclab.proveit.getSidebarDoc().getElementById(generatedName) && bad) {
-		var num = 1;
-		while (true) {
-		    if (!com.elclab.proveit.getSidebarDoc().getElementById(generatedName + "(" + num + ")")) {
-			generatedName = generatedName + "(" + num + ")";
-			break;
-		    }
-		    num++;
+		var bad = false;
+		for (var i = 0; i < refbox.childNodes.length; i++) {
+			if (refbox.childNodes[i].id == generatedName) {
+				bad = true;
+				//this.log("genNameWithoutDuplicates: name: " + generatedName);
+				break;
+			}
 		}
-	    }
+		// if there is, add a number surrounded by parens to the name at the end
+		if (com.elclab.proveit.getSidebarDoc().getElementById(generatedName) && bad) {
+			var num = 1;
+			while (true) {
+				if (!com.elclab.proveit.getSidebarDoc().getElementById(generatedName + "(" + num + ")")) {
+					generatedName = generatedName + "(" + num + ")";
+					break;
+				}
+				num++;
+			}
+		}
 
-	    return generatedName;
+		return generatedName;
 	},
 
 	/**
@@ -2141,7 +1994,7 @@ com.elclab.proveit = {
 	 *         used to tie the meta-data to the list.
 	 */
 	addNewElement : function(ref) {
-		var generatedName = com.elclab.proveit.getGeneratedName(ref);
+		var generatedName = ref.getGeneratedName();
 		ref.baseGenName = generatedName;
 
 		// first check to see if there is a node with this name already
@@ -2154,18 +2007,9 @@ com.elclab.proveit = {
 			return null;
 		}
 
-		refbox.appendChild(com.elclab.proveit.getRefboxElement(ref, generatedName));
+		refbox.appendChild(com.elclab.proveit.makeRefboxElement(ref, generatedName));
 
 		return generatedName;
-	},
-
-	// Closes add new citation pane without adding anything.
-
-	cancelAdd : function()
-	{
-		var box = com.elclab.proveit.getAddCitePane();
-		com.elclab.proveit.clearCitePanes(box.parentNode);
-		com.elclab.proveit.getSidebarDoc().getElementById('createnew').hidePopup();
 	}
 }
 
@@ -2177,3 +2021,6 @@ com.elclab.proveit = {
 String.prototype.trim = function() {
 	return this.replace(/^\s+|\s+$/g, "");
 }
+
+com.elclab.proveit.Cite.prototype = new com.elclab.proveit.AbstractCitation();
+com.elclab.proveit.Citation.prototype = new com.elclab.proveit.AbstractCitation();

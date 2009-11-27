@@ -13,6 +13,8 @@
 
 <!DOCTYPE page SYSTEM "chrome://proveit/locale/ProveIt.dtd">
 
+<!-- TODO: Some sort of scroll, for when there are many parameters being added. -->
+
 <dialog id="add" title="&ProveIt.addnew;"
 	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
 	onload="addData.proveit.changeCite(document.getElementById(addData.proveit.togglestyle ? 'citemenu' : 'citationmenu'));"
@@ -26,7 +28,7 @@
 		var addData = window.arguments[0];
 		function accept()
 		{
-		        addData.ref = addData.proveit.citationObjFromAddPopup(document.getElementsByClassName("typepane")[0]);
+		        addData.proveit.addCitation(addData.proveit.citationObjFromAddPopup(document.getElementsByClassName("typepane")[0]));
 		}
 	</script>
 	<dialogheader title="&ProveIt.addnew;" description="&ProveIt.addnew;" />
