@@ -36,15 +36,6 @@ com.elclab.proveit = {
 
 	LANG : "en", // currently used only for descriptions.
 
-	LOG_ENUM :
-	{
-		CONSOLE : 0,
-		ALERT: 1
-	},
-
-	LOG_TYPE : 0, // apparently this can not be set to a previous variable.
-	             // It only seemed to work before because it interpreted window.alert when I meant LOG_ENUM.alert
-
 	//Text before param name (e.g. url, title, etc.) in creation box, to avoid collisions with unrelated ids.
 	NEW_PARAM_PREFIX : "newparam",
 
@@ -54,17 +45,12 @@ com.elclab.proveit = {
 	// Preferences object (nsIPrefBranch)
 	prefs : null,
 
+	consoleService : Components.classes["@mozilla.org/consoleservice;1"].getService(Components.interfaces.nsIConsoleService),
+
 	// Convenience log function
 	log : function(str)
 	{
-		if(this.LOG_TYPE == this.LOG_ENUM.ALERT)
-			alert(str);
-		else
-		{
-			var consoleService = Components.classes["@mozilla.org/consoleservice;1"]
-                                 .getService(Components.interfaces.nsIConsoleService);
-  			consoleService.logStringMessage("[ProveIt] " + str);
-		}
+		this.consoleService.logStringMessage("[ProveIt] " + str);
 	},
 
 	// Returns true if we are on a known domain, and the action is set to edit or submit
