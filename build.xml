@@ -18,7 +18,7 @@
 				<exclude name="**/.*" />
 				<exclude name="**/*.orig" />
 				<exclude name="**/*~" />
-				<exclude name="**/CVS/**" />
+				<exclude name="**/*.rej" />
 			</fileset>
 		</zip>
 	</target>
