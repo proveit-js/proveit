@@ -34,7 +34,7 @@ com.elclab.proveit = {
 
 	KNOWN_NAMESPACES : [""],
 
-	LANG : "en", // currently used only for descriptions.
+	LANG : "en", // currently used only for descriptions.  This could be preference-controlled, instead of hard-coded.
 
 	//Text before param name (e.g. url, title, etc.) in creation box, to avoid collisions with unrelated ids.
 	NEW_PARAM_PREFIX : "newparam",
@@ -800,6 +800,7 @@ com.elclab.proveit = {
 			}
 
 			paramName.setAttribute("value", desc);
+			paramName.setAttribute("tooltiptext", item);
 			paramValue.setAttribute("value", list[item]);
 		}
 		else
@@ -971,7 +972,7 @@ com.elclab.proveit = {
 	// Root Citation type
 	AbstractCitation : function(argObj)
 	{
-		// Cite has a non-trivial override of this.
+		// Cite has a non-trivial override of this.  This is defined early (and conditionally) because it is used in the constructor.
 		if(!this.setType)
 		{
 			this.setType = function(type)
@@ -1021,7 +1022,23 @@ com.elclab.proveit = {
 					name: "Name",
 					author: "Author (L, F)",
 					last: "Last name",
+					last2: "Last name (auth. two)",
+					last3: "Last name (auth. three)",
+					last4: "Last name (auth. four)",
+					last5: "Last name (auth. five)",
+					last6: "Last name (auth. six)",
+					last7: "Last name (auth. seven)",
+					last8: "Last name (auth. eight)",
+					last9: "Last name (auth. nine)",
 					first: "First name",
+					first2: "First name (auth. two)",
+					first3: "First name (auth. three)",
+					first4: "First name (auth. four)",
+					first5: "First name (auth. five)",
+					first6: "First name (auth. six)",
+					first7: "First name (auth. seven)",
+					first8: "First name (auth. eight)",
+					first9: "First name (auth. nine)",
 					authorlink: "Author article name",
 					title: "Title",
 					publisher: "Publisher",
@@ -1031,6 +1048,7 @@ com.elclab.proveit = {
 					isbn: "ISBN",
 					id: "ID",
 					doi: "DOI",
+					page: "Page",
 					pages: "Pages",
 					quote: "Quote",
 					month: "Month",
@@ -1056,17 +1074,20 @@ com.elclab.proveit = {
 					pubyear: "Publication year",
 					inventor: "Inventor (L, F)",
 					"issue-date": "Issue date (YYYY-MM-DD)",
-					"patent-number": "Patent Number",
+					"patent-number": "Patent number",
 					"country-code": "Country code (XX)",
 					work: "Work",
-					format: "File format"
+					format: "File format",
+					issn: "ISSN",
+					pmid: "PMID",
+					chapter: "Chapter"
 			}
 		};
 
-		// Convenience method.  Returns sorter.
+		// Convenience method.  Returns sorter for parameters.
 		this.getSorter = function()
 		{
-			var thisCite = this;
+			var thisCite = this; // Make closure work as intended.
 			// Sorter uses paramSortKey first, then falls back on alphabetical order.
 			return function(paramA, paramB)
 			{
@@ -1103,7 +1124,7 @@ com.elclab.proveit = {
 
 		// Returns true if this object is valid, false otherwise.
 		// Assume all AbstractCitation objects are valid.  Can be overridden in subtypes.
-		this.isValid = function(){return true};
+		this.isValid = function(){return true;};
 
 		/**
 		 * Generates label for reference using title, author, etc.
@@ -1207,6 +1228,31 @@ com.elclab.proveit = {
 
 		// label used in heading of edit box
 		// this.getEditLabel
+
+		/**
+		 * Internal helper method for toString.
+		 * @param template template for ref (currently "cite" or "Citation"
+		 * @param includeType true to include this.type, false otherwise
+		 * @return string for current reference
+		 */
+		this.toStringInternal = function(template, includeType)
+		{
+			if(this.name)
+			{
+				var returnstring = "<ref name=\"" + this.name + "\">";
+			}
+			else
+			{
+				var returnstring = "<ref>";
+			}
+			returnstring += "{{" + template + (includeType ? " " + this.type : "");
+			for (var name in this.params)
+			{
+				returnstring += " | " + name + "=" + this.params[name];
+			}
+			returnstring += "}}</ref>";
+			return returnstring;
+		};
 	},
 
 	// A function representing a Cite style template.
@@ -1252,6 +1298,30 @@ com.elclab.proveit = {
 				"author",
 				"last",
 				"first",
+				"author2",
+				"last2",
+				"first2",
+				"author3",
+				"last3",
+				"first3",
+				"author4",
+				"last4",
+				"first4",
+				"author5",
+				"last5",
+				"first5",
+				"author6",
+				"last6",
+				"first6",
+				"author7",
+				"last7",
+				"first7",
+				"author8",
+				"last8",
+				"first8",
+				"author9",
+				"last9",
+				"first9",
 				"authorlink",
 				"coauthors",
 				"date",
@@ -1272,29 +1342,9 @@ com.elclab.proveit = {
 		};
 
 		// Returns this object as a string.
-		this.toString = function() {
-			if (this.name) {
-				var returnstring = "<ref name=\"";
-				returnstring += this.name;
-				returnstring += "\">{{cite ";
-			} else {
-				var returnstring = "<ref>{{cite ";
-			}
-			returnstring += this.type;
-			returnstring += " ";
-			for (var name in this.params) {
-				/*if (!((name == "type") ||
-						(name == "toString") || (name == "orig") || (name == "save") || (name == "inMWEditBox"))
-						&& (this.params[name] && this.params[name] != "")) {*/
-					returnstring += " | ";
-					returnstring += name;
-					returnstring += "=";
-					returnstring += this.params[name];
-					returnstring += " ";
-				//}
-			}
-			returnstring += "}}</ref>";
-			return returnstring;
+		this.toString = function()
+		{
+			return this.toStringInternal("cite", true);
 		};
 
 		// References without these parameters will be flagged in red.
@@ -1309,7 +1359,8 @@ com.elclab.proveit = {
 			news: { "title": true },
 			newsgroup : { "title": true },
 			paper : { "title": true },
-			"press release"	: { "title": true }
+			"press release"	: { "title": true },
+			episode : { "title": true }
 		};
 
 		/* Get required parameters for this citation type.
@@ -1336,7 +1387,8 @@ com.elclab.proveit = {
 			news: [ "title", "author", "url", "publisher", "date", "accessdate" ],
 			newsgroup : [ "title", "author", "date", "newsgroup", "id", "url", "accessdate" ],
 			paper : [ "title", "author", "title", "date", "url", "accessdate" ],
-			"press release"	: [ "title", "url", "publisher", "date", "accessdate" ]
+			"press release"	: [ "title", "url", "publisher", "date", "accessdate" ],
+			episode : ["title", "series", "credits", "network", "season" ]
 		};
 
 		/* Default parameters, to be suggested when editing.
@@ -1395,7 +1447,7 @@ com.elclab.proveit = {
 			book : ["author", "title", "publisher", "place", "year"],
 			journal : ["author", "title", "journal", "volume", "issue", "year", "pages"],
 			patent : ["inventor", "title", "issue-date", "patent-number", "country-code"]
-		}
+		};
 
 		// This is the order fields will be displayed or outputted.
 		this.getSortIndex = function(param)
@@ -1440,27 +1492,9 @@ com.elclab.proveit = {
 		};
 
 		// Returns this object as a string.
-		this.toString = function() {
-			if (this.name) {
-				var returnstring = "<ref name=\"";
-				returnstring += this.name;
-				returnstring += "\">{{Citation ";
-			} else {
-				var returnstring = "<ref>{{Citation "
-			}
-			for (var name in this.params) {
-				/*if (!( (name == "toString")
-						|| (name == "add") || (name == "orig") || (name == "save") || (name == "inMWEditBox"))
-						&& (this.params[name] && this.params[name] != "")) {*/
-					returnstring += " | ";
-					returnstring += name;
-					returnstring += "=";
-					returnstring += this.params[name];
-					returnstring += " ";
-				//}
-			}
-			returnstring += "}}</ref>";
-			return returnstring;
+		this.toString = function()
+		{
+			return this.toStringInternal("Citation", false);
 		};
 
 		this.getRequiredParams = function()
@@ -1477,7 +1511,7 @@ com.elclab.proveit = {
 			}
 			else
 			{
-				return []; // Can't determine defaults when editing a pre-existing Citation.
+				return ["url", "title", "author", "date", "publisher"]; // Can't determine more specific defaults when editing a pre-existing Citation.
 			}
 		};
 
