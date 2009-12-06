@@ -748,7 +748,7 @@ com.elclab.proveit = {
 			//this.log("i: " + i + ", paramNames[i]: " + paramNames[i]);
 			com.elclab.proveit.addPopupRow(editWin, tempParams, ref.getDescriptions(), paramNames[i], required[paramNames[i]], true);
 		}
-		editWin.sizeToContent();
+		this.sizeAndCenter(editWin);
 	},
 
 	/**
@@ -798,14 +798,13 @@ com.elclab.proveit = {
 				this.log("Undefined description for param: " + item + ".  Using directly as description.");
 				desc = item;
 			}
-
 			paramName.setAttribute("value", desc);
 			paramName.setAttribute("tooltiptext", item);
 			paramValue.setAttribute("value", list[item]);
 		}
 		else
 		{
-			rootWin.sizeToContent();
+			this.sizeAndCenter(rootWin);
 		}
 	},
 
@@ -1625,10 +1624,12 @@ com.elclab.proveit = {
 
 	activateRemove : function(row)
 	{
+		var thisproveit = this;
 		row.getElementsByClassName("remove")[0].addEventListener("command", function()
 		{
+			var win = row.ownerDocument.defaultView;
 			row.parentNode.removeChild(row);
-			row.ownerDocument.defaultView.sizeToContent(); // This really only makes sense for the edit dialog, but it shouldn't hurt otherwise.
+			thisproveit.sizeAndCenter(win);
 		}, false); // Activate remove button
 	},
 
@@ -1722,7 +1723,7 @@ com.elclab.proveit = {
 		}
 		genPane.hidden = false;
 		citePanes.insertBefore(genPane, citePanes.firstChild);
-		menu.ownerDocument.defaultView.sizeToContent(); // Resize dialog
+		this.sizeAndCenter(menu.ownerDocument.defaultView);
 		this.log("Exiting changeCite");
 	},
 
@@ -1819,7 +1820,26 @@ com.elclab.proveit = {
  			this.ownerDocument.title = this.contentTitle;
  		};
  		tabbrowser.updateTitlebar();
- 	}
+ 	},
+
+	/**
+	 * @param win window to size and center
+	 *
+	 * Resizes window to fit content, and then centers.
+	 */
+	sizeAndCenter : function(win)
+	{
+		if(win.wrappedJSObject)
+		{
+			win = win.wrappedJSObject;
+		}
+		win.sizeToContent();
+		// The timeout is apparently necessary to center the window immediately after loading.
+		win.setTimeout(function()
+		{
+			win.centerWindowOnScreen();
+		}, 0);
+	}
 };
 
 /**
