@@ -15,27 +15,34 @@
 
 <!-- TODO: Some sort of scroll, for when there are many parameters being added. -->
 
-<dialog id="add" title="&ProveIt.addnew;"
+<dialog id="add" 
+	title="&ProveIt.addnew;"
 	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
-	onload="addData.proveit.changeCite(document.getElementById(addData.proveit.togglestyle ? 'citemenu' : 'citationmenu'));"
+	onload="load();"
 	buttons="accept, cancel, extra1"
 	buttonlabelaccept="&ProveIt.createnewsave;"
 	ondialogaccept="return accept();"
 	ondialogcancel="return;"
 	buttonlabelextra1="&ProveIt.addanother;"
-	ondialogextra1="addData.proveit.addPopupRow(window);">
+	ondialogextra1="winData.proveit.addPopupRow(window);">
 	<script type="text/javascript">
-		var addData = window.arguments[0];
+		var winData = window.arguments[0];
 		function accept()
 		{
-		        addData.proveit.addCitation(addData.proveit.citationObjFromAddPopup(document.getElementsByClassName("typepane")[0]));
+		        winData.proveit.addCitation(winData.proveit.citationObjFromAddPopup(document.getElementsByClassName("typepane")[0]));
+		}
+
+		function load()
+		{
+		        winData.proveit.setPlainTitle();
+		        winData.proveit.changeCite(document.getElementById(winData.proveit.togglestyle ? 'citemenu' : 'citationmenu'));
 		}
 	</script>
 	<dialogheader title="&ProveIt.addnew;" description="&ProveIt.addnew;" />
 
 	<vbox flex="1" hidden="true" id="cite">
 		<hbox pack="center" align="center">
-			<menulist id="citemenu" oncommand="addData.proveit.changeCite(this)">
+			<menulist id="citemenu" oncommand="winData.proveit.changeCite(this)">
 				<menupopup>
 					<menuitem label="&ProveIt.Website;" value="web"/>
 					<menuitem label="&ProveIt.Book;" value="book"/>
@@ -53,7 +60,7 @@
 	</vbox>
 	<vbox flex="1" hidden="true" id="citation">
 		<hbox pack="center" align="center">
-			<menulist id="citationmenu" oncommand="addData.proveit.changeCite(this)">
+			<menulist id="citationmenu" oncommand="winData.proveit.changeCite(this)">
 				<menupopup>
 					<menuitem label="&ProveIt.Website;" value="web"/>
 					<menuitem label="&ProveIt.Book;" value="book"/>

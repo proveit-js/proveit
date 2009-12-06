@@ -15,24 +15,32 @@
 
 <!-- TODO: Some sort of scroll, for when there are many parameters. -->
 
-<dialog id="edit" title="&ProveIt.edit;"
+<dialog id="edit"
+	title="&ProveIt.edit;"
         xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
-	onload="editData.proveit.updateEditPopup(window, editData.ref);"
+	onload="load()"
 	buttons="accept, cancel, extra1"
 	buttonlabelaccept="&ProveIt.editapply;"
 	ondialogaccept="return accept();"
         ondialogcancel="return;"
 	buttonlabelextra1="&ProveIt.addanother;"
-	ondialogextra1="editData.proveit.addPopupRow(window);"
+	ondialogextra1="winData.proveit.addPopupRow(window);"
 	>
 
-	<script type="text/javascript">
-		var editData = window.arguments[0];
+        <script type="text/javascript">
+		var winData = window.arguments[0];
+
+		function load()
+		{
+		        winData.proveit.setPlainTitle();
+			document.title = '&ProveIt.edit; - ' + winData.ref.getLabel();
+			winData.proveit.updateEditPopup(window, winData.ref);
+		}
+		
 		function accept()
 		{
-		        editData.proveit.citationObjFromEditPopup(editData.ref, document.getElementById("editpanel"));
-		        editData.proveit.log("Calling saveEdit");
-			editData.proveit.saveEdit(editData.ref);
+		        winData.proveit.citationObjFromEditPopup(winData.ref, document.getElementById("editpanel"));
+			winData.proveit.saveEdit(winData.ref);
 		}
 	</script>
 	

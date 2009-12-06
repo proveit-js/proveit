@@ -1548,8 +1548,8 @@ com.elclab.proveit = {
 	 */
 	openAddCitation : function()
 	{
-		var addData = {"proveit": this}; // ref will be set to the new reference, or remain null if the dialog is cancelled.
-		window.openDialog("add_dialog.xul", "add dialog", "modal=no", addData);
+		var winData = {"proveit": this}; // ref will be set to the new reference, or remain null if the dialog is cancelled.
+		window.openDialog("add_dialog.xul", "add dialog", "modal=no", winData);
 	},
 
 	/**
@@ -1739,8 +1739,8 @@ com.elclab.proveit = {
 		var doEdit = function() {
 			thisproveit.getRefbox().selectItem(newchild);
 			var selectedIndex = thisproveit.getRefbox().selectedIndex;
-			var editData = {"proveit": thisproveit, "ref": ref};
-			window.openDialog("edit_dialog.xul", "edit dialog", "modal=no", editData);
+			var winData = {"proveit": thisproveit, "ref": ref};
+			window.openDialog("edit_dialog.xul", "edit dialog", "modal=no", winData);
 			thisproveit.getRefbox().selectedIndex = selectedIndex;
 		};
 
@@ -1767,7 +1767,25 @@ com.elclab.proveit = {
 	{
 		var refbox = this.getRefbox();
 		refbox.appendChild(this.makeRefboxElement(ref));
-	}
+	},
+
+  	/**
+ 	 *
+ 	 * This avoids showing the prePath (https://developer.mozilla.org/En/Code_snippets/Tabbed_browser) in the titlebar.  It is only necessary if chrome=no.
+ 	 */
+ 	setPlainTitle : function()
+ 	{
+
+ 		var tabbrowser = Components.classes['@mozilla.org/appshell/window-mediator;1']
+ 			.getService(Components.interfaces.nsIWindowMediator)
+ 			.getMostRecentWindow("navigator:browser")
+ 			.gBrowser;
+ 		tabbrowser.updateTitlebar = function()
+ 		{
+ 			this.ownerDocument.title = this.contentTitle;
+ 		};
+ 		tabbrowser.updateTitlebar();
+ 	}
 };
 
 /**
