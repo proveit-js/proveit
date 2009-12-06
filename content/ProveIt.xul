@@ -25,13 +25,7 @@
 		<label value="&ProveIt.ibid;" class="richiteminsert" style="max-height: 10px; max-width: 10px" />
 		<label class="richitemlabel" value="" crop="end"/>
 	</richlistitem>
-	<tooltip id="dummy tooltip" hidden="true">
-		<hbox class="refName row">
-			<label value="&ProveIt.refName; : "/>
-			<label class="refName label" value=""/>	
-		</hbox>
-		<label class="full label"/>
-	</tooltip>
+	<description id="refNameDesc" hidden="true" value="&ProveIt.refName; : "/>
 	<tooltip id="enabled insert tooltip">
 		<label value="&ProveIt.enabledInsert;"/>
 	</tooltip>

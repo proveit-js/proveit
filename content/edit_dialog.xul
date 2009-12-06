@@ -32,7 +32,7 @@
 		{
 		        editData.proveit.citationObjFromEditPopup(editData.ref, document.getElementById("editpanel"));
 		        editData.proveit.log("Calling saveEdit");
-			editData.proveit.saveEdit(editData.generatedName, editData.ref);
+			editData.proveit.saveEdit(editData.ref);
 		}
 	</script>
 	
