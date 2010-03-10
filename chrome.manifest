@@ -1,4 +1,0 @@
-content ProveIt 			jar:chrome/ProveIt.jar!/content/
-locale	ProveIt	en-US		jar:chrome/ProveIt.jar!/locale/en-US/
-skin	ProveIt	classic/1.0	jar:chrome/ProveIt.jar!/skin/
-overlay chrome://browser/content/browser.xul chrome://proveit/content/firefoxOverlay.xul
