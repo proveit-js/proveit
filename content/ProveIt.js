@@ -8,28 +8,10 @@
  * ALL RIGHTS RESERVED
  */
 
-var com;
-if (!com)
-	com = {};
-else if (typeof com != "object")
-	throw new Error("com already exists and is not an object!");
-if (!com.elclab)
-	com.elclab = {};
-else if (typeof com.elclab != "object")
-	throw new Error("com.elclab already exists and is not an object!");
-if (com.elclab.proveit)
+if (proveit)
 	throw new Error("com.elclab.proveit already exists");
 
-com.elclab.proveit = {
-
-	// Constants for a progress listener.
-	NOTIFY_STATE_DOCUMENT : Components.interfaces.nsIWebProgress.NOTIFY_STATE_DOCUMENT,
-	STATE_START : Components.interfaces.nsIWebProgressListener.STATE_START,
-	STATE_STOP : Components.interfaces.nsIWebProgressListener.STATE_STOP,
-
-	// Currently requires you be on one of these hard-coded domains.
-	KNOWN_HOSTS : ["de.wikipedia.org", "en.wikipedia.org", "secure.wikimedia.org"],
-
+proveit = {
 	KNOWN_ACTIONS : ["edit", "submit"],
 
 	KNOWN_NAMESPACES : [""],
@@ -41,14 +23,6 @@ com.elclab.proveit = {
 
 	//Text before param name (e.g. url, title, etc.) in edit box, to avoid collisions with unrelated ids.
 	EDIT_PARAM_PREFIX : "editparam",
-
-	// Note these have interactions.  So not all combinations will produce the expected results.  E.g. menubar=yes requires chrome=no.  chrome, dialog, and modal are yes by default, because we are using openDialog.
-	DIALOG_FEATURES : "chrome=yes, modal=yes, close=yes",
-
-	// Preferences object (nsIPrefBranch)
-	prefs : null,
-
-	consoleService : Components.classes["@mozilla.org/consoleservice;1"].getService(Components.interfaces.nsIConsoleService),
 
 	// Convenience log function
 	log : function(str)
@@ -114,73 +88,6 @@ com.elclab.proveit = {
 	{
 		return this.getSidebarDoc().getElementById("refbox");
 	},
-
-	/*
-	 * Returns true if and only if ProveIt sidebar is open.
-	 */
-	isSidebarOpen : function()
-	{
-		//this.log("Entering isSidebarOpen.");
-		var mainWindow = window.QueryInterface(Components.interfaces.nsIInterfaceRequestor)
-			 .getInterface(Components.interfaces.nsIWebNavigation)
-			 .QueryInterface(Components.interfaces.nsIDocShellTreeItem)
-			 .rootTreeItem
-			 .QueryInterface(Components.interfaces.nsIInterfaceRequestor)
-			 .getInterface(Components.interfaces.nsIDOMWindow);
-
-		//this.log("hidden: " + mainWindow.document.getElementById("sidebar-box").hidden);
-
-		//var isOpen = (location.href == "chrome://proveit/content/ProveIt.xul");
-		// Above line WILL NOT always work, because context of location.href varies.
-
-		var loc = document.getElementById("sidebar").contentWindow.location.href;
-		var isOpen = (loc == "chrome://proveit/content/ProveIt.xul");
-		//this.log("location is: " + loc);
-
-		return isOpen;
-	},
-
-	// Ensures ProveIt sidebar is open.
-	openSidebar : function()
-	{
-		var alreadyOpen = this.isSidebarOpen();
-		var mainWindow = window.QueryInterface(Components.interfaces.nsIInterfaceRequestor)
-			 .getInterface(Components.interfaces.nsIWebNavigation)
-			 .QueryInterface(Components.interfaces.nsIDocShellTreeItem)
-			 .rootTreeItem
-			 .QueryInterface(Components.interfaces.nsIInterfaceRequestor)
-			 .getInterface(Components.interfaces.nsIDOMWindow);
-		mainWindow.toggleSidebar("viewProveItSidebar", true);
-		if(alreadyOpen)
-		{
-			this.proveitonload();
-		}
-	},
-
-	// Ensures ProveIt sidebar is closed.
-	closeSidebar : function()
-	{
-		this.log("Entering closeSidebar");
-
-		var isOpen = this.isSidebarOpen();
-		if(isOpen)
-		{
-			var mainWindow = window.QueryInterface(Components.interfaces.nsIInterfaceRequestor)
-			 .getInterface(Components.interfaces.nsIWebNavigation)
-			 .QueryInterface(Components.interfaces.nsIDocShellTreeItem)
-			 .rootTreeItem
-			 .QueryInterface(Components.interfaces.nsIInterfaceRequestor)
-			 .getInterface(Components.interfaces.nsIDOMWindow);
-
-			 //mainWindow.document.getElementById("sidebar-box").hidden = true;
-			 //mainWindow.document.getElementById("sidebar").hidden = true;
-
-			 mainWindow.toggleSidebar("viewProveItSidebar");
-		}
-	},
-
-	// Hard coded constant representing the number of vertical pixels half of textarea takes place.
-	HALF_EDIT_BOX_HEIGHT : 204,
 
 	/**
 	 * Provides the x (left) and y (top) offsets to a given element.  From QuirksMode (http://www.quirksmode.org/js/findpos.html), a freely available site by Peter-Paul Koch
@@ -309,15 +216,6 @@ com.elclab.proveit = {
 		 */
 	},
 
-	// This function sets things up so ProveIt will automatically load on a MediaWiki site.
-	proveitpreload : function()
-	{
-		this.log("Entering proveitpreload.");
-		top.getBrowser().addProgressListener(this.sendalert,
-				this.NOTIFY_STATE_DOCUMENT);
-		return true; // Is this necessary to ensure Firefox doesn't gray out buttons?
-	},
-
 
 	/*
 	 * onload and onunload event handlers tied to the sidebar. These tie the
@@ -370,143 +268,6 @@ com.elclab.proveit = {
 
 		//top.getBrowser().removeProgressListener(this.sendalert);
 		//this.isSidebarOpenBool = false;
-	},
-
-	// Toggles the sidebar closed then open to avoid inconsistent state.
-	respawn : function()
-	{
-		this.log("Entering respawn.");
-		window.setTimeout(function()
-		{
-			var mainWindow = window.QueryInterface(Components.interfaces.nsIInterfaceRequestor)
-			 .getInterface(Components.interfaces.nsIWebNavigation)
-			 .QueryInterface(Components.interfaces.nsIDocShellTreeItem)
-			 .rootTreeItem
-			 .QueryInterface(Components.interfaces.nsIInterfaceRequestor)
-			 .getInterface(Components.interfaces.nsIDOMWindow);
-			mainWindow.toggleSidebar("viewProveItSidebar");
-			mainWindow.toggleSidebar("viewProveItSidebar");
-			/*Before, this had no mainWindow, which meant it never executed
-			(if it tried to, it wouldn't have worked).*/
-		}, 0);
-	},
-
-	observe : function(subject, topic, data)
-	{
-		if (topic == "nsPref:changed" && data == "shouldAddSummary")
-     		{
-     		        this.log("Preference change detected.");
-     			this.shouldAddSummary = this.prefs.getBoolPref("shouldAddSummary");
-     			this.log("this.shouldAddSummary: " + this.shouldAddSummary);
-     		}
-	},
-
-
-	/**
-	 * A progress listener that catches events to drive the reloading of the
-	 * citation list.
-	 *
-	 * @type {}
-	 */
-	sendalert : {
-		onLocationChange : function(aProgress, aRequest, aURI) {
-			//com.elclab.proveit.log("sendalert.onLocationChange");
-			//if (!aProgress.isLoadingDocument) {
-				// this checks to see if the tab is changed, the isloading check
-				// is
-				// to keep us from double firing in the event the page is still
-				// loading, we will then use the state_stop in statechange.
-
-				/*
-				 	var mainWindow = window.QueryInterface(Components.interfaces.nsIInterfaceRequestor)
-                   .getInterface(Components.interfaces.nsIWebNavigation)
-                   .QueryInterface(Components.interfaces.nsIDocShellTreeItem)
-                   .rootTreeItem
-                   .QueryInterface(Components.interfaces.nsIInterfaceRequestor)
-                   .getInterface(Components.interfaces.nsIDOMWindow);
-                */
-				//var windURL = top.getBrowser().currentURI; //get curURL
-				//com.elclab.proveit.log("Test");
-
-				com.elclab.proveit.openIfSupportedEditPage();
-				if(com.elclab.proveit.isSidebarOpen())
-				{
-					//com.elclab.proveit.log("Reloading sidebar from onLocationChange.")
-					com.elclab.proveit.respawn();
-				}
-				//com.elclab.proveit.proveitonload();
-
-				if(com.elclab.proveit.isSupportedEditPage())
-					com.elclab.proveit.scanRef();
-
-				/*
-				com.elclab.proveit.log("Calling highlightTargetString");
-				com.elclab.proveit.highlightTargetString("<ref");
-				*/
-
-
-			/*}
-			else
-			{
-				com.elclab.proveit.log("onLocationChange: Still loading.")
-			}*/
-		},
-		onStateChange : function(aProgress, aRequest, aFlag, aStatus) {
-			//com.elclab.proveit.log("sendalert.onStateChange");
-		        try
-			{
-				if ((aFlag & com.elclab.proveit.STATE_STOP) && aRequest && aRequest != null && (aRequest.URI)
-					&& (aRequest.URI.host == top.getBrowser().currentURI.host)
-					&& (aRequest.URI.path == top.getBrowser().currentURI.path)) {
-					// LoadWikiPage(aRequest.URI.spec,
-					// aProgress.DOMWindow.top._content.document.title,
-					// aProgress.DOMWindow.top._content.document.referrer);
-					// ^for figuring out what the inputs are
-					// this is called when a page finishes loading, call the
-					// scan/add
-					// function from here
-
-					com.elclab.proveit.openIfSupportedEditPage();
-					if(com.elclab.proveit.isSupportedEditPage())
-					{
-						//com.elclab.proveit.log("Calling scanRef from onStateChange.");
-						com.elclab.proveit.scanRef();
-					}
-					/*
-					 com.elclab.proveit.log("Calling highlightTargetString");
-					 com.elclab.proveit.highlightTargetString("<ref");
-					 */
-				}
-				if (aFlag & com.elclab.proveit.STATE_START) {
-					// do nothing here, this is just deprecated or possibly a call
-					// to
-					// wipe the current list.
-				}
-			}
-			catch(e if e.name == "NS_ERROR_FAILURE")
-			{
-				com.elclab.proveit.log("Was unable to determine hostname or path of either path or request. e.message: " + e.message + ". Returning from onStateChange now.");
-				return false;
-			}
-			catch(e)
-			{
-				com.elclab.proveit.log("Unknown exception.  e.name: " + e.name + ". e.message: " + e.message + ". Returning from onStateChange now.");
-				return false;
-			}
-		},
-		onSecurityChange : function(aWebProgress, aRequest, aState) {
-			//com.elclab.proveit.log("sendalert.onSecurityChange");
-		},
-		onStatusChange : function(aWebProgress, aRequest, aStatus, aMessage) {
-			//com.elclab.proveit.log("sendalert.onStatusChange");
-		},
-		onProgressChange : function(aWebProgress, aRequest, aCurSelfProgress,
-				aMaxSelfProgress, aCurTotalProgress, aMaxTotalProgress) {
-				//com.elclab.proveit.log("sendalert.onProgressChange");
-		},
-		onLinkIconAvailable : function(a, b) {
-			//com.elclab.proveit.log("sendalert.onLinkIconAvailable");
-		}
 	},
 
 	/*
@@ -800,31 +561,6 @@ com.elclab.proveit = {
 	 * TODO: This should be eliminated if only name only inserts are allowed.
 	 */
 	toggleinsert : false,
-
-	/* This whole function is something of a hack.  Basically, it detects the current state of the "physical" toggle,
-	 * and updates variables accordingly.
-	 */
-	flipToggle : function(toggle) {
-		var label = this.getSidebarDoc().getElementById(toggle + "toggle");
-		label.setAttribute("style", "font-weight: bold");
-		if (toggle == "full") {
-			this.getSidebarDoc().getElementById('nametoggle').setAttribute("style",
-					"font-weight: normal");
-			this.toggleinsert = true;
-		} else if (toggle == "name") {
-			this.getSidebarDoc().getElementById('fulltoggle').setAttribute("style",
-					"font-weight: normal");
-			this.toggleinsert = false;
-		} else if (toggle == "cite") {
-			this.getSidebarDoc().getElementById('citationtoggle').setAttribute("style",
-					"font-weight: normal");
-			this.togglestyle = true;
-		} else if (toggle == "citation") {
-			this.getSidebarDoc().getElementById('citetoggle').setAttribute("style",
-					"font-weight: normal");
-			this.togglestyle = false;
-		}
-	},
 
 	/**
 	 * Overly clever regex to parse template string (e.g. |last=Smith|first=John|title=My Life Story) into name and value pairs.
@@ -1588,15 +1324,6 @@ com.elclab.proveit = {
 		this.highlightTargetString(tag.orig);
 	},
 
-	// Clear all rows of passed in add citation panes.
-	clearCitePanes : function(citePanes)
-	{
-		if(citePanes.hasChildNodes())
-		{
-			citePanes.removeChild(citePanes.firstChild);
-		}
-	},
-
 	activateRemove : function(row)
 	{
 		var thisproveit = this;
@@ -1777,43 +1504,6 @@ com.elclab.proveit = {
 	{
 		var refbox = this.getRefbox();
 		refbox.appendChild(this.makeRefboxElement(ref));
-	},
-
-  	/**
- 	 *
- 	 * This avoids showing the prePath (https://developer.mozilla.org/En/Code_snippets/Tabbed_browser) in the titlebar.  It is only necessary if chrome=no.
- 	 */
- 	setPlainTitle : function()
- 	{
-
- 		var tabbrowser = Components.classes['@mozilla.org/appshell/window-mediator;1']
- 			.getService(Components.interfaces.nsIWindowMediator)
- 			.getMostRecentWindow("navigator:browser")
- 			.gBrowser;
- 		tabbrowser.updateTitlebar = function()
- 		{
- 			this.ownerDocument.title = this.contentTitle;
- 		};
- 		tabbrowser.updateTitlebar();
- 	},
-
-	/**
-	 * @param win window to size and center
-	 *
-	 * Resizes window to fit content, and then centers.
-	 */
-	sizeAndCenter : function(win)
-	{
-		if(win.wrappedJSObject)
-		{
-			win = win.wrappedJSObject;
-		}
-		win.sizeToContent();
-		// The timeout is apparently necessary to center the window immediately after loading.
-		win.setTimeout(function()
-		{
-			win.centerWindowOnScreen();
-		}, 0);
 	}
 };
 
