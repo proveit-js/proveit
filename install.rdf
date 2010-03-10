@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+
+<RDF xmlns="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+		xmlns:em="http://www.mozilla.org/2004/em-rdf#">
+
+	<Description about="urn:mozilla:install-manifest">
+		<em:name>ProveIt</em:name>
+		<em:version>1.0.706</em:version>
+		<em:description>A extension to facilitate the insertion of citation tags in Wikipedia.</em:description>
+		<em:creator>Kurt Luther, Matthew Flaschen, Andrea Forte, Christopher Jordan, Amy Bruckman (Georgia Institute of Technology)
+		</em:creator>
+		<em:id>ProveIt@gatech.edu</em:id>
+		<em:optionsURL>chrome://proveit/content/options.xul</em:optionsURL>x
+		<em:targetApplication>
+			<!-- Firefox -->
+			<Description>
+				<em:id>{ec8030f7-c20a-464f-9b0e-13a3a9e97384}</em:id>
+				<em:minVersion>3.0.*</em:minVersion>
+				<em:maxVersion>3.5.*</em:maxVersion>
+			</Description>
+		</em:targetApplication>
+	
+		<em:iconURL></em:iconURL>
+		<em:homepageURL>http://www.cc.gatech.edu/elc/proveit</em:homepageURL>
+	</Description>
+</RDF>

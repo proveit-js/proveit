@@ -1,0 +1,104 @@
+<?xml version="1.0" ?>
+<!--
+    Copyright 2008, 2009
+    
+    Georgia Tech Research Corporation
+    
+    Atlanta, GA 30332-0415
+    
+    ALL RIGHTS RESERVED
+  -->
+<!DOCTYPE overlay SYSTEM "chrome://ProveIt/locale/ProveIt.dtd" >
+
+<?xml-stylesheet href="chrome://ProveIt/skin/ProveIt.css" type="text/css"?>
+
+<overlay id="ProveItOverlay"
+        xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+        <script type="text/javascript" src="ProveIt.js"/>
+        <script type="text/javascript">
+          
+          // Anonymous function necessary here to ensure proper context.
+
+          window.addEventListener("load", function()
+	  {
+	          com.elclab.proveit.proveitpreload();
+	  }, true);
+          
+          // Works except when sidebar is already open upon startup
+          
+          window.addEventListener("load", function()
+          {
+                  window.setTimeout(function()
+                  {
+                          //com.elclab.proveit.log("Entering anonymous onload function");
+                          if(!com.elclab.proveit.isSidebarOpen())
+                                  com.elclab.proveit.openIfSupportedEditPage();
+                          else
+                          {
+                                  toggleSidebar("viewProveItSidebar");
+                                  com.elclab.proveit.log("Reloading sidebar from firefoxOverlay timeout.");
+                          }
+                  }, 500)
+          }, true); 
+          
+          // Even with the load handler, the timeout of 500 (ms) is necessary to ensure the URL is available.  
+          // This is the lowest timeout that I found reliably works
+
+          //addEventListener("load", loadSidebar, true);
+          
+          // Thanks to openAboutDialog at http://getfirebug.com/developer/api/firebug1.5/symbols/src/content_firebug_chrome.js.html
+         
+          function openProveItAbout()
+          {
+                  openDialog("chrome://mozapps/content/extensions/about.xul", "", "chrome,centerscreen,modal", "urn:mozilla:item:ProveIt@gatech.edu", Components.classes["@mozilla.org/extensions/manager;1"].getService(Components.interfaces["nsIExtensionManager"]).datasource);
+          }
+
+	</script>
+
+	
+	<!-- Doesn't load refbox when tabs readded on startup 
+	
+	Need to double click refbox sometimes
+	-->
+	
+	<statusbar id="status-bar">
+	  <statusbarpanel id="ProveIt-status-bar"
+			  class="closed"
+			  label="ProveIt"
+			  onclick="if(event.button == 0){ toggleSidebar('viewProveItSidebar'); }" 
+			  context="proveit-status-popup"
+			  /> <!-- event.button == 0 - Left click -->
+	  <popupset>
+	    <menupopup id="proveit-status-popup">
+	      <menuitem label="&ProveIt.toggleSidebar;" oncommand="toggleSidebar('viewProveItSidebar');"/>
+	      <menuitem label="&ProveIt.options;" oncommand="window.openDialog('chrome://ProveIt/content/options.xul');"/>
+	      <menuitem label="&ProveIt.homepage;" oncommand="window.open('http://www.cc.gatech.edu/elc/proveit')"/>
+	      <menuitem label="&ProveIt.aboutProveIt;" oncommand="openProveItAbout()"/>
+	    </menupopup>
+
+	  </popupset>
+	</statusbar>
+
+	<menupopup id="viewSidebarMenu" >
+		<menuitem key="key_openProveItSidebar" observes="viewProveItSidebar" />
+	</menupopup>
+	
+	<keyset id="mainKeyset">
+    	<key id="key_openProveItSidebar" command="viewProveItSidebar"
+         	key="&OpenProveIt.commandkey;" 
+         	modifiers="&OpenProveIt.modifierskey;" />
+  	</keyset>
+  
+  <broadcasterset id="mainBroadcasterSet"> 
+    	<broadcaster id="viewProveItSidebar" 
+                 label="&ProveIt.title;"
+                 autoCheck="false"
+                 type="checkbox"
+                 group="sidebar"
+                 sidebarurl="chrome://proveit/content/ProveIt.xul"
+                 sidebartitle="&ProveIt.title;"
+                 oncommand="toggleSidebar('viewProveItSidebar');" />
+  </broadcasterset>
+
+	
+</overlay>

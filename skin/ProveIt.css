@@ -1,0 +1,43 @@
+/* TODO */
+
+richlistitem.badReference
+{
+	/*background-color : #ff0000;*/ 
+	/* Meant to be white on red, but then you can't tell when it's selected.  Apparently, 
+	   selection selector doesn't work here.  So, currently red on default.*/
+	color: #ff0000;	
+	
+}
+
+label.requiredParam
+{
+	color: #ff0000;
+	margin: 0 0 0 10px; 
+	padding: 0;
+	width: 15px;
+}
+
+statusbarpanel.open
+{
+	color: #00FF00
+}
+
+statusbarpanel.closed
+{
+	color: #FF0000
+}
+
+
+/*
+richlistitem.badReference::-moz-selection
+{
+	background-color: #0000ff;
+	color: #ffffff;
+}
+
+richlistitem.badReference::selection
+{
+	background-color: #0000ff;
+	color: #ffffff;
+}
+*/

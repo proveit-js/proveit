@@ -1,0 +1,85 @@
+<?xml version="1.0"?>
+<!--
+    Copyright 2008, 2009
+    
+    Georgia Tech Research Corporation
+    
+    Atlanta, GA 30332-0415
+    
+    ALL RIGHTS RESERVED
+  -->
+<?xml-stylesheet href="chrome://global/skin/global.css" type="text/css"?>
+<?xml-stylesheet href="chrome://proveit/skin/ProveIt.css" type="text/css"?>
+
+<!DOCTYPE page SYSTEM "chrome://proveit/locale/ProveIt.dtd">
+
+
+<page id="ProveIt" title="&ProveIt.title;" 
+	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" onload="com.elclab.proveit.proveitonload()" onunload="com.elclab.proveit.proveitonunload()">
+	<script type="text/javascript" src="ProveIt.js"/>
+	
+	<richlistitem id="prime" hidden="true" align="center">
+		<spacer width="5" />
+		<image src="pencil_10x10.png" class="richitemedit" style="max-height: 10px; max-width: 10px" tooltiptext="&ProveIt.edit;" />
+		<spacer width="5" />
+		<label value="&ProveIt.ibid;" class="richiteminsert" style="max-height: 10px; max-width: 10px" />
+		<label class="richitemlabel" value="" crop="end"/>
+	</richlistitem>
+	<description id="refNameDesc" hidden="true" value="&ProveIt.refName; : "/>
+	<tooltip id="enabled insert tooltip">
+		<label value="&ProveIt.enabledInsert;"/>
+	</tooltip>
+	<tooltip id="disabled insert tooltip">
+		<label value="&ProveIt.disabledInsert;"/>
+	</tooltip>
+	<hbox id="preloadedparamrow" hidden="true">
+		<label class="paramdesc" minwidth="300" flex="1" />
+		<textbox class="paramvalue" minwidth="500" flex="1"/>
+		<button class="remove" tabindex="-1">X</button>
+	</hbox>
+	<hbox id="addedparamrow" class="addedrow" hidden="true">
+		<textbox class="paramname" minwidth="110" flex="1"/>
+		<label value="="/>
+		<textbox class="paramvalue" minwidth="500" flex="1" />
+		<button class="remove" tabindex="-1">X</button>
+	</hbox>
+	<vbox id="dummyCitePane" class="typepane" hidden="true">
+		<hbox pack="center" align="center" flex="1" >
+			<spacer style="margin: 0; padding: 0; width: 25px"/>
+			<label control="citerefname" value="&ProveIt.refName;" tooltiptext="&ProveIt.refNameTooltip;" minwidth="100"/>
+			<textbox id="citerefname" class="refname" />
+			<spacer flex="1" />
+		</hbox>
+		<vbox class="paramlist">
+		</vbox>
+		<hbox class="starexp" style="margin-left: 0px; height: 40px">
+			<label class="requiredParam" value="*"/>			
+			<label class="starexptext" value="&ProveIt.starexp;"/>
+		</hbox>
+	</vbox>	
+	<richlistbox id="refbox" flex="1"/>
+	<!-- <hbox pack="center" > -->
+<!-- 		<label class="plain" value="&ProveIt.markup;" /> -->
+<!-- 		<label id="fulltoggle" class="plain" value="&ProveIt.fullcitation;" style="font-weight: bold" onclick="com.elclab.proveit.flipToggle('full')" /> -->
+<!-- 		<label class="plain" value="|" /> -->
+<!-- 		<label id="nametoggle" class="plain" value="&ProveIt.nameonly;" onclick="com.elclab.proveit.flipToggle('name')"/> -->
+<!-- 	</hbox> -->
+	<spacer height="10" />
+	<button id="addnewitembutton" height="30" oncommand="com.elclab.proveit.openAddCitation();">
+		<image src="toolbar-item-add.png" />
+		<label control="addnewitembutton" value="&ProveIt.addnew;" />
+	</button>
+	<spacer height="10" />
+	<hbox align="end" pack="center" >
+		<spacer width="15" />
+		<label class="plain" value="&ProveIt.Tagstyle;" />
+		<hbox width="65" pack="center">
+			<label id="citetoggle" class="plain" value="{{cite}}" style="font-weight: bold" onclick="com.elclab.proveit.flipToggle('cite')" />
+		</hbox>
+		<label class="plain" value="|" />
+		<hbox width="65" pack="center" >
+			<label id="citationtoggle" class="plain" value="{{Citation}}" onclick="com.elclab.proveit.flipToggle('citation')"/>
+		</hbox>
+	</hbox>
+	<label id ="star" class = "requiredParam" style="display: none;" value="*"/>
+</page>
