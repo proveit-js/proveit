@@ -1,0 +1,126 @@
+/* begin styles just for test page */
+	
+p.fake {
+	font-size: 24px;
+	color: #ccc;
+	}
+
+body {
+	background: beige;
+	}
+
+/* end styles just for test page */
+
+div#proveit {
+	position: fixed;
+	bottom: 60px;
+	right: 20px;
+	z-index: 10000;
+	height: 500px;
+	width: 800px;
+	background: #fff;
+/*	border: 1px solid #666; 
+	font-size: small !important;
+	opacity: 0.3;
+	filter: alpha(opacity=30); // older IE */
+	}
+	
+div#tabs-1, div#tabs-2, div#tabs-3 {
+	height: 470px;
+	}
+.scroll {
+	display: block;
+	overflow: scroll-y;
+	overflow-y: scroll;
+	overflow-x: hidden;
+	}
+
+table {
+	border-collapse: collapse;
+	width: 100%;
+	margin: 0; padding: 0;
+	}
+tr.light td {
+	background-color: #fff;
+	}
+tr.dark td {
+	background-color: #eeeeee;
+	}
+tr.selected td {
+	background-color: #0073EA;
+	color: #fff;
+	}
+tr:hover td {
+	background-color: #FF0084;
+	color: #fff;
+	cursor: pointer;
+	}	
+td {
+	font-size: 12px;
+	/*border: 1px solid #ccc;*/
+	padding: 0.3em;
+	}
+td.author {
+	padding-left: 0.5em;
+	}
+td.year{
+	width: 50px;
+	text-align: center;
+	}
+td.title {}
+td.edit {}
+	td.edit button {
+		width: 20px; height: 20px;
+		}
+td.ibid {}
+	td.ibid button {
+		width: 20px; height: 20px;
+		}
+
+fieldset.inputs {
+	border: 0;
+	margin: 0; padding: 0 1em 0 0;
+	}
+	fieldset.inputs div.input-row {
+		display: block;
+		margin: 0 0 0.8em 0; padding: 0;
+		}
+	fieldset.inputs label {
+		display: block;
+		font-size: 12px;
+		text-transform: none;
+		}
+		fieldset.inputs label.required {
+			font-weight: bold;
+			color: #FF0084;
+			}				
+	fieldset.inputs input.text {
+		width: 95%;
+		font-size: 12px;
+		}
+	fieldset.inputs select {
+		width: 200px;
+		font-size: 12px;
+		}
+	fieldset.inputs button {
+		width: 20px; height: 20px;
+		}
+
+div#add-buttons, div#edit-buttons {
+	margin-top: 15px;
+}
+
+button.right-side {
+	float: right;
+	}
+
+/* jqueryUI class modifications start here */
+
+span.ui-button-icon-primary {
+	margin: 0; padding: 0;
+	}
+		
+span.ui-button-text {
+		font-size: 11px;
+		margin: 0 3px; padding: 0;
+	}
