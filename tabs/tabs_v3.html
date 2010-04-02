@@ -11,8 +11,8 @@
 		google.load("jqueryui", "1");
 		google.setOnLoadCallback(function(){});
 	</script>
-	<script type="text/javascript" src="ProveIt.js"></script>
 	<script type="text/javascript" src="scripts.js"></script>
+	<script type="text/javascript" src="ProveIt.js"></script>
 </head>
 <body>
 
@@ -21,217 +21,205 @@
 <div id="tabs">
 	<h1>ProveIt&trade;<button>minimize</button></h1>
 	<ul>
-		<li><a href="#tabs-1">View (24)</a></li>	
+		<li><a href="#tabs-1">View (<span id="numRefs">0</span>)</a></li>	
 		<li><a href="#tabs-2">Add</a></li>
 		<li><a href="#tabs-3">Edit</a></li>
 	</ul>
 	<div id="tabs-1">
 		<div class="scroll" style="height: 270px; border: 1px solid #dddddd;">
 		<table id="refs">
-			<thead>
-				<tr style="display: none;">
-					<th></th>
-					<th>Author</th>
-					<th>Year</th>
-					<th>Title</th>
-					<th>Edit</th>
-					<th>Ibid.</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr class="dark">
-					<td class="number">1</td>
-					<td class="author">Benkler</td>
-					<td class="year">2006</td>
-					<td class="title" title="The Wealth of Networks: How Social Production Transforms Markets and Freedom">The Wealth of Networks: How Social Production Transforms Markets &hellip;</td>
-					<td class="edit"><button>edit reference</button></td>
-					<td class="ibid"><button>ibid.</button></td>
-				</tr>						
-				<tr class="light">
-					<td class="number">2</td>
-					<td class="author">Bryant et al.</td>
-					<td class="year">2005</td>
-					<td class="title" title="Becoming Wikipedian: transformation of participation in a collaborative online encyclopedia">Becoming Wikipedian: transformation of participation in a  &hellip;</td>
-					<td class="edit"><button>edit reference</button></td>
-					<td class="ibid"><button>ibid.</button></td>
-				</tr>
-				<tr class="dark">
-					<td class="number">3</td>
-					<td class="author">Luther &amp; Bruckman</td>
-					<td class="year">2008</td>
-					<td class="title" title="Leadership in online creative collaboration">Leadership in online creative collaboration</td>
-					<td class="edit"><button>edit reference</button></td>
-					<td class="ibid"><button>ibid.</button></td>
-				</tr>
-				<tr class="light">
-					<td class="number">4</td>
-					<td class="author">Luther et al.</td>
-					<td class="year">2009</td>
-					<td class="title">ProveIt: a new tool for supporting citation in MediaWiki</td>
-					<td class="edit"><button>edit reference</button></td>
-					<td class="ibid"><button>ibid.</button></td>
-				</tr>
-				<tr class="dark selected">
-					<td class="number">5</td>
-					<td class="author">Benkler</td>
-					<td class="year">2006</td>
-					<td class="title" title="The Wealth of Networks: How Social Production Transforms Markets and Freedom">The Wealth of Networks: How Social Production Transforms Markets &hellip;</td>
-					<td class="edit"><button>edit reference</button></td>
-					<td class="ibid"><button>ibid.</button></td>
-				</tr>						
-				<tr class="light">
-					<td class="number">6</td>
-					<td class="author">Bryant et al.</td>
-					<td class="year">2005</td>
-					<td class="title" title="Becoming Wikipedian: transformation of participation in a collaborative online encyclopedia">Becoming Wikipedian: transformation of participation in a  &hellip;</td>
-					<td class="edit"><button>edit reference</button></td>
-					<td class="ibid"><button>ibid.</button></td>
-				</tr>
-				<tr class="dark">
-					<td class="number">7</td>
-					<td class="author">Luther &amp; Bruckman</td>
-					<td class="year">2008</td>
-					<td class="title" title="Leadership in online creative collaboration">Leadership in online creative collaboration</td>
-					<td class="edit"><button>edit reference</button></td>
-					<td class="ibid"><button>ibid.</button></td>
-				</tr>
-				<tr class="light">
-					<td class="number">8</td>
-					<td class="author">Luther et al.</td>
-					<td class="year">2009</td>
-					<td class="title">ProveIt: a new tool for supporting citation in MediaWiki</td>
-					<td class="edit"><button>edit reference</button></td>
-					<td class="ibid"><button>ibid.</button></td>
-				</tr>
-				<tr class="dark">
-					<td class="number">9</td>
-					<td class="author">Benkler</td>
-					<td class="year">2006</td>
-					<td class="title" title="The Wealth of Networks: How Social Production Transforms Markets and Freedom">The Wealth of Networks: How Social Production Transforms Markets &hellip;</td>
-					<td class="edit"><button>edit reference</button></td>
-					<td class="ibid"><button>ibid.</button></td>
-				</tr>						
-				<tr class="light">
-					<td class="number">10</td>
-					<td class="author">Bryant et al.</td>
-					<td class="year">2005</td>
-					<td class="title" title="Becoming Wikipedian: transformation of participation in a collaborative online encyclopedia">Becoming Wikipedian: transformation of participation in a  &hellip;</td>
-					<td class="edit"><button>edit reference</button></td>
-					<td class="ibid"><button>ibid.</button></td>
-				</tr>
-				<tr class="dark">
-					<td class="number">11</td>
-					<td class="author">Luther &amp; Bruckman</td>
-					<td class="year">2008</td>
-					<td class="title" title="Leadership in online creative collaboration">Leadership in online creative collaboration</td>
-					<td class="edit"><button>edit reference</button></td>
-					<td class="ibid"><button>ibid.</button></td>
-				</tr>
-				<tr class="light">
-					<td class="number">12</td>
-					<td class="author">Luther et al.</td>
-					<td class="year">2009</td>
-					<td class="title">ProveIt: a new tool for supporting citation in MediaWiki</td>
-					<td class="edit"><button>edit reference</button></td>
-					<td class="ibid"><button>ibid.</button></td>
-				</tr>
-				<tr class="dark">
-					<td class="number">13</td>
-					<td class="author">Benkler</td>
-					<td class="year">2006</td>
-					<td class="title" title="The Wealth of Networks: How Social Production Transforms Markets and Freedom">The Wealth of Networks: How Social Production Transforms Markets &hellip;</td>
-					<td class="edit"><button>edit reference</button></td>
-					<td class="ibid"><button>ibid.</button></td>
-				</tr>						
-				<tr class="light">
-					<td class="number">14</td>
-					<td class="author">Bryant et al.</td>
-					<td class="year">2005</td>
-					<td class="title" title="Becoming Wikipedian: transformation of participation in a collaborative online encyclopedia">Becoming Wikipedian: transformation of participation in a  &hellip;</td>
-					<td class="edit"><button>edit reference</button></td>
-					<td class="ibid"><button>ibid.</button></td>
-				</tr>
-				<tr class="dark">
-					<td class="number">15</td>
-					<td class="author">Luther &amp; Bruckman</td>
-					<td class="year">2008</td>
-					<td class="title" title="Leadership in online creative collaboration">Leadership in online creative collaboration</td>
-					<td class="edit"><button>edit reference</button></td>
-					<td class="ibid"><button>ibid.</button></td>
-				</tr>
-				<tr class="light">
-					<td class="number">16</td>
-					<td class="author">Luther et al.</td>
-					<td class="year">2009</td>
-					<td class="title">ProveIt: a new tool for supporting citation in MediaWiki</td>
-					<td class="edit"><button>edit reference</button></td>
-					<td class="ibid"><button>ibid.</button></td>
-				</tr>
-				<tr class="dark">
-					<td class="number">17</td>
-					<td class="author">Benkler</td>
-					<td class="year">2006</td>
-					<td class="title" title="The Wealth of Networks: How Social Production Transforms Markets and Freedom">The Wealth of Networks: How Social Production Transforms Markets &hellip;</td>
-					<td class="edit"><button>edit reference</button></td>
-					<td class="ibid"><button>ibid.</button></td>
-				</tr>						
-				<tr class="light">
-					<td class="number">18</td>
-					<td class="author">Bryant et al.</td>
-					<td class="year">2005</td>
-					<td class="title" title="Becoming Wikipedian: transformation of participation in a collaborative online encyclopedia">Becoming Wikipedian: transformation of participation in a  &hellip;</td>
-					<td class="edit"><button>edit reference</button></td>
-					<td class="ibid"><button>ibid.</button></td>
-				</tr>
-				<tr class="dark">
-					<td class="number">19</td>
-					<td class="author">Luther &amp; Bruckman</td>
-					<td class="year">2008</td>
-					<td class="title" title="Leadership in online creative collaboration">Leadership in online creative collaboration</td>
-					<td class="edit"><button>edit reference</button></td>
-					<td class="ibid"><button>ibid.</button></td>
-				</tr>
-				<tr class="light">
-					<td class="number">20</td>
-					<td class="author">Luther et al.</td>
-					<td class="year">2009</td>
-					<td class="title">ProveIt: a new tool for supporting citation in MediaWiki</td>
-					<td class="edit"><button>edit reference</button></td>
-					<td class="ibid"><button>ibid.</button></td>
-				</tr>
-				<tr class="dark">
-					<td class="number">21</td>
-					<td class="author">Benkler</td>
-					<td class="year">2006</td>
-					<td class="title" title="The Wealth of Networks: How Social Production Transforms Markets and Freedom">The Wealth of Networks: How Social Production Transforms Markets &hellip;</td>
-					<td class="edit"><button>edit reference</button></td>
-					<td class="ibid"><button>ibid.</button></td>
-				</tr>						
-				<tr class="light">
-					<td class="number">22</td>
-					<td class="author">Bryant et al.</td>
-					<td class="year">2005</td>
-					<td class="title" title="Becoming Wikipedian: transformation of participation in a collaborative online encyclopedia">Becoming Wikipedian: transformation of participation in a  &hellip;</td>
-					<td class="edit"><button>edit reference</button></td>
-					<td class="ibid"><button>ibid.</button></td>
-				</tr>
-				<tr class="dark">
-					<td class="number">23</td>
-					<td class="author">Luther &amp; Bruckman</td>
-					<td class="year">2008</td>
-					<td class="title" title="Leadership in online creative collaboration">Leadership in online creative collaboration</td>
-					<td class="edit"><button>edit reference</button></td>
-					<td class="ibid"><button>ibid.</button></td>
-				</tr>
-				<tr class="light">
-					<td class="number">24</td>
-					<td class="author">Luther et al.</td>
-					<td class="year">2009</td>
-					<td class="title">ProveIt: a new tool for supporting citation in MediaWiki</td>
-					<td class="edit"><button>edit reference</button></td>
-					<td class="ibid"><button>ibid.</button></td>
-				</tr>
-			</tbody>
+			<tr class="dark">
+				<td class="number">1</td>
+				<td class="author">Benkler</td>
+				<td class="year">2006</td>
+				<td class="title" title="The Wealth of Networks: How Social Production Transforms Markets and Freedom">The Wealth of Networks: How Social Production Transforms Markets &hellip;</td>
+				<td class="edit"><button>edit reference</button></td>
+				<td class="ibid"><button>ibid.</button></td>
+			</tr>						
+			<tr class="light">
+				<td class="number">2</td>
+				<td class="author">Bryant et al.</td>
+				<td class="year">2005</td>
+				<td class="title" title="Becoming Wikipedian: transformation of participation in a collaborative online encyclopedia">Becoming Wikipedian: transformation of participation in a  &hellip;</td>
+				<td class="edit"><button>edit reference</button></td>
+				<td class="ibid"><button>ibid.</button></td>
+			</tr>
+			<tr class="dark">
+				<td class="number">3</td>
+				<td class="author">Luther &amp; Bruckman</td>
+				<td class="year">2008</td>
+				<td class="title" title="Leadership in online creative collaboration">Leadership in online creative collaboration</td>
+				<td class="edit"><button>edit reference</button></td>
+				<td class="ibid"><button>ibid.</button></td>
+			</tr>
+			<tr class="light">
+				<td class="number">4</td>
+				<td class="author">Luther et al.</td>
+				<td class="year">2009</td>
+				<td class="title">ProveIt: a new tool for supporting citation in MediaWiki</td>
+				<td class="edit"><button>edit reference</button></td>
+				<td class="ibid"><button>ibid.</button></td>
+			</tr>
+			<tr class="dark selected">
+				<td class="number">5</td>
+				<td class="author">Benkler</td>
+				<td class="year">2006</td>
+				<td class="title" title="The Wealth of Networks: How Social Production Transforms Markets and Freedom">The Wealth of Networks: How Social Production Transforms Markets &hellip;</td>
+				<td class="edit"><button>edit reference</button></td>
+				<td class="ibid"><button>ibid.</button></td>
+			</tr>						
+			<tr class="light">
+				<td class="number">6</td>
+				<td class="author">Bryant et al.</td>
+				<td class="year">2005</td>
+				<td class="title" title="Becoming Wikipedian: transformation of participation in a collaborative online encyclopedia">Becoming Wikipedian: transformation of participation in a  &hellip;</td>
+				<td class="edit"><button>edit reference</button></td>
+				<td class="ibid"><button>ibid.</button></td>
+			</tr>
+			<tr class="dark">
+				<td class="number">7</td>
+				<td class="author">Luther &amp; Bruckman</td>
+				<td class="year">2008</td>
+				<td class="title" title="Leadership in online creative collaboration">Leadership in online creative collaboration</td>
+				<td class="edit"><button>edit reference</button></td>
+				<td class="ibid"><button>ibid.</button></td>
+			</tr>
+			<tr class="light">
+				<td class="number">8</td>
+				<td class="author">Luther et al.</td>
+				<td class="year">2009</td>
+				<td class="title">ProveIt: a new tool for supporting citation in MediaWiki</td>
+				<td class="edit"><button>edit reference</button></td>
+				<td class="ibid"><button>ibid.</button></td>
+			</tr>
+			<tr class="dark">
+				<td class="number">9</td>
+				<td class="author">Benkler</td>
+				<td class="year">2006</td>
+				<td class="title" title="The Wealth of Networks: How Social Production Transforms Markets and Freedom">The Wealth of Networks: How Social Production Transforms Markets &hellip;</td>
+				<td class="edit"><button>edit reference</button></td>
+				<td class="ibid"><button>ibid.</button></td>
+			</tr>						
+			<tr class="light">
+				<td class="number">10</td>
+				<td class="author">Bryant et al.</td>
+				<td class="year">2005</td>
+				<td class="title" title="Becoming Wikipedian: transformation of participation in a collaborative online encyclopedia">Becoming Wikipedian: transformation of participation in a  &hellip;</td>
+				<td class="edit"><button>edit reference</button></td>
+				<td class="ibid"><button>ibid.</button></td>
+			</tr>
+			<tr class="dark">
+				<td class="number">11</td>
+				<td class="author">Luther &amp; Bruckman</td>
+				<td class="year">2008</td>
+				<td class="title" title="Leadership in online creative collaboration">Leadership in online creative collaboration</td>
+				<td class="edit"><button>edit reference</button></td>
+				<td class="ibid"><button>ibid.</button></td>
+			</tr>
+			<tr class="light">
+				<td class="number">12</td>
+				<td class="author">Luther et al.</td>
+				<td class="year">2009</td>
+				<td class="title">ProveIt: a new tool for supporting citation in MediaWiki</td>
+				<td class="edit"><button>edit reference</button></td>
+				<td class="ibid"><button>ibid.</button></td>
+			</tr>
+			<tr class="dark">
+				<td class="number">13</td>
+				<td class="author">Benkler</td>
+				<td class="year">2006</td>
+				<td class="title" title="The Wealth of Networks: How Social Production Transforms Markets and Freedom">The Wealth of Networks: How Social Production Transforms Markets &hellip;</td>
+				<td class="edit"><button>edit reference</button></td>
+				<td class="ibid"><button>ibid.</button></td>
+			</tr>						
+			<tr class="light">
+				<td class="number">14</td>
+				<td class="author">Bryant et al.</td>
+				<td class="year">2005</td>
+				<td class="title" title="Becoming Wikipedian: transformation of participation in a collaborative online encyclopedia">Becoming Wikipedian: transformation of participation in a  &hellip;</td>
+				<td class="edit"><button>edit reference</button></td>
+				<td class="ibid"><button>ibid.</button></td>
+			</tr>
+			<tr class="dark">
+				<td class="number">15</td>
+				<td class="author">Luther &amp; Bruckman</td>
+				<td class="year">2008</td>
+				<td class="title" title="Leadership in online creative collaboration">Leadership in online creative collaboration</td>
+				<td class="edit"><button>edit reference</button></td>
+				<td class="ibid"><button>ibid.</button></td>
+			</tr>
+			<tr class="light">
+				<td class="number">16</td>
+				<td class="author">Luther et al.</td>
+				<td class="year">2009</td>
+				<td class="title">ProveIt: a new tool for supporting citation in MediaWiki</td>
+				<td class="edit"><button>edit reference</button></td>
+				<td class="ibid"><button>ibid.</button></td>
+			</tr>
+			<tr class="dark">
+				<td class="number">17</td>
+				<td class="author">Benkler</td>
+				<td class="year">2006</td>
+				<td class="title" title="The Wealth of Networks: How Social Production Transforms Markets and Freedom">The Wealth of Networks: How Social Production Transforms Markets &hellip;</td>
+				<td class="edit"><button>edit reference</button></td>
+				<td class="ibid"><button>ibid.</button></td>
+			</tr>						
+			<tr class="light">
+				<td class="number">18</td>
+				<td class="author">Bryant et al.</td>
+				<td class="year">2005</td>
+				<td class="title" title="Becoming Wikipedian: transformation of participation in a collaborative online encyclopedia">Becoming Wikipedian: transformation of participation in a  &hellip;</td>
+				<td class="edit"><button>edit reference</button></td>
+				<td class="ibid"><button>ibid.</button></td>
+			</tr>
+			<tr class="dark">
+				<td class="number">19</td>
+				<td class="author">Luther &amp; Bruckman</td>
+				<td class="year">2008</td>
+				<td class="title" title="Leadership in online creative collaboration">Leadership in online creative collaboration</td>
+				<td class="edit"><button>edit reference</button></td>
+				<td class="ibid"><button>ibid.</button></td>
+			</tr>
+			<tr class="light">
+				<td class="number">20</td>
+				<td class="author">Luther et al.</td>
+				<td class="year">2009</td>
+				<td class="title">ProveIt: a new tool for supporting citation in MediaWiki</td>
+				<td class="edit"><button>edit reference</button></td>
+				<td class="ibid"><button>ibid.</button></td>
+			</tr>
+			<tr class="dark">
+				<td class="number">21</td>
+				<td class="author">Benkler</td>
+				<td class="year">2006</td>
+				<td class="title" title="The Wealth of Networks: How Social Production Transforms Markets and Freedom">The Wealth of Networks: How Social Production Transforms Markets &hellip;</td>
+				<td class="edit"><button>edit reference</button></td>
+				<td class="ibid"><button>ibid.</button></td>
+			</tr>						
+			<tr class="light">
+				<td class="number">22</td>
+				<td class="author">Bryant et al.</td>
+				<td class="year">2005</td>
+				<td class="title" title="Becoming Wikipedian: transformation of participation in a collaborative online encyclopedia">Becoming Wikipedian: transformation of participation in a  &hellip;</td>
+				<td class="edit"><button>edit reference</button></td>
+				<td class="ibid"><button>ibid.</button></td>
+			</tr>
+			<tr class="dark">
+				<td class="number">23</td>
+				<td class="author">Luther &amp; Bruckman</td>
+				<td class="year">2008</td>
+				<td class="title" title="Leadership in online creative collaboration">Leadership in online creative collaboration</td>
+				<td class="edit"><button>edit reference</button></td>
+				<td class="ibid"><button>ibid.</button></td>
+			</tr>
+			<tr class="light">
+				<td class="number">24</td>
+				<td class="author">Luther et al.</td>
+				<td class="year">2009</td>
+				<td class="title">ProveIt: a new tool for supporting citation in MediaWiki</td>
+				<td class="edit"><button>edit reference</button></td>
+				<td class="ibid"><button>ibid.</button></td>
+			</tr>
 		</table>	
 		</div>
 	</div><!-- end tabs-1 -->

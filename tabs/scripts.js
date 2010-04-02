@@ -1,7 +1,7 @@
 $(function() {
 	// set up tabs
 	$("#tabs").tabs({
-		selected: 1
+		selected: 0
 	});
 
 	// add buttons
@@ -38,7 +38,7 @@ $(function() {
 	// delete field button
 	$("div.input-row button").button({
 		icons: {
-			primary: 'ui-icon-close',
+			primary: 'ui-icon-close'
 		},
 		text: false
 	});	
@@ -53,9 +53,27 @@ $(function() {
 	
 	$("td.ibid button").button({
 		icons: {
-			primary: 'ui-icon-arrowthick-1-e',
+			primary: 'ui-icon-arrowthick-1-e'
 		},
 		text: false
 	});
+	
+	// minimize
+	$("h1 button").button({
+		icons: {
+			primary: 'ui-icon-triangle-1-s'
+		},
+		text: false
+	});
+	
+	// show pointers
+	// $("td.number button").button({
+		// icons: {
+			// primary: 'ui-icon-squaresmall-plus'
+		// },
+		// text: false
+	// });
+	
+	proveit.proveitonload();
 
 });

@@ -1,22 +1,10 @@
-/* begin styles just for test page */
-	
-p.fake {
-	font-size: 24px;
-	color: #ccc;
-	}
-
-body {
-	background: beige;
-	}
-
-/* end styles just for test page */
 
 div#proveit {
 	position: fixed;
 	bottom: 60px;
 	right: 20px;
 	z-index: 10000;
-	height: 500px;
+	height: 300px;
 	width: 800px;
 	background: #fff;
 /*	border: 1px solid #666; 
@@ -24,9 +12,23 @@ div#proveit {
 	opacity: 0.3;
 	filter: alpha(opacity=30); // older IE */
 	}
+
+div#proveit h1 {
+	float: right;
+	width: 50%;
+	text-align: right;
+	font-size: 18px;
+	}
+	div#proveit h1 span {
+		font-weight: normal;
+		}
+	div#proveit h1 button {
+		width: 20px; height: 20px;
+		margin: 0 10px 0 30px;
+		}
 	
 div#tabs-1, div#tabs-2, div#tabs-3 {
-	height: 470px;
+	height: 270px;
 	}
 .scroll {
 	display: block;
@@ -53,12 +55,18 @@ tr.selected td {
 tr:hover td {
 	background-color: #FF0084;
 	color: #fff;
-	cursor: pointer;
+	/*cursor: pointer;*/
 	}	
 td {
 	font-size: 12px;
 	/*border: 1px solid #ccc;*/
 	padding: 0.3em;
+	}
+td.number {
+	vertical-align: middle;
+	font-size: 11px;
+	color: #666;
+	text-align: right;
 	}
 td.author {
 	padding-left: 0.5em;
@@ -72,7 +80,9 @@ td.edit {}
 	td.edit button {
 		width: 20px; height: 20px;
 		}
-td.ibid {}
+td.ibid {
+	display: none;
+	}
 	td.ibid button {
 		width: 20px; height: 20px;
 		}
