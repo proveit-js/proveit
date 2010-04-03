@@ -1454,15 +1454,14 @@ var proveit = {
 
 		var refbox = this.getRefbox();
 
-		var newchild = $('<tr><td class="number"></td><td class="author"></td><td class="year"></td><td class="title"></td></tr>');
-		$(newchild).addClass('light'); // TODO: needs to alternate somehow
+		var newchild = $('<tr><td class="number"></td><td class="author"></td><td class="year"></td><td class="title"></td><td class="edit"><button>edit</button></td></tr>');
 
 		//var newchild = this.getSidebarDoc().getElementById("prime").cloneNode(true);
 		//newchild.id = "";
 		if(!ref.isValid())
 		{
 			// Flag as invalid.
-			$(newchild).addClass('badReference');
+			$(newchild).addClass('invalid');
 		}
 		// grab the nodes that need changed out of it
 		//var newlabel = newchild.getElementsByClassName("richitemlabel")[0];
@@ -1488,8 +1487,14 @@ var proveit = {
 		//tooltip += ref.getLabel();
 		//newchild.setAttribute("tooltiptext", tooltip);
 		
-		var title = ref.params['title'];
-		var shortTitle = this.truncateTitle(title);
+		var title = '';
+		var shortTitle = '';
+		
+		if(ref.params['title'] != null)
+		{
+			title = ref.params['title'];
+			shortTitle = this.truncateTitle(title);
+		}
 		
 		$('td.title', newchild).text(shortTitle);
 		$('td.title', newchild).attr('title', title);

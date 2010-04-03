@@ -1,11 +1,14 @@
 $(function() {
+	
+	proveit.proveitonload();
+
 	// set up tabs
 	$("#tabs").tabs({
 		selected: 0
 	});
 
-	// add buttons
-	$("div#add-buttons button:first").button({
+	// add panel buttons
+	$("#add-buttons button:first").button({
 		icons: {
 			primary: 'ui-icon-circle-plus'
 		}
@@ -20,8 +23,15 @@ $(function() {
 		}
 	});
 	
-	// edit buttons
-	$("div#edit-buttons button:first").button({
+	// cancel buttons
+	$("button.cancel").click(
+		function() {
+			$("#tabs").tabs( { selected: 0 } );
+		}
+	);	
+	
+	// edit panel buttons
+	$("#edit-buttons button:first").button({
 		icons: {
 			primary: 'ui-icon-circle-plus'
 		}
@@ -43,7 +53,7 @@ $(function() {
 		text: false
 	});	
 	
-	// view buttons
+	// edit buttons
 	$("td.edit button").button({
 		icons: {
 			primary: 'ui-icon-pencil'
@@ -51,6 +61,18 @@ $(function() {
 		text: false
 	});
 	
+	// make edit buttons work
+	$("button", "td.edit").each(
+		function(index) {
+			$(this).click (
+				function () {
+					$("#tabs").tabs( { selected: 2 } );
+				}
+			);
+		}
+	);
+	
+	// ibid buttons
 	$("td.ibid button").button({
 		icons: {
 			primary: 'ui-icon-arrowthick-1-e'
@@ -86,7 +108,17 @@ $(function() {
 		// },
 		// text: false
 	// });
-	
-	proveit.proveitonload();
 
+	$("#refs tr").click(
+		function() {
+			$("#refs tr").removeClass('selected');
+			$(this).addClass('selected');
+		}
+	);
+	
+	$("#refs tr").eq(0).click(); // select first item in list
+
+	// alternate row colors
+	$("#refs tr:even").addClass('light');
+	$("#refs tr:odd").addClass('dark');
 });

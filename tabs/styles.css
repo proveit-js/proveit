@@ -29,12 +29,14 @@ div#proveit h1 {
 	
 div#tabs-1, div#tabs-2, div#tabs-3 {
 	height: 270px;
+	padding: 10px 5px;
 	}
 .scroll {
 	display: block;
 	overflow: scroll-y;
 	overflow-y: scroll;
 	overflow-x: hidden;
+	border: 1px solid #dddddd !important;
 	}
 
 table {
@@ -47,6 +49,9 @@ tr.light td {
 	}
 tr.dark td {
 	background-color: #eeeeee;
+	}
+tr.invalid td {
+	color: red;
 	}
 tr.selected td {
 	background-color: #0073EA;
@@ -99,13 +104,17 @@ fieldset.inputs {
 		display: block;
 		font-size: 12px;
 		text-transform: none;
+		float: left;
+		width: 20%;
+		text-align: left;
+		padding-top:5px;
 		}
 		fieldset.inputs label.required {
 			font-weight: bold;
 			color: #FF0084;
 			}				
 	fieldset.inputs input.text {
-		width: 95%;
+		width: 75%;
 		font-size: 12px;
 		}
 	fieldset.inputs select {
