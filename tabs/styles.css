@@ -1,10 +1,10 @@
 
 div#proveit {
 	position: fixed;
-	bottom: 60px;
+	bottom: 0px;
 	right: 20px;
 	z-index: 10000;
-	height: 300px;
+	/*height: 300px;*/
 	width: 800px;
 	background: #fff;
 /*	border: 1px solid #666; 

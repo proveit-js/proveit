@@ -12,6 +12,7 @@ if (proveit)
 	throw new Error("com.elclab.proveit already exists");
 
 var proveit = {
+	HALF_EDIT_BOX_HEIGHT : 200,
 	// KNOWN_ACTIONS : ["edit", "submit"],
 
 	// KNOWN_NAMESPACES : [""],
@@ -27,7 +28,7 @@ var proveit = {
 	// // Convenience log function
 	log : function(str)
 	{
-		console.log("[ProveIt] " + str);
+		//console.log("[ProveIt] " + str);
 		//this.consoleService.logStringMessage("[ProveIt] " + str);
 	},
 
@@ -111,11 +112,12 @@ var proveit = {
 	// Highlights a given string in the MediaWiki edit box.
 	highlightTargetString : function(targetStr)
 	{
+		//alert('target str: ' + targetStr);
 		this.log("Entering highlightTargetString");
 		var mwBox = this.getMWEditBox();
 		var editTop = this.getPosition(this.getEditForm()).top;
-		content.window.scroll(0, editTop);
-		var origText = mwBox.value;
+		//content.window.scroll(0, editTop);
+		var origText = $(mwBox).val();
 		var startInd = origText.indexOf(targetStr);
 		if(startInd == -1)
 		{
@@ -123,7 +125,7 @@ var proveit = {
 			return false;
 		}
 		var endInd = startInd + targetStr.length;
-		mwBox.value = origText.substring(0, startInd);
+		$(mwBox).val(origText.substring(0, startInd));
 		mwBox.scrollTop = 1000000; //Larger than any real textarea (hopefully)
 		var curScrollTop = mwBox.scrollTop;
 		mwBox.value += origText.substring(startInd);
@@ -142,14 +144,14 @@ var proveit = {
 	{
 		//var contentDoc = top.window.content.document;
 		//return contentDoc.getElementById('wikEdTextarea') || contentDoc.getElementById('wpTextbox1');
-		return $("#editbox");
+		return $("#editbox")[0];
 	},
 
 	// Returns edit form DOM object
 
 	getEditForm : function()
 	{
-		return $("#editbox");
+		return $("#editbox")[0];
 	},
 
 	// Runs a given function on submission of edit form
@@ -1502,6 +1504,7 @@ var proveit = {
 		// {
 			// thisproveit.highlightTargetString(ref.orig);
 		// }, false);
+		//alert(ref.orig);
 		$(newchild).click(function() { thisproveit.highlightTargetString(ref.orig); });
 		
 		// double click event handler
@@ -1580,7 +1583,7 @@ var proveit = {
 	
 	truncateTitle : function(title)
 	{
-		var MAX_LENGTH = 70;
+		var MAX_LENGTH = 75;
 		var truncated = title;
 		if(title.length > MAX_LENGTH)
 		{

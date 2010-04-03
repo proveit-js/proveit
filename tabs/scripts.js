@@ -66,6 +66,19 @@ $(function() {
 		text: false
 	});
 	
+	$("h1 button").toggle(
+		function() {
+			$("#tabs-1, #tabs-2, #tabs-3").hide();
+			$("h1 button").button("option", "icons", { primary: 'ui-icon-triangle-1-n' } );
+			//$("h1 button").refresh();
+		},
+		function() {
+			$("#tabs-1, #tabs-2, #tabs-3").show();
+			$("h1 button").button("option", "icons", { primary: 'ui-icon-triangle-1-s' } );
+			//$("h1 button").refresh();
+		}
+	);
+	
 	// show pointers
 	// $("td.number button").button({
 		// icons: {
