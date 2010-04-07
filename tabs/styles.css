@@ -80,7 +80,9 @@ td.year{
 	width: 50px;
 	text-align: center;
 	}
-td.title {}
+td.title {
+	width: 525px;
+	}
 td.edit {}
 	td.edit button {
 		width: 20px; height: 20px;
@@ -99,6 +101,9 @@ fieldset.inputs {
 	fieldset.inputs div.input-row {
 		display: block;
 		margin: 0 0 0.8em 0; padding: 0;
+		}
+	fieldset.inputs div.hidden{
+		display: none;
 		}
 	fieldset.inputs label {
 		display: block;

@@ -4,7 +4,26 @@ $(function() {
 
 	// set up tabs
 	$("#tabs").tabs({
-		selected: 0
+		selected: 0,
+		select: function(event,ui)
+		{
+			switch(ui.index)
+			{
+				case 1: // view
+					//$('tr.selected').focus();
+					break;
+				
+				case 2: // add
+					break;
+				
+				case 3: // edit
+					// proveit.updateEditPopup();
+					break;
+				
+				default:
+					// nothing
+			}
+		}
 	});
 
 	// add panel buttons
@@ -111,10 +130,11 @@ $(function() {
 
 	$("#refs tr").click(
 		function() {
-			$("#refs tr").removeClass('selected');
-			$(this).addClass('selected');
+			proveit.selectRow(this);
 		}
 	);
+	
+
 	
 	$("#refs tr").eq(0).click(); // select first item in list
 

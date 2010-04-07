@@ -17,13 +17,13 @@ var proveit = {
 
 	// KNOWN_NAMESPACES : [""],
 
-	// LANG : "en", // currently used only for descriptions.  This could be preference-controlled, instead of hard-coded.
+	LANG : "en", // currently used only for descriptions.  This could be preference-controlled, instead of hard-coded.
 
 	// //Text before param name (e.g. url, title, etc.) in creation box, to avoid collisions with unrelated ids.
-	// NEW_PARAM_PREFIX : "newparam",
+	NEW_PARAM_PREFIX : "newparam",
 
 	// //Text before param name (e.g. url, title, etc.) in edit box, to avoid collisions with unrelated ids.
-	// EDIT_PARAM_PREFIX : "editparam",
+	EDIT_PARAM_PREFIX : "editparam",
 
 	// // Convenience log function
 	log : function(str)
@@ -435,22 +435,22 @@ var proveit = {
 	 * Updates the edit window (popup that appears when you click pencil icon).
 	 * Moved from doSelect/dispSelect
 	 */
-	updateEditPopup : function(editWin, ref)
+	updateEditPopup : function(ref)
 	{
 		this.log("Entering updateEditPopup.");
-		var editlist = editWin.document.getElementById("editlist");
+		// var editlist = editWin.document.getElementById("editlist");
 
-		editWin.document.getElementById("editlabel").value = ref.getEditLabel();
+		// editWin.document.getElementById("editlabel").value = ref.getEditLabel();
 
-		var refNameValue = editWin.document.getElementById("editrefname");
-		if(ref.name)
-		{
-			refNameValue.value = ref.name;
-		}
-		else
-		{
-			refNameValue.value = "";
-		}
+		// var refNameValue = editWin.document.getElementById("editrefname");
+		// if(ref.name)
+		// {
+			// refNameValue.value = ref.name;
+		// }
+		// else
+		// {
+			// refNameValue.value = "";
+		// }
 
 		// Don't contaminate actual object with junk params.
 		var tempParams = {};
@@ -494,14 +494,16 @@ var proveit = {
 
 		   Javascript does destructive sorting, which in this case, is convenient...
 		*/
+		
+		$('div:not(.hidden)', '#edit-fields').remove(); // clear all fields in the edit box (except the hidden ones)
 
 		for(var i = 0; i < paramNames.length; i++)
 		{
 			//this.log("Calling addPopupRow on tempParams." + item);
 			//this.log("i: " + i + ", paramNames[i]: " + paramNames[i]);
-			this.addPopupRow(editWin, tempParams, ref.getDescriptions(), paramNames[i], required[paramNames[i]], true);
+			this.addPopupRow(tempParams, ref.getDescriptions(), paramNames[i], required[paramNames[i]], true);
 		}
-		this.sizeAndCenter(editWin);
+		//this.sizeAndCenter(editWin);
 	},
 
 	/**
@@ -513,7 +515,7 @@ var proveit = {
 	 * @param req true if current param name is required, otherwise not required.
 	 * @param fieldType true for label, false for textbox.
 	 */
-	addPopupRow : function(rootWin, list, descs, item, req, fieldType)
+	addPopupRow : function(list, descs, item, req, fieldType)
 	{
 		/*
 		this.log("Entering addPopupRow.");
@@ -522,25 +524,25 @@ var proveit = {
 		this.log("fieldType: " + fieldType);
 		 */
 		var id = fieldType ? "preloadedparamrow" : "addedparamrow";
-		var newline = this.getSidebarDoc().getElementById(id).cloneNode(true);
-		newline.id = "";
-		this.activateRemove(newline);
-		var paramName = newline.getElementsByClassName("paramdesc")[0];
-		var paramValue = newline.getElementsByClassName("paramvalue")[0];
+		var newline = $('#'+id).clone(); // clone the hidden row
+		$(newline).attr('id',''); // clear the ID (can't have two elements with same ID)
+		//this.activateRemove(newline);
+		var paramName = $('.paramdesc', newline).eq(0);
+		var paramValue = $('.paramvalue', newline).eq(0);
 
-		newline.hidden = false;
-		rootWin.document.getElementsByClassName("paramlist")[0].appendChild(newline);
-
-		var star = this.getSidebarDoc().getElementById("star").cloneNode(true);
-		star.id = "";
-		star.style.display = "-moz-box"; // back to default display prop.
-		star.style.visibility = (req ? "visible" : "hidden"); // Star will appear if field is required.
-		newline.insertBefore(star, newline.firstChild);
-
-		if(fieldType)
+		$(newline).removeClass('hidden'); // unhide the new row
+		$('#edit-fields').append(newline);
+		
+		if(req) // if field is required...
 		{
-			paramName.setAttribute("control", this.EDIT_PARAM_PREFIX + item);
-			paramValue.id = this.EDIT_PARAM_PREFIX + item;
+			$(paramName).addClass('required'); // visual indicator that label is required
+			$('button', newline).eq(0).remove(); // don't let people remove required fields
+		}
+
+		if(fieldType) // the description/name is a label (not a textbox)
+		{
+			//paramName.setAttribute("control", this.EDIT_PARAM_PREFIX + item);
+			//$(paramValue).attr('id',this.EDIT_PARAM_PREFIX + item);
 
 			var desc = descs[item];
 			if(!desc)
@@ -548,11 +550,11 @@ var proveit = {
 				this.log("Undefined description for param: " + item + ".  Using directly as description.");
 				desc = item;
 			}
-			paramName.setAttribute("value", desc);
-			paramName.setAttribute("tooltiptext", item);
-			paramValue.setAttribute("value", list[item]);
+			$(paramName).text(desc);
+			$(paramName).attr('title',item);
+			$(paramValue).val(list[item]);
 		}
-		else
+		else // it's a textbox
 		{
 			this.sizeAndCenter(rootWin);
 		}
@@ -842,7 +844,7 @@ var proveit = {
 		this.getDescriptions = function()
 		{
 			//this could be made Cite-specific if needed.
-			return descriptions[com.elclab.proveit.LANG];
+			return descriptions[proveit.LANG];
 		};
 
 		// Returns true if this object is valid, false otherwise.
@@ -1338,13 +1340,13 @@ var proveit = {
 
 	activateRemove : function(row)
 	{
-		var thisproveit = this;
-		row.getElementsByClassName("remove")[0].addEventListener("command", function()
-		{
-			var win = row.ownerDocument.defaultView;
-			row.parentNode.removeChild(row);
-			thisproveit.sizeAndCenter(win);
-		}, false); // Activate remove button
+		// var thisproveit = this;
+		// row.getElementsByClassName("remove")[0].addEventListener("command", function()
+		// {
+			// var win = row.ownerDocument.defaultView;
+			// row.parentNode.removeChild(row);
+			// thisproveit.sizeAndCenter(win);
+		// }, false); // Activate remove button
 	},
 
 	/**
@@ -1498,10 +1500,38 @@ var proveit = {
 		
 		$('td.title', newchild).text(shortTitle);
 		$('td.title', newchild).attr('title', title);
-				
-		$('td.year', newchild).text(ref.params['year']);
+			
+		// deal with variations of date info
+		var formattedYear = '';
 		
-		$('td.author', newchild).text(ref.params['last']);
+		if(ref.params['year'])
+			formattedYear = ref.params['year'];
+		else if (ref.params['date'])
+		{
+			var year = ref.params['date'].substr(0,4); // use just the year
+			if( (year.substr(0,1) == '1') || (year.substr(0,1) == '2') ) // rough check of year validity
+				formattedYear = year;
+		}
+		
+		$('td.year', newchild).text(formattedYear);
+		
+		// deal with variations of author info
+		var formattedAuthor = '';
+		
+		if(ref.params['author'])
+			formattedAuthor = ref.params['author'];
+		else if (ref.params['last'])
+		{
+			// if(ref.params['first'])
+				// formattedAuthor = ref.params['last'] + ', ' + ref.params['first'];
+			// else
+				formattedAuthor = ref.params['last'];
+		}
+		
+		if(ref.params['coauthors'] || ref.params['last2'])
+			formattedAuthor += ' <i>et al.</i>';
+		
+		$('td.author', newchild).html(formattedAuthor);
 
 		// single click event handler
 		
@@ -1515,11 +1545,14 @@ var proveit = {
 		// double click event handler
 		
 		var doEdit = function() {
-			thisproveit.getRefbox().selectItem(newchild);
-			var selectedIndex = thisproveit.getRefbox().selectedIndex;
-			var winData = {"proveit": thisproveit, "ref": ref};
-			window.openDialog("edit_dialog.xul", "edit dialog", thisproveit.DIALOG_FEATURES, winData);
-			thisproveit.getRefbox().selectedIndex = selectedIndex;
+			thisproveit.selectRow(newchild);
+			$("#tabs").tabs( { selected: 2 } );
+			thisproveit.updateEditPopup(ref);
+			//var selectedIndex = thisproveit.getRefbox().selectedIndex;
+			//var winData = {"proveit": thisproveit, "ref": ref};
+			//selectRow(newchild);
+			//window.openDialog("edit_dialog.xul", "edit dialog", thisproveit.DIALOG_FEATURES, winData);
+			//thisproveit.getRefbox().selectedIndex = selectedIndex;
 		};		
 
 		$(newchild).dblclick(doEdit);
@@ -1612,6 +1645,12 @@ var proveit = {
 	{
 		var refbox = this.getRefbox();
 		$(refbox).append(this.makeRefboxElement(ref));
+	},
+	
+	selectRow : function(row)
+	{
+		$("#refs tr").removeClass('selected');
+		$(row).addClass('selected');	
 	}
 };
 
