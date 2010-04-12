@@ -9,7 +9,7 @@
  */
 
 if (proveit)
-	throw new Error("com.elclab.proveit already exists");
+	throw new Error("proveit already exists");
 
 var proveit = {
 	HALF_EDIT_BOX_HEIGHT : 200,
@@ -219,12 +219,6 @@ var proveit = {
 	// Runs when we actually want to load the sidebar
 	proveitonload : function() {
 		this.log("Entering proveitonload");
-		// this.prefs = Components.classes["@mozilla.org/preferences-service;1"]
-			// .getService(Components.interfaces.nsIPrefService)
-			// .getBranch("com.elclab.proveit.");
-		// this.prefs.QueryInterface(Components.interfaces.nsIPrefBranch2);
-		// this.prefs.addObserver("", this, false);
-		// this.shouldAddSummary = this.prefs.getBoolPref("shouldAddSummary");
 		//this.log("this.shouldAddSummary: " + this.shouldAddSummary);
 
 		this.summaryActionAdded = false;
@@ -234,34 +228,12 @@ var proveit = {
 			this.log("Calling scanRef from proveitonload.");
 			this.scanRef();
 		}
-
-		// window.QueryInterface(Components.interfaces.nsIInterfaceRequestor)
-			// .getInterface(Components.interfaces.nsIWebNavigation)
-			// .QueryInterface(Components.interfaces.nsIDocShellTreeItem)
-			// .rootTreeItem
-			// .QueryInterface(Components.interfaces.nsIInterfaceRequestor)
-			// .getInterface(Components.interfaces.nsIDOMWindow).document.getElementById("ProveIt-status-bar").className = "open";
-
 		return true;
 	},
 
 	// Runs when the sidebar is being unloaded.
 	proveitonunload : function() {
 		this.log("Entering proveitunload");
-		if(this.prefs)
-		{
-			this.prefs.removeObserver("", com.elclab.proveit);
-		}
-
-		window.QueryInterface(Components.interfaces.nsIInterfaceRequestor)
-			.getInterface(Components.interfaces.nsIWebNavigation)
-			.QueryInterface(Components.interfaces.nsIDocShellTreeItem)
-			.rootTreeItem
-			.QueryInterface(Components.interfaces.nsIInterfaceRequestor)
-			.getInterface(Components.interfaces.nsIDOMWindow).document.getElementById("ProveIt-status-bar").className = "closed";
-
-		//top.getBrowser().removeProgressListener(this.sendalert);
-		//this.isSidebarOpenBool = false;
 	},
 
 	/*
@@ -367,11 +339,6 @@ var proveit = {
 			//this.log("item: " + i);
 			var paramRow = paramBoxes[i];
 			var valueTextbox = paramRow.getElementsByClassName("paramvalue")[0];
-			if(valueTextbox.wrappedJSObject)
-			{
-				valueTextbox = valueTextbox.wrappedJSObject;
-				this.log("citationObjFromEditPopup: valueTextbox (after unwrapping): " + valueTextbox);
-			}
 			if(paramRow.className == "addedrow") // Added with "Add another field"
 			{
 				paramName = paramRow.getElementsByClassName("paramname")[0].value.trim();
@@ -541,10 +508,6 @@ var proveit = {
 			$(paramName).text(desc);
 			$(paramName).attr('title',item);
 			$(paramValue).val(list[item]);
-		}
-		else // it's a textbox
-		{
-			this.sizeAndCenter(rootWin);
 		}
 	},
 
@@ -724,7 +687,7 @@ var proveit = {
 
 		/* Used to map between parameter name and human-readable.  It can be
 		 * internationalized easily.  Add descriptions.xx , where xx is
-		 * the ISO 639-1 code for a language, then set com.elclab.proveit.LANG to "xx"
+		 * the ISO 639-1 code for a language, then set proveit.LANG to "xx"
 		 * to use the new descriptions.
 		 */
 
@@ -889,7 +852,7 @@ var proveit = {
 		 */
 		this.getInsertionText = function(full)
 		{
-			com.elclab.proveit.log("getInsertionText");
+			proveit.log("getInsertionText");
 			if(full)
 			{
 				return this.toString();
@@ -914,7 +877,7 @@ var proveit = {
 		 */
 		this.updateInText = function()
 		{
-			var txtarea = com.elclab.proveit.getMWEditBox();
+			var txtarea = proveit.getMWEditBox();
 
 			if (!txtarea || txtarea == null)
 				return;
@@ -936,7 +899,7 @@ var proveit = {
 			this.orig = this.toString();
 			this.save = true;
 
-			com.elclab.proveit.highlightTargetString(this.toString());
+			proveit.highlightTargetString(this.toString());
 		};
 
 		// label used in heading of edit box
@@ -1146,7 +1109,7 @@ var proveit = {
 	 */
 
 	Citation : function(argObj) {
-		com.elclab.proveit.AbstractCitation.call(this, argObj);
+		proveit.AbstractCitation.call(this, argObj);
 
 		// None currently required;
 		var requiredParams = {};
@@ -1427,7 +1390,6 @@ var proveit = {
 		}
 		genPane.hidden = false;
 		citePanes.insertBefore(genPane, citePanes.firstChild);
-		this.sizeAndCenter(menu.ownerDocument.defaultView);
 		this.log("Exiting changeCite");
 	},
 
