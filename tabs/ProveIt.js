@@ -28,7 +28,7 @@ var proveit = {
 	// // Convenience log function
 	log : function(str)
 	{
-		//console.log("[ProveIt] " + str);
+		console.log("[ProveIt] " + str);
 		//this.consoleService.logStringMessage("[ProveIt] " + str);
 	},
 
@@ -89,7 +89,7 @@ var proveit = {
 	// Convenience function.   Returns the refbox element.
 	getRefbox : function()
 	{
-		//return this.getSidebarDoc().getElementById("refbox");
+		//return document.getElementById("refbox");
 		return $("#refs");
 	},
 
@@ -112,8 +112,7 @@ var proveit = {
 	// Highlights a given string in the MediaWiki edit box.
 	highlightTargetString : function(targetStr)
 	{
-		//alert('target str: ' + targetStr);
-		this.log("Entering highlightTargetString");
+		//this.log("Entering highlightTargetString");
 		var mwBox = this.getMWEditBox();
 		var editTop = this.getPosition(this.getEditForm()).top;
 		//content.window.scroll(0, editTop);
@@ -135,7 +134,7 @@ var proveit = {
 		}
 		mwBox.focus();
 		mwBox.setSelectionRange(startInd, endInd);
-		this.log("Exiting highlightTargetString");
+		//this.log("Exiting highlightTargetString");
 		return true;
 	},
 
@@ -517,8 +516,8 @@ var proveit = {
 	 */
 	addPopupRow : function(list, descs, item, req, fieldType)
 	{
-		/*
 		this.log("Entering addPopupRow.");
+		/*
 		this.log("item: " + item);
 		this.log("req: " + req);
 		this.log("fieldType: " + fieldType);
@@ -1363,7 +1362,7 @@ var proveit = {
 		this.clearCitePanes(citePanes);
 		var newCiteType = menu.value;
 
-		var genPane = this.getSidebarDoc().getElementById("dummyCitePane").cloneNode(true);
+		var genPane = document.getElementById("dummyCitePane").cloneNode(true);
 		genPane.id = newCiteType;
 
 		// Somewhat hackish.  What's a better way?
@@ -1423,7 +1422,7 @@ var proveit = {
 			{
 				// Throwing an error here doesn't make sense if user-added fields can be copied over.
 				// throw new Error("Undefined description for param: " + param);
-				paramBox = this.getSidebarDoc().getElementById("addedparamrow").cloneNode(true);
+				paramBox = document.getElementById("addedparamrow").cloneNode(true);
 				var nameTextbox = paramBox.getElementsByClassName("paramname")[0];
 				nameTextbox.setAttribute("value", param);
 				paramBox.insertBefore(star, nameTextbox);
@@ -1451,14 +1450,14 @@ var proveit = {
 	 */
 	makeRefboxElement : function(ref)
 	{
-		this.log("Entering makeRefboxElement.");
+		//this.log("Entering makeRefboxElement.");
 		var refName = ref.name; //may be null or blank
 
 		var refbox = this.getRefbox();
 
 		var newchild = $('<tr><td class="number"></td><td class="author"></td><td class="year"></td><td class="title"></td><td class="edit"><button>edit</button></td></tr>');
 
-		//var newchild = this.getSidebarDoc().getElementById("prime").cloneNode(true);
+		//var newchild = document.getElementById("prime").cloneNode(true);
 		//newchild.id = "";
 		if(!ref.isValid())
 		{
@@ -1474,7 +1473,7 @@ var proveit = {
 	//	var tooltip = "";
 		if(refName && refName != "")
                 {
-                        //tooltip += this.getSidebarDoc().getElementById("refNameDesc").value + ref.name + "\n";
+                        //tooltip += document.getElementById("refNameDesc").value + ref.name + "\n";
 						//newinsertimage.addEventListener("click", function() {
                         //thisproveit.getRefbox().selectItem(this.parentNode);
                         //thisproveit.insertRef(ref, thisproveit.toggleinsert);
@@ -1562,11 +1561,11 @@ var proveit = {
 
 		// newlabel.setAttribute("value", ref.getLabel());
 		// newlabel.setAttribute("control", "refbox");
-		return newchild;		
-		
-		// unchanged copy below 
-		
-		// var newchild = this.getSidebarDoc().getElementById("prime").cloneNode(true);
+		return newchild;
+
+		// unchanged copy below
+
+		// var newchild = document.getElementById("prime").cloneNode(true);
 		// newchild.id = "";
 		// if(!ref.isValid())
 		// {
@@ -1582,7 +1581,7 @@ var proveit = {
 		// var tooltip = "";
 		// if(refName && refName != "")
                 // {
-                        // tooltip += this.getSidebarDoc().getElementById("refNameDesc").value + ref.name + "\n";
+                        // tooltip += document.getElementById("refNameDesc").value + ref.name + "\n";
 						// newinsertimage.addEventListener("click", function() {
                         // thisproveit.getRefbox().selectItem(this.parentNode);
                         // thisproveit.insertRef(ref, thisproveit.toggleinsert);
