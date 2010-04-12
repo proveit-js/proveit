@@ -75,17 +75,6 @@ var proveit = {
 	// },
 
 
-	// // Convenience function.  Returns the sidebar's document object.
-	// getSidebarDoc : function()
-	// {
-		// return window.QueryInterface(Components.interfaces.nsIInterfaceRequestor)
-		// .getInterface(Components.interfaces.nsIWebNavigation)
- 		// .QueryInterface(Components.interfaces.nsIDocShellTreeItem)
-		// .rootTreeItem
-		// .QueryInterface(Components.interfaces.nsIInterfaceRequestor)
-		// .getInterface(Components.interfaces.nsIDOMWindow).document.getElementById("sidebar").contentWindow.document;
-	// },
-
 	// Convenience function.   Returns the refbox element.
 	getRefbox : function()
 	{
