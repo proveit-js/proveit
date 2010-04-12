@@ -317,17 +317,19 @@ var proveit = {
 	citationObjFromEditPopup : function(citeObj, editBox)
 	{
 		this.log("Entering citationObjFromEditPopup");
-		var paramBoxes = editBox.getElementsByClassName("paramlist")[0].getElementsByTagName("hbox");
-		var refNameValue = editBox.getElementsByClassName("refname")[0];
-		if(refNameValue.value != "")
-		{
-			var newName = refNameValue.value;
-			citeObj.name = newName;
-		}
-		else
-		{
-		        citeObj.name = null; // Save blank names as null
-		}
+		var paramBoxes = editBox.getElementsByClassName("paramlist")[0].getElementsByClassName("input-row");
+
+		// TODO: Working ref name
+// 		var refNameValue = editBox.getElementsByClassName("refname")[0];
+// 		if(refNameValue.value != "")
+// 		{
+// 			var newName = refNameValue.value;
+// 			citeObj.name = newName;
+// 		}
+// 		else
+// 		{
+// 		        citeObj.name = null; // Save blank names as null
+// 		}
 
 		// Clear old params
 		citeObj.params = {};
@@ -377,9 +379,10 @@ var proveit = {
 		if(!citeObj.save)
 		{
 			var newRichItem = this.makeRefboxElement(citeObj);
-			var oldRichItem = this.getRefbox().selectedItem;
+			var oldRichItem = $('.selected', this.getRefbox()).get(0);
+			this.log('newRichItem: ' + newRichItem + ', oldRichItem: ' + oldRichItem + 'oldRichItem.parentNode: ' + oldRichItem.parentNode);
 			oldRichItem.parentNode.replaceChild(newRichItem, oldRichItem);
-			this.getRefbox().selectItem(newRichItem);
+			$(newRichItem).addClass('selected');
 
 			citeObj.updateInText();
 			this.includeProveItEditSummary();
@@ -456,21 +459,35 @@ var proveit = {
 		{
 			//this.log("Calling addPopupRow on tempParams." + item);
 			//this.log("i: " + i + ", paramNames[i]: " + paramNames[i]);
-			this.addPopupRow(tempParams, ref.getDescriptions(), paramNames[i], required[paramNames[i]], true);
+			this.addPopupRow(document.getElementById("edit-tab"), tempParams, ref.getDescriptions(), paramNames[i], required[paramNames[i]], true);
 		}
+
+		var acceptButton = $('#edit-buttons .accept');
+		var acceptEdit = function()
+		{
+			proveit.citationObjFromEditPopup(ref, document.getElementById("edit-tab"));
+			proveit.saveEdit(ref);
+			acceptButton.unbind('click', acceptEdit);
+		};
+		acceptButton.click(acceptEdit);
+		// XXX Possible memory leak, as select handlers accumulate?
+		$('#view-tab, #add-tab').select(function()
+		{
+			acceptButton.unbind('click', acceptEdit);
+		});
 		//this.sizeAndCenter(editWin);
 	},
 
 	/**
 	 * Adds a single row of popup
-	 * @param rootWin root window for popup
+	 * @param root root window for popup
 	 * @param list the param list from the reference, or null for added rows.
 	 * @param descs description array to use, or null for no description
 	 * @param item the current param name
 	 * @param req true if current param name is required, otherwise not required.
 	 * @param fieldType true for label, false for textbox.
 	 */
-	addPopupRow : function(list, descs, item, req, fieldType)
+	addPopupRow : function(root, list, descs, item, req, fieldType)
 	{
 		this.log("Entering addPopupRow.");
 		/*
@@ -480,14 +497,15 @@ var proveit = {
 		 */
 		var id = fieldType ? "preloadedparamrow" : "addedparamrow";
 		var newline = $('#'+id).clone(); // clone the hidden row
+		$(newline).show();
 		$(newline).attr('id',''); // clear the ID (can't have two elements with same ID)
 		//this.activateRemove(newline);
 		var paramName = $('.paramdesc', newline).eq(0);
 		var paramValue = $('.paramvalue', newline).eq(0);
 
 		$(newline).removeClass('hidden'); // unhide the new row
-		$('#edit-fields').append(newline);
-		
+		$('.paramlist', root).append(newline);
+
 		if(req) // if field is required...
 		{
 			$(paramName).addClass('required'); // visual indicator that label is required
@@ -496,8 +514,8 @@ var proveit = {
 
 		if(fieldType) // the description/name is a label (not a textbox)
 		{
-			//paramName.setAttribute("control", this.EDIT_PARAM_PREFIX + item);
-			//$(paramValue).attr('id',this.EDIT_PARAM_PREFIX + item);
+			paramName.attr("for", this.EDIT_PARAM_PREFIX + item);
+			paramValue.attr('id',this.EDIT_PARAM_PREFIX + item);
 
 			var desc = descs[item];
 			if(!desc)
@@ -1224,7 +1242,8 @@ var proveit = {
 		var paramName, paramVal;
 
 		var paramList = box.getElementsByClassName("paramlist")[0];
-		for (var i = 0; i < paramList.childNodes.length; i++)
+		var paramRows = $('div', paramList);
+		for (var i = 0; i < paramRows.length; i++)
 		{
 			var paramRow =  paramList.childNodes[i];
 			this.log("citationObjFromAddPopup: i: " + i);

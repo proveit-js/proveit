@@ -9,14 +9,15 @@ $(function() {
 		{
 			switch(ui.index)
 			{
-				case 1: // view
+				case 0: // view
 					//$('tr.selected').focus();
 					break;
-				
-				case 2: // add
+
+				case 1: // add
+					proveit.changeCite(document.getElementById(proveit.togglestyle ? 'citemenu' : 'citationmenu'));
 					break;
-				
-				case 3: // edit
+
+				case 2: // edit
 					// proveit.updateEditPopup();
 					break;
 				
@@ -35,35 +36,45 @@ $(function() {
 		icons: {
 			primary: 'ui-icon-circle-check',
 			secondary: 'ui-icon-circle-arrow-e'
-		}		
+		}
+	}).click(function()
+	{
+		proveit.addCitation(proveit.citationObjFromAddPopup($('#add-tab .typepane').get(0)));
+		$("#tabs").tabs( { selected: '#view-tab' } );
 	}).next().button({
 		icons: {
 			primary: 'ui-icon-circle-close'
 		}
+	}).click(function()
+	{
+		$("#tabs").tabs( { selected: '#view-tab' } );
 	});
-	
+
 	// cancel buttons
 	$("button.cancel").click(
 		function() {
 			$("#tabs").tabs( { selected: 0 } );
 		}
-	);	
-	
+	);
+
 	// edit panel buttons
 	$("#edit-buttons button:first").button({
 		icons: {
 			primary: 'ui-icon-circle-plus'
 		}
+	}).click(function()
+	{
+		proveit.addPopupRow(document.getElementById("edit-tab"));
 	}).next().button({
 		icons: {
 			primary: 'ui-icon-circle-check'
-		}		
+		}
 	}).next().button({
 		icons: {
 			primary: 'ui-icon-circle-close'
 		}
-	});	
-	
+	});
+
 	// delete field button
 	$("div.input-row button").button({
 		icons: {
@@ -109,12 +120,12 @@ $(function() {
 	
 	$("h1 button").toggle(
 		function() {
-			$("#tabs-1, #tabs-2, #tabs-3").hide();
+			$("#view-tab, #add-tab, #edit-tab").hide();
 			$("h1 button").button("option", "icons", { primary: 'ui-icon-triangle-1-n' } );
 			//$("h1 button").refresh();
 		},
 		function() {
-			$("#tabs-1, #tabs-2, #tabs-3").show();
+			$("#view-tab, #add-tab, #edit-tab").show();
 			$("h1 button").button("option", "icons", { primary: 'ui-icon-triangle-1-s' } );
 			//$("h1 button").refresh();
 		}
