@@ -32,6 +32,9 @@ $(function() {
 		icons: {
 			primary: 'ui-icon-circle-plus'
 		}
+	}).click(function()
+	{
+		proveit.addPopupRow(document.getElementById("add-tab"));
 	}).next().button({
 		icons: {
 			primary: 'ui-icon-circle-check',

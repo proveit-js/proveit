@@ -21,88 +21,81 @@
 <div id="tabs">
 	<h1>ProveIt&trade;<button>show/hide</button></h1>
 	<ul>
-		<li><a href="#tabs-1">View (<span id="numRefs">0</span>)</a></li>	
-		<li><a href="#tabs-2">Add</a></li>
-		<li><a href="#tabs-3">Edit</a></li>
+		<li><a href="#view-tab">View (<span id="numRefs">0</span>)</a></li>	
+		<li><a href="#add-tab">Add</a></li>
+		<li><a href="#edit-tab">Edit</a></li>
 	</ul>
-	<div id="tabs-1">
+	<div id="view-tab">
 		<div class="scroll" style="height: 270px;">
 			<table id="refs">
 			</table>	
 		</div>
-	</div><!-- end tabs-1 -->
+	</div><!-- end view-tab -->
 
-	<div id="tabs-2">
+	<div id="dummyCitePane" class="typepane" style="display: none">
+		<div align="center" flex="1" >
+			<label for="citerefname" title="This is an identifier that can be used to refer to this reference elsewhere on the page.  It should be short and memorable." minwidth="100">&lt;ref&gt; name (abbr. code)</label>
+			<input type="text" id="citerefname" class="refname" />
+		</div>
+		<div class="paramlist">
+		</div>
+	</div>	
+	<div id="preloadedparamrow" class="input-row" style="display: none">
+		<span class="paramdesc" style="float: left"></span>
+		<input type="text" class="paramvalue text" value="" />
+		<button>delete field</button>
+	</div>
+	<div id="addedparamrow" class="input-row" style="display: none">
+		<input type="text" class="paramdesc" value="" />
+		<input type="text" class="paramvalue text" value="" />
+		<button>delete field</button>
+	</div>
+	
+	<div id="add-tab">
 		<fieldset id="add-fields" class="inputs scroll" style="height: 230px;">
-				<div class="input-row">
-					<label class="required" for="">Reference Type</label>
-					<select id="" name="">
-						<option selected="selected">Website</option>
-						<option>Book</option>
-						<option>Journal article</option>
-						<option>Conference paper</option>
-						<option>Encyclopedia article</option>
-						<option>News article</option>
-						<option>Newsgroup posting</option>
-						<option>Press release</option>
-						<option>TV or radio episode</option>
-					</select>					
-				</div>
-				<div class="input-row">
-					<label class="required" for="">Title</label>
-					<input type="text" class="text" value="" />
-				</div>			
-				<div class="input-row">
-					<label class="required" for="">URL</label>
-					<input type="text" class="text" value="" />
-				</div>
-				<div class="input-row">
-					<label for="">Work</label>
-					<input type="text" class="text" value="" />
-					<button>delete field</button>
-				</div>
-				<div class="input-row">
-					<label for="">Publisher</label>
-					<input type="text" class="text" value="" />
-					<button>delete field</button>
-				</div>
-				<div class="input-row">
-					<label for="">Date</label>
-					<input type="text" class="text" value="" />
-					<button>delete field</button>
-				</div>			
-				<div class="input-row">
-					<label for="">Access Date</label>
-					<input type="text" class="text" value="2010-03-23" />
-					<button>delete field</button>
-				</div>			
+			<div flex="1" style="display: none" id="cite">
+				<select id="citemenu" onchange="proveit.changeCite(this)">
+					<option value="web">Web Site</option>
+					<option value="book">Book</option>
+					<option value="journal">Journal</option>
+					<option value="conference">Conference</option>
+					<option value="encyclopedia">Encyclopedia</option>
+					<option value="news">News</option>
+					<option value="newsgroup">Newsgroup</option>
+					<option value="paper">Scientific Paper</option>
+					<option value="press release">Press Release</option>					
+				</select>
+				<div class="addpanes" id="citepanes" flex="1"></div>
+			</div>
+			<div flex="1" style="display: none" id="citation">
+				<select id="citationmenu" onchange="proveit.changeCite(this)">
+					<option value="web">Web Site</option>
+					<option value="book">Book</option>
+					<option value="journal">Journal</option>
+					<option value="encyclopedia">Encyclopedia</option>
+					<option value="news">News</option>
+					<option value="patent">Patent</option>
+				</select>
+				<div class="addpanes" id="citationpanes" flex="1" minwidth="500"></div>
+			</div>
 		</fieldset>	
 		<div id="add-buttons">
 			<button>add field</button>
-			<button class="right-side">finish &amp; insert</button>
+			<button class="right-side accept">finish &amp; insert</button>
 			<button class="right-side cancel">cancel</button>			
 		</div><!-- end bottom-buttons -->
-	</div><!-- end tabs-2 -->
+	</div><!-- end add-tab -->
 	
-	<div id="tabs-3">
-		<fieldset id="edit-fields" class="inputs scroll" style="height: 230px;">
-				<div id="preloadedparamrow" class="input-row hidden">
-					<label class="paramdesc"></label>
-					<input type="text" class="paramvalue text" value="" />
-					<button>delete field</button>
-				</div>
-				<div id="addedparamrow" class="input-row hidden">
-					<input type="text" class="paramdesc" value="" />
-					<input type="text" class="paramvalue text" value="" />
-					<button>delete field</button>
-				</div>
+	<div id="edit-tab">
+		<fieldset id="edit-fields" class="inputs scroll paramlist" style="height: 230px;">
+			
 		</fieldset>	
 		<div id="edit-buttons">
 			<button>add field</button>
-			<button class="right-side">finish</button>
+			<button class="right-side accept">finish</button>
 			<button class="right-side cancel">cancel</button>			
 		</div><!-- end bottom-buttons -->		
-	</div><!-- end tabs-3 -->	
+	</div><!-- end edit-tab -->	
 </div><!-- end tabs -->
 </div><!-- end proveit -->
 

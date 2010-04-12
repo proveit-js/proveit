@@ -1245,8 +1245,8 @@ var proveit = {
 		var paramRows = $('div', paramList);
 		for (var i = 0; i < paramRows.length; i++)
 		{
-			var paramRow =  paramList.childNodes[i];
-			this.log("citationObjFromAddPopup: i: " + i);
+			var paramRow =  paramRows[i];
+			this.log("citationObjFromAddPopup: i: " + i + ", paramRow: " + paramRow);
 			var valueTextbox = paramRow.getElementsByClassName("paramvalue")[0];
 
 			if(paramRow.className == "addedrow") // Added with "Add another field"
@@ -1303,9 +1303,18 @@ var proveit = {
 		tag.save = true;
 		tag.inMWEditBox = true;
 		this.includeProveItEditSummary();
-		this.getRefbox().scrollToIndex(this.getRefbox().itemCount - 1);
-		this.getRefbox().selectedIndex = this.getRefbox().itemCount - 1;
+// 		this.getRefbox().scrollToIndex(this.getRefbox().itemCount - 1);
+// 		this.getRefbox().selectedIndex = this.getRefbox().itemCount - 1;
 		this.highlightTargetString(tag.orig);
+	},
+
+	// Clear all rows of passed in add citation panes.
+	clearCitePanes : function(citePanes)
+	{
+		if(citePanes.hasChildNodes())
+		{
+			citePanes.removeChild(citePanes.firstChild);
+		}
 	},
 
 	activateRemove : function(row)
@@ -1327,9 +1336,10 @@ var proveit = {
 		//this.log("menu.id: " + menu.id);
 
 		this.log("changeCite: Calling citationObjFromAddPopup");
-		menu.parentNode.parentNode.hidden = false; // cite/citation vbox.
+		$(menu.parentNode).show(); // cite/citation vbox.
 
-		var citePanes = menu.parentNode.nextSibling;
+		var citePanes = $(".addpanes", menu.parentNode).get(0);
+		//this.log("citePanes: " + citePanes);
 		this.clearCitePanes(citePanes);
 		var newCiteType = menu.value;
 
@@ -1375,19 +1385,17 @@ var proveit = {
 			var param = newParams[i];
 			var paramBox;
 
-			var star = this.getSidebarDoc().getElementById("star").cloneNode(true);
-			star.id = "";
-			star.style.display = "-moz-box";
-			star.style.visibility = (required[param] ? "visible" : "hidden"); // star will appear if field is required."
-
 			if(descs[param])
 			{
-				paramBox = this.getSidebarDoc().getElementById("preloadedparamrow").cloneNode(true);
-				var label = paramBox.getElementsByClassName("paramdesc")[0];
-				label.setAttribute("value", descs[param]);
+				paramBox = document.getElementById("preloadedparamrow").cloneNode(true);
+				var label = $('.paramdesc', paramBox);
+				if(required[param])
+				{
+					label.addClass("required");
+				}
+				label.text(descs[param]);
 				// Basically the same code as nameHbox above
-				label.setAttribute("control", this.NEW_PARAM_PREFIX + param);
-				paramBox.insertBefore(star, label);
+				label.attr("for", this.NEW_PARAM_PREFIX + param);
 			}
 			else
 			{
@@ -1396,7 +1404,6 @@ var proveit = {
 				paramBox = document.getElementById("addedparamrow").cloneNode(true);
 				var nameTextbox = paramBox.getElementsByClassName("paramname")[0];
 				nameTextbox.setAttribute("value", param);
-				paramBox.insertBefore(star, nameTextbox);
 			}
 			paramBox.id = "";
 			this.activateRemove(paramBox);
@@ -1404,10 +1411,10 @@ var proveit = {
 			paramBox.getElementsByClassName("paramvalue")[0].id = this.NEW_PARAM_PREFIX + param;
 			this.log("changeCite: param: " + param + "; newCite.params[param]: " + newCite.params[param]);
 			//paramBox.childNodes[2].value = newCite.params[param]; // Causes parameters to disappear.  Why?
-			paramBox.hidden = false;
+			$(paramBox).show();
 			paramList.appendChild(paramBox);
 		}
-		genPane.hidden = false;
+		$(genPane).show();
 		citePanes.insertBefore(genPane, citePanes.firstChild);
 		this.log("Exiting changeCite");
 	},
@@ -1425,7 +1432,7 @@ var proveit = {
 
 		var refbox = this.getRefbox();
 
-		var newchild = $('<tr><td class="number"></td><td class="author"></td><td class="year"></td><td class="title"></td><td class="edit"><button>edit</button></td></tr>');
+		var newchild = $('<tr><td class="number"></td><td class="author"></td><td class="year"></td><td class="title"></td><td class="edit"><button>edit</button></td></tr>').get(0);
 
 		//var newchild = document.getElementById("prime").cloneNode(true);
 		//newchild.id = "";
