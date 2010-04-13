@@ -1436,7 +1436,7 @@ var proveit = {
 
 		var refbox = this.getRefbox();
 
-		var newchild = $('<tr><td class="number"></td><td class="author"></td><td class="year"></td><td class="title"></td><td class="edit"><button>edit</button></td></tr>').get(0);
+		var newchild = $('<tr><td class="number"></td><td class="author"></td><td class="year"></td><td class="title"></td><td class="richitemedit edit"><button>edit</button></td></tr>').get(0);
 
 		//var newchild = document.getElementById("prime").cloneNode(true);
 		//newchild.id = "";
@@ -1447,7 +1447,7 @@ var proveit = {
 		}
 		// grab the nodes that need changed out of it
 		//var newlabel = newchild.getElementsByClassName("richitemlabel")[0];
-		//var neweditimage = newchild.getElementsByClassName("richitemedit")[0];
+		var neweditimage = newchild.getElementsByClassName("richitemedit")[0];
 		//var newinsertimage = newchild.getElementsByClassName("richiteminsert")[0];
 		//newchild.hidden = false;
 		var thisproveit = this;
@@ -1538,7 +1538,7 @@ var proveit = {
 		$(newchild).dblclick(doEdit);
 		//newchild.addEventListener("dblclick", doEdit, false);
 
-		// neweditimage.addEventListener("click", doEdit, false);
+		neweditimage.addEventListener("click", doEdit, false);
 
 		// newlabel.setAttribute("value", ref.getLabel());
 		// newlabel.setAttribute("control", "refbox");
