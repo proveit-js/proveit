@@ -28,7 +28,11 @@ var proveit = {
 	// // Convenience log function
 	log : function(str)
 	{
-		console.log("[ProveIt] " + str);
+		if(console && console.log)
+		{
+			console.log("[ProveIt] " + str);
+		}
+
 		//this.consoleService.logStringMessage("[ProveIt] " + str);
 	},
 
