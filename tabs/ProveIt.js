@@ -472,6 +472,7 @@ var proveit = {
 			proveit.citationObjFromEditPopup(ref, document.getElementById("edit-tab"));
 			proveit.saveEdit(ref);
 			acceptButton.unbind('click', acceptEdit);
+			$("#tabs").tabs( { selected: '#view-tab' } );
 		};
 		acceptButton.click(acceptEdit);
 		// XXX Possible memory leak, as select handlers accumulate?
