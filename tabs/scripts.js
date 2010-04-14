@@ -79,7 +79,7 @@ $(function() {
 	});
 
 	// delete field button
-	$("div.input-row button").button({
+	$("div.input-row .remove").button({
 		icons: {
 			primary: 'ui-icon-close'
 		},

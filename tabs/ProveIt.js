@@ -513,7 +513,11 @@ var proveit = {
 		if(req) // if field is required...
 		{
 			$(paramName).addClass('required'); // visual indicator that label is required
-			$('button', newline).eq(0).remove(); // don't let people remove required fields
+			$('.remove', newline).remove(); // don't let people remove required fields
+		}
+		else
+		{
+			this.activateRemove(newline);
 		}
 
 		if(fieldType) // the description/name is a label (not a textbox)
@@ -1323,13 +1327,10 @@ var proveit = {
 
 	activateRemove : function(row)
 	{
-		// var thisproveit = this;
-		// row.getElementsByClassName("remove")[0].addEventListener("command", function()
-		// {
-			// var win = row.ownerDocument.defaultView;
-			// row.parentNode.removeChild(row);
-			// thisproveit.sizeAndCenter(win);
-		// }, false); // Activate remove button
+		$('.remove', row).click(function()
+		{
+			$(row).remove();
+		});
 	},
 
 	/**
@@ -1396,6 +1397,11 @@ var proveit = {
 				if(required[param])
 				{
 					label.addClass("required");
+					$('.remove', paramBox).remove(); // don't let people remove required fields
+				}
+				else
+				{
+					this.activateRemove(paramBox);
 				}
 				label.text(descs[param]);
 				// Basically the same code as nameHbox above
