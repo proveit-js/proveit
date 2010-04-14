@@ -1,5 +1,5 @@
 $(function() {
-	
+
 	proveit.proveitonload();
 
 	// set up tabs
@@ -20,7 +20,7 @@ $(function() {
 				case 2: // edit
 					// proveit.updateEditPopup();
 					break;
-				
+
 				default:
 					// nothing
 			}
@@ -84,27 +84,8 @@ $(function() {
 			primary: 'ui-icon-close'
 		},
 		text: false
-	});	
-	
-	// edit buttons
-	$("td.edit button").button({
-		icons: {
-			primary: 'ui-icon-pencil'
-		},
-		text: false
 	});
-	
-	// make edit buttons work
-	$("button", "td.edit").each(
-		function(index) {
-			$(this).click (
-				function () {
-					$("#tabs").tabs( { selected: 2 } );
-				}
-			);
-		}
-	);
-	
+
 	// ibid buttons
 	$("td.ibid button").button({
 		icons: {
@@ -112,7 +93,7 @@ $(function() {
 		},
 		text: false
 	});
-	
+
 	// minimize
 	$("h1 button").button({
 		icons: {
@@ -120,7 +101,7 @@ $(function() {
 		},
 		text: false
 	});
-	
+
 	$("h1 button").toggle(
 		function() {
 			$("#view-tab, #add-tab, #edit-tab").hide();
@@ -133,7 +114,7 @@ $(function() {
 			//$("h1 button").refresh();
 		}
 	);
-	
+
 	// show pointers
 	// $("td.number button").button({
 		// icons: {
@@ -147,9 +128,9 @@ $(function() {
 			proveit.selectRow(this);
 		}
 	);
-	
 
-	
+
+
 	$("#refs tr").eq(0).click(); // select first item in list
 
 	// alternate row colors

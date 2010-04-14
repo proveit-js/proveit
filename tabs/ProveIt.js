@@ -272,7 +272,7 @@ var proveit = {
 		var refs = $('tr', box);
 		//this.log(refs.length + " rows");
 		$(refs).remove();
-		
+
 	},
 
 	/** Does insertion into edit box.
@@ -456,7 +456,7 @@ var proveit = {
 
 		   Javascript does destructive sorting, which in this case, is convenient...
 		*/
-		
+
 		$('div:not(.hidden)', '#edit-fields').remove(); // clear all fields in the edit box (except the hidden ones)
 
 		for(var i = 0; i < paramNames.length; i++)
@@ -1436,7 +1436,13 @@ var proveit = {
 
 		var refbox = this.getRefbox();
 
-		var newchild = $('<tr><td class="number"></td><td class="author"></td><td class="year"></td><td class="title"></td><td class="richitemedit edit"><button>edit</button></td></tr>').get(0);
+		var newchild = $('<tr><td class="number"></td><td class="author"></td><td class="year"></td><td class="title"></td><td class="edit"><button>edit</button></td></tr>').get(0);
+		$("td.edit button", newchild).button({
+			icons: {
+				primary: 'ui-icon-pencil'
+			},
+			text: false
+		});
 
 		//var newchild = document.getElementById("prime").cloneNode(true);
 		//newchild.id = "";
@@ -1447,7 +1453,7 @@ var proveit = {
 		}
 		// grab the nodes that need changed out of it
 		//var newlabel = newchild.getElementsByClassName("richitemlabel")[0];
-		var neweditimage = newchild.getElementsByClassName("richitemedit")[0];
+		var neweditimage = newchild.getElementsByClassName("edit")[0];
 		//var newinsertimage = newchild.getElementsByClassName("richiteminsert")[0];
 		//newchild.hidden = false;
 		var thisproveit = this;
@@ -1468,22 +1474,22 @@ var proveit = {
                 // }
 		//tooltip += ref.getLabel();
 		//newchild.setAttribute("tooltiptext", tooltip);
-		
+
 		var title = '';
 		var shortTitle = '';
-		
+
 		if(ref.params['title'] != null)
 		{
 			title = ref.params['title'];
 			shortTitle = this.truncateTitle(title);
 		}
-		
+
 		$('td.title', newchild).text(shortTitle);
 		$('td.title', newchild).attr('title', title);
-			
+
 		// deal with variations of date info
 		var formattedYear = '';
-		
+
 		if(ref.params['year'])
 			formattedYear = ref.params['year'];
 		else if (ref.params['date'])
@@ -1492,12 +1498,12 @@ var proveit = {
 			if( (year.substr(0,1) == '1') || (year.substr(0,1) == '2') ) // rough check of year validity
 				formattedYear = year;
 		}
-		
+
 		$('td.year', newchild).text(formattedYear);
-		
+
 		// deal with variations of author info
 		var formattedAuthor = '';
-		
+
 		if(ref.params['author'])
 			formattedAuthor = ref.params['author'];
 		else if (ref.params['last'])
@@ -1507,23 +1513,23 @@ var proveit = {
 			// else
 				formattedAuthor = ref.params['last'];
 		}
-		
+
 		if(ref.params['coauthors'] || ref.params['last2'])
 			formattedAuthor += ' <i>et al.</i>';
-		
+
 		$('td.author', newchild).html(formattedAuthor);
 
 		// single click event handler
-		
+
 		// newchild.addEventListener("click", function()
 		// {
 			// thisproveit.highlightTargetString(ref.orig);
 		// }, false);
 		//alert(ref.orig);
 		$(newchild).click(function() { thisproveit.highlightTargetString(ref.orig); });
-		
+
 		// double click event handler
-		
+
 		var doEdit = function() {
 			thisproveit.selectRow(newchild);
 			$("#tabs").tabs( { selected: 2 } );
@@ -1533,7 +1539,7 @@ var proveit = {
 			//selectRow(newchild);
 			//window.openDialog("edit_dialog.xul", "edit dialog", thisproveit.DIALOG_FEATURES, winData);
 			//thisproveit.getRefbox().selectedIndex = selectedIndex;
-		};		
+		};
 
 		$(newchild).dblclick(doEdit);
 		//newchild.addEventListener("dblclick", doEdit, false);
@@ -1598,7 +1604,7 @@ var proveit = {
 		// newlabel.setAttribute("control", "refbox");
 		// return newchild;
 	},
-	
+
 	truncateTitle : function(title)
 	{
 		var MAX_LENGTH = 75;
@@ -1626,11 +1632,11 @@ var proveit = {
 		var refbox = this.getRefbox();
 		$(refbox).append(this.makeRefboxElement(ref));
 	},
-	
+
 	selectRow : function(row)
 	{
 		$("#refs tr").removeClass('selected');
-		$(row).addClass('selected');	
+		$(row).addClass('selected');
 	}
 };
 
