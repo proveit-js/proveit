@@ -28,7 +28,7 @@ var proveit = {
 	// // Convenience log function
 	log : function(str)
 	{
-		if(console && console.log)
+		if(typeof(console) === 'object' && console.log)
 		{
 			console.log("[ProveIt] " + str);
 		}
@@ -480,7 +480,6 @@ var proveit = {
 		{
 			acceptButton.unbind('click', acceptEdit);
 		});
-		//this.sizeAndCenter(editWin);
 	},
 
 	/**
