@@ -501,13 +501,12 @@ var proveit = {
 		 */
 		var id = fieldType ? "preloadedparamrow" : "addedparamrow";
 		var newline = $('#'+id).clone(); // clone the hidden row
-		$(newline).show();
 		$(newline).attr('id',''); // clear the ID (can't have two elements with same ID)
 		//this.activateRemove(newline);
 		var paramName = $('.paramdesc', newline).eq(0);
 		var paramValue = $('.paramvalue', newline).eq(0);
 
-		$(newline).removeClass('hidden'); // unhide the new row
+		
 		$('.paramlist', root).append(newline);
 
 		if(req) // if field is required...
@@ -534,6 +533,14 @@ var proveit = {
 			$(paramName).text(desc);
 			$(paramName).attr('title',item);
 			$(paramValue).val(list[item]);
+			
+			$(newline).show();
+		}
+		else
+		{
+			// added a new row, so make it fancy
+			$(newline).show('highlight',{},'slow');
+			$('.inputs', root).scrollTop(100000);
 		}
 	},
 
@@ -1329,7 +1336,12 @@ var proveit = {
 	{
 		$('.remove', row).click(function()
 		{
-			$(row).remove();
+			$(row).hide(
+				'highlight',{},'slow',
+				function() {
+					$(row).remove();
+					}
+				);
 		});
 	},
 
@@ -1560,60 +1572,6 @@ var proveit = {
 		// newlabel.setAttribute("value", ref.getLabel());
 		// newlabel.setAttribute("control", "refbox");
 		return newchild;
-
-		// unchanged copy below
-
-		// var newchild = document.getElementById("prime").cloneNode(true);
-		// newchild.id = "";
-		// if(!ref.isValid())
-		// {
-			// // Flag as invalid.
-			// newchild.className = newchild.className + " badReference";
-		// }
-		// // grab the nodes that need changed out of it
-		// var newlabel = newchild.getElementsByClassName("richitemlabel")[0];
-		// var neweditimage = newchild.getElementsByClassName("richitemedit")[0];
-		// var newinsertimage = newchild.getElementsByClassName("richiteminsert")[0];
-		// newchild.hidden = false;
-		// var thisproveit = this;
-		// var tooltip = "";
-		// if(refName && refName != "")
-                // {
-                        // tooltip += document.getElementById("refNameDesc").value + ref.name + "\n";
-						// newinsertimage.addEventListener("click", function() {
-                        // thisproveit.getRefbox().selectItem(this.parentNode);
-                        // thisproveit.insertRef(ref, thisproveit.toggleinsert);
-                        // }, false); // True may ensure row is selected prior to attempting to insert.
-                        // newinsertimage.setAttribute("tooltip", "enabled insert tooltip");
-                // }
-                // else
-                // {
-                        // newinsertimage.setAttribute("disabled", "true");
-                        // newinsertimage.setAttribute("tooltip", "disabled insert tooltip");
-                // }
-		// tooltip += ref.getLabel();
-		// newchild.setAttribute("tooltiptext", tooltip);
-
-		// var doEdit = function() {
-			// thisproveit.getRefbox().selectItem(newchild);
-			// var selectedIndex = thisproveit.getRefbox().selectedIndex;
-			// var winData = {"proveit": thisproveit, "ref": ref};
-			// window.openDialog("edit_dialog.xul", "edit dialog", thisproveit.DIALOG_FEATURES, winData);
-			// thisproveit.getRefbox().selectedIndex = selectedIndex;
-		// };
-
-		// newchild.addEventListener("click", function()
-		// {
-			// thisproveit.highlightTargetString(ref.orig);
-		// }, false);
-
-		// newchild.addEventListener("dblclick", doEdit, false);
-
-		// neweditimage.addEventListener("click", doEdit, false);
-
-		// newlabel.setAttribute("value", ref.getLabel());
-		// newlabel.setAttribute("control", "refbox");
-		// return newchild;
 	},
 
 	truncateTitle : function(title)
