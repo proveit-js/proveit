@@ -345,7 +345,7 @@ var proveit = {
 			//this.log("item: " + i);
 			var paramRow = paramBoxes[i];
 			var valueTextbox = paramRow.getElementsByClassName("paramvalue")[0];
-			if(paramRow.className == "addedrow") // Added with "Add another field"
+			if($(paramRow).hasClass("addedrow")) // Added with "Add another field"
 			{
 				paramName = paramRow.getElementsByClassName("paramdesc")[0].value.trim();
 			}
@@ -729,7 +729,7 @@ var proveit = {
 			en :
 			{
 					name: "Name",
-					author: "Author(L, F)",
+					author: "Author (L, F)",
 					last: "Last name",
 					last2: "Last name (auth. two)",
 					last3: "Last name (auth. three)",
@@ -1264,9 +1264,9 @@ var proveit = {
 			this.log("citationObjFromAddPopup: i: " + i + ", paramRow: " + paramRow);
 			var valueTextbox = paramRow.getElementsByClassName("paramvalue")[0];
 
-			if(paramRow.className == "addedrow") // Added with "Add another field"
+			if($(paramRow).hasClass("addedrow")) // Added with "Add another field"
 			{
-				paramName = paramRow.getElementsByClassName("paramname")[0].value.trim();
+				paramName = paramRow.getElementsByClassName("paramdesc")[0].value.trim();
 			}
 			else
 			{
@@ -1424,7 +1424,7 @@ var proveit = {
 				// Throwing an error here doesn't make sense if user-added fields can be copied over.
 				// throw new Error("Undefined description for param: " + param);
 				paramBox = document.getElementById("addedparamrow").cloneNode(true);
-				var nameTextbox = paramBox.getElementsByClassName("paramname")[0];
+				var nameTextbox = paramBox.getElementsByClassName("paramdesc")[0];
 				nameTextbox.setAttribute("value", param);
 			}
 			paramBox.id = "";
