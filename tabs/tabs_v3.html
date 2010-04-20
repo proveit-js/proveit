@@ -22,38 +22,37 @@
 	<h1>ProveIt&trade;<button>show/hide</button></h1>
 	<ul>
 		<li><a href="#view-tab">View (<span id="numRefs">0</span>)</a></li>	
-		<li><a href="#add-tab">Add</a></li>
 		<li><a href="#edit-tab">Edit</a></li>
+		<li><a href="#add-tab">Add</a></li>
 	</ul>
 	<div id="view-tab">
 		<div class="scroll" style="height: 270px;">
-			<table id="refs">
-			</table>	
+			<table id="refs"></table>	
 		</div>
 	</div><!-- end view-tab -->
 
 	<div id="dummyCitePane" class="typepane" style="display: none">
-		<div align="center" flex="1" >
-			<label for="citerefname" title="This is an identifier that can be used to refer to this reference elsewhere on the page.  It should be short and memorable." minwidth="100">&lt;ref&gt; name (abbr. code)</label>
-			<input type="text" id="citerefname" class="refname" />
+		<div class="input-row">
+			<label for="citerefname" title="This is an identifier that can be used to refer to this reference elsewhere on the page. It should be short and memorable." class="paramdesc">&lt;ref&gt; name (abbr. code)</label>
+			<input type="text" id="citerefname" class="refname paramvalue" />
 		</div>
-		<div class="paramlist">
-		</div>
+		<div class="paramlist"></div>
 	</div>	
 	<div id="preloadedparamrow" class="input-row" style="display: none">
-		<label class="paramdesc" style="float: left"></label>
-		<input type="text" class="paramvalue text" value="" />
+		<label class="paramdesc"></label>
+		<input type="text" class="paramvalue" value="" />
 		<button class="remove">delete field</button>
 	</div>
 	<div id="addedparamrow" class="input-row" style="display: none">
 		<input type="text" class="paramdesc" value="" />
-		<input type="text" class="paramvalue text" value="" />
+		<input type="text" class="paramvalue" value="" />
 		<button class="remove">delete field</button>
 	</div>
 	
 	<div id="add-tab">
-		<fieldset id="add-fields" class="inputs scroll" style="height: 230px;">
-			<div flex="1" style="display: none" id="cite">
+		<div id="add-fields" class="inputs scroll" style="height: 230px;">
+			<div flex="1" style="display: none" id="cite" class="input-row">
+				<label for="citemenu" class="paramdesc required">Reference type</label>
 				<select id="citemenu" onchange="proveit.changeCite(this)">
 					<option value="web">Web Site</option>
 					<option value="book">Book</option>
@@ -65,9 +64,10 @@
 					<option value="paper">Scientific Paper</option>
 					<option value="press release">Press Release</option>					
 				</select>
-				<div class="addpanes" id="citepanes" flex="1"></div>
 			</div>
-			<div flex="1" style="display: none" id="citation">
+			<div class="addpanes" id="citepanes" flex="1"></div>
+			<div flex="1" style="display: none" id="citation" class="input-row">
+				<label for="citationmenu" class="paramdesc required">Reference type</label>
 				<select id="citationmenu" onchange="proveit.changeCite(this)">
 					<option value="web">Web Site</option>
 					<option value="book">Book</option>
@@ -76,22 +76,22 @@
 					<option value="news">News</option>
 					<option value="patent">Patent</option>
 				</select>
-				<div class="addpanes" id="citationpanes" flex="1" minwidth="500"></div>
-			</div>
-		</fieldset>	
+			</div>				
+			<div class="addpanes" id="citationpanes" flex="1"></div>
+		</div>	
 		<div id="add-buttons">
-			<button>add field</button>
+			<button style="margin-right: 50px;">add field</button>
+			Required fields are <span class="required">magenta and bold</span>.
 			<button class="right-side accept">finish &amp; insert</button>
 			<button class="right-side cancel">cancel</button>			
 		</div><!-- end bottom-buttons -->
 	</div><!-- end add-tab -->
 	
 	<div id="edit-tab">
-		<fieldset id="edit-fields" class="inputs scroll paramlist" style="height: 230px;">
-			
-		</fieldset>	
+		<div id="edit-fields" class="inputs scroll paramlist" style="height: 230px;"></div>	
 		<div id="edit-buttons">
-			<button>add field</button>
+			<button style="margin-right: 50px;">add field</button>
+			Required fields are <span class="required">magenta and bold</span>.
 			<button class="right-side accept">finish</button>
 			<button class="right-side cancel">cancel</button>			
 		</div><!-- end bottom-buttons -->		

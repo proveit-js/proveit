@@ -347,7 +347,7 @@ var proveit = {
 			var valueTextbox = paramRow.getElementsByClassName("paramvalue")[0];
 			if(paramRow.className == "addedrow") // Added with "Add another field"
 			{
-				paramName = paramRow.getElementsByClassName("paramname")[0].value.trim();
+				paramName = paramRow.getElementsByClassName("paramdesc")[0].value.trim();
 			}
 			else
 			{
@@ -722,7 +722,7 @@ var proveit = {
 			en :
 			{
 					name: "Name",
-					author: "Author (L, F)",
+					author: "Author(L, F)",
 					last: "Last name",
 					last2: "Last name (auth. two)",
 					last3: "Last name (auth. three)",
@@ -1343,7 +1343,7 @@ var proveit = {
 		this.log("changeCite: Calling citationObjFromAddPopup");
 		$(menu.parentNode).show(); // cite/citation vbox.
 
-		var citePanes = $(".addpanes", menu.parentNode).get(0);
+		var citePanes = $(".addpanes", menu.parentNode.parentNode).get(0);
 		//this.log("citePanes: " + citePanes);
 		this.clearCitePanes(citePanes);
 		var newCiteType = menu.value;
@@ -1532,13 +1532,18 @@ var proveit = {
 			// thisproveit.highlightTargetString(ref.orig);
 		// }, false);
 		//alert(ref.orig);
-		$(newchild).click(function() { thisproveit.highlightTargetString(ref.orig); });
+		$(newchild).click(function() { thisproveit.highlightTargetString(ref.orig); thisproveit.highlightTargetString(ref.orig); });
 
 		// double click event handler
 
 		var doEdit = function() {
 			thisproveit.selectRow(newchild);
-			$("#tabs").tabs( { selected: 2 } );
+			
+		//	var selectedTab = $( "#tabs" ).tabs( "option", "selected" );
+	//		alert(selectedTab);
+//			if(selectedTab != 1)			
+				$( "#tabs" ).tabs( "option", "selected", 1 );
+				
 			thisproveit.updateEditPopup(ref);
 			//var selectedIndex = thisproveit.getRefbox().selectedIndex;
 			//var winData = {"proveit": thisproveit, "ref": ref};

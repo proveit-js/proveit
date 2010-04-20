@@ -5,7 +5,7 @@ $(function() {
 	// set up tabs
 	$("#tabs").tabs({
 		selected: 0,
-		select: function(event,ui)
+		show: function(event,ui)
 		{
 			switch(ui.index)
 			{
@@ -13,12 +13,13 @@ $(function() {
 					//$('tr.selected').focus();
 					break;
 
-				case 1: // add
+				case 2: // add
 					proveit.changeCite(document.getElementById(proveit.togglestyle ? 'citemenu' : 'citationmenu'));
 					break;
 
-				case 2: // edit
+				case 1: // edit
 					// proveit.updateEditPopup();
+					$('tr.selected').dblclick();
 					break;
 
 				default:
@@ -35,7 +36,7 @@ $(function() {
 	}).click(function()
 	{
 		proveit.addPopupRow(document.getElementById("add-tab"));
-	}).next().button({
+	}).next().next().button({
 		icons: {
 			primary: 'ui-icon-circle-check',
 			secondary: 'ui-icon-circle-arrow-e'
@@ -56,7 +57,7 @@ $(function() {
 	// cancel buttons
 	$("button.cancel").click(
 		function() {
-			$("#tabs").tabs( { selected: 0 } );
+			$( "#tabs" ).tabs( "option", "selected", 0 );
 		}
 	);
 
@@ -68,7 +69,7 @@ $(function() {
 	}).click(function()
 	{
 		proveit.addPopupRow(document.getElementById("edit-tab"));
-	}).next().button({
+	}).next().next().button({
 		icons: {
 			primary: 'ui-icon-circle-check'
 		}
@@ -94,7 +95,7 @@ $(function() {
 		text: false
 	});
 
-	// minimize
+	// create the minimize button
 	$("h1 button").button({
 		icons: {
 			primary: 'ui-icon-triangle-1-s'
@@ -102,6 +103,7 @@ $(function() {
 		text: false
 	});
 
+	// set up the minimize button
 	$("h1 button").toggle(
 		function() {
 			$("#view-tab, #add-tab, #edit-tab").hide();
@@ -123,6 +125,7 @@ $(function() {
 		// text: false
 	// });
 
+	// make individual refs selectable
 	$("#refs tr").click(
 		function() {
 			proveit.selectRow(this);
@@ -130,8 +133,7 @@ $(function() {
 	);
 
 
-
-	$("#refs tr").eq(0).click(); // select first item in list
+	$("#refs tr").eq(0).click().click(); // select first item in list
 
 	// alternate row colors
 	$("#refs tr:even").addClass('light');
