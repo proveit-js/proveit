@@ -5,19 +5,24 @@ div#proveit {
 	right: 20px;
 	z-index: 10000;
 	/*height: 300px;*/
-	width: 800px;
+	width: 750px;
 	background: #fff;
 /*	border: 1px solid #666; 
 	font-size: small !important;
 	opacity: 0.3;
 	filter: alpha(opacity=30); // older IE */
 	}
+	
+div#proveit li a {
+	font-size: 18px;
+}
 
 div#proveit h1 {
 	float: right;
 	width: 50%;
 	text-align: right;
 	font-size: 18px;
+	margin: 13px 0 0 0; padding: 0;
 	}
 	div#proveit h1 span {
 		font-weight: normal;
@@ -26,11 +31,16 @@ div#proveit h1 {
 		width: 20px; height: 20px;
 		margin: 0 10px 0 30px;
 		}
-	
+/*
 div#tabs-1, div#tabs-2, div#tabs-3 {
 	height: 270px;
 	padding: 10px 5px;
 	}
+	*/
+div#view-tab, div#add-tab {
+	padding: 5px;
+}
+
 .scroll {
 	display: block;
 	overflow: scroll;
@@ -70,14 +80,16 @@ tr:hover td {
 td {
 	font-size: 12px;
 	/*border: 1px solid #ccc;*/
-	padding: 0.3em;
+	padding: 0.2em;
 	}
 td.number {
 	vertical-align: middle;
 	font-size: 11px;
 	color: #666;
 	text-align: right;
+	padding-right: 5px;
 	}
+/*
 td.author {
 	padding-left: 0.5em;
 	}
@@ -85,8 +97,15 @@ td.year{
 	width: 50px;
 	text-align: center;
 	}
+*/
+td.details {}
+td.type {
+	width: 20px;
+	background-repeat: no-repeat;
+	background-position: 50% 50%;
+	}
 td.title {
-	width: 525px;
+	width: 460px;
 	}
 td.edit {}
 	td.edit button {
@@ -101,21 +120,21 @@ td.ibid {
 
 div.inputs {
 	border: 0;
-	margin: 0; padding: 0 1em 0 0;
+	margin: 0; padding: 3px;
 	}
 	div.inputs div.input-row {
 		display: block;
 		margin: 0 0 0.8em 0; padding: 0;
 		}
-	div.inputs div.hidden{
+	/*div.inputs div.hidden{
 		display: none;
-		}
+		}*/
 	div.inputs label.paramdesc {
 		display: block;
 		font-size: 12px;
 		text-transform: none;
 		float: left;
-		width: 150px;
+		width: 200px;
 		text-align: left;
 		padding-top:5px;
 		}
@@ -124,16 +143,16 @@ div.inputs {
 		font-size: 12px;
 		text-transform: none;
 		/*float: left;*/
-		width: 130px;
+		width: 180px;
 		text-align: left;
 		padding-right: 10px;
 		}			
 	div.inputs input.paramvalue {
-		width: 520px;
+		width: 460px;
 		font-size: 12px;
 		}
 	div.inputs select {
-		width: 200px;
+		width: auto;
 		font-size: 12px;
 		}
 	div.inputs button {
@@ -141,7 +160,7 @@ div.inputs {
 		}
 
 div#add-buttons, div#edit-buttons {
-	margin-top: 15px;
+	margin-top: 5px;
 	font-size: 11px;
 	}
 

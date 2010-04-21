@@ -13,14 +13,14 @@ $(function() {
 					//$('tr.selected').focus();
 					break;
 
-				case 2: // add
+				case 1: // add
 					proveit.changeCite(document.getElementById(proveit.togglestyle ? 'citemenu' : 'citationmenu'));
 					break;
 
-				case 1: // edit
+			//	case 1: // edit
 					// proveit.updateEditPopup();
-					$('tr.selected').dblclick();
-					break;
+				//	$('tr.selected').dblclick();
+					//break;
 
 				default:
 					// nothing
@@ -45,6 +45,7 @@ $(function() {
 	{
 		proveit.addCitation(proveit.citationObjFromAddPopup($('#add-tab .typepane').get(0)));
 		$("#tabs").tabs( { selected: '#view-tab' } );
+		$("div.scroll, #view-pane").scrollTop(100000); // scroll to new ref
 	}).next().button({
 		icons: {
 			primary: 'ui-icon-circle-close'
@@ -57,7 +58,8 @@ $(function() {
 	// cancel buttons
 	$("button.cancel").click(
 		function() {
-			$( "#tabs" ).tabs( "option", "selected", 0 );
+			$("#edit-pane").hide();
+			$("#view-pane").show();
 		}
 	);
 
@@ -68,7 +70,7 @@ $(function() {
 		}
 	}).click(function()
 	{
-		proveit.addPopupRow(document.getElementById("edit-tab"));
+		proveit.addPopupRow($("#edit-pane"));
 	}).next().next().button({
 		icons: {
 			primary: 'ui-icon-circle-check'
@@ -106,12 +108,12 @@ $(function() {
 	// set up the minimize button
 	$("h1 button").toggle(
 		function() {
-			$("#view-tab, #add-tab, #edit-tab").hide();
+			$("#view-tab, #add-tab").hide();
 			$("h1 button").button("option", "icons", { primary: 'ui-icon-triangle-1-n' } );
 			//$("h1 button").refresh();
 		},
 		function() {
-			$("#view-tab, #add-tab, #edit-tab").show();
+			$("#view-tab, #add-tab").show();
 			$("h1 button").button("option", "icons", { primary: 'ui-icon-triangle-1-s' } );
 			//$("h1 button").refresh();
 		}
