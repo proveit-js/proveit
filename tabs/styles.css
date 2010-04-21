@@ -23,6 +23,7 @@ div#proveit h1 {
 	text-align: right;
 	font-size: 18px;
 	margin: 13px 0 0 0; padding: 0;
+	color: #00254c;
 	}
 	div#proveit h1 span {
 		font-weight: normal;
@@ -51,7 +52,8 @@ div#view-tab, div#add-tab {
 	
 .required {
 	font-weight: bold;
-	color: #FF0084;
+	/*color: #FF0084;*/
+	color: #900;
 	}				
 
 table {
@@ -69,12 +71,14 @@ tr.invalid td {
 	color: red;
 	}
 tr.selected td {
-	background-color: #0073EA;
+	/*background-color: #0073EA;*/
+	background-color: #00254c;
 	color: #fff;
 	}
 tr:hover td {
-	background-color: #FF0084;
-	color: #fff;
+	/*background-color: #FF0084;*/
+	background-color: #eeb211;
+	color: #000;
 	/*cursor: pointer;*/
 	}	
 td {
