@@ -148,3 +148,8 @@ span.ui-button-text {
 		font-size: 11px;
 		margin: 0 3px; padding: 0;
 	}
+
+.pointers {
+    width: 2em;
+    overflow: scroll;
+}
