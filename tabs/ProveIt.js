@@ -630,13 +630,15 @@ var proveit = {
 				if(citation) // Full citation object
 				{
 					name = citation.name;
+					if(!name) // with no name, no possibility of repeat name.
+					{
+						citations.push(citation);
+					}
 				}
 				else // Not full object.  Possibly pointer.
 				{
-					//this.log(currentScan[i]);
 					var match = currentScan[i].match(this.REF_REGEX);
 					name = match && (match[1] || match[2] || match[3]);
-					//this.log(name);
 				}
 
 				if(name)
@@ -659,7 +661,6 @@ var proveit = {
 					// Add to array
 					pointers[name].strings.push(currentScan[i]);
 				}
-
 			}
 			$('#numRefs').text(currentScan.length); // update the number of refs in the view tab
 		}
@@ -1631,7 +1632,8 @@ var proveit = {
 		var pointStrings = ref.getPointerStrings();
 
 		var pointers = $('.pointers', newchild);
-		for(var i = 0; i < pointStrings.length; i++)
+		 // Don't enter loop if pointStrings is undefined
+		for(var i = 0; pointStrings && i < pointStrings.length; i++)
 		{
 			var dividend = i + 1;
 			var colName = "";
