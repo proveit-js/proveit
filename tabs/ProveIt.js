@@ -11,6 +11,10 @@
 if (proveit)
 	throw new Error("proveit already exists");
 
+// $(function() {
+	// proveit.proveitonload();
+// });
+	
 var proveit = {
 	HALF_EDIT_BOX_HEIGHT : 200,
 	// KNOWN_ACTIONS : ["edit", "submit"],
@@ -228,10 +232,14 @@ var proveit = {
 		this.summaryActionAdded = false;
 
 		if(this.isSupportedEditPage())
-		{
+		{	
+	
+			
 			this.log("Calling scanRef from proveitonload.");
+			
 			this.scanRef();
 		}
+		
 		return true;
 	},
 
