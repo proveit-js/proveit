@@ -14,7 +14,7 @@ if (proveit)
 // $(function() {
 	// proveit.proveitonload();
 // });
-	
+
 var proveit = {
 	HALF_EDIT_BOX_HEIGHT : 200,
 	// KNOWN_ACTIONS : ["edit", "submit"],
@@ -30,11 +30,11 @@ var proveit = {
 	EDIT_PARAM_PREFIX : "editparam",
 
 	// // Convenience log function
-	log : function(str)
+	log : function(msg)
 	{
 		if(typeof(console) === 'object' && console.log)
 		{
-			console.log("[ProveIt] " + str);
+			console.log("[ProveIt] %o", msg);
 		}
 
 		//this.consoleService.logStringMessage("[ProveIt] " + str);
@@ -106,21 +106,17 @@ var proveit = {
 		return {"left": left, "top": top};
 	},
 
-	// Highlights a given string in the MediaWiki edit box.
-	highlightTargetString : function(targetStr)
+	// Highlights a given length of text, at a particular index.
+	highlightLengthAtIndex : function(startInd, length)
 	{
-		//this.log("Entering highlightTargetString");
-		var mwBox = this.getMWEditBox();
-		var editTop = this.getPosition(this.getEditForm()).top;
-		//content.window.scroll(0, editTop);
-		var origText = $(mwBox).val();
-		var startInd = origText.indexOf(targetStr);
-		if(startInd == -1)
+		if(startInd < 0 || length < 0)
 		{
-			this.log("Target string \"" + targetStr + "\" not found.");
-			return false;
+			this.log("highlightStringAtIndex: invalid negative arguments");
 		}
-		var endInd = startInd + targetStr.length;
+		var mwBox = this.getMWEditBox();
+		var origText = $(mwBox).val();
+		var editTop = this.getPosition(this.getEditForm()).top;
+		var endInd = startInd + length;
 		$(mwBox).val(origText.substring(0, startInd));
 		mwBox.scrollTop = 1000000; //Larger than any real textarea (hopefully)
 		var curScrollTop = mwBox.scrollTop;
@@ -131,8 +127,23 @@ var proveit = {
 		}
 		mwBox.focus();
 		mwBox.setSelectionRange(startInd, endInd);
-		//this.log("Exiting highlightTargetString");
 		return true;
+	},
+
+	// Highlights a given string in the MediaWiki edit box.
+	highlightTargetString : function(targetStr)
+	{
+		//this.log("Entering highlightTargetString");
+		var mwBox = this.getMWEditBox();
+		//content.window.scroll(0, editTop);
+		var origText = $(mwBox).val();
+		var startInd = origText.indexOf(targetStr);
+		if(startInd == -1)
+		{
+			this.log("Target string \"" + targetStr + "\" not found.");
+			return false;
+		}
+		return this.highlightLengthAtIndex(startInd, targetStr.length);
 	},
 
 	// Convenience function.  Returns MediaWiki text area.
@@ -232,14 +243,14 @@ var proveit = {
 		this.summaryActionAdded = false;
 
 		if(this.isSupportedEditPage())
-		{	
-	
-			
+		{
+
+
 			this.log("Calling scanRef from proveitonload.");
-			
+
 			this.scanRef();
 		}
-		
+
 		return true;
 	},
 
@@ -517,7 +528,7 @@ var proveit = {
 		var paramName = $('.paramdesc', newline).eq(0);
 		var paramValue = $('.paramvalue', newline).eq(0);
 
-		
+
 		$('.paramlist', root).append(newline);
 
 		if(req) // if field is required...
@@ -544,7 +555,7 @@ var proveit = {
 			$(paramName).text(desc);
 			$(paramName).attr('title',item);
 			$(paramValue).val(list[item]);
-			
+
 			$(newline).show();
 		}
 		else
@@ -614,10 +625,19 @@ var proveit = {
 		var textValue = $(text).val();
 		// since we should pick the name out before we get to the citation
 		// tag type, here's a variable to hold it
-		var name, orig;
+		var name;
 
-		// currentScan holds the parsed (match objects) list of citations.
-		var currentScan = textValue.match(/<[\s]*ref[^>]*>[\s]*{{+[\s]*(cite|Citation)[^}]*}}+[\s]*<[\s]*\/[\s]*ref[\s]*>/gi);
+		// key - name
+		// value -
+		//      object - key - "citation", value - citation obj .  Avoids repeating same object in citations array.
+                //               key - "strings", value - array of orig strings
+		var pointers = {};
+
+		// Array of citation objects.  At end of function, addNewElement called on each.
+		var citations = [];
+
+		// currentScan holds the parsed (match objects) list of citations.  Regex matches full or name-only reference.
+		var currentScan = textValue.match(/<[\s]*ref[^>]*>(?:[\s]*{{+[\s]*(cite|Citation)[^}]*}}+[\s]*<[\s]*\/[\s]*ref[\s]*>)?/gi);
 		// if there are results,
 		if (currentScan)
 		{
@@ -625,14 +645,57 @@ var proveit = {
 			{
 				//this.log("currentScan[" + i + "]: " + currentScan[i]);
 				var citation = this.CitationFactory(currentScan[i]);
-				if(citation)
+				if(citation) // Full citation object
 				{
-					this.addNewElement(citation);
+					name = citation.name;
+					if(!name) // with no name, no possibility of repeat name.
+					{
+						citations.push(citation);
+					}
+				}
+				else // Not full object.  Possibly pointer.
+				{
+					var match = currentScan[i].match(this.REF_REGEX);
+					name = match && (match[1] || match[2] || match[3]);
+				}
+
+				if(name)
+				{
+					if(!pointers[name])
+					{
+						// Create array of original reference strings
+						pointers[name] = {};
+						if(!pointers[name].strings)
+						{
+							pointers[name].strings = [];
+						}
+					}
+					if(citation && !pointers[name].citation) // citation, and not already one for this name
+					{
+						pointers[name].citation = citation;
+						citations.push(citation);
+					}
+
+					// Add to array
+					pointers[name].strings.push(currentScan[i]);
 				}
 			}
 			$('#numRefs').text(currentScan.length); // update the number of refs in the view tab
 		}
+		for(var j = 0; j < citations.length; j++)
+		{
+			if(citations[j].name)
+			{
+				var pointer = pointers[citations[j].name];
+				citations[j].setPointerStrings(pointer.strings);
+			}
+			this.addNewElement(citations[j]);
+		}
+		this.log("pointers: ");
+		this.log(pointers);
 	},
+
+	REF_REGEX : /<[\s]*ref[\s]*name[\s]*=[\s]*(?:(?:\"(.*?)\")|(?:\'(.*?)\')|(?:(.*?)))[\s]*\/?[\s]*>/,
 
 	/*
 	 * Factory function for citations.  Takes text of a citation, and returns instance of the appropriate class.
@@ -646,7 +709,7 @@ var proveit = {
 			return null;
 		}
 		var workingstring = citationText.match(/{{[\s]*(cite|Citation)[^}]*}}/i)[0];
-		var match = citationText.match(/<[\s]*ref[\s]*name[\s]*=[\s]*(?:(?:\"(.*?)\")|(?:\'(.*?)\')|(?:(.*?)))[\s]*\/?[\s]*>/);
+		var match = citationText.match(this.REF_REGEX);
 
 		if(match && match != null)
 		{
@@ -1003,6 +1066,18 @@ var proveit = {
 				this.type = mappedType;
 			else
 				this.type = rawType; // Use naive type as fallback.
+		};
+
+		var pointerStrings;
+		this.setPointerStrings = function(strings)
+		{
+			pointerStrings = strings;
+		};
+
+		this.getPointerStrings = function()
+		{
+			// Should this return a copy?
+			return pointerStrings;
 		};
 
 		proveit.AbstractCitation.call(this, argObj);
@@ -1461,14 +1536,13 @@ var proveit = {
 	 */
 	makeRefboxElement : function(ref)
 	{
-		//this.log("Entering makeRefboxElement.");
+		// this.log("Entering makeRefboxElement.");
 		var refName = ref.name; //may be null or blank
 
 		//var refbox = this.getRefbox();
 
-		var newchild = $("#dummyRef").clone().attr('id','').show();
-		
-		
+		var newchild = $('<tr><td class="number"></td><td class="type"></td><td class="title"></td><td class="details"></td><td class="edit"><button>edit</button><span class="pointers"></span></td></tr>').get(0);
+
 		$("td.edit button", newchild).button({
 			icons: {
 				primary: 'ui-icon-pencil'
@@ -1476,8 +1550,6 @@ var proveit = {
 			text: false
 		});
 
-		//var newchild = document.getElementById("prime").cloneNode(true);
-		//newchild.id = "";
 		if(!ref.isValid())
 		{
 			// Flag as invalid.
@@ -1548,7 +1620,7 @@ var proveit = {
 
 		if(ref.params['coauthors'] || ref.params['last2'])
 			formattedAuthor += ' <i>et al.</i>';
-		
+
 		// build the "details" cell based on presence of author/year data
 		var details = '';
 		if (formattedYear != '' && formattedAuthor != '')
@@ -1589,7 +1661,7 @@ var proveit = {
 		}
 		$('td.type', newchild).css('background-image','url('+icon+')');
 		$('td.type', newchild).attr('title',ref.type);
-		
+
 		//$('td.author', newchild).html(formattedAuthor);
 
 		// single click event handler
@@ -1599,11 +1671,11 @@ var proveit = {
 			// thisproveit.highlightTargetString(ref.orig);
 		// }, false);
 		//alert(ref.orig);
-		
+
 		// get ref number by counting number of refs (this includes dummy ref)
 		var numRefs = $('#refs tr').length;
 		$('td.number', newchild).text(numRefs);
-		
+
 		// event handler for selecting a ref)
 		$(newchild).click(function() { thisproveit.highlightTargetString(ref.orig); thisproveit.highlightTargetString(ref.orig); });
 
@@ -1611,24 +1683,70 @@ var proveit = {
 
 		var doEdit = function() {
 			thisproveit.selectRow(newchild);
-			
+
 		//	var selectedTab = $( "#tabs" ).tabs( "option", "selected" );
-	//		alert(selectedTab);
-//			if(selectedTab != 1)			
-				//$( "#tabs" ).tabs( "option", "selected", 1 );
-				
+		//	alert(selectedTab);
+		//	if(selectedTab != 1)
+		//      $( "#tabs" ).tabs( "option", "selected", 1 );
+
 			thisproveit.updateEditPopup(ref);
 
-			$("#view-pane").hide();			
+			$("#view-pane").hide();
 			$("#edit-pane").show();
-
-			
-			//var selectedIndex = thisproveit.getRefbox().selectedIndex;
-			//var winData = {"proveit": thisproveit, "ref": ref};
-			//selectRow(newchild);
-			//window.openDialog("edit_dialog.xul", "edit dialog", thisproveit.DIALOG_FEATURES, winData);
-			//thisproveit.getRefbox().selectedIndex = selectedIndex;
 		};
+
+		var pointStrings = ref.getPointerStrings();
+		var pointers = $('.pointers', newchild);
+		 // Don't enter loop if pointStrings is undefined
+		for(var i = 0; pointStrings && i < pointStrings.length; i++)
+		{
+			var dividend = i + 1;
+			var colName = "";
+
+			while(dividend > 0)
+			{
+				var mod = (dividend - 1) % 26;
+				colName = String.fromCharCode(97 + mod) + colName;  // a = 97
+				dividend = Math.floor(dividend / 26);
+			}
+			var pointerHolder = $('<a href="#">' + colName + '</a>');
+			// Bind i
+			var proveit = this;
+			var clickFunc = (function(i)
+			{
+				return function()
+				{
+					var last = 0, j = 0;
+					var text = $(proveit.getMWEditBox()).val();
+					for(j = 0; j < i; j++)
+					{
+						last = text.indexOf(pointStrings[j], last);
+
+						// Shouldn't happen.  Indicates pointer strings are out of date.
+						if(last == -1)
+						{
+							break;
+						}
+						last += pointStrings[j].length;
+					}
+					if(j == i)
+					{
+						proveit.highlightLengthAtIndex(text.indexOf(pointStrings[i], last),
+									    pointStrings[i].length);
+						return false;
+					}
+				};
+			})(i);
+
+			pointerHolder.click(clickFunc);
+			pointers.append(pointerHolder);
+		}
+
+		//var selectedIndex = thisproveit.getRefbox().selectedIndex;
+		//var winData = {"proveit": thisproveit, "ref": ref};
+		//selectRow(newchild);
+		//window.openDialog("edit_dialog.xul", "edit dialog", thisproveit.DIALOG_FEATURES, winData);
+		//thisproveit.getRefbox().selectedIndex = selectedIndex;
 
 		$(newchild).dblclick(doEdit);
 		//newchild.addEventListener("dblclick", doEdit, false);
@@ -1637,7 +1755,7 @@ var proveit = {
 
 		// newlabel.setAttribute("value", ref.getLabel());
 		// newlabel.setAttribute("control", "refbox");
-		return newchild.get(0);
+		return newchild;
 	},
 
 	truncateTitle : function(title)
