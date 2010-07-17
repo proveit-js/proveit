@@ -11,9 +11,13 @@
 if (proveit)
 	throw new Error("proveit already exists");
 
-// $(function() {
-	// proveit.proveitonload();
-// });
+// var s = document.createElement('script');
+// s.setAttribute('type', 'text/javascript');
+// s.setAttribute('src', 'http://www.google.com/jsapi');
+// document.getElementsByTagName('head')[0].appendChild(s);
+
+$('head').append('<link rel="stylesheet" type="text/css" href="http://jquery-ui.googlecode.com/svn/tags/latest/themes/base/jquery-ui.css" />');
+$('head').append('<link rel="stylesheet" type="text/css" href="styles.css" />');
 
 var proveit = {
 	HALF_EDIT_BOX_HEIGHT : 200,
@@ -115,7 +119,7 @@ var proveit = {
 		}
 		var mwBox = this.getMWEditBox();
 		var origText = $(mwBox).val();
-		var editTop = this.getPosition(this.getEditForm()).top;
+		var editTop = this.getPosition(this.getMWEditBox()).top;
 		var endInd = startInd + length;
 		$(mwBox).val(origText.substring(0, startInd));
 		mwBox.scrollTop = 1000000; //Larger than any real textarea (hopefully)
@@ -149,16 +153,14 @@ var proveit = {
 	// Convenience function.  Returns MediaWiki text area.
 	getMWEditBox : function()
 	{
-		//var contentDoc = top.window.content.document;
-		//return contentDoc.getElementById('wikEdTextarea') || contentDoc.getElementById('wpTextbox1');
-		return $("#editbox")[0];
+		return $("#wpTextbox1")[0];
 	},
 
 	// Returns edit form DOM object
 
 	getEditForm : function()
 	{
-		return $("#editbox")[0];
+		return $("#editform")[0];
 	},
 
 	// Runs a given function on submission of edit form
@@ -244,11 +246,7 @@ var proveit = {
 
 		if(this.isSupportedEditPage())
 		{
-
-
-			this.log("Calling scanRef from proveitonload.");
-
-			this.scanRef();
+			this.createGUI();
 		}
 
 		return true;
@@ -332,7 +330,7 @@ var proveit = {
 	/**
 	 * Modifies citation object from user-edited GUI.  Note that the modification of citeObj is done in-place, so the return value is only for convenience.
 	 *
-	 * @param editBox the root element of edit popup/dialog.
+	 * @param editBox the root raw HTML element of edit popup/dialog.
 	 * @param citeObj the original citation object we're modifying
 	 *
 	 * @return citeObj
@@ -342,17 +340,9 @@ var proveit = {
 		this.log("Entering citationObjFromEditPopup");
 		var paramBoxes = $("div.input-row", editBox);
 
-		// TODO: Working ref name
-// 		var refNameValue = editBox.getElementsByClassName("refname")[0];
-// 		if(refNameValue.value != "")
-// 		{
-// 			var newName = refNameValue.value;
-// 			citeObj.name = newName;
-// 		}
-// 		else
-// 		{
-// 		        citeObj.name = null; // Save blank names as null
-// 		}
+ 		var refNameValue = $('.refname', editBox);
+		var refName = refNameValue.val();
+		citeObj.name = refName != "" ? refName : null; // Save blank names as null
 
 		// Clear old params
 		citeObj.params = {};
@@ -421,19 +411,10 @@ var proveit = {
 	updateEditPopup : function(ref)
 	{
 		this.log("Entering updateEditPopup.");
-		// var editlist = editWin.document.getElementById("editlist");
 
-		// editWin.document.getElementById("editlabel").value = ref.getEditLabel();
+		var refNameValue = $('#edit-pane .refname');
 
-		// var refNameValue = editWin.document.getElementById("editrefname");
-		// if(ref.name)
-		// {
-			// refNameValue.value = ref.name;
-		// }
-		// else
-		// {
-			// refNameValue.value = "";
-		// }
+		refNameValue.val(ref.name || "");
 
 		// Don't contaminate actual object with junk params.
 		var tempParams = {};
@@ -863,7 +844,13 @@ var proveit = {
 					format: "File format",
 					issn: "ISSN",
 					pmid: "PMID",
-					chapter: "Chapter"
+					chapter: "Chapter",
+					web: "Web",
+					book: "Book",
+					conference: "Conference",
+					news: "News",
+					paper: "Paper",
+					"press release": "Press release"
 			}
 		};
 
@@ -1434,6 +1421,7 @@ var proveit = {
 
 	/**
 	 * Changes the panel for the cite entry panel to the correct type of entry
+	 * @param menu Raw HTML menu element
 	 */
 	changeCite : function(menu) {
 		this.log("Entering changeCite");
@@ -1526,6 +1514,313 @@ var proveit = {
 		$(genPane).show();
 		citePanes.insertBefore(genPane, citePanes.firstChild);
 		this.log("Exiting changeCite");
+	},
+
+	/**
+	 * Create ProveIt HTML GUI
+	 */
+	createGUI : function()
+	{
+		// more JqueryUI CSS: http://blog.jqueryui.com/2009/06/jquery-ui-172/
+		var gui = $('<div/>', {id: 'proveit'});
+		var tabs = $('<div/>', {id: 'tabs'});
+		var created = $('<h1/>');
+		var createdLink = $('<a/>', {title: 'Created by the ELC Lab at Georgia Tech',
+			                     href: 'http://www.cc.gatech.edu/elc',
+					     target: '_blank'}).
+			append('ProveIt').
+			append('<span>2</span>');
+		created.append(createdLink).
+			append('<button>show/hide</button>');
+		tabs.append(created);
+		var header = $('<ul/>');
+		var view = $('<li/>');
+		var viewLink = $('<a/>', {href: '#view-tab'});
+		viewLink.append('References (');
+		var numRefs = $('<span/>', {id: 'numRefs'}).
+			append('0');
+		viewLink.append(numRefs).
+			append(')');
+		view.append(viewLink);
+		header.append(view);
+		var add = $('<li/>');
+		var addLink = $('<a/>', {href: '#add-tab'}).
+			append('Add');
+		add.append(addLink);
+		header.append(add);
+		tabs.append(header);
+		var viewTab = $('<div/>', {id: 'view-tab'});
+		var viewPane = $('<div/>', {id: 'view-pane'});
+		var viewScroll = $('<div/>', {class: 'scroll',
+					      style: 'height: 210px;'});
+		var refTable = $('<table/>', {id: 'refs'});
+		var dummyRef = $('<tr/>', {id: 'dummyRef',
+					   style: 'display: none;'});
+		dummyRef.append($('<td/>', {class: 'number'})).
+			append($('<td/>', {class: 'type'})).
+			append($('<td/>', {class: 'title'})).
+			append($('<td/>', {class: 'details'}));
+		var editTd = $('<td/>', {class: 'edit'}).
+			append($('<button/>', {text: 'edit'}));
+		dummyRef.append(editTd);
+		refTable.append(dummyRef);
+		viewScroll.append(refTable);
+		viewPane.append(viewScroll);
+		viewTab.append(viewPane);
+		var editPane = $('<div/>', {id: 'edit-pane', style: 'display: none'});
+		var refNameRow = $('<div/>', {class: 'ref-name-row'});
+		var refLabel = $('<label/>', {for: 'editrefname',
+					      title: 'This is an identifier that can be used to refer to this reference elsewhere on the page. It should be short and memorable.',
+					      class: 'paramdesc'}).
+			append('&lt;ref&gt; name (abbr. code)');
+		refNameRow.append(refLabel);
+		refNameRow.append($('<input/>', {id: 'editrefname',
+	                                       class: 'refname paramvalue'}));
+		editPane.append(refNameRow);
+		var editFields = $('<div/>', {id: 'edit-fields',
+					      class: 'inputs scoll paramlist',
+					      style: 'height: 170px'});
+		editPane.append(editFields);
+		var editButtons = $('<div/>', {id: 'edit-buttons'});
+		var addFieldButton = $('<button/>', {style: 'margin-right: 50px;'}).
+			append('add field');
+		editButtons.append(addFieldButton);
+		var reqSpan = $('<span/>', {class: 'required',
+					    text: 'red'});
+		editButtons.append(reqSpan).
+			append(' = required');
+		var saveButton = $('<button/>', {class: 'right-side accept',
+		                                 text: 'save changes'});
+		editButtons.append(saveButton);
+		var cancelButton = $('<button/>', {class: 'right-side cancel',
+			                           text: 'cancel'});
+		editButtons.append(cancelButton);
+		editPane.append(editButtons);
+		viewTab.append(editPane);
+		tabs.append(viewTab);
+		var dummyCite = $('<div/>', {id: 'dummyCitePane',
+					     class: 'typepane',
+					     style: 'display: none'});
+		var addRefNameRow = refNameRow.clone();
+		$('.refname', addRefNameRow).attr('id', 'addrefname');
+		$('label', addRefNameRow).attr('for', 'addrefname');
+		dummyCite.append(addRefNameRow);
+		dummyCite.append($('<div/>', {class: 'paramlist'}));
+		tabs.append(dummyCite);
+		var preloadedparam = $('<div/>', {id: 'preloadedparamrow',
+						  class: 'preloadedrow input-row',
+						  style: 'display: none'}).
+			append($('<label/>', {class: 'paramdesc'}));
+		var paramvalue = $('<input/>', {class: 'paramvalue'});
+	        preloadedparam.append(paramvalue);
+		var deleteButton = $('<button/>', {class: 'remove'}).
+			append('delete field');
+		preloadedparam.append(deleteButton);
+		tabs.append(preloadedparam);
+		var addedparam = $('<div/>', {id: 'addedparamrow',
+					      class: 'addedrow input-row',
+ 					      style: 'display: none'}).
+			append($('<input/>', {class: 'paramdesc'})).
+			append(paramvalue.clone()).
+			append(deleteButton.clone());
+		tabs.append(addedparam);
+		var addTab = $('<div/>', {id: 'add-tab'});
+		var addFields = $('<div/>', {id: 'add-fields',
+					     class: 'inputs scroll',
+					     style: 'height: 170px'});
+		var cite = $('<div/>', {style: 'display: none',
+					id: 'cite',
+				        class: 'input-row'});
+		var refCiteTypeLabel = $('<label/>', {for: 'citemenu',
+						  class: 'paramdesc required',
+						  text: 'Reference type'});
+		cite.append(refCiteTypeLabel);
+		var citemenu = $('<select/>', {id: 'citemenu',
+					       change: function()
+					       {
+						       proveit.changeCite(citemenu.get(0));
+					       }});
+		// Lists of types (citeTypes, citationTypes) probably don't belong here
+		var citeTypes = ["web", "book", "journal", "conference", "encyclopedia", "news", "newsgroup", "paper", "press release"];
+		var descs = new this.AbstractCitation({}).getDescriptions();
+		for(var i = 0; i < citeTypes.length; i++)
+		{
+			citemenu.append($('<option/>', {value: citeTypes[i],
+						        text: descs[citeTypes[i]]}));
+		}
+		cite.append(citemenu);
+		addFields.append(cite);
+		addFields.append($('<div/>', {class: 'addpanes',
+					      id: 'citepanes'}));
+		var citation = $('<div/>', {style: 'display: none',
+					    id: 'citation',
+					    class: 'input-row'});
+		var refCitationTypeLabel = refCiteTypeLabel.clone().attr('for', 'citationmenu');
+		citation.append(refCitationTypeLabel);
+		var citationmenu = $('<select/>', {id: 'citemenu',
+		                                   change: function()
+						   {
+							   proveit.changeCite(citationmenu.get(0));
+						   }});
+		var citationTypes = ['web', 'book', 'journal', 'encyclopedia', 'news', 'patent'];
+		for(var j = 0; j < citationTypes.length; j++)
+		{
+			citationmenu.append($('<option/>', {value: citationTypes[i],
+			                                    text: descs[citationTypes[i]]}));
+		}
+		citation.append(citationmenu);
+		addFields.append(citation).
+			append($('<div/>', {class: 'addpanes',
+					    id: 'citationpanes'}));
+		addTab.append(addFields);
+		var addButtons = $('<div/>', {id: 'add-buttons'});
+		addButtons.append($('<button/>', {style: 'margin-right: 50px;',
+						  text: 'add field'})).
+			append(reqSpan.clone()).
+			append(" = required").
+			append(saveButton.clone().text('finish & insert')).
+			append(cancelButton.clone());
+		addTab.append(addButtons);
+		tabs.append(addTab);
+		gui.append(tabs);
+		$(document.body).prepend(gui);
+
+		// set up tabs
+		$("#tabs").tabs({
+			selected: 0,
+				show: function(event,ui)
+				{
+					switch(ui.index)
+					{
+						case 0: // view
+						//$('tr.selected').focus();
+						break;
+
+						case 1: // add
+							proveit.changeCite(document.getElementById(proveit.togglestyle ? 'citemenu' : 'citationmenu'));
+							break;
+
+				      //	case 1: // edit
+						// proveit.updateEditPopup();
+						//	$('tr.selected').dblclick();
+						//break;
+
+						default:
+						// nothing
+					}
+				}
+		});
+
+		// add panel buttons
+		$("#add-buttons button:first").button({
+			icons: {
+				primary: 'ui-icon-circle-plus'
+			}
+		}).click(function()
+			 {
+				 proveit.addPopupRow(document.getElementById("add-tab"));
+			 })
+		.next().next().button({
+			icons: {
+				primary: 'ui-icon-circle-check',
+				secondary: 'ui-icon-circle-arrow-e'
+			}
+		}).click(function()
+			 {
+				 proveit.addCitation(proveit.citationObjFromAddPopup($('#add-tab .typepane').get(0)));
+				 $("#tabs").tabs( { selected: '#view-tab' } );
+				 $("div.scroll, #view-pane").scrollTop(100000); // scroll to new ref
+			 }).next().
+		button({
+			icons: {
+				primary: 'ui-icon-circle-close'
+				}
+		}).click(function()
+			 {
+				 $("#tabs").tabs( { selected: '#view-tab' } );
+			 });
+
+		// cancel buttons
+		$("button.cancel").click(
+			function() {
+				$("#edit-pane").hide();
+				$("#view-pane").show();
+			}
+		);
+
+		// edit panel buttons
+		$("#edit-buttons button:first").button({
+			icons: {
+				primary: 'ui-icon-circle-plus'
+			}
+		}).click(function()
+			 {
+				 proveit.addPopupRow($("#edit-pane"));
+			 }).
+		next().next().
+		button({
+			icons: {
+				primary: 'ui-icon-circle-check'
+			}
+		}).next().button({
+			icons: {
+				primary: 'ui-icon-circle-close'
+			}
+		});
+
+		// delete field button
+		$("div.input-row .remove").button({
+			icons: {
+				primary: 'ui-icon-close'
+			},
+			text: false
+		});
+
+		// ibid buttons
+		$("td.ibid button").button({
+			icons: {
+				primary: 'ui-icon-arrowthick-1-e'
+			},
+			text: false
+		});
+
+		// create the minimize button
+		$("h1 button").button({
+			icons: {
+				primary: 'ui-icon-triangle-1-s'
+			},
+			text: false
+		});
+
+		// set up the minimize button
+		$("h1 button").toggle(
+			function() {
+				$("#view-tab, #add-tab").hide();
+				$("h1 button").button("option", "icons", { primary: 'ui-icon-triangle-1-n' } );
+				//$("h1 button").refresh();
+			},
+			function() {
+				$("#view-tab, #add-tab").show();
+				$("h1 button").button("option", "icons", { primary: 'ui-icon-triangle-1-s' } );
+				//$("h1 button").refresh();
+			}
+		);
+
+		this.scanRef();
+
+		// make individual refs selectable
+		$("#refs tr").click(
+			function() {
+				proveit.selectRow(this);
+			}
+		);
+
+
+		$("#refs tr").eq(0).click().click(); // select first item in list.  TODO: Why two .click?
+
+		// alternate row colors
+		$("#refs tr:even").addClass('light');
+		$("#refs tr:odd").addClass('dark');
 	},
 
 	/**
@@ -1802,3 +2097,8 @@ var proveit = {
 String.prototype.trim = function() {
 	return this.replace(/^\s+|\s+$/g, "");
 }
+
+$(function()
+{
+	proveit.proveitonload();
+});

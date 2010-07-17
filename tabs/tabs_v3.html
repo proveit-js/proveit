@@ -2,114 +2,22 @@
 <html lang="en">
 <head>
 	<title>tabs</title>
-	<link type="text/css" href="http://jquery-ui.googlecode.com/svn/tags/latest/themes/base/jquery-ui.css" rel="stylesheet" />
-	<!-- more JqueryUI CSS: http://blog.jqueryui.com/2009/06/jquery-ui-172/ -->
-	<link type="text/css" href="styles.css" rel="stylesheet" />
 	<script type="text/javascript" src="http://www.google.com/jsapi"></script>
 	<script type="text/javascript">
 		google.load("jquery", "1");
 		google.load("jqueryui", "1");
 		google.setOnLoadCallback(function(){});
 	</script>
-	<script type="text/javascript" src="scripts.js"></script>
 	<script type="text/javascript" src="ProveIt.js"></script>
 </head>
 <body>
-
-<div id="proveit">
-	<div id="tabs">
-		<h1><a title="Created by the ELC Lab at Georgia Tech" href="http://www.cc.gatech.edu/elc" target="_blank">ProveIt <span>2</span></a><button>show/hide</button></h1>
-		<ul>
-			<li><a href="#view-tab">References (<span id="numRefs">0</span>)</a></li>	
-			<li><a href="#add-tab">Add</a></li>
-		</ul>
-		<div id="view-tab">
-			<div id="view-pane">
-				<div class="scroll" style="height: 210px;">
-					<table id="refs">
-						<tr id="dummyRef" style="display: none;">
-							<td class="number"></td>
-							<td class="type"></td>
-							<td class="title"></td>
-							<td class="details"></td>
-							<td class="edit"><button>edit</button></td>
-						</tr>
-					</table>	
-				</div>
-			</div><!-- end view-pane -->
-			<div id="edit-pane" style="display: none;">
-				<div id="edit-fields" class="inputs scroll paramlist" style="height: 170px;"></div>	
-				<div id="edit-buttons">
-					<button style="margin-right: 50px;">add field</button>
-					<span class="required">red</span> = required
-					<button class="right-side accept">save changes</button>
-					<button class="right-side cancel">cancel</button>			
-				</div><!-- end edit-buttons -->		
-			</div><!-- end edit-pane -->
-		</div><!-- end view-tab -->
-		<div id="dummyCitePane" class="typepane" style="display: none">
-			<div class="input-row">
-				<label for="citerefname" title="This is an identifier that can be used to refer to this reference elsewhere on the page. It should be short and memorable." class="paramdesc">&lt;ref&gt; name (abbr. code)</label>
-				<input type="text" id="citerefname" class="refname paramvalue" />
-			</div>
-			<div class="paramlist"></div>
-		</div><!-- end dummyCitePane -->
-		<div id="preloadedparamrow" class="preloadedrow input-row" style="display: none">
-			<label class="paramdesc"></label>
-			<input type="text" class="paramvalue" value="" />
-			<button class="remove">delete field</button>
-		</div><!-- end preloadedparamrow -->
-		<div id="addedparamrow" class="addedrow input-row" style="display: none">
-			<input type="text" class="paramdesc" value="" />
-			<input type="text" class="paramvalue" value="" />
-			<button class="remove">delete field</button>
-		</div><!-- end addparamrow -->
-		<div id="add-tab">
-			<div id="add-fields" class="inputs scroll" style="height: 170px;">
-				<div flex="1" style="display: none" id="cite" class="input-row">
-					<label for="citemenu" class="paramdesc required">Reference type</label>
-					<select id="citemenu" onchange="proveit.changeCite(this)">
-						<option value="web">Web Site</option>
-						<option value="book">Book</option>
-						<option value="journal">Journal</option>
-						<option value="conference">Conference</option>
-						<option value="encyclopedia">Encyclopedia</option>
-						<option value="news">News</option>
-						<option value="newsgroup">Newsgroup</option>
-						<option value="paper">Scientific Paper</option>
-						<option value="press release">Press Release</option>					
-					</select>
-				</div>
-				<div class="addpanes" id="citepanes" flex="1"></div>
-				<div flex="1" style="display: none" id="citation" class="input-row">
-					<label for="citationmenu" class="paramdesc required">Reference type</label>
-					<select id="citationmenu" onchange="proveit.changeCite(this)">
-						<option value="web">Web Site</option>
-						<option value="book">Book</option>
-						<option value="journal">Journal</option>
-						<option value="encyclopedia">Encyclopedia</option>
-						<option value="news">News</option>
-						<option value="patent">Patent</option>
-					</select>
-				</div>				
-				<div class="addpanes" id="citationpanes" flex="1"></div>
-			</div>	
-			<div id="add-buttons">
-				<button style="margin-right: 50px;">add field</button>
-				<span class="required">red</span> = required
-				<button class="right-side accept">finish &amp; insert</button>
-				<button class="right-side cancel">cancel</button>			
-			</div><!-- end add-buttons -->
-		</div><!-- end add-tab -->	
-	</div><!-- end tabs -->
-</div><!-- end proveit -->
 
 <h1>Wikipedia Edit Page</h1>
 
 <p class="fake">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam turpis ipsum, tristique id porttitor eu, tincidunt eget sapien. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Sed ut neque eu dui dictum ornare. Nam porta, justo vitae consequat pellentesque, leo lacus suscipit magna, quis euismod erat nibh ac massa. Quisque malesuada, quam quis sagittis vestibulum, leo quam placerat nibh, nec molestie urna turpis nec augue. Donec velit leo, porta vitae dictum et, tincidunt non magna. Pellentesque non mauris nulla. Aliquam vel odio sit amet purus gravida venenatis. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur hendrerit felis nec purus euismod interdum. Fusce tempor congue turpis a tincidunt. Aliquam sagittis ultrices nisi.
 
 
-<textarea id="editbox" style="width: 90%; height: 400px; margin-left: 100px;">
+<textarea id="wpTextbox1" style="width: 90%; height: 400px; margin-left: 100px;">
 {{confuse|Georgian Technical University}}
 {{Infobox university
 |name = Georgia Institute of Technology

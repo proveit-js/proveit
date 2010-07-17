@@ -146,6 +146,14 @@ div.inputs {
 		text-align: left;
 		padding-top:5px;
 		}
+	.ref-name-row {
+	        font-size: 12px;
+	        }
+	.ref-name-row label.paramdesc {
+	        display: block;
+		float: left;
+		width: 200px;
+	        }
 	div.inputs input.paramdesc {
 		/*display: block;*/
 		font-size: 12px;
