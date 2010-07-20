@@ -46,7 +46,7 @@ div#view-tab, div#add-tab {
 	padding: 5px;
 }
 
-.scroll {
+#proveit .scroll {
 	display: block;
 	overflow: scroll;
 	overflow-y: scroll;
@@ -54,43 +54,43 @@ div#view-tab, div#add-tab {
 	border: 1px solid #dddddd !important;
 	}
 	
-.required {
+#proveit .required {
 	font-weight: bold;
 	/*color: #FF0084;*/
 	color: #900;
 	}				
 
-table {
+#proveit table {
 	border-collapse: collapse;
 	width: 100%;
 	margin: 0; padding: 0;
 	}
-tr.light td {
+#proveit tr.light td {
 	background-color: #fff;
 	}
-tr.dark td {
+#proveit tr.dark td {
 	background-color: #eeeeee;
 	}
-tr.invalid td {
+#proveit tr.invalid td {
 	color: red;
 	}
-tr.selected td {
+#proveit tr.selected td {
 	/*background-color: #0073EA;*/
 	background-color: #00254c;
 	color: #fff;
 	}
-tr:hover td {
+#proveit tr:hover td {
 	/*background-color: #FF0084;*/
 	background-color: #eeb211;
 	color: #000;
 	/*cursor: pointer;*/
 	}	
-td {
+#proveit td {
 	font-size: 12px;
 	/*border: 1px solid #ccc;*/
 	padding: 0.2em;
 	}
-td.number {
+#proveit td.number {
 	vertical-align: middle;
 	font-size: 11px;
 	color: #666;
@@ -106,85 +106,94 @@ td.year{
 	text-align: center;
 	}
 */
-td.details {}
-td.type {
+#proveit td.details {}
+#proveit td.type {
 	width: 20px;
 	background-repeat: no-repeat;
 	background-position: 50% 50%;
 	}
-td.title {
+#proveit td.title {
 	width: 460px;
 	}
 td.edit {}
-	td.edit button {
-		width: 20px; height: 20px;
-		}
-td.ibid {
+#proveit td.edit button {
+	width: 20px; height: 20px;
+	}
+#proveit td.ibid {
 	display: none;
 	}
-	td.ibid button {
-		width: 20px; height: 20px;
-		}
+#proveit td.ibid button {
+	width: 20px; height: 20px;
+	}
 
-div.inputs {
+#proveit div.inputs {
 	border: 0;
 	margin: 0; padding: 3px;
 	}
-	div.inputs div.input-row {
-		display: block;
-		margin: 0 0 0.8em 0; padding: 0;
-		}
+#proveit div.inputs div.input-row {
+	display: block;
+	margin: 0 0 0.8em 0; padding: 0;
+	}
 	/*div.inputs div.hidden{
 		display: none;
 		}*/
-	div.inputs label.paramdesc {
-		display: block;
-		font-size: 12px;
-		text-transform: none;
-		float: left;
-		width: 200px;
-		text-align: left;
-		padding-top:5px;
-		}
-	.ref-name-row {
-	        font-size: 12px;
-	        }
-	.ref-name-row label.paramdesc {
-	        display: block;
-		float: left;
-		width: 200px;
-	        }
-	div.inputs input.paramdesc {
-		/*display: block;*/
-		font-size: 12px;
-		text-transform: none;
-		/*float: left;*/
-		width: 180px;
-		text-align: left;
-		padding-right: 10px;
-		}			
-	div.inputs input.paramvalue {
-		width: 460px;
-		font-size: 12px;
-		}
-	div.inputs select {
-		width: auto;
-		font-size: 12px;
-		}
-	div.inputs button {
-		width: 20px; height: 20px;
-		}
+#proveit div.inputs label.paramdesc {
+	display: block;
+	font-size: 12px;
+	text-transform: none;
+	float: left;
+	width: 200px;
+	text-align: left;
+	padding-top:5px;
+	}
+#proveit .ref-name-row {
+        font-size: 12px;
+        }
+#proveit .ref-name-row label.paramdesc {
+	display: block;
+	float: left;
+	width: 200px;
+	}
+#proveit div.inputs input.paramdesc {
+	/*display: block;*/
+	font-size: 12px;
+	text-transform: none;
+	/*float: left;*/
+	width: 180px;
+	text-align: left;
+	padding-right: 10px;
+	}			
+#proveit div.inputs input.paramvalue {
+	width: 460px;
+	font-size: 12px;
+	}
+#proveit div.inputs select {
+	width: auto;
+	font-size: 12px;
+	}
+#proveit div.inputs button {
+	width: 20px; height: 20px;
+	}
 
-div#add-buttons, div#edit-buttons {
+#proveit div#add-buttons, div#edit-buttons {
 	margin-top: 5px;
 	font-size: 11px;
 	}
 
-button.right-side {
+#proveit button.right-side {
 	float: right;
 	}
 
-/* jqueryUI class modifications start here */
+#proveit .pointers {
+    width: 2em;
+    overflow: scroll;
+}
+
+/*
+ jqueryUI class modifications start here 
+ Do not add #proveit to below, or jQueryUI background 
+ images will not display properly.
+*/
 
 span.ui-button-icon-primary {
 	margin: 0; padding: 0;
@@ -194,8 +203,3 @@ span.ui-button-text {
 		font-size: 11px;
 		margin: 0 3px; padding: 0;
 	}
-
-.pointers {
-    width: 2em;
-    overflow: scroll;
-}
