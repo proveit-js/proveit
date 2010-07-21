@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name           ProveIt
-// @namespace      http://www.prism.gatech.edu/~mflaschen3
+// @namespace      http://code.google.com/p/proveit-js/
 // @description    A new tool for reliable referencing on Wikipedia
 // @include        http://en.wikipedia.org/w/index.php?title=*&action=edit*
 // @require http://userscripts.org/scripts/source/78952.user.js
@@ -21,7 +21,7 @@ if (typeof(proveit) != 'undefined')
 	throw new Error("proveit already exists");
 
 $('head').append('<link rel="stylesheet" type="text/css" href="http://jquery-ui.googlecode.com/svn/tags/latest/themes/base/jquery-ui.css" />');
-$('head').append('<link rel="stylesheet" type="text/css" href="http://www.prism.gatech.edu/~mflaschen3/ProveIt_userscript/styles.css" />');
+$('head').append('<link rel="stylesheet" type="text/css" href="http://proveit-js.googlecode.com/hg/tabs/styles.css" />');
 
 window.proveit = {
 	HALF_EDIT_BOX_HEIGHT : 200,
@@ -37,7 +37,7 @@ window.proveit = {
 	// //Text before param name (e.g. url, title, etc.) in edit box, to avoid collisions with unrelated ids.
 	EDIT_PARAM_PREFIX : "editparam",
 
-	TYPE_IMG_BASE : "http://www.prism.gatech.edu/~mflaschen3/ProveIt_userscript/",
+	TYPE_IMG_BASE : "http://proveit-js.googlecode.com/hg/tabs/",
 
 	// // Convenience log function
 	log : function(msg)
