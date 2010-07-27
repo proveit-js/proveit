@@ -1596,7 +1596,7 @@ window.proveit = {
 		editButtons.append(reqSpan).
 			append(' = required');
 		var saveButton = $('<button/>', {class: 'right-side accept',
-		                                 text: 'save changes'});
+		                                 text: 'update edit form'});
 		editButtons.append(saveButton);
 		var cancelButton = $('<button/>', {class: 'right-side cancel',
 			                           text: 'cancel'});
@@ -1684,7 +1684,7 @@ window.proveit = {
 						  text: 'add field'})).
 			append(reqSpan.clone()).
 			append(" = required").
-			append(saveButton.clone().text('finish & insert')).
+			append(saveButton.clone().text('insert into edit form')).
 			append(cancelButton.clone());
 		addTab.append(addButtons);
 		tabs.append(addTab);
