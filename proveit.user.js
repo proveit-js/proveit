@@ -668,7 +668,6 @@ window.proveit = {
 					pointers[name].strings.push(currentScan[i]);
 				}
 			}
-			$('#numRefs').text(currentScan.length); // update the number of refs in the view tab
 		}
 		for(var j = 0; j < citations.length; j++)
 		{
@@ -1401,7 +1400,6 @@ window.proveit = {
 		this.includeProveItEditSummary();
 // 		this.getRefbox().scrollToIndex(this.getRefbox().itemCount - 1);
 // 		this.getRefbox().selectedIndex = this.getRefbox().itemCount - 1;
-		$('#numRefs').text($('#refs tr').length-1);
 		this.highlightTargetString(tag.orig);
 	},
 
@@ -1976,8 +1974,9 @@ window.proveit = {
 		//alert(ref.orig);
 
 		// get ref number by counting number of refs (this includes dummy ref)
-		var numRefs = $('#refs tr').length;
+		var numRefs = $('#refs tr').length + 1;
 		$('td.number', newchild).text(numRefs);
+		$('#numRefs').text(numRefs); // update the number of refs in the view tab
 
 		// event handler for selecting a ref)
 		$(newchild).click(function() { thisproveit.highlightTargetString(ref.orig); thisproveit.highlightTargetString(ref.orig); });
