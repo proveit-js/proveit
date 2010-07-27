@@ -2,7 +2,10 @@
 // @name           ProveIt
 // @namespace      http://code.google.com/p/proveit-js/
 // @description    A new tool for reliable referencing on Wikipedia
-// @include        http://en.wikipedia.org/w/index.php?title=*&action=edit*
+// @include        http://en.wikipedia.org/*action=edit*
+// @include        http://en.wikipedia.org/*action=submit*
+// @include        https://secure.wikimedia.org/wikipedia/en/*action=edit*
+// @include        https://secure.wikimedia.org/wikipedia/en/*action=submit*
 // @require http://userscripts.org/scripts/source/78952.user.js
 // @require http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.2/jquery-ui.min.js
 // ==/UserScript==
