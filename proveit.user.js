@@ -1171,7 +1171,7 @@ window.proveit = {
 		var defaultParams =
 		{
 			web : [ "url", "title", "accessdate", "work", "publisher", "date"],
-			book : [ "title", "author", "authorlink", "year", "isbn" ],
+		        book : [ "title", "author", "authorlink", "year", "isbn", "publisher", "location", "pages" ],
 			journal : [ "title", "author", "journal", "volume", "year", "month", "pages" ],
 			conference : [ "title", "booktitle", "author", "year", "month", "url", "id", "accessdate" ],
 			encyclopedia: [ "title", "encyclopedia", "author", "editor", "accessdate", "edition", "year",
