@@ -488,8 +488,8 @@ window.proveit = {
 			$("#view-pane").show();
 		};
 		acceptButton.click(acceptEdit);
-		// XXX Possible memory leak, as select handlers accumulate?
-		$('#view-tab, #add-tab').select(function()
+
+		$('.tab-link').one('click', function()
 		{
 			acceptButton.unbind('click', acceptEdit);
 		});
@@ -1543,7 +1543,7 @@ window.proveit = {
 		tabs.append(created);
 		var header = $('<ul/>');
 		var view = $('<li/>');
-		var viewLink = $('<a/>', {href: '#view-tab'});
+		var viewLink = $('<a/>', {id: 'view-link', class: 'tab-link', href: '#view-tab'});
 		viewLink.append('References (');
 		var numRefs = $('<span/>', {id: 'numRefs'}).
 			append('0');
@@ -1552,7 +1552,7 @@ window.proveit = {
 		view.append(viewLink);
 		header.append(view);
 		var add = $('<li/>');
-		var addLink = $('<a/>', {href: '#add-tab'}).
+		var addLink = $('<a/>', {id: 'add-link', class: 'tab-link', href: '#add-tab'}).
 			append('Add');
 		add.append(addLink);
 		header.append(add);
