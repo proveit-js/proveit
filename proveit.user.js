@@ -1050,9 +1050,10 @@ window.proveit = {
 			encyclopedia:"encyclopedia",
 			news:"news",
 			newsgroup:"newsgroup",
-			paper:"paper",
+			paper:"journal",
 			"press release":"press release",
-			"pressrelease":"press release"
+		        "pressrelease":"press release",
+		        "episode":"episode"
 		};
 
 		// Sets the type, applying the mappings.  This is up top because it is used in AbstractCitation constructor.
@@ -1150,7 +1151,6 @@ window.proveit = {
 			encyclopedia: { "title": true, "encyclopedia": true },
 			news: { "title": true },
 			newsgroup : { "title": true },
-			paper : { "title": true },
 			"press release"	: { "title": true },
 			episode : { "title": true }
 		};
@@ -1170,17 +1170,16 @@ window.proveit = {
 		// These paramaters will be auto-suggested when editing.
 		var defaultParams =
 		{
-			web : [ "url", "title", "accessdate", "work", "publisher", "date"],
+		        web : [ "url", "title", "author", "accessdate", "work", "publisher", "date", "pages"],
 		        book : [ "title", "author", "authorlink", "year", "isbn", "publisher", "location", "pages" ],
-			journal : [ "title", "author", "journal", "volume", "year", "month", "pages" ],
-			conference : [ "title", "booktitle", "author", "year", "month", "url", "id", "accessdate" ],
+		        journal : [ "title", "author", "journal", "volume", "issue", "year", "month", "pages", "url", "doi" ],
+		        conference : [ "conference", "title", "booktitle", "author", "editor", "year", "month", "url", "id", "accessdate", "location", "pages", "publisher" ],
 			encyclopedia: [ "title", "encyclopedia", "author", "editor", "accessdate", "edition", "year",
 			"publisher", "volume", "location", "pages" ],
-			news: [ "title", "author", "url", "publisher", "date", "accessdate" ],
+		        news: [ "title", "author", "url", "publisher", "date", "accessdate", "pages" ],
 			newsgroup : [ "title", "author", "date", "newsgroup", "id", "url", "accessdate" ],
-			paper : [ "title", "author", "title", "date", "url", "accessdate" ],
-			"press release"	: [ "title", "url", "publisher", "date", "accessdate" ],
-			episode : ["title", "series", "credits", "network", "season" ]
+		        "press release"	: [ "title", "url", "publisher", "date", "accessdate" ],
+		        episode : ["title", "series", "credits", "airdate", "city", "network", "season" ]
 		};
 
 		/* Default parameters, to be suggested when editing.
@@ -1650,7 +1649,7 @@ window.proveit = {
 						       proveit.changeCite(citemenu.get(0));
 					       }});
 		// Lists of types (citeTypes, citationTypes) probably don't belong here
-		var citeTypes = ["web", "book", "journal", "conference", "encyclopedia", "news", "newsgroup", "paper", "press release"];
+         	var citeTypes = ["web", "book", "journal", "conference", "encyclopedia", "news", "newsgroup", "press release", "episode"];
 		var descs = new this.AbstractCitation({}).getDescriptions();
 		for(var i = 0; i < citeTypes.length; i++)
 		{
