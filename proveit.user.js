@@ -1428,7 +1428,7 @@ window.proveit = {
 	},
 
 	/**
-	 * Changes the panel for the cite entry panel to the correct type of entry
+	 * Changes the panel for the add cite panel to the correct type of entry
 	 * @param menu Raw HTML menu element
 	 */
 	changeCite : function(menu) {
@@ -1693,6 +1693,11 @@ window.proveit = {
 		gui.append(tabs);
 		$(document.body).prepend(gui);
 
+		var cancelEdit = function() {
+				$("#edit-pane").hide();
+				$("#view-pane").show();
+		};
+
 		// set up tabs
 		$("#tabs").tabs({
 			selected: 0,
@@ -1705,8 +1710,9 @@ window.proveit = {
 						break;
 
 						case 1: // add
-							proveit.changeCite(document.getElementById(proveit.togglestyle ? 'citemenu' : 'citationmenu'));
-							break;
+						    cancelEdit();
+						    proveit.changeCite(document.getElementById(proveit.togglestyle ? 'citemenu' : 'citationmenu'));
+						break;
 
 				      //	case 1: // edit
 						// proveit.updateEditPopup();
@@ -1749,12 +1755,7 @@ window.proveit = {
 			 });
 
 		// cancel buttons
-		$("button.cancel").click(
-			function() {
-				$("#edit-pane").hide();
-				$("#view-pane").show();
-			}
-		);
+		$("button.cancel").click(cancelEdit);
 
 		// edit panel buttons
 		$("#edit-buttons button:first").button({
