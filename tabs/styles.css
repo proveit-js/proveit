@@ -119,9 +119,7 @@ td.edit {}
 #proveit td.edit button {
 	width: 20px; height: 20px;
 	}
-#proveit td.ibid {
-	display: none;
-	}
+
 #proveit td.ibid button {
 	width: 20px; height: 20px;
 	}

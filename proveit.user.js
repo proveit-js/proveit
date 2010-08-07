@@ -303,7 +303,7 @@ window.proveit = {
 
 	/** Does insertion into edit box.
 	 * @param ref Reference to insert
-	 * @param full Whether to insert the full text.
+	 * @param full Insert the full reference text if true, pointer otherwise.
 	 */
 	insertRef : function(ref, full)
 	{
@@ -1788,14 +1788,6 @@ window.proveit = {
 			text: false
 		});
 
-		// ibid buttons
-		$("td.ibid button").button({
-			icons: {
-				primary: 'ui-icon-arrowthick-1-e'
-			},
-			text: false
-		});
-
 		// create the minimize button
 		$("h1 button").button({
 			icons: {
@@ -1848,7 +1840,7 @@ window.proveit = {
 
 		//var refbox = this.getRefbox();
 
-		var newchild = $('<tr><td class="number"></td><td class="type"></td><td class="title"></td><td class="details"></td><td class="edit"><button>edit</button><span class="pointers"></span></td></tr>').get(0);
+		var newchild = $('<tr><td class="number"></td><td class="type"></td><td class="title"></td><td class="details"></td><td class="ibid"><button>ibid.</button></td><td class="edit"><button>edit</button><span class="pointers"></span></td></tr>').get(0);
 
 		$("td.edit button", newchild).button({
 			icons: {
@@ -2004,6 +1996,24 @@ window.proveit = {
 		};
 
 		var pointStrings = ref.getPointerStrings();
+
+		// ibid button
+		var ibidEnabled = pointStrings.length != 0;
+		var ibidButton = $("td.ibid button", newchild).button({
+			icons: {
+				primary: 'ui-icon-arrowthick-1-e'
+			},
+			text: false,
+			disabled: !ibidEnabled
+		});
+		if(ibidEnabled)
+		{
+		    ibidButton.click(function()
+		    {
+			thisproveit.insertRef(ref, false);
+			return false;
+		    });
+		}
 		var pointers = $('.pointers', newchild);
 
 		for(var i = 0; i < pointStrings.length; i++)
