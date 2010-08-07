@@ -1033,6 +1033,21 @@ window.proveit = {
 			returnstring += "}}</ref>";
 			return returnstring;
 		};
+
+		this.setPointerStrings = function(strings)
+		{
+			this.pointerStrings = strings;
+		};
+
+		/**
+		 * @return (possibly empty) array of pointer strings.  Will not return null.
+		 */
+		this.getPointerStrings = function()
+		{
+			// Should this return a copy?
+		        // Return empty array if null.
+			return this.pointerStrings || [];
+		};
 	},
 
 	// A function representing a Cite style template.
@@ -1064,18 +1079,6 @@ window.proveit = {
 				this.type = mappedType;
 			else
 				this.type = rawType; // Use naive type as fallback.
-		};
-
-		var pointerStrings;
-		this.setPointerStrings = function(strings)
-		{
-			pointerStrings = strings;
-		};
-
-		this.getPointerStrings = function()
-		{
-			// Should this return a copy?
-			return pointerStrings;
 		};
 
 		proveit.AbstractCitation.call(this, argObj);
@@ -2002,8 +2005,8 @@ window.proveit = {
 
 		var pointStrings = ref.getPointerStrings();
 		var pointers = $('.pointers', newchild);
-		 // Don't enter loop if pointStrings is undefined
-		for(var i = 0; pointStrings && i < pointStrings.length; i++)
+
+		for(var i = 0; i < pointStrings.length; i++)
 		{
 			var dividend = i + 1;
 			var colName = "";
