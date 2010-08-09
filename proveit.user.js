@@ -23,7 +23,8 @@
 if (typeof(proveit) != 'undefined')
 	throw new Error("proveit already exists");
 
-$('head').append('<link rel="stylesheet" type="text/css" href="http://jquery-ui.googlecode.com/svn/tags/latest/themes/base/jquery-ui.css" />');
+// Keep jQuery UI CSS version in sync with JS above.
+$('head').append('<link rel="stylesheet" type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.3/themes/base/jquery-ui.css" />');
 $('head').append('<link rel="stylesheet" type="text/css" href="http://proveit-js.googlecode.com/hg/styles.css" />');
 
 window.proveit = {
