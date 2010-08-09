@@ -1,0 +1,213 @@
+div#proveit {
+	position: fixed;
+	bottom: 0px;
+	right: 20px;
+	z-index: 10000;
+	/*height: 300px;*/
+	width: 750px;
+	background: #fff;
+/*	border: 1px solid #666; 
+	font-size: small !important;
+	opacity: 0.3;
+	filter: alpha(opacity=30); // older IE */
+	}
+	
+div#proveit li a {
+	font-size: 18px;
+}
+
+div#proveit h1 {
+	float: right;
+	width: 50%;
+	text-align: right;
+	font-size: 18px;
+	margin: 13px 10px 0 0; padding: 0;
+	font-weight: bold;
+	border: none;
+	}
+	div#proveit h1 a {
+		color: #00254c;
+		text-decoration: none;
+		}
+	div#proveit h1 span {
+		font-weight: bold;
+		font-size: 14px;
+		}
+	div#proveit h1 button {
+		width: 20px; height: 20px;
+		margin: 0 0 0 30px;
+		}
+/*
+div#tabs-1, div#tabs-2, div#tabs-3 {
+	height: 270px;
+	padding: 10px 5px;
+	}
+	*/
+
+
+div#proveit div#view-tab, div#proveit div#add-tab {
+	padding: 5px;
+	}
+
+div#proveit .scroll {
+	display: block;
+	overflow: scroll;
+	overflow-y: scroll;
+	overflow-x: hidden;
+	border: 1px solid #dddddd !important;
+	}
+	
+div#proveit .required {
+	font-weight: bold;
+	/*color: #FF0084;*/
+	color: #900;
+	}				
+
+div#proveit table {
+	border-collapse: collapse;
+	width: 100%;
+	margin: 0; padding: 0;
+	}
+div#proveit tr.light td {
+	background-color: #fff;
+	}
+div#proveit tr.dark td {
+	background-color: #eeeeee;
+	}
+div#proveit tr.invalid td {
+	color: red;
+	}
+div#proveit tr.selected td {
+	/*background-color: #0073EA;*/
+	background-color: #00254c;
+	color: #fff;
+	}
+div#proveit tr:hover td {
+	/*background-color: #FF0084;*/
+	background-color: #eeb211;
+	color: #000;
+	/*cursor: pointer;*/
+	}	
+div#proveit td {
+	font-size: 12px;
+	/*border: 1px solid #ccc;*/
+	padding: 0.2em;
+	}
+div#proveit td.number {
+	vertical-align: middle;
+	font-size: 11px;
+	color: #666;
+	text-align: right;
+	padding-right: 5px;
+	}
+/*
+td.author {
+	padding-left: 0.5em;
+	}
+td.year{
+	width: 50px;
+	text-align: center;
+	}
+*/
+div#proveit td.details {}
+div#proveit td.type {
+	width: 20px;
+	background-repeat: no-repeat;
+	background-position: 50% 50%;
+	}
+div#proveit td.title {
+	width: 460px;
+	}
+td.edit {}
+div#proveit td.edit button {
+	width: 20px; height: 20px;
+	}
+div#proveit td.ibid {
+	display: none;
+	}
+div#proveit td.ibid button {
+	width: 20px; height: 20px;
+	}
+
+div#proveit div.inputs {
+	border: 0;
+	margin: 0; padding: 3px;
+	}
+div#proveit div.inputs div.input-row {
+	display: block;
+	margin: 0 0 0.8em 0; padding: 0;
+	}
+	/*div.inputs div.hidden{
+		display: none;
+		}*/
+div#proveit div.inputs label.paramdesc {
+	display: block;
+	font-size: 12px;
+	text-transform: none;
+	float: left;
+	width: 200px;
+	text-align: left;
+	padding-top:5px;
+	}
+div#proveit .ref-name-row {
+        font-size: 12px;
+        }
+div#proveit .ref-name-row label.paramdesc {
+	display: block;
+	float: left;
+	width: 200px;
+	}
+div#proveit div.inputs input.paramdesc {
+	/*display: block;*/
+	font-size: 12px;
+	text-transform: none;
+	/*float: left;*/
+	width: 180px;
+	text-align: left;
+	padding-right: 10px;
+	}			
+div#proveit div.inputs input.paramvalue {
+	width: 460px;
+	font-size: 12px;
+	}
+div#proveit div.inputs select {
+	width: auto;
+	font-size: 12px;
+	}
+div#proveit div.inputs button {
+	width: 20px; height: 20px;
+	}
+
+div#proveit div#add-buttons, div#proveit div#edit-buttons {
+	margin-top: 5px;
+	font-size: 11px;
+	}
+
+div#proveit button.right-side {
+	float: right;
+	}
+
+div#proveit .pointers {
+    width: 2em;
+    overflow: scroll;
+}
+
+/*
+ jqueryUI class modifications start here 
+ Do not add #proveit to below, or jQueryUI background 
+ images will not display properly.
+*/
+
+div#proveit ul.ui-tabs-nav {
+	position: static;
+	}	
+/*
+div#proveit span.ui-button-icon-primary {
+	margin: 0; padding: 0;
+	}
+
+div#proveit  span.ui-button-text {
+	font-size: 12px;
+	margin: 0 3px; padding: 0;
+	}
+*/

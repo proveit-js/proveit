@@ -7,7 +7,7 @@
 // @include        https://secure.wikimedia.org/wikipedia/en/*action=edit*
 // @include        https://secure.wikimedia.org/wikipedia/en/*action=submit*
 // @require http://userscripts.org/scripts/source/78952.user.js
-// @require http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.2/jquery-ui.min.js
+// @require http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.3/jquery-ui.min.js
 // ==/UserScript==
 
 /*
@@ -24,7 +24,7 @@ if (typeof(proveit) != 'undefined')
 	throw new Error("proveit already exists");
 
 $('head').append('<link rel="stylesheet" type="text/css" href="http://jquery-ui.googlecode.com/svn/tags/latest/themes/base/jquery-ui.css" />');
-$('head').append('<link rel="stylesheet" type="text/css" href="http://proveit-js.googlecode.com/hg/tabs/styles.css" />');
+$('head').append('<link rel="stylesheet" type="text/css" href="http://proveit-js.googlecode.com/hg/styles.css" />');
 
 window.proveit = {
 	HALF_EDIT_BOX_HEIGHT : 200,
@@ -1539,8 +1539,7 @@ window.proveit = {
 		var createdLink = $('<a/>', {title: 'Created by the ELC Lab at Georgia Tech',
 			                     href: 'http://www.cc.gatech.edu/elc',
 					     target: '_blank'}).
-			append('ProveIt').
-			append('<span>2</span>');
+			append('ProveIt');
 		created.append(createdLink).
 			append('<button>show/hide</button>');
 		tabs.append(created);
@@ -1589,7 +1588,7 @@ window.proveit = {
 	                                       class: 'refname paramvalue'}));
 		editPane.append(refNameRow);
 		var editFields = $('<div/>', {id: 'edit-fields',
-					      class: 'inputs scoll paramlist',
+					      class: 'inputs scroll paramlist',
 					      style: 'height: 170px'});
 		editPane.append(editFields);
 		var editButtons = $('<div/>', {id: 'edit-buttons'});
