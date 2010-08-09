@@ -1541,8 +1541,9 @@ window.proveit = {
 			                     href: 'http://www.cc.gatech.edu/elc',
 					     target: '_blank'}).
 			append('ProveIt');
-		created.append(createdLink).
-			append('<button>show/hide</button>');
+		created.append(createdLink);
+		var showHideButton = $('<button/>', {text: 'show/hide'});
+		created.append(showHideButton);
 		tabs.append(created);
 		var header = $('<ul/>');
 		var view = $('<li/>');
@@ -1789,7 +1790,7 @@ window.proveit = {
 		});
 
 		// create the minimize button
-		$("h1 button").button({
+		showHideButton.button({
 			icons: {
 				primary: 'ui-icon-triangle-1-s'
 			},
@@ -1797,16 +1798,14 @@ window.proveit = {
 		});
 
 		// set up the minimize button
-		$("h1 button").toggle(
+		showHideButton.toggle(
 			function() {
 				$("#view-tab, #add-tab").hide();
-				$("h1 button").button("option", "icons", { primary: 'ui-icon-triangle-1-n' } );
-				//$("h1 button").refresh();
+				$(this).button("option", "icons", { primary: 'ui-icon-triangle-1-n' } );
 			},
 			function() {
 				$("#view-tab, #add-tab").show();
-				$("h1 button").button("option", "icons", { primary: 'ui-icon-triangle-1-s' } );
-				//$("h1 button").refresh();
+				$(this).button("option", "icons", { primary: 'ui-icon-triangle-1-s' } );
 			}
 		);
 
