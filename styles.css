@@ -122,9 +122,6 @@ td.edit {}
 div#proveit td.edit button {
 	width: 20px; height: 20px;
 	}
-div#proveit td.ibid {
-	display: none;
-	}
 div#proveit td.ibid button {
 	width: 20px; height: 20px;
 	}
