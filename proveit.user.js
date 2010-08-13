@@ -1530,11 +1530,11 @@ window.proveit = {
 	createGUI : function()
 	{
 	        // Keep jQuery UI CSS version in sync with JS above.
-	        $('head').append($('link', {rel: 'stylesheet',
+	        $('head').append($('<link/>', {rel: 'stylesheet',
 					    type: 'text/css',
 					    href: 'http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.3/themes/base/jquery-ui.css'})).
-		        append($('link', {rel: 'stylesheet',
-					  type: "text/css",
+		        append($('<link/>', {rel: 'stylesheet',
+					  type: 'text/css',
 					  href: this.STATIC_BASE + 'styles.css'}));
 
 		// more JqueryUI CSS: http://blog.jqueryui.com/2009/06/jquery-ui-172/
