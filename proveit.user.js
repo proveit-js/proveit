@@ -23,10 +23,6 @@
 if (typeof(proveit) != 'undefined')
 	throw new Error("proveit already exists");
 
-// Keep jQuery UI CSS version in sync with JS above.
-$('head').append('<link rel="stylesheet" type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.3/themes/base/jquery-ui.css" />');
-$('head').append('<link rel="stylesheet" type="text/css" href="http://proveit-js.googlecode.com/hg/styles.css" />');
-
 window.proveit = {
 	HALF_EDIT_BOX_HEIGHT : 200,
 	// KNOWN_ACTIONS : ["edit", "submit"],
@@ -41,7 +37,7 @@ window.proveit = {
 	// //Text before param name (e.g. url, title, etc.) in edit box, to avoid collisions with unrelated ids.
 	EDIT_PARAM_PREFIX : "editparam",
 
-	TYPE_IMG_BASE : "http://proveit-js.googlecode.com/hg/tabs/",
+	STATIC_BASE : "http://proveit-js.googlecode.com/hg/static/",
 
 	// // Convenience log function
 	log : function(msg)
@@ -1533,6 +1529,14 @@ window.proveit = {
 	 */
 	createGUI : function()
 	{
+	        // Keep jQuery UI CSS version in sync with JS above.
+	        $('head').append($('link', {rel: 'stylesheet',
+					    type: 'text/css',
+					    href: 'http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.3/themes/base/jquery-ui.css'})).
+		        append($('link', {rel: 'stylesheet',
+					  type: "text/css",
+					  href: this.STATIC_BASE + 'styles.css'}));
+
 		// more JqueryUI CSS: http://blog.jqueryui.com/2009/06/jquery-ui-172/
 		var gui = $('<div/>', {id: 'proveit'});
 		var tabs = $('<div/>', {id: 'tabs'});
@@ -1930,7 +1934,7 @@ window.proveit = {
 		$('td.details', newchild).html(details);
 
 		// pick an icon based on ref type
-		var icon = this.TYPE_IMG_BASE;
+		var icon = this.STATIC_BASE;
 		switch(ref.type)
 		{
 			case 'web':
