@@ -1575,7 +1575,7 @@ window.proveit = {
 		var editPane = $('<div/>', {id: 'edit-pane', style: 'display: none'});
 	        var refNameRow = $('<div/>', {class: 'ref-name-row',
 					      tabindex: -1});
-		var refLabel = $('<label/>', {for: 'editrefname',
+		var refLabel = $('<label/>', {'for': 'editrefname',
 					      title: 'This is an identifier that can be used to refer to this reference elsewhere on the page. It should be short and memorable.',
 					      class: 'paramdesc'}).
 			append('&lt;ref&gt; name (abbr. code)');
@@ -1640,7 +1640,7 @@ window.proveit = {
 		var cite = $('<div/>', {style: 'display: none',
 					id: 'cite',
 				        class: 'input-row'});
-		var refCiteTypeLabel = $('<label/>', {for: 'citemenu',
+		var refCiteTypeLabel = $('<label/>', {'for': 'citemenu',
 						  class: 'paramdesc required',
 						  text: 'Reference type'});
 		cite.append(refCiteTypeLabel);
