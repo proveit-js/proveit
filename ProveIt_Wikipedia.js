@@ -1516,7 +1516,7 @@ window.proveit = {
 	{
 	        // Keep jQuery UI CSS version in sync with JS above.
 	        importStylesheetURI('http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.3/themes/base/jquery-ui.css');
-		importStylesheetURI(STATIC_BASE + 'styles.css');
+		importStylesheetURI(this.STATIC_BASE + 'styles.css');
 
 		// more JqueryUI CSS: http://blog.jqueryui.com/2009/06/jquery-ui-172/
 		var gui = $('<div/>', {id: 'proveit'});
