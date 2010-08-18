@@ -11,6 +11,10 @@ div#proveit {
 	opacity: 0.3;
 	filter: alpha(opacity=30); // older IE */
 	}
+
+#proveit.translucent {
+        opacity: 0.3;
+}
 	
 div#proveit li a {
 	font-size: 18px;

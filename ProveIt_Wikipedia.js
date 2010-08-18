@@ -1,16 +1,6 @@
-// ==UserScript==
-// @name           ProveIt
-// @namespace      http://code.google.com/p/proveit-js/
-// @description    A new tool for reliable referencing on Wikipedia
-// @include        http://en.wikipedia.org/*action=edit*
-// @include        http://en.wikipedia.org/*action=submit*
-// @include        https://secure.wikimedia.org/wikipedia/en/*action=edit*
-// @include        https://secure.wikimedia.org/wikipedia/en/*action=submit*
-// @require http://userscripts.org/scripts/source/78952.user.js
-// @require http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.3/jquery-ui.min.js
-// ==/UserScript==
-
-/*
+/**
+ * ProveIt (http://code.google.com/p/proveit-js/) is a new tool for reliable referencing on Wikipedia
+ *
  * Copyright 2008, 2009, 2010
  *
  * Georgia Tech Research Corporation
@@ -22,6 +12,9 @@
 
 if (typeof(proveit) != 'undefined')
 	throw new Error("proveit already exists");
+
+importScriptURI('http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js');
+importScriptURI('http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.3/jquery-ui.min.js');
 
 window.proveit = {
 	HALF_EDIT_BOX_HEIGHT : 200,
@@ -53,22 +46,8 @@ window.proveit = {
 	// // Returns true if we are on a known domain, and the action is set to edit or submit
 	isSupportedEditPage : function()
 	{
-		this.log("Entering isSupportedEditPage");
-		// try
-		// {
-			// var url = top.getBrowser().currentURI;
-			// var path = url.path;
-			// return this.KNOWN_HOSTS.indexOf(url.host) != -1 && // Known host
-				// this.KNOWN_ACTIONS.indexOf(window.content.wrappedJSObject.wgAction) != -1 && // Known action
-				// this.KNOWN_NAMESPACES.indexOf(window.content.wrappedJSObject.wgCanonicalNamespace) != -1; // Known namespace
-		// }
-		// catch(e if e.name == "NS_ERROR_FAILURE")
-		// {
-			// this.log("isSupportedEditPage: NS_ERROR_FAILURE: " + e);
-			// this.log("isSupportedEditPage: Returning false.");
-			// return false;
-		// }
-		return true; // for now
+	        // "regular" page and edit or preview mode
+		return wgCanonicalNamespace == '' && (wgAction == 'edit' || wgAction == 'submit');
 	},
 
 	// /* If we are currently on an appropriate MediaWiki page as determined by isSupportedEditPage()
@@ -143,7 +122,7 @@ window.proveit = {
 	// Highlights a given string in the MediaWiki edit box.
 	highlightTargetString : function(targetStr)
 	{
-		//this.log("Entering highlightTargetString");
+	        //this.log("Entering highlightTargetString");
 		var mwBox = this.getMWEditBox();
 		//content.window.scroll(0, editTop);
 		var origText = $(mwBox).val();
@@ -153,6 +132,12 @@ window.proveit = {
 			this.log("Target string \"" + targetStr + "\" not found.");
 			return false;
 		}
+		var proveit = $('#proveit');
+		proveit.addClass('translucent');
+		setTimeout(function()
+		{
+		    proveit.removeClass('translucent');
+		}, 3000);
 		return this.highlightLengthAtIndex(startInd, targetStr.length);
 	},
 
@@ -1530,12 +1515,8 @@ window.proveit = {
 	createGUI : function()
 	{
 	        // Keep jQuery UI CSS version in sync with JS above.
-	        $('head').append($('<link/>', {rel: 'stylesheet',
-					    type: 'text/css',
-					    href: 'http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.3/themes/base/jquery-ui.css'})).
-		        append($('<link/>', {rel: 'stylesheet',
-					  type: 'text/css',
-					  href: this.STATIC_BASE + 'styles.css'}));
+	        importStylessheetURI('http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.3/themes/base/jquery-ui.css');
+		importStylessheetURI(STATIC_BASE + 'styles.css');
 
 		// more JqueryUI CSS: http://blog.jqueryui.com/2009/06/jquery-ui-172/
 		var gui = $('<div/>', {id: 'proveit'});
@@ -1584,7 +1565,8 @@ window.proveit = {
 		viewPane.append(viewScroll);
 		viewTab.append(viewPane);
 		var editPane = $('<div/>', {id: 'edit-pane', style: 'display: none'});
-		var refNameRow = $('<div/>', {class: 'ref-name-row'});
+	        var refNameRow = $('<div/>', {class: 'ref-name-row',
+					      tabindex: -1});
 		var refLabel = $('<label/>', {for: 'editrefname',
 					      title: 'This is an identifier that can be used to refer to this reference elsewhere on the page. It should be short and memorable.',
 					      class: 'paramdesc'}).
@@ -1595,7 +1577,8 @@ window.proveit = {
 		editPane.append(refNameRow);
 		var editFields = $('<div/>', {id: 'edit-fields',
 					      class: 'inputs scroll paramlist',
-					      style: 'height: 170px'});
+					      style: 'height: 170px',
+					      tabindex: 0});
 		editPane.append(editFields);
 		var editButtons = $('<div/>', {id: 'edit-buttons'});
 		var addFieldButton = $('<button/>', {style: 'margin-right: 50px;'}).
@@ -1627,7 +1610,8 @@ window.proveit = {
 						  class: 'preloadedrow input-row',
 						  style: 'display: none'}).
 			append($('<label/>', {class: 'paramdesc'}));
-		var paramvalue = $('<input/>', {class: 'paramvalue'});
+		var paramvalue = $('<input/>', {class: 'paramvalue',
+				                tabindex: -1});
 	        preloadedparam.append(paramvalue);
 		var deleteButton = $('<button/>', {class: 'remove'}).
 			append('delete field');
@@ -1636,7 +1620,8 @@ window.proveit = {
 		var addedparam = $('<div/>', {id: 'addedparamrow',
 					      class: 'addedrow input-row',
  					      style: 'display: none'}).
-			append($('<input/>', {class: 'paramdesc'})).
+		        append($('<input/>', {class: 'paramdesc',
+					      tabindex: -1})).
 			append(paramvalue.clone()).
 			append(deleteButton.clone());
 		tabs.append(addedparam);
@@ -1667,7 +1652,8 @@ window.proveit = {
 		cite.append(citemenu);
 		addFields.append(cite);
 		addFields.append($('<div/>', {class: 'addpanes',
-					      id: 'citepanes'}));
+					      id: 'citepanes',
+					      tabindex: 0}));
 		var citation = $('<div/>', {style: 'display: none',
 					    id: 'citation',
 					    class: 'input-row'});
