@@ -116,6 +116,7 @@ window.proveit = {
 		}
 		mwBox.focus();
 		mwBox.setSelectionRange(startInd, endInd);
+		this.flashTranslucent();
 		return true;
 	},
 
@@ -132,13 +133,20 @@ window.proveit = {
 			this.log("Target string \"" + targetStr + "\" not found.");
 			return false;
 		}
-		var proveit = $('#proveit');
+		return this.highlightLengthAtIndex(startInd, targetStr.length);
+	},
+
+	/**
+	 * Become translucent temporarily
+	 */
+	flashTranslucent : function()
+	{
+	        var proveit = $('#proveit');
 		proveit.addClass('translucent');
 		setTimeout(function()
 		{
 		    proveit.removeClass('translucent');
 		}, 3000);
-		return this.highlightLengthAtIndex(startInd, targetStr.length);
 	},
 
 	// Convenience function.  Returns MediaWiki text area.
