@@ -2114,7 +2114,7 @@ if(!String.prototype.trim)
 	};
 }
 
-$(function()
+addOnloadHook(function()
 {
 	proveit.proveitonload();
 });
