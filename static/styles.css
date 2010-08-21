@@ -193,6 +193,11 @@ div#proveit .pointers {
     overflow: scroll;
 }
 
+#proveit .notification {
+    font-size: 10px;
+    padding-left: 8px;
+}
+
 /*
  jqueryUI class modifications start here 
  Do not add #proveit to below, or jQueryUI background 

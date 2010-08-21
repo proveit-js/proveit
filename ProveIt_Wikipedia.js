@@ -1836,7 +1836,7 @@ window.proveit = {
 	showUnderstoodMessage : function(understoodCount, totalCount)
 	{
 	    // This can be extended to have a link or other non-text content.
-	    $('#proveit .notification').text('ProveIt understood ' + understoodCount + ' references, out of ' + totalCount + '<ref> tags.  The remainder do not use supported formats.');
+	    $('#proveit .notification').text('ProveIt understood ' + understoodCount + ' references, out of ' + totalCount + ' <ref> tags.  The remainder do not use supported formats.');
 	},
 
 	/**
