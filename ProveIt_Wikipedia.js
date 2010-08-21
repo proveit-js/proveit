@@ -616,7 +616,7 @@ window.proveit = {
 
 		// Array of citation objects.  At end of function, addNewElement called on each.
 		var citations = [];
-
+		var totalRefCount = textValue.match(/<[\s]*ref[^>]*>/gi).length;
 		// currentScan holds the parsed (match objects) list of citations.  Regex matches full or name-only reference.
 		var currentScan = textValue.match(/<[\s]*ref[^>]*>(?:[\s]*{{+[\s]*(cite|Citation)[^}]*}}+[\s]*<[\s]*\/[\s]*ref[\s]*>)?/gi);
 		// if there are results,
@@ -671,8 +671,11 @@ window.proveit = {
 			}
 			this.addNewElement(citations[j]);
 		}
-		this.log("pointers: ");
-		this.log(pointers);
+		var parsedCount = $('#numRefs').text();
+		if(parsedCount < (totalRefCount / 2))
+		{
+		    this.showUnderstoodMessage(parsedCount, totalRefCount);
+		}
 	},
 
 	REF_REGEX : /<[\s]*ref[\s]*name[\s]*=[\s]*(?:(?:\"(.*?)\")|(?:\'(.*?)\')|(?:(.*?)))[\s]*\/?[\s]*>/,
@@ -1554,6 +1557,7 @@ window.proveit = {
 		add.append(addLink);
 		header.append(add);
 		tabs.append(header);
+		tabs.append($('<span/>', {class: 'notification'}));
 		var viewTab = $('<div/>', {id: 'view-tab'});
 		var viewPane = $('<div/>', {id: 'view-pane'});
 		var viewScroll = $('<div/>', {class: 'scroll',
@@ -1822,6 +1826,17 @@ window.proveit = {
 		// alternate row colors
 		$("#refs tr:even").addClass('light');
 		$("#refs tr:odd").addClass('dark');
+	},
+
+	/**
+	 * Shows message when most references were not understood.
+	 * @param understoodCount the number of references
+	 * @param totalCount total number of <ref> tags
+	 */
+	showUnderstoodMessage : function(understoodCount, totalCount)
+	{
+	    // This can be extended to have a link or other non-text content.
+	    $('#proveit .notification').text('ProveIt understood ' + understoodCount + ' references, out of ' + totalCount + '<ref> tags.  The remainder do not use supported formats.');
 	},
 
 	/**
