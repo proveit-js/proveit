@@ -1983,8 +1983,8 @@ window.proveit = {
 		// }, false);
 		//alert(ref.orig);
 
-		// get ref number by counting number of refs (this includes dummy ref)
-		var numRefs = $('#refs tr').length + 1;
+		// get ref number by counting number of refs (this includes dummy ref, but not the one we're creating)
+		var numRefs = $('#refs tr').length;
 		$('td.number', newchild).text(numRefs);
 		$('#numRefs').text(numRefs); // update the number of refs in the view tab
 
