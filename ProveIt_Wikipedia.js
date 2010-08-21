@@ -390,7 +390,7 @@ window.proveit = {
 		//this.log("Entering saveEdit");
 		if(!citeObj.save)
 		{
-			var newRichItem = this.makeRefboxElement(citeObj);
+		        var newRichItem = this.makeRefboxElement(citeObj, true);
 			var oldRichItem = $('.selected', this.getRefbox()).get(0);
 			this.log('newRichItem: ' + newRichItem + ', oldRichItem: ' + oldRichItem + 'oldRichItem.parentNode: ' + oldRichItem.parentNode);
 			var oldNumber = $('td.number',oldRichItem).text();
@@ -1843,9 +1843,10 @@ window.proveit = {
 	 * Generates rich list item and all children, to be used by addNewElement, and when updating
 	 *
 	 * @param ref reference to generate from
+	 * @param isReplacement if true, this replaces another refbox item, so no number will be assigned, and the count will not be updated.
 	 * @return new richlistitem element for refbox
 	 */
-	makeRefboxElement : function(ref)
+	makeRefboxElement : function(ref, isReplacement)
 	{
 		// this.log("Entering makeRefboxElement.");
 		var refName = ref.name; //may be null or blank
@@ -1983,11 +1984,13 @@ window.proveit = {
 		// }, false);
 		//alert(ref.orig);
 
-		// get ref number by counting number of refs (this includes dummy ref, but not the one we're creating)
-		var numRefs = $('#refs tr').length;
-		$('td.number', newchild).text(numRefs);
-		$('#numRefs').text(numRefs); // update the number of refs in the view tab
-
+		if(!isReplacement)
+		{
+		    // get ref number by counting number of refs (this includes dummy ref, but not the one we're creating)
+		    var numRefs = $('#refs tr').length;
+		    $('td.number', newchild).text(numRefs);
+		    $('#numRefs').text(numRefs); // update the number of refs in the view tab
+		}
 		// event handler for selecting a ref)
 		$(newchild).click(function() { thisproveit.highlightTargetString(ref.orig); thisproveit.highlightTargetString(ref.orig); });
 
@@ -2113,7 +2116,7 @@ window.proveit = {
 	addNewElement : function(ref)
 	{
 		var refbox = this.getRefbox();
-		$(refbox).append(this.makeRefboxElement(ref));
+		$(refbox).append(this.makeRefboxElement(ref, false));
 	},
 
 	selectRow : function(row)
