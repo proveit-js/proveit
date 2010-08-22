@@ -48,20 +48,20 @@ div#leadInPic{
 	padding:10px 0px 6px 0px;
 }
 
-div#borderLine{
+div.borderLine{
 	border-bottom:#fddb00 2px solid;
 }
 
-div#borderLine.content{
+div.borderLine.content{
 	margin: 10px 15px 5px 10px;
 }
 
-div#borderLine.footer{
+div.borderLine.footer{
 	width:960px;
 	margin: 15px 0px 15px 0px;
 }
 
-div#borderLine.subcontent{
+div.borderLine.subcontent{
 	width:274px;
 }
 
@@ -121,7 +121,7 @@ div#recommendationHeader{
 	border-bottom: #fddb00 2px solid;
 }
 
-div#recommend{
+div.recommend{
 	position:relative;
 	background-color:#FFF;
 	margin:10px 10px 25px 10px;
@@ -129,17 +129,17 @@ div#recommend{
 	height:80px;
 }
 
-div#recommend.left{
+div.recommend.left{
 	float:left;
 }
 
-div#recommend.right{
+div.recommend.right{
 	float:right;
 }
 
 
 
-div#recommendText{
+div.recommendText{
 	display:block;
 	position:absolute;
 	font-size:18px;
@@ -147,20 +147,20 @@ div#recommendText{
 }
 
 
-div#recommendText.firstLine{
+div.recommendText.firstLine{
 	bottom:40px;
 	left:10px;
 	color:#2682c7;
 	text-shadow: 0px 0px 1px #777;
 }
 
-div#recommendText.secondLine{
+div.recommendText.secondLine{
 	bottom:20px;
 	left:10px;
 }
 
 
-div#featureHighlight{
+div.featureHighlight{
 	width:254px;
 	text-align:right;
 	float: right;
@@ -170,7 +170,7 @@ div#featureHighlight{
 	font-weight:bold;
 }
 
-div#proveItHighlight{
+div.proveItHighlight{
 	width:254px; /*-- offseting the Padding to create indentation-*/
 	float:right;
 	background-color:#FFF;
@@ -191,19 +191,19 @@ div#sideTableofContents{
 	padding:0px 15px 25px 5px;
 }
 
-div#category{
+div.category{
 	font-size:18px;
 	color:#000;
 	font-weight:bold;
 	margin: 14px 5px 0px 0px;
 }
 
-div#categoryBodyTitle{
+div.categoryBodyTitle{
 	font-size:18px;
 	font-weight:bold;
 	color:#fddb00;
 	padding:10px 0px 2px 0px;
-	text-shadow: text-shadow: 0px 0px 3px #2633ad;
+	text-shadow: 0px 0px 3px #2633ad;
 	}
 
 /*--- footer divs --- */
@@ -255,22 +255,22 @@ a{
 /********** BODY HYPERLINKS ********/
 
 /*------ feature highlight links ---*/
-a.featureHighlight:link{
+div.featureHighlight a:link{
 	font-size:16px;
 	color:#000;
 }
 
-a.featureHighlight:visited{
+div.featureHighlight a:visited{
 	font-size:16px;
 	color:#000;
 }
 
-a.featureHighlight:active{
+div.featureHighlight a:active{
 	font-size:16px;
 	color:#000;
 }
 
-a.featureHighlight:hover{
+div.featureHighlight a:hover{
 	font-size:16px;
 	color:#2682c7;
 	text-decoration:underline;
