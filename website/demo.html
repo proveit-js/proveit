@@ -1,0 +1,56 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<link href="proveit_styles.css" rel="stylesheet" type="text/css" />
+<title>ProveIt Demo</title>
+<script src="wikibits.js" type="text/javascript"></script>
+<script src="http://proveit-js.googlecode.com/hg/ProveIt_Wikipedia.js" type="text/javascript"></script>
+<script type="text/javascript">
+//<![CDATA[
+// This check isn't needed on demo.
+proveit.isSupportedEditPage = function()
+{
+    return true;
+};
+
+function loadArticle(articleName)
+{
+  var apiURL = 'http://en.wikipedia.org/w/api.php?action=query&prop=revisions&titles=' + encodeURIComponent(articleName) + '&rvprop=content&format=json&callback=?';
+  $.getJSON(apiURL, function(response)
+  {
+    if(response.error)
+    {
+      throw response.error; 
+    }
+    var pages = response.query.pages;
+    for(var key in pages)
+    {
+      break; // Get first (only) key.  This is necessary due to odd JSON structure.
+    }
+    var content = pages[key].revisions[0].*;
+    $('#wpTextbox1').val(content);
+    $('#proveit').remove();
+    proveit.createGUI();
+  });
+}
+
+$(function()
+{
+  $('#articleBtn').click(function()
+  {
+    loadArticle($('#articleName').val());
+  });
+});
+//]]>
+</script>
+</head>
+<body bgcolor="#000">
+<div id="mainBody">
+<label for="articleName">Article name:</label> 
+<input id="articleName" size="35" value="Georgia Institute of Technology"/>
+<input id="articleBtn" type="button" value="Load page"/><br/>
+<span>Article content:</span><br/>
+<textarea rows="25" cols="80" id="wpTextbox1"></textarea><br/>
+</div>
+</body>
+</html>
