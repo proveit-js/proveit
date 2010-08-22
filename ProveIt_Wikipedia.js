@@ -616,7 +616,8 @@ window.proveit = {
 
 		// Array of citation objects.  At end of function, addNewElement called on each.
 		var citations = [];
-		var totalRefCount = textValue.match(/<[\s]*ref[^>]*>/gi).length;
+		var allRefs = textValue.match(/<[\s]*ref[^>]*>/gi);
+		var totalRefCount = allRefs ? allRefs.length : 0;
 		// currentScan holds the parsed (match objects) list of citations.  Regex matches full or name-only reference.
 		var currentScan = textValue.match(/<[\s]*ref[^>]*>(?:[\s]*{{+[\s]*(cite|Citation)[^}]*}}+[\s]*<[\s]*\/[\s]*ref[\s]*>)?/gi);
 		// if there are results,
