@@ -13,9 +13,6 @@
 if (typeof(proveit) != 'undefined')
 	throw new Error("proveit already exists");
 
-importScriptURI('http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js');
-importScriptURI('http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.3/jquery-ui.min.js');
-
 window.proveit = {
 	HALF_EDIT_BOX_HEIGHT : 200,
 	// KNOWN_ACTIONS : ["edit", "submit"],
@@ -2140,9 +2137,36 @@ if(!String.prototype.trim)
 	String.prototype.trim = function() {
 		return this.replace(/^\s+|\s+$/g, "");
 	};
-}
+};
 
-addOnloadHook(function()
+(function()
 {
-	proveit.proveitonload();
-});
+    // Copied from jQuery script loader in ajax function.  This should make sure jQuery is loaded before we proceed (esp. in Chrome/Safari).
+    var head = document.getElementsByTagName('head')[0];
+    var jquery_script = document.createElement('script');
+    jquery_script.src = 'http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js';
+    var jquery_done = false;
+
+    jquery_script.onload = jquery_script.onreadystatechange = function() {
+    	if ( !jquery_done && (!this.readyState ||
+    			this.readyState === "loaded" || this.readyState === "complete") ) {
+    		jquery_done = true;
+
+		$.getScript('http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.3/jquery-ui.min.js', function()
+		{
+		    addOnloadHook(function()
+		    {
+			proveit.proveitonload();
+		    });
+		});
+
+    		// Handle memory leak in IE
+    		jquery_script.onload = jquery_script.onreadystatechange = null;
+    		if ( head && jquery.parentNode ) {
+    			head.removeChild( jquery );
+    		}
+    	}
+    };
+
+})();
+
