@@ -2162,8 +2162,8 @@ if(!String.prototype.trim)
 
     		// Handle memory leak in IE
     		jquery_script.onload = jquery_script.onreadystatechange = null;
-    		if ( head && jquery.parentNode ) {
-    			head.removeChild( jquery );
+    		if ( head && jquery_script.parentNode ) {
+    			head.removeChild( jquery_script );
     		}
     	}
     };
