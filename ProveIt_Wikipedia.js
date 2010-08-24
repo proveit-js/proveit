@@ -2167,6 +2167,7 @@ if(!String.prototype.trim)
     		}
     	}
     };
+    head.appendChild(jquery_script);
 
 })();
 
