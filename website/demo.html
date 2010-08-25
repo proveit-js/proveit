@@ -18,8 +18,9 @@
 <script type="text/javascript">
 //<![CDATA[
 
-function loadArticle(articleName)
+function loadArticle()
 {
+  var articleName = $('#articleName').val();
   var apiURL = 'http://en.wikipedia.org/w/api.php?action=query&prop=revisions&titles=' + encodeURIComponent(articleName) + '&rvprop=content&format=json&callback=?';
   $.getJSON(apiURL, function(response)
   {
@@ -41,10 +42,8 @@ function loadArticle(articleName)
 
 $(function()
 {
-  $('#articleBtn').click(function()
-  {
-    loadArticle($('#articleName').val());
-  });
+    loadArticle();
+    $('#articleBtn').click(loadArticle);
 });
 //]]>
 </script>
