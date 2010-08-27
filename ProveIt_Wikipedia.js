@@ -138,12 +138,15 @@ window.proveit = {
 	 */
 	flashTranslucent : function()
 	{
-	        var proveit = $('#proveit');
-		proveit.addClass('translucent');
-		setTimeout(function()
+	        // First parameter is duration in ms.  Second is opacity, from 0 - 1; 0 is fully transparent, 1 is opaque
+	        $('#proveit').fadeTo(0, 0.3, function()
 		{
-		    proveit.removeClass('translucent');
-		}, 3000);
+		        var proveit = $(this);
+		        setTimeout(function()
+			{
+			    proveit.fadeTo(1000, 1);
+			}, 1000);
+		});
 	},
 
 	// Convenience function.  Returns MediaWiki text area.
