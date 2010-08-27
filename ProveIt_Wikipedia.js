@@ -43,8 +43,8 @@ window.proveit = {
 	// // Returns true if we are on a known domain, and the action is set to edit or submit
 	isSupportedEditPage : function()
 	{
-	        // "regular" page and edit or preview mode
-		return wgCanonicalNamespace == '' && (wgAction == 'edit' || wgAction == 'submit');
+	        // "Regular" article or Wikipedia:Sandbox (exception for testing).  Also, must be edit or preview mode
+	        return (wgCanonicalNamespace == '' || wgPageName == 'Wikipedia:Sandbox') && (wgAction == 'edit' || wgAction == 'submit');
 	},
 
 	// /* If we are currently on an appropriate MediaWiki page as determined by isSupportedEditPage()
