@@ -1545,7 +1545,7 @@ window.proveit = {
 		tabs.append(created);
 		var header = $('<ul/>');
 		var view = $('<li/>');
-		var viewLink = $('<a/>', {id: 'view-link', class: 'tab-link', href: '#view-tab'});
+		var viewLink = $('<a/>', {id: 'view-link', "class": 'tab-link', href: '#view-tab'});
 		viewLink.append('References (');
 		var numRefs = $('<span/>', {id: 'numRefs'}).
 			append('0');
@@ -1554,24 +1554,24 @@ window.proveit = {
 		view.append(viewLink);
 		header.append(view);
 		var add = $('<li/>');
-		var addLink = $('<a/>', {id: 'add-link', class: 'tab-link', href: '#add-tab'}).
+		var addLink = $('<a/>', {id: 'add-link', "class": 'tab-link', href: '#add-tab'}).
 			append('Add');
 		add.append(addLink);
 		header.append(add);
 		tabs.append(header);
-		tabs.append($('<span/>', {class: 'notification'}));
+		tabs.append($('<span/>', {"class": 'notification'}));
 		var viewTab = $('<div/>', {id: 'view-tab'});
 		var viewPane = $('<div/>', {id: 'view-pane'});
-		var viewScroll = $('<div/>', {class: 'scroll',
+		var viewScroll = $('<div/>', {"class": 'scroll',
 					      style: 'height: 210px;'});
 		var refTable = $('<table/>', {id: 'refs'});
 		var dummyRef = $('<tr/>', {id: 'dummyRef',
 					   style: 'display: none;'});
-		dummyRef.append($('<td/>', {class: 'number'})).
-			append($('<td/>', {class: 'type'})).
-			append($('<td/>', {class: 'title'})).
-			append($('<td/>', {class: 'details'}));
-		var editTd = $('<td/>', {class: 'edit'}).
+		dummyRef.append($('<td/>', {"class": 'number'})).
+			append($('<td/>', {"class": 'type'})).
+			append($('<td/>', {"class": 'title'})).
+			append($('<td/>', {"class": 'details'}));
+		var editTd = $('<td/>', {"class": 'edit'}).
 			append($('<button/>', {text: 'edit'}));
 		dummyRef.append(editTd);
 		refTable.append(dummyRef);
@@ -1579,18 +1579,18 @@ window.proveit = {
 		viewPane.append(viewScroll);
 		viewTab.append(viewPane);
 		var editPane = $('<div/>', {id: 'edit-pane', style: 'display: none'});
-	        var refNameRow = $('<div/>', {class: 'ref-name-row',
+	        var refNameRow = $('<div/>', {"class": 'ref-name-row',
 					      tabindex: -1});
 		var refLabel = $('<label/>', {'for': 'editrefname',
 					      title: 'This is an identifier that can be used to refer to this reference elsewhere on the page. It should be short and memorable.',
-					      class: 'paramdesc'}).
+					      "class": 'paramdesc'}).
 			append('&lt;ref&gt; name (abbr. code)');
 		refNameRow.append(refLabel);
 		refNameRow.append($('<input/>', {id: 'editrefname',
-	                                       class: 'refname paramvalue'}));
+	                                       "class": 'refname paramvalue'}));
 		editPane.append(refNameRow);
 		var editFields = $('<div/>', {id: 'edit-fields',
-					      class: 'inputs scroll paramlist',
+					      "class": 'inputs scroll paramlist',
 					      style: 'height: 170px',
 					      tabindex: 0});
 		editPane.append(editFields);
@@ -1598,56 +1598,56 @@ window.proveit = {
 		var addFieldButton = $('<button/>', {style: 'margin-right: 50px;'}).
 			append('add field');
 		editButtons.append(addFieldButton);
-		var reqSpan = $('<span/>', {class: 'required',
+		var reqSpan = $('<span/>', {"class": 'required',
 					    text: 'red'});
 		editButtons.append(reqSpan).
 			append(' = required');
-		var saveButton = $('<button/>', {class: 'right-side accept',
+		var saveButton = $('<button/>', {"class": 'right-side accept',
 		                                 text: 'update edit form'});
 		editButtons.append(saveButton);
-		var cancelButton = $('<button/>', {class: 'right-side cancel',
+		var cancelButton = $('<button/>', {"class": 'right-side cancel',
 			                           text: 'cancel'});
 		editButtons.append(cancelButton);
 		editPane.append(editButtons);
 		viewTab.append(editPane);
 		tabs.append(viewTab);
 		var dummyCite = $('<div/>', {id: 'dummyCitePane',
-					     class: 'typepane',
+					     "class": 'typepane',
 					     style: 'display: none'});
 		var addRefNameRow = refNameRow.clone();
 		$('.refname', addRefNameRow).attr('id', 'addrefname');
 		$('label', addRefNameRow).attr('for', 'addrefname');
 		dummyCite.append(addRefNameRow);
-		dummyCite.append($('<div/>', {class: 'paramlist'}));
+		dummyCite.append($('<div/>', {"class": 'paramlist'}));
 		tabs.append(dummyCite);
 		var preloadedparam = $('<div/>', {id: 'preloadedparamrow',
-						  class: 'preloadedrow input-row',
+						  "class": 'preloadedrow input-row',
 						  style: 'display: none'}).
-			append($('<label/>', {class: 'paramdesc'}));
-		var paramvalue = $('<input/>', {class: 'paramvalue',
+			append($('<label/>', {"class": 'paramdesc'}));
+		var paramvalue = $('<input/>', {"class": 'paramvalue',
 				                tabindex: -1});
 	        preloadedparam.append(paramvalue);
-		var deleteButton = $('<button/>', {class: 'remove'}).
+		var deleteButton = $('<button/>', {"class": 'remove'}).
 			append('delete field');
 		preloadedparam.append(deleteButton);
 		tabs.append(preloadedparam);
 		var addedparam = $('<div/>', {id: 'addedparamrow',
-					      class: 'addedrow input-row',
+					      "class": 'addedrow input-row',
  					      style: 'display: none'}).
-		        append($('<input/>', {class: 'paramdesc',
+		        append($('<input/>', {"class": 'paramdesc',
 					      tabindex: -1})).
 			append(paramvalue.clone()).
 			append(deleteButton.clone());
 		tabs.append(addedparam);
 		var addTab = $('<div/>', {id: 'add-tab'});
 		var addFields = $('<div/>', {id: 'add-fields',
-					     class: 'inputs scroll',
+					     "class": 'inputs scroll',
 					     style: 'height: 170px'});
 		var cite = $('<div/>', {style: 'display: none',
 					id: 'cite',
-				        class: 'input-row'});
+				        "class": 'input-row'});
 		var refCiteTypeLabel = $('<label/>', {'for': 'citemenu',
-						  class: 'paramdesc required',
+						  "class": 'paramdesc required',
 						  text: 'Reference type'});
 		cite.append(refCiteTypeLabel);
 		var citemenu = $('<select/>', {id: 'citemenu',
@@ -1665,12 +1665,12 @@ window.proveit = {
 		}
 		cite.append(citemenu);
 		addFields.append(cite);
-		addFields.append($('<div/>', {class: 'addpanes',
+		addFields.append($('<div/>', {"class": 'addpanes',
 					      id: 'citepanes',
 					      tabindex: 0}));
 		var citation = $('<div/>', {style: 'display: none',
 					    id: 'citation',
-					    class: 'input-row'});
+					    "class": 'input-row'});
 		var refCitationTypeLabel = refCiteTypeLabel.clone().attr('for', 'citationmenu');
 		citation.append(refCitationTypeLabel);
 		var citationmenu = $('<select/>', {id: 'citemenu',
@@ -1686,7 +1686,7 @@ window.proveit = {
 		}
 		citation.append(citationmenu);
 		addFields.append(citation).
-			append($('<div/>', {class: 'addpanes',
+			append($('<div/>', {"class": 'addpanes',
 					    id: 'citationpanes'}));
 		addTab.append(addFields);
 		var addButtons = $('<div/>', {id: 'add-buttons'});
