@@ -78,13 +78,12 @@ div#proveit tr.invalid td {
 	color: red;
 	}
 div#proveit tr.selected td {
-	/*background-color: #0073EA;*/
-	background-color: #00254c;
+	background-color: #2682c7;
 	color: #fff;
 	}
 div#proveit tr:hover td {
 	/*background-color: #FF0084;*/
-	background-color: #eeb211;
+	background-color: #fddb00;
 	color: #000;
 	/*cursor: pointer;*/
 	}	
