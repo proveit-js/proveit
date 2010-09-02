@@ -374,6 +374,10 @@ a.footerNavLink:hover{
 	text-decoration:underline;
 	
 }
+
+a.selected:link, a.selected:visited{
+	font-weight: bold;
+}
 /*-- END Footer Navigation Links --*/
 
 
