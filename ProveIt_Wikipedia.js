@@ -188,7 +188,7 @@ window.proveit = {
 
 	/** Does the user want us to ever add summary actions?
 	 */
-	shouldAddSummary : null,
+	shouldAddSummary : true,
 
 	/* Specifies to include ProveIt edit summary on next save.
 	 * Can be disabled by modifying shouldAddSummary
