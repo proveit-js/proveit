@@ -10,10 +10,11 @@ div#proveit {
 	font-size: small !important;
 	opacity: 0.3;
 	filter: alpha(opacity=30); // older IE */
+	font-size: small;
 	}
 	
 div#proveit li a {
-	font-size: 18px;
+	/*font-size: 18px;*/
 }
 
 div#proveit h1 {
@@ -21,21 +22,22 @@ div#proveit h1 {
 	width: 50%;
 	text-align: right;
 	font-size: 18px;
-	margin: 13px 10px 0 0; padding: 0;
+	margin: 5px 10px 0 0; padding: 0;
 	font-weight: bold;
 	border: none;
 	}
 	div#proveit h1 a {
 		color: #00254c;
 		text-decoration: none;
+		margin: 0; padding: 0;
 		}
 	div#proveit h1 span {
 		font-weight: bold;
-		font-size: 14px;
+	/*	font-size: 14px; */
 		}
 	div#proveit h1 button {
 		width: 20px; height: 20px;
-		margin: 0 0 0 30px;
+		margin: 0 0 0 30px; padding: 0;
 		}
 /*
 div#tabs-1, div#tabs-2, div#tabs-3 {
@@ -63,6 +65,9 @@ div#proveit .required {
 	color: #900;
 	}				
 
+	
+/*** BEGIN CSS FOR REFLIST ***/
+	
 div#proveit table {
 	border-collapse: collapse;
 	width: 100%;
@@ -78,52 +83,119 @@ div#proveit tr.invalid td {
 	color: red;
 	}
 div#proveit tr.selected td {
-	background-color: #2682c7;
-	color: #fff;
+	background-color: #000;
 	}
 div#proveit tr:hover td {
-	/*background-color: #FF0084;*/
-	background-color: #fddb00;
-	color: #000;
-	/*cursor: pointer;*/
+	background-color: #2682c7;
+	color: #fff;
 	}	
 div#proveit td {
-	font-size: 12px;
-	/*border: 1px solid #ccc;*/
-	padding: 0.2em;
+	padding: 5px 3px 3px 3px;
+	vertical-align: top;
 	}
-div#proveit td.number {
-	vertical-align: middle;
-	font-size: 11px;
-	color: #666;
-	text-align: right;
-	padding-right: 5px;
+	
+	div#proveit td.number {
+		font-size: 12px;
+		color: #666;
+		text-align: right;
+		}
+	
+	div#proveit tr.selected td.number {
+		color: #ccc;
+		}
+	/*
+	td.author {
+		padding-left: 0.5em;
+		}
+	td.year{
+		width: 50px;
+		text-align: center;
+		}
+	*/
+	/*div#proveit td.details {}*/
+
+
+	div#proveit td.type {
+		width: 20px;
+		background-repeat: no-repeat;
+		background-position: 50% 5px;
+		padding: 0 5px;
+		}
+	div#proveit td.title {
+	/*	width: 460px; */
+		font-size: 12px;
+		color: #000;
+		text-align: left;
+	/*	font-weight: bold; */
+		}
+	div#proveit tr.selected td.title {
+		color: #fff;
+		}
+	div#proveit td.edit {}
+
+		div#proveit td.edit button {
+			height: 20px;
+			width: 20px;
+			}
+			
+		div#proveit tr.selected td.edit button {
+			visibility: hidden;
+			}
+	/*
+	div#proveit td.ibid button {
+		width: 20px; height: 20px;
+		}
+	*/
+
+div#proveit tr.selected div.expanded {
+	display: block;
+	}	
+
+	
+div#proveit div.expanded {
+	font-size: x-small;
+	padding: 5px 0;
+	display: none;
 	}
-/*
-td.author {
-	padding-left: 0.5em;
-	}
-td.year{
-	width: 50px;
-	text-align: center;
-	}
-*/
-div#proveit td.details {}
-div#proveit td.type {
-	width: 20px;
-	background-repeat: no-repeat;
-	background-position: 50% 50%;
-	}
-div#proveit td.title {
-	width: 460px;
-	}
-td.edit {}
-div#proveit td.edit button {
-	width: 20px; height: 20px;
-	}
-div#proveit td.ibid button {
-	width: 20px; height: 20px;
-	}
+		
+	div#proveit div.expanded p {
+		color: #ccc;
+		}
+
+		div#proveit div.expanded p span {
+			color: #fff;
+			}	
+	
+	div#proveit div.expanded a:link, div#proveit div.expanded a:visited {
+		color: #fff;
+		text-decoration: underline;
+		}
+		
+	div#proveit div.expanded a:hover {
+		color: #fff;
+		text-decoration: none;
+		}
+	
+	div#proveit div.expanded span.all-pointers a {
+		margin: 0 0.5em;
+		text-transform: uppercase;
+		}
+
+	div#proveit div.expanded span.type {	
+		text-transform: capitalize;
+		/*font-weight: bold; */
+		}
+		
+	div#proveit div.expanded button {
+		margin-right: 1em;
+		}
+
+		div#proveit div.expanded button span {
+			padding-top: 0.3em;
+			padding-bottom: 0.3em;
+			}		
+	
+/*** END CSS FOR REFLIST ***/	
 
 div#proveit div.inputs {
 	border: 0;
@@ -188,16 +260,24 @@ div#proveit .pointers {
     overflow: scroll;
 }
 
-#proveit .notification {
+div#proveit .notification {
     font-size: 10px;
     padding-left: 8px;
 }
+
+div#proveit .hidden {
+	display: none;
+	}
 
 /*
  jqueryUI class modifications start here 
  Do not add #proveit to below, or jQueryUI background 
  images will not display properly.
 */
+
+div#proveit a.tab-link {
+	font-weight: bold;
+}
 
 div#proveit ul.ui-tabs-nav {
 	position: static;

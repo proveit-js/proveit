@@ -1555,7 +1555,7 @@ window.proveit = {
 		header.append(view);
 		var add = $('<li/>');
 		var addLink = $('<a/>', {id: 'add-link', "class": 'tab-link', href: '#add-tab'}).
-			append('Add');
+			append('Add a Reference');
 		add.append(addLink);
 		header.append(add);
 		tabs.append(header);
@@ -1569,8 +1569,8 @@ window.proveit = {
 					   style: 'display: none;'});
 		dummyRef.append($('<td/>', {"class": 'number'})).
 			append($('<td/>', {"class": 'type'})).
-			append($('<td/>', {"class": 'title'})).
-			append($('<td/>', {"class": 'details'}));
+			append($('<td/>', {"class": 'title'}));
+			//append($('<td/>', {"class": 'details'}));
 		var editTd = $('<td/>', {"class": 'edit'}).
 			append($('<button/>', {text: 'edit'}));
 		dummyRef.append(editTd);
@@ -1815,13 +1815,6 @@ window.proveit = {
 
 		this.scanRef();
 
-		// make individual refs selectable
-		$("#refs tr").click(
-			function() {
-				proveit.selectRow(this);
-			}
-		);
-
 
 		$("#refs tr").eq(0).click().click(); // select first item in list.  TODO: Why two .click?
 
@@ -1855,7 +1848,9 @@ window.proveit = {
 
 		//var refbox = this.getRefbox();
 
-		var newchild = $('<tr><td class="number"></td><td class="type"></td><td class="title"></td><td class="details"></td><td class="ibid"><button>ibid.</button></td><td class="edit"><button>edit</button><span class="pointers"></span></td></tr>').get(0);
+		var newchild = $('<tr><td class="number"></td><td class="type"></td><td class="title"></td><td class="edit"><button>edit this reference</button></td></tr>').get(0);
+		// removed <span class="pointers"></span>
+		// removed <td class="details"></td>
 
 		$("td.edit button", newchild).button({
 			icons: {
@@ -1934,31 +1929,37 @@ window.proveit = {
 
 		if(ref.params['coauthors'] || ref.params['last2'])
 			formattedAuthor += ' <i>et al.</i>';
-
+		
 		// build the "details" cell based on presence of author/year data
-		var details = '';
-		if (formattedYear != '' && formattedAuthor != '')
-			details = '(' + formattedAuthor + ', ' + formattedYear + ')';
-		else if (formattedYear != '')
-			details = '(' + formattedYear + ')';
-		else if (formattedAuthor != '')
-			details = '(' + formattedAuthor + ')';
-		$('td.details', newchild).html(details);
+		// var details = '';
+		// if (formattedYear != '' && formattedAuthor != '')
+			// details = '(' + formattedAuthor + ', ' + formattedYear + ')';
+		// else if (formattedYear != '')
+			// details = '(' + formattedYear + ')';
+		// else if (formattedAuthor != '')
+			// details = '(' + formattedAuthor + ')';
+		// $('td.details', newchild).html(details);
 
 		// pick an icon based on ref type
-		var icon = this.STATIC_BASE;
-		switch(ref.type)
+		var icon = this.STATIC_BASE, url = '', refType = ref.type;
+		
+		switch(refType)
 		{
 			case 'web':
 				icon += 'page_white_world.png';
+				url = ref.params['url'];
 				break;
 			case 'book':
 				icon += 'book.png';
+				if(ref.params['isbn'] != null)
+					url = wgServer + '/w/index.php?title=Special%3ABookSources&isbn=' + ref.params['isbn'];
 				break;
 			case 'journal':
 			case 'conference':
 			case 'paper':
 				icon += 'page_white_text.png';
+				if(ref.params['doi'] != null)
+					url = 'http://dx.doi.org/' + ref.params['doi'];				
 				break;
 			case 'news':
 				icon += 'newspaper.png';
@@ -1975,6 +1976,71 @@ window.proveit = {
 		}
 		$('td.type', newchild).css('background-image','url('+icon+')');
 		$('td.type', newchild).attr('title',ref.type);
+		
+		
+		var authorByline = '', yearByline = '', refTypeByline = '';
+		if(formattedAuthor != '')
+			authorByline = 'By: <span class="author">' + formattedAuthor + '</span>';
+		if(formattedYear != '')
+			yearByline = 'Date: <span class="date">' + formattedYear + '</span>';
+		if(refType != null)
+		{
+			if(url != '')
+				refType = '<a href="' + url + '">' + refType + '</a>';
+			refTypeByline = 'Type: <span class="type">' + refType + '</span>';
+		}
+		
+		//alert("authorByline: " + authorByline + "\n yearByline: " + yearByline + "\n refTypeByline: " + refTypeByline);
+		var byline = '', separator = ' | ';
+		if(authorByline != '') // a??
+		{
+			if(yearByline != '') // ad?
+			{
+				if(refTypeByline != '') // adt
+					byline = authorByline + separator + yearByline + separator + refTypeByline;
+				else // ad-
+					byline = authorByline + separator + yearByline;
+			}
+			else // a-?
+			{
+				if(refTypeByline != '') // a-t
+					byline = authorByline + separator + refTypeByline;
+				else // a--
+					byline = authorByline;		
+			}
+		}
+		else // -??
+		{
+			if(yearByline != '') // -d?
+			{
+				if(refTypeByline != '') // -dt
+					byline = yearByline + separator + refTypeByline;
+				else // -d-
+					byline = yearByline;
+			}
+			else // --?
+			{
+				if(refTypeByline != '') // --t
+					byline = refTypeByline;		
+				// no need for --- 
+			}
+		}
+		byline = '<p>' + byline + '</p>';
+		//alert(byline);
+		
+		
+		// create expanded <div>
+		var expanded = $('<div />',{
+							"class": 'expanded'
+						});						
+		
+		// append the infobar to the expanded info box
+		$(expanded).append(byline);
+
+		// append the expanded info box to the title <td>		
+		$('td.title', newchild).append(expanded);		
+
+		
 
 		//$('td.author', newchild).html(formattedAuthor);
 
@@ -1994,12 +2060,18 @@ window.proveit = {
 		    $('#numRefs').text(numRefs); // update the number of refs in the view tab
 		}
 		// event handler for selecting a ref)
-		$(newchild).click(function() { thisproveit.highlightTargetString(ref.orig); thisproveit.highlightTargetString(ref.orig); });
+		$(newchild).click(function() {
+				thisproveit.highlightTargetString(ref.orig);
+				//thisproveit.highlightTargetString(ref.orig);
+				$("#refs tr").removeClass('selected');
+				$(newchild).addClass('selected');
+			});
 
-		// double click event handler
+
 
 		var doEdit = function() {
-			thisproveit.selectRow(newchild);
+		//		$("#refs tr").removeClass('selected');
+		//		$(newchild).addClass('selected');
 
 		//	var selectedTab = $( "#tabs" ).tabs( "option", "selected" );
 		//	alert(selectedTab);
@@ -2014,24 +2086,9 @@ window.proveit = {
 
 		var pointStrings = ref.getPointerStrings();
 
-		// ibid button
-		var ibidEnabled = pointStrings.length != 0;
-		var ibidButton = $("td.ibid button", newchild).button({
-			icons: {
-				primary: 'ui-icon-arrowthick-1-e'
-			},
-			text: false,
-			disabled: !ibidEnabled
-		});
-		if(ibidEnabled)
-		{
-		    ibidButton.click(function()
-		    {
-			thisproveit.insertRef(ref, false);
-			return false;
-		    });
-		}
-		var pointers = $('.pointers', newchild);
+		//var pointers = $('.pointers', newchild);
+		
+		var allPointers = $('<span class="all-pointers" />');
 
 		for(var i = 0; i < pointStrings.length; i++)
 		{
@@ -2074,15 +2131,64 @@ window.proveit = {
 			})(i);
 
 			pointerHolder.click(clickFunc);
-			pointers.append(pointerHolder);
+			allPointers.append(pointerHolder);
 		}
+		
+		if(pointStrings.length > 1)
+		{
+			var newP = $('<p />');
+			newP.append('This reference appears in the article <span class="num-pointers">' + pointStrings.length + ' times</span>: ').append(allPointers);
+			expanded.append(newP);
+		}
+		
+	
+		// edit and insert buttons
+		var editBtn = $('<button />',{
+								"class": 'edit',
+								text: 'edit this reference'
+							});
+		expanded.append(editBtn);
+		var insertBtn = $('<button />',{
+								"class": 'insert',
+								text: 'insert this reference at cursor'
+							});
+		expanded.append(insertBtn);
 
+
+		
+		// ibid button
+		var ibidEnabled = pointStrings.length != 0;
+		var ibidButton = $(insertBtn).button({
+				icons: {
+					primary: 'ui-icon-arrowthick-1-e'
+				},
+				text: true,
+				disabled: !ibidEnabled
+			});
+		if(ibidEnabled)
+		{
+		    ibidButton.click(function(){
+					thisproveit.insertRef(ref, false);
+					return false;
+				});
+		}
+		
+		// edit button
+		var editButton = $(editBtn).button({
+				icons: {
+						primary: 'ui-icon-pencil'
+					},
+				text: true
+			});
+		editButton.click(doEdit);
+	
 		//var selectedIndex = thisproveit.getRefbox().selectedIndex;
 		//var winData = {"proveit": thisproveit, "ref": ref};
 		//selectRow(newchild);
 		//window.openDialog("edit_dialog.xul", "edit dialog", thisproveit.DIALOG_FEATURES, winData);
 		//thisproveit.getRefbox().selectedIndex = selectedIndex;
 
+		// double click event handler
 		$(newchild).dblclick(doEdit);
 		//newchild.addEventListener("dblclick", doEdit, false);
 		$(neweditimage).click(doEdit);
@@ -2095,7 +2201,7 @@ window.proveit = {
 
 	truncateTitle : function(title)
 	{
-		var MAX_LENGTH = 65;
+		var MAX_LENGTH = 90;
 		var truncated = title;
 		if(title.length > MAX_LENGTH)
 		{
@@ -2119,13 +2225,6 @@ window.proveit = {
 	{
 		var refbox = this.getRefbox();
 		$(refbox).append(this.makeRefboxElement(ref, false));
-	},
-
-	selectRow : function(row)
-	{
-		$("#refs tr").removeClass('selected');
-		$(row).addClass('selected');
-		//$(row).click();
 	}
 };
 
