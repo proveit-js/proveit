@@ -460,6 +460,9 @@ window.proveit = {
 
 		$('div:not(.hidden)', '#edit-fields').remove(); // clear all fields in the edit box (except the hidden ones)
 
+		// Reset scroll
+		$('#edit-fields').get(0).scrollTop = 0;
+
 		for(var i = 0; i < paramNames.length; i++)
 		{
 			//this.log("Calling addPopupRow on tempParams." + item);
@@ -1433,7 +1436,8 @@ window.proveit = {
 		this.log("Entering changeCite");
 		//this.log("menu.id: " + menu.id);
 
-		this.log("changeCite: Calling citationObjFromAddPopup");
+		// Reset scroll
+		$('#add-fields').get(0).scrollTop = 0;
 		$(menu.parentNode).show(); // cite/citation vbox.
 
 		var citePanes = $(".addpanes", menu.parentNode.parentNode).get(0);
