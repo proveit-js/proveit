@@ -2040,7 +2040,7 @@ window.proveit = {
 
 			while(dividend > 0)
 			{
-				var mod = (dividend - 1) % 26;
+				var mod = --dividend % 26;
 				colName = String.fromCharCode(97 + mod) + colName;  // a = 97
 				dividend = Math.floor(dividend / 26);
 			}
