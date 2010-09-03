@@ -460,6 +460,9 @@ window.proveit = {
 
 		$('div:not(.hidden)', '#edit-fields').remove(); // clear all fields in the edit box (except the hidden ones)
 
+		// Reset scroll
+		$('#edit-fields').get(0).scrollTop = 0;
+
 		for(var i = 0; i < paramNames.length; i++)
 		{
 			//this.log("Calling addPopupRow on tempParams." + item);
@@ -477,14 +480,6 @@ window.proveit = {
 			$("#edit-pane").hide();
 			$("#view-pane").show();
 		};
-
-		// Without setTimeout, scoll reset doesn't work in Firefox.
-		setTimeout(function()
-		{
-		    // Reset scroll
-		    $('#edit-fields').scrollTop(0);
-		}, 0);
-
 		acceptButton.click(acceptEdit);
 
 		$('.tab-link').one('click', function()
@@ -1442,7 +1437,7 @@ window.proveit = {
 		//this.log("menu.id: " + menu.id);
 
 		// Reset scroll
-		$('#add-fields').scrollTop(0);
+		$('#add-fields').get(0).scrollTop = 0;
 		$(menu.parentNode).show(); // cite/citation vbox.
 
 		var citePanes = $(".addpanes", menu.parentNode.parentNode).get(0);
@@ -1938,7 +1933,7 @@ window.proveit = {
 
 		if(ref.params['coauthors'] || ref.params['last2'])
 			formattedAuthor += ' <i>et al.</i>';
-
+		
 		// build the "details" cell based on presence of author/year data
 		// var details = '';
 		// if (formattedYear != '' && formattedAuthor != '')
@@ -1951,7 +1946,7 @@ window.proveit = {
 
 		// pick an icon based on ref type
 		var icon = this.STATIC_BASE, url = '', refType = ref.type;
-
+		
 		switch(refType)
 		{
 			case 'web':
@@ -1968,7 +1963,7 @@ window.proveit = {
 			case 'paper':
 				icon += 'page_white_text.png';
 				if(ref.params['doi'] != null)
-					url = 'http://dx.doi.org/' + ref.params['doi'];
+					url = 'http://dx.doi.org/' + ref.params['doi'];				
 				break;
 			case 'news':
 				icon += 'newspaper.png';
@@ -1985,8 +1980,8 @@ window.proveit = {
 		}
 		$('td.type', newchild).css('background-image','url('+icon+')');
 		$('td.type', newchild).attr('title',ref.type);
-
-
+		
+		
 		var authorByline = '', yearByline = '', refTypeByline = '';
 		if(formattedAuthor != '')
 			authorByline = 'By: <span class="author">' + formattedAuthor + '</span>';
@@ -1998,7 +1993,7 @@ window.proveit = {
 				refType = '<a href="' + url + '">' + refType + '</a>';
 			refTypeByline = 'Type: <span class="type">' + refType + '</span>';
 		}
-
+		
 		//alert("authorByline: " + authorByline + "\n yearByline: " + yearByline + "\n refTypeByline: " + refTypeByline);
 		var byline = '', separator = ' | ';
 		if(authorByline != '') // a??
@@ -2015,7 +2010,7 @@ window.proveit = {
 				if(refTypeByline != '') // a-t
 					byline = authorByline + separator + refTypeByline;
 				else // a--
-					byline = authorByline;
+					byline = authorByline;		
 			}
 		}
 		else // -??
@@ -2030,26 +2025,26 @@ window.proveit = {
 			else // --?
 			{
 				if(refTypeByline != '') // --t
-					byline = refTypeByline;
-				// no need for ---
+					byline = refTypeByline;		
+				// no need for --- 
 			}
 		}
 		byline = '<p>' + byline + '</p>';
 		//alert(byline);
-
-
+		
+		
 		// create expanded <div>
 		var expanded = $('<div />',{
 							"class": 'expanded'
-						});
-
+						});						
+		
 		// append the infobar to the expanded info box
 		$(expanded).append(byline);
 
-		// append the expanded info box to the title <td>
-		$('td.title', newchild).append(expanded);
+		// append the expanded info box to the title <td>		
+		$('td.title', newchild).append(expanded);		
 
-
+		
 
 		//$('td.author', newchild).html(formattedAuthor);
 
@@ -2096,7 +2091,7 @@ window.proveit = {
 		var pointStrings = ref.getPointerStrings();
 
 		//var pointers = $('.pointers', newchild);
-
+		
 		var allPointers = $('<span class="all-pointers" />');
 
 		for(var i = 0; i < pointStrings.length; i++)
@@ -2142,15 +2137,15 @@ window.proveit = {
 			pointerHolder.click(clickFunc);
 			allPointers.append(pointerHolder);
 		}
-
+		
 		if(pointStrings.length > 1)
 		{
 			var newP = $('<p />');
 			newP.append('This reference appears in the article <span class="num-pointers">' + pointStrings.length + ' times</span>: ').append(allPointers);
 			expanded.append(newP);
 		}
-
-
+		
+	
 		// edit and insert buttons
 		var editBtn = $('<button />',{
 								"class": 'edit',
@@ -2164,7 +2159,7 @@ window.proveit = {
 		expanded.append(insertBtn);
 
 
-
+		
 		// ibid button
 		var ibidEnabled = pointStrings.length != 0;
 		var ibidButton = $(insertBtn).button({
@@ -2181,7 +2176,7 @@ window.proveit = {
 					return false;
 				});
 		}
-
+		
 		// edit button
 		var editButton = $(editBtn).button({
 				icons: {
@@ -2190,7 +2185,7 @@ window.proveit = {
 				text: true
 			});
 		editButton.click(doEdit);
-
+	
 		//var selectedIndex = thisproveit.getRefbox().selectedIndex;
 		//var winData = {"proveit": thisproveit, "ref": ref};
 		//selectRow(newchild);
