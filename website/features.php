@@ -17,37 +17,39 @@ include_once 'header.php';
 								<h1>A Look Inside</h1>
 							</div><!-- end #mainPic -->
 							<div id="mainBody"> 
-								<p>There's more to ProveIt than meets the eye. Adding, editing, viewing, and locating references on Wikipedia has never been this easy. Extra Text, Extra Text Extra Text, Extra Text Extra Text, Extra Text Extra Text, Extra Text </p>
+								<p class="leadIn">There's more to ProveIt than meets the eye. Adding, editing, viewing, and locating references on Wikipedia has never been this easy. Extra Text, Extra Text Extra Text, Extra Text Extra Text, Extra Text Extra Text, Extra Text </p>
 
-								<h3> <a id="Free"> Get ProveIt for FREE </a></h3>
+								<h3> FREE TO USE AND IMPROVE</h3>
+								<h4> <a id="Free"> Get ProveIt for Free </a> </h4>
 								
 								<p>ProveIt is an Open-Source Wikipedia referencing tool.  It's entirely FREE to use. Getting started is simple and easy: You'll cite references like there's no tomorrow. </p>
-
-								<h3> <a id="ImproveIt"> Contribute and Improve It</a></h3>
+								
+								<h4> <a id="ImproveIt"> Contribute and Improve It</a></h4>
 
 								<p>ProveIt is entirely open-source. As a developer, you can contribute to ProveIt by adding and improving features that would benefit ProveIt users . We are convinced that the dedicated open-source community can help make ProveIt the definitive referencing tool for Wikipedia citations -- forever ending the woes of millions of Wikipedia editors and contributors.</p>		
-                                
-                                <h3> <a id="SimpleGui">Clean and Simple Interface</a></h3>	
+								<h3> Easily Create Citations </h3>
+                                <h4> <a id="SimpleGui">Clean and Simple Interface</a></h4>	
                                 
                                 <p>ProveIt is an open-source Wikipedia referencing tool.  Quisque et leo ac lacus faucibus pellentesque et ac dui. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut sodales adipiscing sem at viverra. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Aliquam erat volutpat.</p>		
                                 
-                                 <h3> <a id="ViewAll">View All References Per Article</a></h3>	
+                                 <h4> <a id="ViewAll">View All References Per Article</a></h4>	
                                 
                                 <p>ProveIt is an open-source Wikipedia referencing tool.  Quisque et leo ac lacus faucibus pellentesque et ac dui. Lorem ipsum dolor sit amet, consectetur adipiscing elit. </p>	
                                 
-                                 <h3> <a id="LocateRef">Locate References in One Click</a></h3>	
+                                 <h4> <a id="LocateRef">Locate References in One Click</a></h4>	
                                 
                                 <p>ProveIt is an open-source Wikipedia referencing tool.  Quisque et leo ac lacus faucibus pellentesque et ac dui. Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>	
                                 
-                                <h3> <a id="AddEdit">Add and Edit References</a></h3>	
+                                <h4> <a id="AddEdit">Add and Edit References</a></h4>	
                                 
                                 <p>ProveIt is an open-source Wikipedia referencing tool.  Quisque et leo ac lacus faucibus pellentesque et ac dui. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut sodales adipiscing sem at viverra. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Aliquam erat volutpat.</p>	
                                 
-                                <h3> <a id="CleanCode">Clean, Accurate Code Everytime</a></h3>	
+								<h3> Produce Clean Code </h3>
+                                <h4> <a id="CleanCode">Clean, Accurate Code Everytime</a></h4>	
                                 
                                 <p>ProveIt is an open-source Wikipedia referencing tool.  Quisque et leo ac lacus faucibus pellentesque et ac dui. Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>		
                                 
-                                <h3> <a id="Automatic">Automatic Wikipedia Formatting</a></h3>	
+                                <h4> <a id="Automatic">Automatic Wikipedia Formatting</a></h4>	
                                 
                                 <p>ProveIt is an open-source Wikipedia referencing tool.  Quisque et leo ac lacus faucibus pellentesque et ac dui. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut sodales adipiscing sem at viverra. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Aliquam erat volutpat.</p>										
 								<!--table>      
@@ -69,11 +71,11 @@ include_once 'header.php';
 							<div id="sideTableofContents">
 								<h3 class="first"> Free to Use and Improve</h3>
 								<ul>
-									<li><a href="#Free"> Get ProveIt for FREE </a></li>
+									<li><a href="#Free"> Get ProveIt for Free </a></li>
 									<li><a href="#ImproveIt"> Contribute and Improve It </a></li>
 								</ul>
 								
-								<h3> Create Citations with Ease</h3>
+								<h3> Easily Create Citations</h3>
 								<ul>
                                 	<li><a href="#SimpleGui"> Simple User Interface </a></li>
 									<li><a href="#ViewAll">View All References Together</a></li>

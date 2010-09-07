@@ -11,19 +11,19 @@
 							<td> 
 								<div id="footerNav">
 									<span style="color:#FFF; padding-right:10px;"> USERS</span>
-									<a href="features.php" class="footerNavLink<?= $page == 'Features' ? ' selected' : '' ?>">Features</a> -
-									<a href="" class="footerNavLink">Screenshots</a> -
+									<a href="features.php" class="footerNavLink <?php if($page == 'Features') echo ' selected'; ?>">Features</a> -
+									<a href="screenshots.php" class="footerNavLink <?php if($page == 'Screenshots') echo ' selected'; ?>">Screenshots</a> -
 									<a href="tutorials.php" class="footerNavLink<?php if($page == 'Tutorials') echo ' selected'; ?>">Tutorials</a> -
-									<a href="" class="footerNavLink">Report a Bug</a>
+									<a href="http://code.google.com/p/proveit-js/issues/entry" class="footerNavLink">Report a Bug</a>
 									
 									<br/><span style="color:#FFF; padding-right:10px;">DEVELOPERS </span>
-									<a href="" class="footerNavLink">Google Code Home </a> -
-									<a href="" class="footerNavLink">Documentation</a> -
+									<a href="documentation.php" class="footerNavLink <?php if($page == 'Documentation') echo ' selected'; ?>">Documentation</a> -			
+									<a href="http://code.google.com/p/proveit-js/" class="footerNavLink">Google Code Home </a> -
 									<a href="" class="footerNavLink"> Wiki </a> 
 									   
 									<br/><span style="color:#FFF; padding-right:10px;">ABOUT US </span>
-									<a href="" class="footerNavLink">Research </a> -
-									<a href="" class="footerNavLink">The ProveIt Team</a>
+									<a href="research.php" class="footerNavLink <?php if($page == 'Research') echo ' selected'; ?>">Research </a> -
+									<a href="theteam.php" class="footerNavLink <?php if($page == 'The Team') echo ' selected'; ?>">The Team</a>
 								</div>
 							</td>
 		

@@ -3,7 +3,7 @@
 <head>
 	<link href="proveit_styles.css" rel="stylesheet" type="text/css" />
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<title>ProveIt - <?= $page; ?></title>
+	<title>ProveIt - <?php echo $page; ?></title>
 </head>
 <body onload="MM_preloadImages('get_rollover-01.jpg')">
 <div id="superContainer">

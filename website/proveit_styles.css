@@ -14,9 +14,20 @@ body{
 }
 
 p{
-	margin: 10px 5px;
+	margin: 0px 5px 10px 5px;
 	padding: 0;
 
+}
+
+p.leadIn{
+	margin: 10px 5px;
+	
+
+}
+
+li{
+line-height:18px;
+font-size:14px;
 }
 
 a img
@@ -76,7 +87,8 @@ div#mainBody{
 	border-top:#fddb00 2px solid;
 	margin: 10px 15px 5px 10px;
 	padding: 5px 0; /* top + bottom, left + right */
-	font-size:16px;	
+	font-size:14px;
+	line-height: 18px;
 /*	background-color:#2682c7; */
 	color:#FFF;
 	
@@ -104,6 +116,21 @@ div#mainPic.tutorials{
 	background-image:url(img/tutorials.jpg);	
 }
 
+div#mainPic.documentation{
+	background-image:url(img/documentation.jpg);	
+}
+
+div#mainPic.screenshots{
+	background-image:url(img/screenshots.jpg);	
+}
+
+div#mainPic.theteam{
+	background-image:url(img/theteam.jpg);	
+}
+
+div#mainPic.research{
+	background-image:url(img/research.jpg);	
+}
 
 /*------------ end Main Picture for each Page --- */
 
@@ -208,23 +235,36 @@ div#sideTableofContents{
 }
 
 div#sideTableofContents h3{
-	font-size:18px;
+	font-size:16px;
 	color:#000;
 	font-weight:bold;
 	margin: 14px 5px 0px 0px;
+	text-transform: uppercase;
 }
 
 div#sideTableofContents h3.first{
 	margin-top: 5px;
+	text-transform: uppercase;
+	
 }
 
 div#mainBody h3 {
 	font-size:18px;
 	font-weight:bold;
 	color:#fddb00;
-	padding:5px 0px 2px 5px;
+	padding:5px 0px 5px 5px;
 	text-shadow: 0px 0px 3px #2633ad;
+	text-transform: uppercase;
 	}
+	
+div#mainBody h4{
+	margin: 0px;
+	font-size: 16px;
+	color:#ffffff;
+	padding: 2px 0px 2px 5px;
+	
+
+}
 
 /*--- footer divs --- */
 
@@ -276,22 +316,19 @@ a{
 
 /*------ feature highlight links ---*/
 div#sideTableofContents li a:link{
-	font-size:16px;
+	line-height:18px;
 	color:#000;
 }
 
 div#sideTableofContents li a:visited{
-	font-size:16px;
 	color:#000;
 }
 
 div#sideTableofContents li a:active{
-	font-size:16px;
 	color:#000;
 }
 
 div#sideTableofContents li a:hover{
-	font-size:16px;
 	color:#2682c7;
 	text-decoration:underline;
 }
@@ -377,6 +414,7 @@ a.footerNavLink:hover{
 
 a.selected:link, a.selected:visited{
 	font-weight: bold;
+	text-transform: uppercase;
 }
 /*-- END Footer Navigation Links --*/
 

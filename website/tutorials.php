@@ -18,13 +18,26 @@ include_once 'header.php';
 								<h1>Learning ProveIt</h1>
 							</div><!-- end #mainPic -->
 							<div id="mainBody"> 
-								<p>ProveIt is an open-source Wikipedia referencing tool.  Quisque et leo ac lacus faucibus pellentesque et ac dui. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut sodales adipiscing sem at viverra. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Aliquam erat volutpat. Curabitur dolor risus, hendrerit eget viverra a, pellentesque et elit. Suspendisse potenti. Duis eget semper leo. Cras dapibus, diam eu semper ullamcorper, augue leo mattis lorem, id porta lacus quam ut odio. Sed vehicula sem vitae sem mattis vehicula. Duis felis diam, vestibulum nec interdum sit amet, ultricies at libero.</p>
+								<p class="leadIn">ProveIt is an open-source Wikipedia referencing tool.  Quisque et leo ac lacus faucibus pellentesque et ac dui. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut sodales adipiscing sem at viverra. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Aliquam erat volutpat. Curabitur dolor risus, hendrerit eget viverra a, pellentesque et elit. Suspendisse potenti. Duis eget semper leo. Cras dapibus, diam eu semper ullamcorper, augue leo mattis lorem, id porta lacus quam ut odio. Sed vehicula sem vitae sem mattis vehicula. Duis felis diam, vestibulum nec interdum sit amet, ultricies at libero.</p>
 
-								<h3>Sample Level 3 Heading</h3>
+								<h3> Setting Up ProveIt</h3>
+								<h4> <a id="Free"> Getting Started with ProveIt </a> </h4>
 								
-								<p>ProveIt is an open-source Wikipedia referencing tool.  Quisque et leo ac lacus faucibus pellentesque et ac dui. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut sodales adipiscing sem at viverra. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Aliquam erat volutpat. Curabitur dolor risus, hendrerit eget viverra a, pellentesque et elit. Suspendisse potenti. Duis eget semper leo. Cras dapibus, diam eu semper ullamcorper, augue leo mattis lorem, id porta lacus quam ut odio. Sed vehicula sem vitae sem mattis vehicula. Duis felis diam, vestibulum nec interdum sit amet, ultricies at libero.</p>
+								<p>ProveIt is an Open-Source Wikipedia referencing tool.  It's entirely FREE to use. Getting started is simple and easy: You'll cite references like there's no tomorrow. </p>
+								
+								<h4> <a id="ImproveIt"> Removing ProveIt </a></h4>
 
-								<p>ProveIt is an open-source Wikipedia referencing tool.  Quisque et leo ac lacus faucibus pellentesque et ac dui. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut sodales adipiscing sem at viverra. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Aliquam erat volutpat. Curabitur dolor risus, hendrerit eget viverra a, pellentesque et elit. Suspendisse potenti. Duis eget semper leo. Cras dapibus, diam eu semper ullamcorper, augue leo mattis lorem, id porta lacus quam ut odio. Sed vehicula sem vitae sem mattis vehicula. Duis felis diam, vestibulum nec interdum sit amet, ultricies at libero.</p>														
+								<p>ProveIt is entirely open-source. As a developer, you can contribute to ProveIt by adding and improving features that would benefit ProveIt users . We are convinced that the dedicated open-source community can help make ProveIt the definitive referencing tool for Wikipedia citations -- forever ending the woes of millions of Wikipedia editors and contributors.</p>			
+								<h3> References</h3>
+								<h4> <a id="Free"> Adding a New Reference </a> </h4>
+								
+								<p>ProveIt is an Open-Source Wikipedia referencing tool.  It's entirely FREE to use. Getting started is simple and easy: You'll cite references like there's no tomorrow. </p>
+								
+								<h4> <a id="ImproveIt"> Editing an Exisitng Reference </a></h4>
+
+								<p>ProveIt is entirely open-source. As a developer, you can contribute to ProveIt by adding and improving features that would benefit ProveIt users . We are convinced that the dedicated open-source community can help make ProveIt the definitive referencing tool for Wikipedia citations -- forever ending the woes of millions of Wikipedia editors and contributors.</p>			
+								<h4>Deleting a Reference</h4>
+								<p>ProveIt is entirely open-source. As a developer, you can contribute to ProveIt by adding and improving features that would benefit ProveIt users . We are convinced that the dedicated open-source community can help make ProveIt the definitive referencing tool for Wikipedia citations -- forever ending the woes of millions of Wikipedia editors and contributors.</p>			
 								<!--table>      
 									<tr>
 										<td style="background-color: #2682c7; ">
@@ -37,7 +50,7 @@ include_once 'header.php';
 										</td>
 									</tr>
 								</table -->     
-							</div><!-- end #mainBody -->
+							</div> <!-- end #mainBody -->
 						</td>
 						<td> 
 							<h2> HOW TO USE IT </h2>
