@@ -13,6 +13,14 @@
 if (typeof(proveit) != 'undefined')
 	throw new Error("proveit already exists");
 
+/**
+ * @module elc
+ */
+
+/**
+ * Main class and namespace for ProveIt software.  This is the only global variable.
+ * @class ProveIt
+ */
 window.proveit = {
 	HALF_EDIT_BOX_HEIGHT : 200,
 	// KNOWN_ACTIONS : ["edit", "submit"],
