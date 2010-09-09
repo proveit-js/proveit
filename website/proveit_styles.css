@@ -39,6 +39,65 @@ td{
 vertical-align:top;	
 }
 
+/* --- begin main nav menu --- */
+
+ul#primary-nav {
+	list-style: none;
+	margin: 35px 0 0 0; padding: 0 0 0.5em 0;
+	width: 440px;
+	border-bottom: 2px solid #FDDB00;
+	}
+
+ul#primary-nav li {
+	list-style: none;
+	margin: 0 1em 0 0; padding: 0;
+	display: inline;
+	}
+	
+ul#primary-nav li a:link, ul#primary-nav li a:visited {
+	color: #fff;
+	font-size: 20px;
+	text-transform: uppercase;
+	}
+	
+ul#primary-nav li a:hover {
+	color: #2682c7;
+	}	
+
+ul#primary-nav  ul {
+	display: none;
+	list-style: none;
+	margin: 0; padding: 0;
+	position: absolute;
+	top: 70px;
+	}
+
+ul#primary-nav ul li {
+	list-style: none;
+	margin: 0 0.5em 0 0; padding: 0;
+	display: inline;
+	}
+	
+ul#primary-nav ul li a:link, ul#primary-nav ul li a:visited {
+	font-size: 14px;
+	/*color: #FDDB00;*/
+	text-transform: none;
+	}
+	
+ul#primary-nav ul li a:hover {
+	/*color: #2682c7; */
+	}	
+
+ul#primary-nav li a.selected:link, ul#primary-nav li a.selected:visited {	
+	color: #FDDB00;
+	}
+
+ul#primary-nav li a.selected:hover {	
+	color: #2682c7;
+	}	
+	
+/* --- end main nav menu --- */
+
 /*------------------------- DIV Formatting ---*/
 
 div#superContainer{
@@ -50,11 +109,11 @@ div#logoContainer{
 	margin-top:19px;
 	width:250px;
 }
-
+/*
 div#navContainer{
 	margin: 35px 10px 0px 10px;	
 }
-
+*/
 div#getProveIt{
 	width:250px;
 }
@@ -412,7 +471,7 @@ a.footerNavLink:hover{
 	
 }
 
-a.selected:link, a.selected:visited{
+div#footerNav a.selected:link, div#footerNav a.selected:visited{
 	font-weight: bold;
 	text-transform: uppercase;
 }

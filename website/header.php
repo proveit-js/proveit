@@ -4,8 +4,14 @@
 	<link href="proveit_styles.css" rel="stylesheet" type="text/css" />
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<title>ProveIt - <?php echo $page; ?></title>
+	<script type="text/javascript" src="http://www.google.com/jsapi"></script> 
+	<script type="text/javascript"> 
+		google.load("jquery", "1");
+		google.setOnLoadCallback(function(){});
+	</script> 
+	<script src="scripts.js" type="text/javascript"></script>
 </head>
-<body onload="MM_preloadImages('get_rollover-01.jpg')">
+<body>
 <div id="superContainer">
 <!-- Navigation Table -->
 				<table width="960" border="0" cellspacing="0" cellpadding="0" style="margin-bottom: 15px; ">
@@ -15,23 +21,62 @@
 								<a href="index.php" class="img"><img src="img/proveit_logo.png" alt="ProveIt logo" /></a>
 							</div><!-- end #logoContainer -->
 						</td>
-						<td style="width: 460px; color:#FFF; font-size:12px"> <!-- <div id="navContainer"> 
+						<td style="width: 460px;">
+
+<?php
+
+// use the page name to figure out which primary-nav category we're in
+
+$primary = '';
+
+switch($page)
+{
+	case 'Features':
+	case 'Screenshots':
+	case 'Tutorials':
+	case 'Report a Bug':
+	case 'Demo':
+		$primary = 'Users';
+		break;
+	
+	case 'Documentation':
+		$primary = 'Developers';
+		break;
+	
+	case 'Research':
+	case 'The Team':
+		$primary = 'About';
+}
+
+?>
 						
-						<span style="color:#F00; font-size:10px"> Temporary Navigation </span>
-						<br/><span style="color:#FFF"> USERS: </span>
-							<a href="features.html" class="footerNavLink">Features</a> -
-							<a href="" class="footerNavLink">Screenshots</a> -
-							<a href="tutorials.html" class="footerNavLink">Tutorials</a> -
-							<a href="" class="footerNavLink">Report a Bug</a>
-							
-						<br/> <span style="color:#FFF">DEVELOPERS: </span>
-							<a href="" class="footerNavLink">Google Code Home </a> -
-							<a href="" class="footerNavLink">Documentation</a> -
-							<a href="" class="footerNavLink"> Wiki </a> 
-							   
-						<br/> <span style="color:#FFF">ABOUT US: </span>
-							<a href="" class="footerNavLink">Research </a> -
-							<a href="" class="footerNavLink">The Team</a> </div> -->
+						<ul id="primary-nav">				
+							<li>
+								<a href="#" class="primary-nav-link<?= $primary == 'Users' ? ' selected' : '' ?>">Users</a>
+								<ul<?= $primary == 'Users' ? ' style="display: block;"' : '' ?>>
+									<li><a href="features.php"<?= $page == 'Features' ? ' class="selected"' : '' ?>>Features</a></li>
+									<li><a href="screenshots.php"<?= $page == 'Screenshots' ? ' class="selected"' : '' ?>>Screenshots</a></li>
+									<li><a href="tutorials.php"<?= $page == 'Tutorials' ? ' class="selected"' : '' ?>>Tutorials</a></li>
+									<li><a href="#"<?= $page == 'Report a Bug' ? ' class="selected"' : '' ?>>Report a Bug</a></li>
+									<li><a href="#"<?= $page == 'Demo' ? ' class="selected"' : '' ?>>Demo</a></li>
+								</ul>
+							</li>
+							<li>
+								<a href="#" class="primary-nav-link<?= $primary == 'Developers' ? ' selected' : '' ?>">Developers</a>
+								<ul<?= $primary == 'Developers' ? ' style="display: block;"' : '' ?>>
+									<li><a href="documentation.php"<?= $page == 'Documentation' ? ' class="selected"' : '' ?>>Documentation</a></li>
+									<li><a href="http://code.google.com/p/proveit-js/">Google Code Project</a></li>
+									<li><a href="http://code.google.com/p/proveit-js/w/list">Wiki</a></li>
+								</ul>
+							</li>
+							<li>
+								<a href="#" class="primary-nav-link<?= $primary == 'About' ? ' selected' : '' ?>">About</a>
+								<ul<?= $primary == 'About' ? ' style="display: block;"' : '' ?>>
+									<li><a href="research.php"<?= $page == 'Research' ? ' class="selected"' : '' ?>>Research</a></li>
+									<li><a href="theteam.php"<?= $page == 'The Team' ? ' class="selected"' : '' ?>>The Team</a></li>
+								</ul>
+							</li>
+						</ul><!-- end #primary-nav -->
 							
 						</td>
 						<td style="width: 250px; ">
