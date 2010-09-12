@@ -56,7 +56,7 @@ include_once 'header.php';
                                 
                                 <h3> Try ProveIt</h3>
                                 <ul>
-									<li><a href="#"> ProveIt Demo Page</a></li>
+									<li><a href="demo.php"> ProveIt Demo Page</a></li>
                                 </ul>    
 							</div>
                             

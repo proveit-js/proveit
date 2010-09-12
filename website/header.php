@@ -58,7 +58,7 @@ switch($page)
 									<li><a href="screenshots.php"<?= $page == 'Screenshots' ? ' class="selected"' : '' ?>>Screenshots</a></li>
 									<li><a href="tutorials.php"<?= $page == 'Tutorials' ? ' class="selected"' : '' ?>>Tutorials</a></li>
 									<li><a href="#"<?= $page == 'Report a Bug' ? ' class="selected"' : '' ?>>Report a Bug</a></li>
-									<li><a href="#"<?= $page == 'Demo' ? ' class="selected"' : '' ?>>Demo</a></li>
+									<li><a href="demo.php"<?= $page == 'Demo' ? ' class="selected"' : '' ?>>Demo</a></li>
 								</ul>
 							</li>
 							<li>

@@ -1,17 +1,9 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-<link href="proveit_styles.css" rel="stylesheet" type="text/css" />
-<style type="text/css">
-/* Override proveit_styles.css for proveit h1 */
-	div#proveit h1{ 
-	position: static;
-	text-shadow: none;
-	text-transform: none;
-}
-</style>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>ProveIt Demo</title>
+<?php
+
+$page = 'Demo';
+include_once 'header.php';
+
+?>
 <script src="wikibits.js" type="text/javascript"></script>
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js" type="text/javascript"></script>
 <script src="http://proveit-js.googlecode.com/hg/ProveIt_Wikipedia.js" type="text/javascript"></script>
@@ -47,14 +39,11 @@ $(function()
 });
 //]]>
 </script>
-</head>
-<body bgcolor="#000">
 <div id="mainBody">
 <label for="articleName">Article name:</label> 
 <input id="articleName" size="35" value="Georgia Institute of Technology"/>
 <input id="articleBtn" type="button" value="Load page"/><br/>
 <span>Article content:</span><br/>
-<textarea rows="25" cols="80" id="wpTextbox1"></textarea><br/>
+<textarea rows="25" cols="115" style="width: 100%" id="wpTextbox1"></textarea><br/>
 </div>
-</body>
-</html>
+<?php include_once 'footer.php'; ?>

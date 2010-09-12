@@ -14,7 +14,8 @@
 									<a href="features.php" class="footerNavLink <?php if($page == 'Features') echo ' selected'; ?>">Features</a> -
 									<a href="screenshots.php" class="footerNavLink <?php if($page == 'Screenshots') echo ' selected'; ?>">Screenshots</a> -
 									<a href="tutorials.php" class="footerNavLink<?php if($page == 'Tutorials') echo ' selected'; ?>">Tutorials</a> -
-									<a href="http://code.google.com/p/proveit-js/issues/entry" class="footerNavLink">Report a Bug</a>
+									<a href="http://code.google.com/p/proveit-js/issues/entry" class="footerNavLink">Report a Bug</a> -
+				                                        <a href="demo.php" class="footerNavLink<?php if($page == 'Demo') echo ' selected'; ?>">Demo</a>
 									
 									<br/><span style="color:#FFF; padding-right:10px;">DEVELOPERS </span>
 									<a href="documentation.php" class="footerNavLink <?php if($page == 'Documentation') echo ' selected'; ?>">Documentation</a> -			

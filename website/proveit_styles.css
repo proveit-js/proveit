@@ -338,7 +338,7 @@ div#footerCredits{
 }
 
 div#footerNav{
-	margin-left:75px;
+	margin-left:70px;
 	font-size:12px;
 }
 /*------------------------- END DIV Formatting ---*/
@@ -481,3 +481,14 @@ div#footerNav a.selected:link, div#footerNav a.selected:visited{
 
 
 /*------------------------- end of Hyperlink Formatting ---*/
+
+/* Begin Demo */
+
+/* Override proveit_styles.css for proveit h1 on demo */
+div#proveit h1{
+	position: static;
+	text-shadow: none;
+	text-transform: none;
+}
+
+/* End Demo */
