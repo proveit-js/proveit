@@ -60,7 +60,7 @@ include_once 'header.php';
 											<div class="recommendText secondLine"><a href="" class="recommendLink"> ProveIt</a></div></div> 
 		
 											<div class="recommend right"> <div class="recommendText firstLine"> Quick Interface </div>
-											<div class="recommendText secondLine"> <a href="features.html" class="recommendLink"> WALKTHROUGH </a></div></div>
+											<div class="recommendText secondLine"> <a href="features.php" class="recommendLink"> WALKTHROUGH </a></div></div>
 										</td>
 									</tr>
 								</table -->     
