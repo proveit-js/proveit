@@ -25,24 +25,38 @@ function loadArticle()
     {
       break; // Get first (only) key.  This is necessary due to odd JSON structure.
     }
-    var content = pages[key].revisions[0]['*'];
+    var page = pages[key];
+    var content = page.revisions[0]['*'];
+    // wg's global 
+    wgTitle = page.title;
+    wgPageName = page.title.replace(" ", "_");
     $('#wpTextbox1').val(content);
     $('#proveit').remove();
     proveit.createGUI();
   });
+  return false;
 }
+
+// wg's deliberately global
+wgServer="http://en.wikipedia.org",
+wgCanonicalNamespace="",
+wgCanonicalSpecialPageName=false,
+wgNamespaceNumber=0,
+wgAction="edit";
 
 $(function()
 {
     loadArticle();
-    $('#articleBtn').click(loadArticle);
+    $('#demoForm').submit(loadArticle);
 });
 //]]>
 </script>
 <div id="mainBody">
 <label for="articleName">Article name:</label> 
+<form id="demoForm">
 <input id="articleName" size="35" value="Georgia Institute of Technology"/>
-<input id="articleBtn" type="button" value="Load page"/><br/>
+<input id="articleBtn" type="submit" value="Load page"/><br/>
+</form>
 <span>Article content:</span><br/>
 <textarea rows="25" cols="115" style="width: 100%" id="wpTextbox1"></textarea><br/>
 </div>
