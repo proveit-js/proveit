@@ -1924,9 +1924,11 @@ window.proveit = {
 			formattedYear = ref.params['year'];
 		else if (ref.params['date'])
 		{
-			var year = ref.params['date'].substr(0,4); // use just the year
-			if( (year.substr(0,1) == '1') || (year.substr(0,1) == '2') ) // rough check of year validity
-				formattedYear = year;
+		        var yearMatch = ref.params['date'].match(/^([12]\d{3})/);
+			if(yearMatch)
+			{
+				formattedYear = yearMatch[1];
+			}
 		}
 
 		//$('td.year', newchild).text(formattedYear);
