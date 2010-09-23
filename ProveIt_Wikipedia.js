@@ -121,7 +121,6 @@ window.proveit = {
 		}
 		mwBox.focus();
 		mwBox.setSelectionRange(startInd, endInd);
-		this.flashTranslucent();
 		return true;
 	},
 
@@ -139,22 +138,6 @@ window.proveit = {
 			return false;
 		}
 		return this.highlightLengthAtIndex(startInd, targetStr.length);
-	},
-
-	/**
-	 * Become translucent temporarily
-	 */
-	flashTranslucent : function()
-	{
-	        // First parameter is duration in ms.  Second is opacity, from 0 - 1; 0 is fully transparent, 1 is opaque
-	        $('#proveit').fadeTo(0, 0.3, function()
-		{
-		        var proveit = $(this);
-		        setTimeout(function()
-			{
-			    proveit.fadeTo(1000, 1);
-			}, 1000);
-		});
 	},
 
 	// Convenience function.  Returns MediaWiki text area.
