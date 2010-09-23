@@ -73,6 +73,10 @@ include_once 'header.php';
 									<li><a href="#">Quick Interface Walkthrough</a></li>
 									<li><a href="#">Various Reference Icons</a></li>
 								</ul>
+								<h3> Configuration </h3>
+								<ul>
+									<li><a href="summary.php">Edit Summary</a></li>
+								</ul>
 							</div>
 					  </td>
 					</tr>
