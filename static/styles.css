@@ -50,20 +50,7 @@ div#tabs-1, div#tabs-2, div#tabs-3 {
 div#proveit div#view-tab, div#proveit div#add-tab {
 	padding: 5px;
 	}
-
-div#proveit .scroll {
-	display: block;
-	overflow: scroll;
-	overflow-y: scroll;
-	overflow-x: hidden;
-	border: 1px solid #dddddd !important;
-	}
-	
-div#proveit .required {
-	font-weight: bold;
-	/*color: #FF0084;*/
-	color: #900;
-	}				
+			
 
 	
 /*** BEGIN CSS FOR REFLIST ***/
@@ -80,13 +67,13 @@ div#proveit tr.dark td {
 	background-color: #eeeeee;
 	}
 div#proveit tr.invalid td {
-	color: red;
+	color: #ff0000;
 	}
 div#proveit tr.selected td {
-	background-color: #000;
+	background-color: #2682c7;
 	}
 div#proveit tr:hover td {
-	background-color: #2682c7;
+	background-color: #000;
 	color: #fff;
 	}	
 div#proveit td {
@@ -201,13 +188,18 @@ div#proveit div.inputs {
 	border: 0;
 	margin: 0; padding: 3px;
 	}
-div#proveit div.inputs div.input-row {
+div#proveit div.inputs div.input-row, div#proveit div.inputs div.ref-name-row {
 	display: block;
 	margin: 0 0 0.8em 0; padding: 0;
 	}
 	/*div.inputs div.hidden{
 		display: none;
 		}*/
+		
+div#proveit div.ref-name-row label {
+	cursor: help;
+	}
+
 div#proveit div.inputs label.paramdesc {
 	display: block;
 	font-size: 12px;
@@ -217,14 +209,7 @@ div#proveit div.inputs label.paramdesc {
 	text-align: left;
 	padding-top:5px;
 	}
-div#proveit .ref-name-row {
-        font-size: 12px;
-        }
-div#proveit .ref-name-row label.paramdesc {
-	display: block;
-	float: left;
-	width: 200px;
-	}
+	
 div#proveit div.inputs input.paramdesc {
 	/*display: block;*/
 	font-size: 12px;
@@ -237,14 +222,21 @@ div#proveit div.inputs input.paramdesc {
 div#proveit div.inputs input.paramvalue {
 	width: 460px;
 	font-size: 12px;
+	border: 1px solid #ccc;
 	}
 div#proveit div.inputs select {
 	width: auto;
 	font-size: 12px;
 	}
 div#proveit div.inputs button {
-	width: 20px; height: 20px;
+	font-size: 11px;
 	}
+div#proveit div.input-row button.delete-field
+{
+	height: 20px; width: 20px;
+	margin-left: 5px;
+	line-height: 0;
+}
 
 div#proveit div#add-buttons, div#proveit div#edit-buttons {
 	margin-top: 5px;
@@ -260,14 +252,38 @@ div#proveit .pointers {
     overflow: scroll;
 }
 
+div#proveit div#edit-fields {
+	color: #fff;
+	background-color: #2682c7;
+}
+
+div#proveit .scroll {
+	display: block;
+	overflow: scroll;
+	overflow-y: scroll;
+	overflow-x: hidden;
+	border: 1px solid #dddddd !important;
+	}
+	
+div#proveit .required {
+	font-weight: bold;
+	/*color: #FF0084;*/
+	/*color: #ff0000;*/
+	}	
+
+/*** MISC STYLES ***/
+
 div#proveit .notification {
     font-size: 10px;
     padding-left: 8px;
+	display: none;
 }
 
 div#proveit .hidden {
 	display: none;
 	}
+
+
 
 /*
  jqueryUI class modifications start here 

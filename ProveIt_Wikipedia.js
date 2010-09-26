@@ -330,8 +330,7 @@ window.proveit = {
 		this.log("Entering citationObjFromEditPopup");
 		var paramBoxes = $("div.input-row", editBox);
 
- 		var refNameValue = $('.refname', editBox);
-		var refName = refNameValue.val();
+		var refName = ('#editrefname').val();
 		citeObj.name = refName != "" ? refName : null; // Save blank names as null
 
 		// Clear old params
@@ -402,9 +401,7 @@ window.proveit = {
 	{
 		this.log("Entering updateEditPopup.");
 
-		var refNameValue = $('#edit-pane .refname');
-
-		refNameValue.val(ref.name || "");
+		$('#editrefname').val(ref.name || "");
 
 		// Don't contaminate actual object with junk params.
 		var tempParams = {};
@@ -449,7 +446,7 @@ window.proveit = {
 		   Javascript does destructive sorting, which in this case, is convenient...
 		*/
 
-		$('div:not(.hidden)', '#edit-fields').remove(); // clear all fields in the edit box (except the hidden ones)
+		$('#edit-fields').children('.paramlist').children().remove('div:not(.hidden)'); // clear all fields in the edit box (except the hidden ones)
 
 		for(var i = 0; i < paramNames.length; i++)
 		{
@@ -514,7 +511,7 @@ window.proveit = {
 		if(req) // if field is required...
 		{
 			$(paramName).addClass('required'); // visual indicator that label is required
-			$('.remove', newline).remove(); // don't let people remove required fields
+			$('.delete-field', newline).remove(); // don't let people remove required fields
 		}
 		else
 		{
@@ -1323,12 +1320,11 @@ window.proveit = {
 		// get this working, lots of typing here.
 
 		var type = box.id;
-		var refNameValue = box.getElementsByClassName("refname")[0];
-		var name;
-		if(refNameValue.value != "")
-		{
-			name = refNameValue.value;
-		}
+		
+		// get <ref> name
+		var refName = $('#addrefname').val();		
+		var name = refName != "" ? refName : null; // Save blank names as null
+
 
 		var citeFunc = this.togglestyle ? this.Cite : this.Citation;
 		var tag = new citeFunc({"name": name, "type": type});
@@ -1413,7 +1409,7 @@ window.proveit = {
 
 	activateRemove : function(row)
 	{
-		$('.remove', row).click(function()
+		$('.delete-field', row).click(function()
 		{
 			$(row).hide(
 				'highlight',{},'slow',
@@ -1490,7 +1486,7 @@ window.proveit = {
 				if(required[param])
 				{
 					label.addClass("required");
-					$('.remove', paramBox).remove(); // don't let people remove required fields
+					$('.delete-field', paramBox).remove(); // don't let people remove required fields
 				}
 				else
 				{
@@ -1578,30 +1574,39 @@ window.proveit = {
 		viewScroll.append(refTable);
 		viewPane.append(viewScroll);
 		viewTab.append(viewPane);
+		// div#edit-pane
 		var editPane = $('<div/>', {id: 'edit-pane', style: 'display: none'});
-	        var refNameRow = $('<div/>', {"class": 'ref-name-row',
-					      tabindex: -1});
-		var refLabel = $('<label/>', {'for': 'editrefname',
-					      title: 'This is an identifier that can be used to refer to this reference elsewhere on the page. It should be short and memorable.',
-					      "class": 'paramdesc'}).
-			append('&lt;ref&gt; name (abbr. code)');
-		refNameRow.append(refLabel);
-		refNameRow.append($('<input/>', {id: 'editrefname',
-	                                       "class": 'refname paramvalue'}));
-		editPane.append(refNameRow);
+		// div#edit-fields
 		var editFields = $('<div/>', {id: 'edit-fields',
-					      "class": 'inputs scroll paramlist',
+					      "class": 'inputs scroll',
 					      style: 'height: 170px',
 					      tabindex: 0});
-		editPane.append(editFields);
+		// div.ref-name-row
+        var refNameRow = $('<div/>', {"class": 'ref-name-row',
+					      tabindex: -1});
+		var refLabel = $('<label/>', {'for': 'editrefname',
+					      title: 'This is a unique identifier that can be used to refer to this reference elsewhere on the page.',
+					      "class": 'paramdesc'}).
+			append('&lt;ref&gt; name');
+		refNameRow.append(refLabel);
+		refNameRow.append($('<input/>', {id: 'editrefname',
+	                                       "class": 'paramvalue'}));		
+		// div.paramlist
+		var paramList = $('<div/>', {"class": 'paramlist'});
+		
+		editFields.append(refNameRow);
+		editFields.append(paramList);
+		editPane.append(editFields);	
+
+		// div#edit-buttons
 		var editButtons = $('<div/>', {id: 'edit-buttons'});
 		var addFieldButton = $('<button/>', {style: 'margin-right: 50px;'}).
 			append('add field');
 		editButtons.append(addFieldButton);
 		var reqSpan = $('<span/>', {"class": 'required',
-					    text: 'red'});
+					    text: 'bold'});
 		editButtons.append(reqSpan).
-			append(' = required');
+			append(' = required field');
 		var saveButton = $('<button/>', {"class": 'right-side accept',
 		                                 text: 'update edit form'});
 		editButtons.append(saveButton);
@@ -1627,7 +1632,7 @@ window.proveit = {
 		var paramvalue = $('<input/>', {"class": 'paramvalue',
 				                tabindex: -1});
 	        preloadedparam.append(paramvalue);
-		var deleteButton = $('<button/>', {"class": 'remove'}).
+		var deleteButton = $('<button/>', {"class": 'delete-field'}).
 			append('delete field');
 		preloadedparam.append(deleteButton);
 		tabs.append(preloadedparam);
@@ -1687,7 +1692,7 @@ window.proveit = {
 		citation.append(citationmenu);
 		addFields.append(citation).
 			append($('<div/>', {"class": 'addpanes',
-					    id: 'citationpanes'}));
+					    id: 'citationpanes', style: 'display: none;'}));
 		addTab.append(addFields);
 		var addButtons = $('<div/>', {id: 'add-buttons'});
 		addButtons.append($('<button/>', {style: 'margin-right: 50px;',
@@ -1786,7 +1791,7 @@ window.proveit = {
 		});
 
 		// delete field button
-		$("div.input-row .remove").button({
+		$(".delete-field").button({
 			icons: {
 				primary: 'ui-icon-close'
 			},
@@ -1870,23 +1875,6 @@ window.proveit = {
 		//var newinsertimage = newchild.getElementsByClassName("richiteminsert")[0];
 		//newchild.hidden = false;
 		var thisproveit = this;
-	//	var tooltip = "";
-		if(refName && refName != "")
-                {
-                        //tooltip += document.getElementById("refNameDesc").value + ref.name + "\n";
-						//newinsertimage.addEventListener("click", function() {
-                        //thisproveit.getRefbox().selectItem(this.parentNode);
-                        //thisproveit.insertRef(ref, thisproveit.toggleinsert);
-                        //}, false); // True may ensure row is selected prior to attempting to insert.
-                        //newinsertimage.setAttribute("tooltip", "enabled insert tooltip");
-                }
-                // else
-                // {
-                        // newinsertimage.setAttribute("disabled", "true");
-                        // newinsertimage.setAttribute("tooltip", "disabled insert tooltip");
-                // }
-		//tooltip += ref.getLabel();
-		//newchild.setAttribute("tooltiptext", tooltip);
 
 		var title = '';
 		var shortTitle = '';
@@ -2274,4 +2262,3 @@ if(!String.prototype.trim)
     head.appendChild(jquery_script);
 
 })();
-
