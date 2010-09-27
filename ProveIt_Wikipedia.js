@@ -616,7 +616,7 @@ window.proveit = {
 		var allRefs = textValue.match(/<[\s]*ref[^\/>]*>/gi);
 		var totalRefCount = allRefs ? allRefs.length : 0;
 		// currentScan holds the parsed (match objects) list of citations.  Regex matches full or name-only reference.
-		var currentScan = textValue.match(/<[\s]*ref[^>]*>(?:[\s]*{{+[\s]*(cite|Citation)[^}]*}}+[\s]*<[\s]*\/[\s]*ref[\s]*>)?/gi);
+		var currentScan = textValue.match(/<[\s]*ref[^>]*>(?:[^<]*<[\s]*\/[\s]*ref[\s]*>)?/gi); // [^<]* doesn't handle embedded HTML tags (or comments) correctly.
 		// if there are results,
 		if (currentScan)
 		{
@@ -684,50 +684,59 @@ window.proveit = {
 	 */
 	CitationFactory : function(citationText)
 	{
-		var citeFunction = citationText.match(/{{[\s]*cite/i) ? this.Cite : citationText.match(/{{[\s]*Citation/i) ? this.Citation : null;
-		if(!citeFunction)
+		var isReference = /<[\s]*ref[^>]*>[^<]*\S[^<]*<[\s]*\/[\s]*ref[\s]*>/.test(citationText); // Tests for reference (non-pointer);
+		this.log("citationText: " + citationText + "; isReference: " + isReference);
+		if(!isReference)
 		{
 			return null;
 		}
-		var workingstring = citationText.match(/{{[\s]*(cite|Citation)[^}]*}}/i)[0];
-		var match = citationText.match(this.REF_REGEX);
+		var citeFunction = citationText.match(/{{[\s]*cite/i) ? this.Cite : citationText.match(/{{[\s]*Citation/i) ? this.Citation : this.RawReference;
 
-		if(match && match != null)
+		if(citeFunction != this.RawReference)
 		{
-			var name = match[1] || match[2] || match[3]; // 3 possibilities, corresponding to above regex, are <ref name="foo">, <ref name='bar'>, and <ref name=baz>
-		}
+			var workingstring = citationText.match(/{{[\s]*(cite|Citation)[^}]*}}/i)[0];
+			var match = citationText.match(this.REF_REGEX);
 
-		//this.log("scanRef: workingstring: " + workingstring);
-		var cutupstring = workingstring.split(/\|/g);
+			if(match && match != null)
+			{
+				var name = match[1] || match[2] || match[3]; // 3 possibilities, corresponding to above regex, are <ref name="foo">, <ref name='bar'>, and <ref name=baz>
+			}
 
-		// This little hack relies on the fact that 'e' appears first as the last letter of 'cite', and the type is next.
-		if(citeFunction == this.Cite)
-		{
-			var typestart = cutupstring[0].toLowerCase().indexOf('e');
-			// First end curly brace
-			var rightcurly = cutupstring[0].indexOf('}');
-		// Usually, rightcurly will be -1.  But this takes into account empty references like <ref>{{cite web}}</ref>
-			var typeend = rightcurly != -1 ? rightcurly : cutupstring[0].length;
-			// grab the type, then trim it.
-			var type = cutupstring[0].substring(typestart + 1, typeend).trim();
+			//this.log("scanRef: workingstring: " + workingstring);
+			var cutupstring = workingstring.split(/\|/g);
+
+			// This little hack relies on the fact that 'e' appears first as the last letter of 'cite', and the type is next.
+			if(citeFunction == this.Cite)
+			{
+				var typestart = cutupstring[0].toLowerCase().indexOf('e');
+				// First end curly brace
+				var rightcurly = cutupstring[0].indexOf('}');
+				// Usually, rightcurly will be -1.  But this takes into account empty references like <ref>{{cite web}}</ref>
+				var typeend = rightcurly != -1 ? rightcurly : cutupstring[0].length;
+				// grab the type, then trim it.
+				var type = cutupstring[0].substring(typestart + 1, typeend).trim();
+			}
 		}
 		// type may be undefined, but that's okay.
 		var citation = new citeFunction({"name": name, "type": type, "save": true, "inMWEditBox": true, "orig": citationText});
 
-		var split = this.splitNameVals(workingstring);
-		var nameSplit = split.nameSplit;
-		var valSplit = split.valSplit;
-
-		for (var j = 0; j < nameSplit.length - 1; j++)
+		if(citeFunction != this.RawReference)
 		{
-			/* Drop blank space, and |'s without params, which are never correct for
-			 citation templates.*/
-			var paramName = nameSplit[j].trim().replace(/(?:\s*\|)*(.*)/, "$1");
-			var paramVal = valSplit[j + 1].trim();
-			// Should there be a setParam function?  It could handle empty values, and even drop (siliently or otherwise) invalid parameters.  Alternatively, should params be passed in the constructor?
-			if (paramVal != "")
+			var split = this.splitNameVals(workingstring);
+			var nameSplit = split.nameSplit;
+			var valSplit = split.valSplit;
+
+			for (var j = 0; j < nameSplit.length - 1; j++)
 			{
-				citation.params[paramName] = paramVal;
+				/* Drop blank space, and |'s without params, which are never correct for
+				 citation templates.*/
+				var paramName = nameSplit[j].trim().replace(/(?:\s*\|)*(.*)/, "$1");
+				var paramVal = valSplit[j + 1].trim();
+						       // Should there be a setParam function?  It could handle empty values, and even drop (siliently or otherwise) invalid parameters.  Alternatively, should params be passed in the constructor?
+				if (paramVal != "")
+				{
+					citation.params[paramName] = paramVal;
+				}
 			}
 		}
 		return citation;
@@ -1307,6 +1316,20 @@ window.proveit = {
 	},
 
 	/**
+	 * References that do not use a template
+	 */
+	RawReference : function(argObj)
+	{
+		proveit.AbstractCitation.call(this, argObj);
+		this.type = 'raw';
+		this.toString = function()
+		{
+			return this.orig;
+		};
+		this.params['title'] = this.orig;
+	},
+
+	/**
 	 * Convert the current contents of the add citation panel to a citation obj (i.e Cite(), Citation())
 	 * @param box typepane root of add GUI (pane for specific type, e.g. journal)
          *
@@ -1857,11 +1880,13 @@ window.proveit = {
 		// removed <span class="pointers"></span>
 		// removed <td class="details"></td>
 
+		var editBtnEnabled = (ref.type != 'raw');
 		$("td.edit button", newchild).button({
 			icons: {
 				primary: 'ui-icon-pencil'
 			},
-			text: false
+			text: false,
+			disabled: !editBtnEnabled
 		});
 
 		if(!ref.isValid())
@@ -1960,6 +1985,9 @@ window.proveit = {
 			case 'press release':
 				icon += 'report.png';
 				break;
+			case 'raw':
+				icon += 'raw.png';
+				break;
 			default:
 				icon += 'page_white.png';
 				break;
@@ -1982,7 +2010,11 @@ window.proveit = {
 
 		//alert("authorByline: " + authorByline + "\n yearByline: " + yearByline + "\n refTypeByline: " + refTypeByline);
 		var byline = '', separator = ' | ';
-		if(authorByline != '') // a??
+		if(refType == 'raw')
+		{
+			byline = refTypeByline + separator + ref.toString();
+		}
+		else if(authorByline != '') // a??
 		{
 			if(yearByline != '') // ad?
 			{
@@ -2067,11 +2099,13 @@ window.proveit = {
 		//	alert(selectedTab);
 		//	if(selectedTab != 1)
 		//      $( "#tabs" ).tabs( "option", "selected", 1 );
+			if(editBtnEnabled)
+			{
+				thisproveit.updateEditPopup(ref);
 
-			thisproveit.updateEditPopup(ref);
-
-			$("#view-pane").hide();
-			$("#edit-pane").show();
+				$("#view-pane").hide();
+				$("#edit-pane").show();
+			}
 		};
 
 		var pointStrings = ref.getPointerStrings();
@@ -2168,7 +2202,8 @@ window.proveit = {
 				icons: {
 						primary: 'ui-icon-pencil'
 					},
-				text: true
+				text: true,
+				disabled: !editBtnEnabled
 			});
 		editButton.click(doEdit);
 
