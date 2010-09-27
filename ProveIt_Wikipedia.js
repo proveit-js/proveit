@@ -1761,6 +1761,9 @@ window.proveit = {
 				}
 		});
 
+		// Edit and view are the same tab, so we handle this specially.
+		$('#view-link').click(cancelEdit);
+
 		// add panel buttons
 		$("#add-buttons button:first").button({
 			icons: {
