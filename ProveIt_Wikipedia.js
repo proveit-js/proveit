@@ -1345,9 +1345,8 @@ window.proveit = {
 		var type = box.id;
 		
 		// get <ref> name
-		var refName = $('#addrefname').val();		
+		var refName = $('#addrefname').val();	
 		var name = refName != "" ? refName : null; // Save blank names as null
-
 
 		var citeFunc = this.togglestyle ? this.Cite : this.Citation;
 		var tag = new citeFunc({"name": name, "type": type});
@@ -1462,6 +1461,10 @@ window.proveit = {
 
 		var genPane = document.getElementById("dummyCitePane").cloneNode(true);
 		genPane.id = newCiteType;
+		
+		// name the ref-name-row
+		$('.ref-name-row',genPane).children('input').attr('id','addrefname');
+		$('.ref-name-row',genPane).children('label').attr('for','addrefname');
 
 		// Somewhat hackish.  What's a better way?
 		var newCite;
@@ -1639,15 +1642,18 @@ window.proveit = {
 		editPane.append(editButtons);
 		viewTab.append(editPane);
 		tabs.append(viewTab);
+		
+		// dumy cite pane
 		var dummyCite = $('<div/>', {id: 'dummyCitePane',
 					     "class": 'typepane',
 					     style: 'display: none'});
 		var addRefNameRow = refNameRow.clone();
-		$('.refname', addRefNameRow).attr('id', 'addrefname');
-		$('label', addRefNameRow).attr('for', 'addrefname');
+		//$('input', addRefNameRow).attr('id', 'addrefname');
+		//$('label', addRefNameRow).attr('for', 'addrefname');
 		dummyCite.append(addRefNameRow);
 		dummyCite.append($('<div/>', {"class": 'paramlist'}));
 		tabs.append(dummyCite);
+		
 		var preloadedparam = $('<div/>', {id: 'preloadedparamrow',
 						  "class": 'preloadedrow input-row',
 						  style: 'display: none'}).
