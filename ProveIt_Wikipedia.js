@@ -330,7 +330,7 @@ window.proveit = {
 		this.log("Entering citationObjFromEditPopup");
 		var paramBoxes = $("div.input-row", editBox);
 
-		var refName = ('#editrefname').val();
+		var refName = $('#editrefname').val();
 		citeObj.name = refName != "" ? refName : null; // Save blank names as null
 
 		// Clear old params
