@@ -1200,6 +1200,10 @@ window.proveit = {
 		// Returns true if this object is valid, false otherwise.
 		this.isValid = function()
 		{
+		        if(this.type == '')
+			{
+			    return false;
+			}
 			var req = this.getRequiredParams();
 			var i = 0;
 			var allFound = true;
