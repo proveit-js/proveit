@@ -2297,3 +2297,7 @@ if(!String.prototype.trim)
     head.appendChild(jquery_script);
 
 })();
+
+// Local Variables:
+// js2-basic-offset: 8
+// End:
