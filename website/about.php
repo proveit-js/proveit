@@ -27,7 +27,7 @@ include_once 'header.php';
 							</div> 
 								
 							<div id="mainBody"> 
-								<p class="leadIn">[ DEMO Page Image will go here ] </p>
+								<p class="leadIn"> </p>
 								
 							</div><!-- end #mainBody -->
 						</td>

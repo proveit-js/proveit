@@ -41,7 +41,7 @@ include_once 'header.php';
 							</div>
 								
 							<div id="mainBody"> 
-								<p class="leadIn"> If there is any text, it will go here.
+								<p class="leadIn"> [ DEMO Page Image will go here ]
 								</p>
 								
 							</div><!-- end #mainBody -->
