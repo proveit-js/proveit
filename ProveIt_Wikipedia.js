@@ -1553,8 +1553,8 @@ window.proveit = {
 	 */
 	createGUI : function()
 	{
-	        // Keep jQuery UI CSS version in sync with JS above.
-	        importStylesheetURI('http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.3/themes/base/jquery-ui.css');
+	    // Keep jQuery UI CSS version in sync with JS above.
+	    importStylesheetURI('http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.3/themes/base/jquery-ui.css');
 		importStylesheetURI(this.STATIC_BASE + 'styles.css');
 
 		// more JqueryUI CSS: http://blog.jqueryui.com/2009/06/jquery-ui-172/
@@ -1563,8 +1563,9 @@ window.proveit = {
 		var created = $('<h1/>');
 		var createdLink = $('<a/>', {title: 'Created by the ELC Lab at Georgia Tech',
 			                     href: 'http://www.cc.gatech.edu/elc',
-					     target: '_blank'}).
-			append('ProveIt');
+					     target: '_blank'});
+		var logo = $('<img/>', {src: this.STATIC_BASE + 'logo.png', alt: 'ProveIt', height: 30, width: 118 });
+		createdLink.append(logo);
 		created.append(createdLink);
 		var showHideButton = $('<button/>', {text: 'show/hide'});
 		created.append(showHideButton);
