@@ -21,8 +21,6 @@ p{
 
 p.leadIn{
 	margin: 10px 5px;
-	
-
 }
 
 li{
@@ -33,6 +31,7 @@ font-size:14px;
 a img
 {
 	border: 0;
+	position:relative;
 }
 
 td{
@@ -40,7 +39,6 @@ vertical-align:top;
 }
 
 /* --- begin main nav menu --- */
-
 ul#primary-nav {
 	list-style: none;
 	margin: 35px 0 0 0; padding: 0 0 0.5em 0;
@@ -109,11 +107,13 @@ div#logoContainer{
 	margin-top:19px;
 	width:250px;
 }
+
 /*
 div#navContainer{
 	margin: 35px 10px 0px 10px;	
 }
 */
+
 div#getProveIt{
 	width:250px;
 }
@@ -143,12 +143,12 @@ div.borderLine.subcontent{
 }
 
 div#mainBody{
+	display: block;
 	border-top:#fddb00 2px solid;
 	margin: 10px 15px 5px 10px;
 	padding: 5px 0; /* top + bottom, left + right */
 	font-size:14px;
 	line-height: 18px;
-/*	background-color:#2682c7; */
 	color:#FFF;
 	
 }
@@ -158,9 +158,7 @@ div#mainPic{
 	position:relative;
 	height:193px;
 	width:661px; 
-/*	background-color:#2682c7; */
 	margin:5px 5px 5px 10px;
-	/*padding: 145px 0 0 5px; */
 }
 
 div#mainPic.index{
@@ -191,8 +189,44 @@ div#mainPic.research{
 	background-image:url(img/research.jpg);	
 }
 
-/*------------ end Main Picture for each Page --- */
+div#mainPic.reportabug{
+	background-image:url(img/reportabug.jpg);	
+}
 
+
+/* END Main Picture for each Page */
+
+
+/*** Picture Divs for USERS, DEVELOPERS, and ABOUT */
+
+div#940pic{
+	position: relative;
+	width:940px; 
+	height:193px; 
+} 
+
+.any{
+	margin: 0px 10px 5px 10px;
+}
+
+div#465pic{
+	position: relative;
+	width:465px; 
+	height:193px; 
+} 
+
+.right{
+	float: right;
+	margin: 0px 10px 5px 5px;
+}
+
+.left{
+	float: left;
+	margin: 0px 5px 5px 10px;
+}
+
+
+/*** END Picture Divs for USERS, DEVELOPERS, and ABOUT */
 
 h1{
 	position: absolute;
@@ -364,7 +398,9 @@ a:hover.getProveit {
 
 
 
-/*---- HYPERLINK FORMATTING ---*/
+
+
+/* BEGIN HYPERLINK FORMATTING */
 
 a{
 	text-decoration:none;
@@ -392,10 +428,6 @@ div#sideTableofContents li a:hover{
 	text-decoration:underline;
 }
 /*------ END feature highlight links ---*/
-
-
-
-
 
 
 /*-- Recommendations Hyperlinks--*/
@@ -427,6 +459,7 @@ text-decoration:underline;
 /*-- END Recommendations Hyperlinks--*/
 
 
+
 /********** FOOTER HYPERLINKS ********/
 /*-- Credit Hyperlinks--*/
 a.footerLink:link{
@@ -446,6 +479,7 @@ a.footerLink:hover{
 	text-decoration:underline;
 }
 /*-- END Credit Hyperlinks--*/
+
 
 /*-- Footer Navigation Links --*/
 
@@ -476,11 +510,8 @@ div#footerNav a.selected:link, div#footerNav a.selected:visited{
 	text-transform: uppercase;
 }
 /*-- END Footer Navigation Links --*/
-
-
-
-
 /*------------------------- end of Hyperlink Formatting ---*/
+
 
 /* Begin Demo */
 

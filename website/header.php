@@ -52,17 +52,17 @@ switch($page)
 						
 						<ul id="primary-nav">				
 							<li>
-								<a href="#" class="primary-nav-link<?= $primary == 'Users' ? ' selected' : '' ?>">Users</a>
+								<a href="users.php" class="primary-nav-link<?= $primary == 'Users' ? ' selected' : '' ?>">Users</a>
 								<ul<?= $primary == 'Users' ? ' style="display: block;"' : '' ?>>
 									<li><a href="features.php"<?= $page == 'Features' ? ' class="selected"' : '' ?>>Features</a></li>
 									<li><a href="screenshots.php"<?= $page == 'Screenshots' ? ' class="selected"' : '' ?>>Screenshots</a></li>
 									<li><a href="tutorials.php"<?= $page == 'Tutorials' ? ' class="selected"' : '' ?>>Tutorials</a></li>
-									<li><a href="#"<?= $page == 'Report a Bug' ? ' class="selected"' : '' ?>>Report a Bug</a></li>
+									<li><a href="reportabug.php"<?= $page == 'Report a Bug' ? ' class="selected"' : '' ?>>Report a Bug</a></li>
 									<li><a href="demo.php"<?= $page == 'Demo' ? ' class="selected"' : '' ?>>Demo</a></li>
 								</ul>
 							</li>
 							<li>
-								<a href="#" class="primary-nav-link<?= $primary == 'Developers' ? ' selected' : '' ?>">Developers</a>
+								<a href="developers.php" class="primary-nav-link<?= $primary == 'Developers' ? ' selected' : '' ?>">Developers</a>
 								<ul<?= $primary == 'Developers' ? ' style="display: block;"' : '' ?>>
 									<li><a href="documentation.php"<?= $page == 'Documentation' ? ' class="selected"' : '' ?>>Documentation</a></li>
 									<li><a href="http://code.google.com/p/proveit-js/">Google Code Project</a></li>
@@ -70,7 +70,7 @@ switch($page)
 								</ul>
 							</li>
 							<li>
-								<a href="#" class="primary-nav-link<?= $primary == 'About' ? ' selected' : '' ?>">About</a>
+								<a href="about.php" class="primary-nav-link<?= $primary == 'About' ? ' selected' : '' ?>">About</a>
 								<ul<?= $primary == 'About' ? ' style="display: block;"' : '' ?>>
 									<li><a href="research.php"<?= $page == 'Research' ? ' class="selected"' : '' ?>>Research</a></li>
 									<li><a href="theteam.php"<?= $page == 'The Team' ? ' class="selected"' : '' ?>>The Team</a></li>
