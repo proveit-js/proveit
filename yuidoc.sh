@@ -28,7 +28,7 @@ yuiversion=2
 
 ##############################################################################
 
-rm -r $generator_out
+rm -rf $generator_out
 
 # add -s to the end of the line to show items marked private
 
