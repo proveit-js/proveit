@@ -9,44 +9,23 @@ include_once 'header.php';
 
 				<div id="leadInPic"><img src="img/users_leadIn.jpg" alt="about us banner" /></div>
 
-				<table width="960" border="0" cellspacing="0" cellpadding="0" style="background-color: #2682c7; ">
+				<table border="0" cellspacing="0" cellpadding="0" style="background-color: #2682c7; ">
 					<tr>
 						<td>
-							<div id="940pic" class="any">
-								<a href="features.php">
-									<img src="img/features_image_link.jpg">
-								</a>
-								<h1> Features </h1>
-							</div>
-							
-							 <div id="465pic" class="left"> 
-								<a href="screenshots.php"> 
-									<img  src="img/screenshots_image_link.jpg"> 
-								</a> 
-								<h1>Screenshots</h1>
-							</div>
-							
-							 <div id="465pic" class="right"> 
-								<a href="tutorials.php"> 
-									<img  src="img/tutorials_image_link.jpg"> 
-								</a> 
-								<h1>Tutorials</h1>
-							</div> 
-							
-							 <div id="465pic" class="left"> 
-								<a href="reportabug.php"> 
-									<img  src="img/reportabug_image_link.jpg"> 
-								</a> 
-								<h1>Report-a-Bug</h1>
-							</div>
-								
-							<div id="mainBody"> 
-								<p class="leadIn"> [ DEMO Page Image will go here ]
-								</p>
-								
-							</div><!-- end #mainBody -->
+							<a class="pic940" href="features.php">Features</a>
 						</td>
-						
+					</tr>
+					<tr>
+						<td>
+							<a class="pic465 left" style="background-image: url(img/screenshots_image_link.jpg);" href="screenshots.php">Screenshots</a>
+							<a class="pic465 right" style="background-image: url(img/tutorials_image_link.jpg);" href="tutorials.php">Tutorials</a>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<a class="pic465 left" style="background-image: url(img/reportabug_image_link.jpg);" href="reportabug.php">Report-a-Bug</a>
+							<a class="pic465 right" style="background-image: url(img/reportabug_image_link.jpg);" href="reportabug.php">Report-a-Bug</a>
+						</td>
 					</tr>
 				</table> 
 

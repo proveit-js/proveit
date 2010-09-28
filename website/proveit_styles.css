@@ -199,37 +199,41 @@ div#mainPic.reportabug{
 
 /*** Picture Divs for USERS, DEVELOPERS, and ABOUT */
 
-div#940pic{
-	position: relative;
-	width:940px; 
-	height:193px; 
-} 
+a.pic940 {
+	background-image: url(img/features_image_link.jpg);
+	display: block;
+	height: 63px; width: 930px;
+	margin: 0 10px 10px 10px; padding: 130px 0 0 10px;
+	font-weight: bold;
+	font-size: 48px;
+	text-transform: uppercase;
+	color: #fddb00;
+	} 
 
-.any{
-	margin: 0px 10px 5px 10px;
-}
+a.pic465 {
+	display: block;
+	height: 63px; width: 455px;
+	padding: 130px 0 0 10px;
+	font-weight: bold;
+	font-size: 48px;
+	text-transform: uppercase;
+	color: #fddb00;
+	} 
 
-div#465pic{
-	position: relative;
-	width:465px; 
-	height:193px; 
-} 
-
-.right{
+a.right {
 	float: right;
-	margin: 0px 10px 5px 5px;
-}
+	margin: 0 10px 10px 5px;
+	}
 
-.left{
+a.left {
 	float: left;
-	margin: 0px 5px 5px 10px;
-}
-
+	margin: 0 5px 10px 10px;
+	}
 
 /*** END Picture Divs for USERS, DEVELOPERS, and ABOUT */
 
 h1{
-	position: absolute;
+	position: absolute; 
 	bottom:5px;
 	left:0px;
 	font-size:48px;
