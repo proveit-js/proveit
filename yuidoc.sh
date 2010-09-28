@@ -17,7 +17,7 @@ generator_out=yui_docs/html
 
 # The location of the template files.  Any subdirectories here will be copied
 # verbatim to the destination directory.
-template=$yuidoc_home/template
+template=yui_docs/template
 
 # The version of your project to display within the documentation.
 version=1.0.0
