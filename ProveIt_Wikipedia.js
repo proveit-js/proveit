@@ -1525,6 +1525,8 @@ window.proveit = {
 				label.text(descs[param]);
 				// Basically the same code as nameHbox above
 				label.attr("for", this.NEW_PARAM_PREFIX + param);
+				if(param == 'accessdate')
+					$('.paramvalue', paramBox).val(this.formatDate(new Date));
 			}
 			else
 			{
@@ -1890,18 +1892,9 @@ window.proveit = {
 
 		//var refbox = this.getRefbox();
 
-		var newchild = $('<tr><td class="number"></td><td class="type"></td><td class="title"></td><td class="edit"><button>edit this reference</button></td></tr>').get(0);
+		var newchild = $('<tr><td class="number"></td><td class="type"></td><td class="title"></td><td class="edit"></td></tr>').get(0);
 		// removed <span class="pointers"></span>
 		// removed <td class="details"></td>
-
-		var editBtnEnabled = (ref.type != 'raw');
-		$("td.edit button", newchild).button({
-			icons: {
-				primary: 'ui-icon-pencil'
-			},
-			text: false,
-			disabled: !editBtnEnabled
-		});
 
 		if(!ref.isValid())
 		{
@@ -1992,12 +1985,13 @@ window.proveit = {
 				break;
 			case 'news':
 				icon += 'newspaper.png';
+				url = ref.params['url'];
 				break;
 			case 'newsgroup':
 				icon += 'comments.png';
 				break;
 			case 'press release':
-				icon += 'report.png';
+				icon += 'transmit_blue.png';
 				break;
 			case 'raw':
 				icon += 'raw.png';
@@ -2018,7 +2012,7 @@ window.proveit = {
 		if(refType != null)
 		{
 			if(url != '')
-				refType = '<a href="' + url + '">' + refType + '</a>';
+				refType = '<a href="' + url + '" target="_blank">' + refType + '</a>';
 			refTypeByline = 'Type: <span class="type">' + refType + '</span>';
 		}
 
@@ -2106,20 +2100,10 @@ window.proveit = {
 
 
 		var doEdit = function() {
-		//		$("#refs tr").removeClass('selected');
-		//		$(newchild).addClass('selected');
+			thisproveit.updateEditPopup(ref);
 
-		//	var selectedTab = $( "#tabs" ).tabs( "option", "selected" );
-		//	alert(selectedTab);
-		//	if(selectedTab != 1)
-		//      $( "#tabs" ).tabs( "option", "selected", 1 );
-			if(editBtnEnabled)
-			{
-				thisproveit.updateEditPopup(ref);
-
-				$("#view-pane").hide();
-				$("#edit-pane").show();
-			}
+			$("#view-pane").hide();
+			$("#edit-pane").show();
 		};
 
 		var pointStrings = ref.getPointerStrings();
@@ -2172,6 +2156,7 @@ window.proveit = {
 			allPointers.append(pointerHolder);
 		}
 
+
 		if(pointStrings.length > 1)
 		{
 			var newP = $('<p />');
@@ -2179,68 +2164,96 @@ window.proveit = {
 			expanded.append(newP);
 		}
 
+		// edit buttons
+		if(ref.type != 'raw')
+		{
+		// SMALL EDIT BUTTON
+			
+			// create button
+			var smallEditBtn = $('<button />',{
+					text: 'edit'
+				});
+		
+			// transform button
+			$(smallEditBtn).button({
+				icons: {
+					primary: 'ui-icon-pencil'
+				},
+				text: false
+			});
+			
+			// button click event handler
+			smallEditBtn.click(doEdit);
+			
+			// append button
+			$('.edit', newchild).append(smallEditBtn);
 
-		// edit and insert buttons
-		var editBtn = $('<button />',{
-								"class": 'edit',
-								text: 'edit this reference'
-							});
-		expanded.append(editBtn);
-		var insertBtn = $('<button />',{
-								"class": 'insert',
-								text: 'insert this reference at cursor'
-							});
-		expanded.append(insertBtn);
-
-
-
+		// LARGE EDIT BUTTON
+			
+			// create button
+			var editBtn = $('<button />',{
+					"class": 'edit',
+					text: 'edit this reference'
+				});
+		
+			// transform button
+			$(editBtn).button({
+				icons: {
+					primary: 'ui-icon-pencil'
+				},
+				text: true
+			});
+			
+			// button click event handler
+			editBtn.click(doEdit);
+			
+			// append button
+			expanded.append(editBtn);
+			
+		// ROW EVENT HANDLER
+			$(newchild).dblclick(doEdit);
+		}
+		else		
+		{
+			// needed to keep all rows the same height
+			$('.edit', newchild).append('&nbsp;');
+		}
+		
 		// ibid button
-		var ibidEnabled = pointStrings.length != 0;
-		var ibidButton = $(insertBtn).button({
+		if(pointStrings.length > 0)
+		{
+			// LARGE EDIT BUTTON
+			
+			// create button
+			var ibidBtn = $('<button />',{
+					"class": 'insert',
+					text: 'insert this reference at cursor'
+				});
+		
+			// transform button
+			$(ibidBtn).button({
 				icons: {
 					primary: 'ui-icon-arrowthick-1-e'
 				},
-				text: true,
-				disabled: !ibidEnabled
+				text: true
 			});
-		if(ibidEnabled)
-		{
-		    ibidButton.click(function(){
+			
+			// button click event handler
+			ibidBtn.click(function(){
 					thisproveit.insertRef(ref, false);
 					return false;
 				});
+			
+			// append button
+			expanded.append(ibidBtn);		
 		}
 
-		// edit button
-		var editButton = $(editBtn).button({
-				icons: {
-						primary: 'ui-icon-pencil'
-					},
-				text: true,
-				disabled: !editBtnEnabled
-			});
-		editButton.click(doEdit);
-
-		//var selectedIndex = thisproveit.getRefbox().selectedIndex;
-		//var winData = {"proveit": thisproveit, "ref": ref};
-		//selectRow(newchild);
-		//window.openDialog("edit_dialog.xul", "edit dialog", thisproveit.DIALOG_FEATURES, winData);
-		//thisproveit.getRefbox().selectedIndex = selectedIndex;
-
-		// double click event handler
-		$(newchild).dblclick(doEdit);
-		//newchild.addEventListener("dblclick", doEdit, false);
-		$(neweditimage).click(doEdit);
-		//neweditimage.addEventListener("click", doEdit, false);
-
-		// newlabel.setAttribute("value", ref.getLabel());
-		// newlabel.setAttribute("control", "refbox");
 		return newchild;
 	},
 
 	truncateTitle : function(title)
 	{
-		var MAX_LENGTH = 90;
+		var MAX_LENGTH = 86;
 		var truncated = title;
 		if(title.length > MAX_LENGTH)
 		{
@@ -2253,6 +2266,13 @@ window.proveit = {
 			}
 		}
 		return truncated;
+	},
+	
+	formatDate : function(date1)
+	{
+		return date1.getFullYear() + '-' +
+		(date1.getMonth() < 9 ? '0' : '') + (date1.getMonth()+1) + '-' +
+		(date1.getDate() < 10 ? '0' : '') + date1.getDate();
 	},
 
 	/**

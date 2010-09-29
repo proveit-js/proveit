@@ -143,6 +143,7 @@ div#proveit div.expanded {
 	font-size: x-small;
 	padding: 5px 0;
 	display: none;
+	width: auto;
 	}
 		
 	div#proveit div.expanded p {
