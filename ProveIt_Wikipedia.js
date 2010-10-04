@@ -60,7 +60,6 @@ window.proveit = {
 	// */
 	// openIfSupportedEditPage : function ()
 	// {
-		// this.log("Entering openIfSupportedEditPage");
 		// //this.log("windURL: " + windURL.spec);
 
 		// if(!this.isSupportedEditPage())
@@ -127,7 +126,6 @@ window.proveit = {
 	// Highlights a given string in the MediaWiki edit box.
 	highlightTargetString : function(targetStr)
 	{
-	        //this.log("Entering highlightTargetString");
 		var mwBox = this.getMWEditBox();
 		//content.window.scroll(0, editTop);
 		var origText = $(mwBox).val();
@@ -156,7 +154,6 @@ window.proveit = {
 	// Runs a given function on submission of edit form
 	addOnsubmit : function(subFunc)
 	{
-		//this.log("Entering addOnsubmit.");
 		var form = this.getEditForm();
 		if(!form)
 		{
@@ -229,7 +226,6 @@ window.proveit = {
 
 	// Runs when we actually want to load the sidebar
 	proveitonload : function() {
-		this.log("Entering proveitonload");
 		//this.log("this.shouldAddSummary: " + this.shouldAddSummary);
 
 		this.summaryActionAdded = false;
@@ -242,11 +238,6 @@ window.proveit = {
 		return true;
 	},
 
-	// Runs when the sidebar is being unloaded.
-	proveitonunload : function() {
-		this.log("Entering proveitunload");
-	},
-
 	/*
 	 * This function is designed to clear the richlistbox in preparation for
 	 * loading a new page. It is simply a recursive call to remove all children
@@ -256,7 +247,6 @@ window.proveit = {
 
 	clearlist : function()
 	{
-		//this.log("Entering clearList.");
 		// var deletion = function(box) {
 		// for (var i = 0; i < box.childNodes.length; i++) {
 		// // deletion(box.childNodes[i]);
@@ -327,7 +317,6 @@ window.proveit = {
 	 */
 	citationObjFromEditPopup : function(citeObj, editBox)
 	{
-		this.log("Entering citationObjFromEditPopup");
 		var paramBoxes = $("div.input-row", editBox);
 
 		var refName = $('#editrefname').val();
@@ -377,7 +366,6 @@ window.proveit = {
 	// Saves the changes the user made in the edit popup.
 	saveEdit : function(citeObj)
 	{
-		//this.log("Entering saveEdit");
 		if(!citeObj.save)
 		{
 		        var newRichItem = this.makeRefboxElement(citeObj, true);
@@ -399,8 +387,6 @@ window.proveit = {
 	 */
 	updateEditPopup : function(ref)
 	{
-		this.log("Entering updateEditPopup.");
-
 		$('#editrefname').val(ref.name || "");
 
 		// Don't contaminate actual object with junk params.
@@ -492,12 +478,6 @@ window.proveit = {
 	 */
 	addPopupRow : function(root, list, descs, item, req, fieldType)
 	{
-		this.log("Entering addPopupRow.");
-		/*
-		this.log("item: " + item);
-		this.log("req: " + req);
-		this.log("fieldType: " + fieldType);
-		 */
 		var id = fieldType ? "preloadedparamrow" : "addedparamrow";
 		var newline = $('#'+id).clone(); // clone the hidden row
 		$(newline).attr('id',''); // clear the ID (can't have two elements with same ID)
@@ -1065,7 +1045,6 @@ window.proveit = {
 			returnstring += "{{" + template + (includeType ? " " + this.type : "");
 			for (var name in this.params)
 			{
-				proveit.log('toStringInternal: param: ' + name);
 				returnstring += " | " + name + "=" + this.params[name];
 			}
 			returnstring += "}}</ref>";
@@ -1389,7 +1368,7 @@ window.proveit = {
 		// get this working, lots of typing here.
 
 		var type = box.id;
-		
+
 		// get <ref> name
 		var refName = $('#addrefname').val();
 
@@ -1446,7 +1425,6 @@ window.proveit = {
 	 * @param tag tag being added
 	 */
 	addCitation : function(tag) {
-		//this.log("Entering addCitation.");
 		// get this working, lots of typing here.
 
 		this.addNewElement(tag);
@@ -1493,7 +1471,6 @@ window.proveit = {
 	 * @param menu Raw HTML menu element
 	 */
 	changeCite : function(menu) {
-		this.log("Entering changeCite");
 		//this.log("menu.id: " + menu.id);
 
 		// Reset scroll
@@ -1507,7 +1484,7 @@ window.proveit = {
 
 		var genPane = document.getElementById("dummyCitePane").cloneNode(true);
 		genPane.id = newCiteType;
-		
+
 		// name the ref-name-row
 		$('.ref-name-row',genPane).children('input').attr('id','addrefname');
 		$('.ref-name-row',genPane).children('label').attr('for','addrefname');
@@ -1665,13 +1642,13 @@ window.proveit = {
 			append('&lt;ref&gt; name');
 		refNameRow.append(refLabel);
 		refNameRow.append($('<input/>', {id: 'editrefname',
-	                                       "class": 'paramvalue'}));		
+	                                       "class": 'paramvalue'}));
 		// div.paramlist
 		var paramList = $('<div/>', {"class": 'paramlist'});
-		
+
 		editFields.append(refNameRow);
 		editFields.append(paramList);
-		editPane.append(editFields);	
+		editPane.append(editFields);
 
 		// div#edit-buttons
 		var editButtons = $('<div/>', {id: 'edit-buttons'});
@@ -1691,7 +1668,7 @@ window.proveit = {
 		editPane.append(editButtons);
 		viewTab.append(editPane);
 		tabs.append(viewTab);
-		
+
 		// dumy cite pane
 		var dummyCite = $('<div/>', {id: 'dummyCitePane',
 					     "class": 'typepane',
@@ -1702,7 +1679,7 @@ window.proveit = {
 		dummyCite.append(addRefNameRow);
 		dummyCite.append($('<div/>', {"class": 'paramlist'}));
 		tabs.append(dummyCite);
-		
+
 		var preloadedparam = $('<div/>', {id: 'preloadedparamrow',
 						  "class": 'preloadedrow input-row',
 						  style: 'display: none'}).
@@ -1929,7 +1906,6 @@ window.proveit = {
 	 */
 	makeRefboxElement : function(ref, isReplacement)
 	{
-		// this.log("Entering makeRefboxElement.");
 		var refName = ref.name; //may be null or blank
 
 		//var refbox = this.getRefbox();
@@ -2214,12 +2190,12 @@ window.proveit = {
 		if(ref.type != 'raw')
 		{
 		// SMALL EDIT BUTTON
-			
+
 			// create button
 			var smallEditBtn = $('<button />',{
 					text: 'edit'
 				});
-		
+
 			// transform button
 			$(smallEditBtn).button({
 				icons: {
@@ -2227,21 +2203,21 @@ window.proveit = {
 				},
 				text: false
 			});
-			
+
 			// button click event handler
 			smallEditBtn.click(doEdit);
-			
+
 			// append button
 			$('.edit', newchild).append(smallEditBtn);
 
 		// LARGE EDIT BUTTON
-			
+
 			// create button
 			var editBtn = $('<button />',{
 					"class": 'edit',
 					text: 'edit this reference'
 				});
-		
+
 			// transform button
 			$(editBtn).button({
 				icons: {
@@ -2249,33 +2225,33 @@ window.proveit = {
 				},
 				text: true
 			});
-			
+
 			// button click event handler
 			editBtn.click(doEdit);
-			
+
 			// append button
 			expanded.append(editBtn);
-			
+
 		// ROW EVENT HANDLER
 			$(newchild).dblclick(doEdit);
 		}
-		else		
+		else
 		{
 			// needed to keep all rows the same height
 			$('.edit', newchild).append('&nbsp;');
 		}
-		
+
 		// ibid button
 		if(pointStrings.length > 0)
 		{
 			// LARGE EDIT BUTTON
-			
+
 			// create button
 			var ibidBtn = $('<button />',{
 					"class": 'insert',
 					text: 'insert this reference at cursor'
 				});
-		
+
 			// transform button
 			$(ibidBtn).button({
 				icons: {
@@ -2283,15 +2259,15 @@ window.proveit = {
 				},
 				text: true
 			});
-			
+
 			// button click event handler
 			ibidBtn.click(function(){
 					thisproveit.insertRef(ref, false);
 					return false;
 				});
-			
+
 			// append button
-			expanded.append(ibidBtn);		
+			expanded.append(ibidBtn);
 		}
 
 		return newchild;
@@ -2313,7 +2289,7 @@ window.proveit = {
 		}
 		return truncated;
 	},
-	
+
 	formatDate : function(date1)
 	{
 		return date1.getFullYear() + '-' +
