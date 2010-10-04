@@ -366,7 +366,7 @@ window.proveit = {
 		{
 			citeObj.save = false;
 		}
-		this.log("Returning from citationObjFromEditPopup");
+		citeObj.update();
 		return citeObj;
 	},
 
@@ -753,10 +753,48 @@ window.proveit = {
 				this.type = type;
 			};
 		}
+
+		/**
+		 * Update pointer strings after changing citation.  This runs after modifying a reference's fields (name, params), but before changing orig
+		 */
+		this.update = function()
+		{
+			var newCiteText = this.toString();
+			var strings = this.getPointerStrings();
+
+			/*
+			 * Update main citation in strings list.
+			 *
+			 * TODO:
+			 * Use strings array here to find and update pointers that are not main citations.  As is, they are orphaned.
+			 * Both array and textbox should be updated.
+			 * It may be enough to just set all non-main pointers in text and array to this.getInsertionText(false).
+			 * However, if they remove the name entirely (not recommended), that would be a problem.
+			 */
+			if(strings.length > 0) // This implies there was a name before
+			{
+				for(var i = 0; i < strings.length; i++)
+				{
+					// If we find the full citation as a pointer, update to the new text.
+					if(strings[i] == this.orig)
+					{
+						// this.orig itself is updated in updateInText
+						proveit.log("Updating " + strings[i] + " to " + newCiteText);
+						strings[i] = newCiteText;
+					}
+				}
+			}
+			else if(this.name != null) // They have added a name, so we should have a main pointer.
+			{
+				// Now that it has a name, it is a pointer to itself.
+				proveit.log("Adding " + newCiteText + " to pointerStrings");
+				strings.push(newCiteText);
+			}
+		};
 		/**
 		 <ref name/>
 		 */
-		this.name = argObj.name;
+		 this.name = argObj.name != "" ? argObj.name : null; // Save blank names as null
 
 		/**
 		  type of reference, e.g. cite web, cite news.  Also ussed (including for Citation objects) to determine default fields.
@@ -1034,6 +1072,12 @@ window.proveit = {
 			return returnstring;
 		};
 
+		this.pointerStrings = [];
+
+		/**
+		 * sets pointerStrings to an array
+		 * @param strings array of pointer strings, not null
+		 */
 		this.setPointerStrings = function(strings)
 		{
 			this.pointerStrings = strings;
@@ -1044,9 +1088,7 @@ window.proveit = {
 		 */
 		this.getPointerStrings = function()
 		{
-			// Should this return a copy?
-		        // Return empty array if null.
-			return this.pointerStrings || [];
+			return this.pointerStrings;
 		};
 	},
 
@@ -1349,11 +1391,10 @@ window.proveit = {
 		var type = box.id;
 		
 		// get <ref> name
-		var refName = $('#addrefname').val();	
-		var name = refName != "" ? refName : null; // Save blank names as null
+		var refName = $('#addrefname').val();
 
 		var citeFunc = this.togglestyle ? this.Cite : this.Citation;
-		var tag = new citeFunc({"name": name, "type": type});
+		var tag = new citeFunc({"name": refName, "type": type});
 
 		var paramName, paramVal;
 
@@ -1384,6 +1425,7 @@ window.proveit = {
 				tag.params[paramName] = paramVal;
 			}
 		}
+		tag.update();
 		this.log("Exiting citationObjFromAddPopup");
 		return tag;
 	},
@@ -2125,7 +2167,6 @@ window.proveit = {
 			}
 			var pointerHolder = $('<a href="#">' + colName + '</a>');
 			// Bind i
-			var proveit = this;
 			var clickFunc = (function(i)
 			{
 				return function()
@@ -2139,16 +2180,21 @@ window.proveit = {
 						// Shouldn't happen.  Indicates pointer strings are out of date.
 						if(last == -1)
 						{
-							break;
+							proveit.log("pointStrings[" + j + "]: " + pointStrings[j] + " not found.  Returning.");
+							return false;
 						}
 						last += pointStrings[j].length;
 					}
-					if(j == i)
+					var startInd = text.indexOf(pointStrings[i], last);
+					if(startInd == -1)
 					{
-						proveit.highlightLengthAtIndex(text.indexOf(pointStrings[i], last),
-									    pointStrings[i].length);
-						return false;
+						proveit.log("pointStrings[" + i + "]: " + pointStrings[i] + " not found.");
 					}
+					else
+					{
+						proveit.highlightLengthAtIndex(startInd, pointStrings[i].length);
+					}
+					return false;
 				};
 			})(i);
 
