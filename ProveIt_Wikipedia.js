@@ -77,15 +77,15 @@ window.proveit = {
 
 
 	// Convenience function.   Returns the refbox element.
-	getRefbox : function()
+	getRefBox : function()
 	{
 		//return document.getElementById("refbox");
 		return $("#refs");
 	},
 
 	/**
-	 * Provides the x (left) and y (top) offsets to a given element.  From QuirksMode (http://www.quirksmode.org/js/findpos.html), a freely available site by Peter-Paul Koch
-	 * @param node
+	 * Provides the x (left) and y (top) offsets to a given element. From QuirksMode (http://www.quirksmode.org/js/findpos.html), a freely available site by Peter-Paul Koch
+	 * @param node any HTML node
 	 * @return offsets to node, as object with left and top properties.
 	 */
 	getPosition : function(node)
@@ -99,7 +99,12 @@ window.proveit = {
 		return {"left": left, "top": top};
 	},
 
-	// Highlights a given length of text, at a particular index.
+	/**
+	 * Highlights a given length of text, at a particular index.
+	 * @param startInd start index in Wikipedia edit box
+	 * @param length length of string to highlight
+	 * @return always true
+	*/
 	highlightLengthAtIndex : function(startInd, length)
 	{
 		if(startInd < 0 || length < 0)
@@ -123,7 +128,11 @@ window.proveit = {
 		return true;
 	},
 
-	// Highlights a given string in the MediaWiki edit box.
+	/**
+	 * Highlights the first instance of a given string in the MediaWiki edit box.
+	 * @param targetStr the string in the edit box to highlight
+	 * @return true if successful, false otherwise
+	*/
 	highlightTargetString : function(targetStr)
 	{
 		var mwBox = this.getMWEditBox();
@@ -138,23 +147,31 @@ window.proveit = {
 		return this.highlightLengthAtIndex(startInd, targetStr.length);
 	},
 
-	// Convenience function.  Returns MediaWiki text area.
+	/**
+	 * Convenience function. Returns the raw MediaWiki textarea element.
+	 * @return the edit box element
+	*/
 	getMWEditBox : function()
 	{
 		return $("#wpTextbox1")[0];
 	},
 
-	// Returns edit form DOM object
-
-	getEditForm : function()
+	/**
+	 * Returns raw edit form element, which contains MWEditBox, among other things.
+	 * @return the edit form element
+	*/
+	getMWEditForm : function()
 	{
 		return $("#editform")[0];
 	},
 
-	// Runs a given function on submission of edit form
+	/**
+	 * Runs a given function on submission of edit form
+	 * @param subFunc function to run on submission
+	*/
 	addOnsubmit : function(subFunc)
 	{
-		var form = this.getEditForm();
+		var form = this.getMWEditForm();
 		if(!form)
 		{
 			throw new Error("No edit form, possibly due to protected page.");
@@ -162,28 +179,33 @@ window.proveit = {
 		form.addEventListener("submit", subFunc, false);
 	},
 
-	// Returns edit summary DOM object
-
+	/**
+	 * Returns the raw MW edit summary element
+	 * @return the edit summary element
+	*/
 	getEditSummary : function()
 	{
-		return top.window.content.document.getElementById("wpSummary");
+		return $("#wpSummary")[0];
 	},
 
-	/* Keep track of whether we have already added an onsubmit function to include ProveIt in the summary.
+	/**
+	 * Keep track of whether we have already added an onsubmit function to include ProveIt in the summary.
 	 * This guarantees the function will not be run twice.
 	 */
-	summaryActionAdded : false,
+	summaryFunctionAdded : false,
 
-	/** Does the user want us to ever add summary actions?
-	 */
+	/**
+	 * Does the user want us to ever add "Edited by ProveIt" summary?	 
+	*/
 	shouldAddSummary : true,
 
-	/* Specifies to include ProveIt edit summary on next save.
+	/**
+	 * Specifies to include ProveIt edit summary on next save.
 	 * Can be disabled by modifying shouldAddSummary
 	 */
 	includeProveItEditSummary : function()
 	{
-		if(this.shouldAddSummary && !this.summaryActionAdded)
+		if(this.shouldAddSummary && !this.summaryFunctionAdded)
 		{
 			try
 			{
@@ -201,7 +223,7 @@ window.proveit = {
 					}
 					 */
 				});
-				this.summaryActionAdded = true;
+				this.summaryFunctionAdded = true;
 			}
 			catch(e)
 			{
@@ -224,11 +246,14 @@ window.proveit = {
 	 * event handler into the browser and remove it when finished.
 	 */
 
-	// Runs when we actually want to load the sidebar
+	/**
+	 * Runs to see if we want to load ProveIt
+	 * @return always true
+	 */
 	proveitonload : function() {
 		//this.log("this.shouldAddSummary: " + this.shouldAddSummary);
 
-		this.summaryActionAdded = false;
+		this.summaryFunctionAdded = false;
 
 		if(this.isSupportedEditPage())
 		{
@@ -238,14 +263,12 @@ window.proveit = {
 		return true;
 	},
 
-	/*
-	 * This function is designed to clear the richlistbox in preparation for
-	 * loading a new page. It is simply a recursive call to remove all children
-	 * from any nodes inside the richlist box, Garbage collection should then
-	 * easily wipe them.
+	/**
+	 * Clears the refBox of refBoxRows, except for dummy rows.
+	 * @return false if refBox wasn't found
 	 */
 
-	clearlist : function()
+	clearRefBox : function()
 	{
 		// var deletion = function(box) {
 		// for (var i = 0; i < box.childNodes.length; i++) {
@@ -253,7 +276,7 @@ window.proveit = {
 		// box.removeChild(box.childNodes[i]);
 		// }
 		// }
-		var box = this.getRefbox();
+		var box = this.getRefBox();
 		if(box == null)
 		{
 			this.log("Ref box is not loaded yet.");
@@ -272,16 +295,17 @@ window.proveit = {
 
 	},
 
-	/** Does insertion into edit box.
-	 * @param ref Reference to insert
-	 * @param full Insert the full reference text if true, pointer otherwise.
+	/** Inserts ref text into MW edit box.
+	 * @param ref Reference text to insert
+	 * @param full Insert the full reference text if true, citation otherwise.
+	 * @return false if errors
 	 */
-	insertRef : function(ref, full)
+	insertRefIntoMWEditBox : function(ref, full)
 	{
 		var txtarea = this.getMWEditBox();
 		if(!txtarea)
 		{
-			this.log("insertRef: txtarea is null");
+			this.log("insertRefIntoMWEditBox: txtarea is null");
 			return false;
 		}
 		var insertionText = ref.getInsertionText(full);
@@ -308,22 +332,22 @@ window.proveit = {
 	},
 
 	/**
-	 * Modifies citation object from user-edited GUI.  Note that the modification of citeObj is done in-place, so the return value is only for convenience.
+	 * Modifies reference object from user-edited GUI. The reference object is mutated in place, so the return value is only for convenience.
 	 *
-	 * @param editBox the root raw HTML element of edit popup/dialog.
-	 * @param citeObj the original citation object we're modifying
+	 * @param editPane the raw element of the editPane
+	 * @param ref the original citation object we're modifying
 	 *
-	 * @return citeObj
+	 * @return ref same ref that was passed in
 	 */
-	citationObjFromEditPopup : function(citeObj, editBox)
+	changeRefFromEditPane : function(ref, editPane)
 	{
-		var paramBoxes = $("div.input-row", editBox);
+		var paramBoxes = $("div.input-row", editPane);
 
 		var refName = $('#editrefname').val();
-		citeObj.name = refName != "" ? refName : null; // Save blank names as null
+		ref.name = refName != "" ? refName : null; // Save blank names as null
 
 		// Clear old params
-		citeObj.params = {};
+		ref.params = {};
 
 		var paramName, paramVal;
 		for (var i = 0; i < paramBoxes.length; i++)
@@ -348,44 +372,43 @@ window.proveit = {
 			if (paramName != "" && paramVal != "")
 			{
 				//this.log("Setting " + paramName + "= " + paramVal);
-				citeObj.params[paramName] = paramVal;
+				ref.params[paramName] = paramVal;
 			}
 		}
-		if (citeObj.toString() != citeObj.orig)
+		if (ref.toString() != ref.orig)
 		{
-			citeObj.save = false;
+			ref.save = false;
 		}
-		citeObj.update();
-		return citeObj;
+		ref.update();
+		return ref;
 	},
 
 	/**
-	 * @param citeObj actual citation object.
+	 * Creates refBoxRow, updates numbering for all refBoxRows, replaces old refBoxRow with new one, and updates ref text in MWEditBox.
+	 * @param ref the ref we want to save.
 	 */
-
-	// Saves the changes the user made in the edit popup.
-	saveEdit : function(citeObj)
+	saveRefFromEdit : function(ref)
 	{
-		if(!citeObj.save)
+		if(!ref.save)
 		{
-		        var newRichItem = this.makeRefboxElement(citeObj, true);
-			var oldRichItem = $('.selected', this.getRefbox()).get(0);
+		    var newRichItem = this.makeRefboxElement(ref, true);
+			var oldRichItem = $('.selected', this.getRefBox()).get(0);
 			this.log('newRichItem: ' + newRichItem + ', oldRichItem: ' + oldRichItem + 'oldRichItem.parentNode: ' + oldRichItem.parentNode);
 			var oldNumber = $('td.number',oldRichItem).text();
 			$('td.number',newRichItem).text(oldNumber); // preserve old numbering
 			oldRichItem.parentNode.replaceChild(newRichItem, oldRichItem);
 			$(newRichItem).addClass('selected');
 
-			citeObj.updateInText();
+			ref.updateInText();
 			this.includeProveItEditSummary();
 		}
 	},
 
-	/*
-	 * Updates the edit window (popup that appears when you click pencil icon).
-	 * Moved from doSelect/dispSelect
+	/**
+	 * Updates the edit pane when you choose a reference to edit.
+	 * @param ref the ref that was chosen.
 	 */
-	updateEditPopup : function(ref)
+	updateEditPane : function(ref)
 	{
 		$('#editrefname').val(ref.name || "");
 
@@ -436,17 +459,17 @@ window.proveit = {
 
 		for(var i = 0; i < paramNames.length; i++)
 		{
-			//this.log("Calling addPopupRow on tempParams." + item);
+			//this.log("Calling addPaneRow on tempParams." + item);
 			//this.log("i: " + i + ", paramNames[i]: " + paramNames[i]);
-			this.addPopupRow($("#edit-pane").get(), tempParams, ref.getDescriptions(), paramNames[i], required[paramNames[i]], true);
+			this.addPaneRow($("#edit-pane").get(), tempParams, ref.getDescriptions(), paramNames[i], required[paramNames[i]], true);
 		}
 
 		var acceptButton = $('#edit-buttons .accept');
 		var acceptEdit = function()
 		{
 			proveit.log("Entering acceptEdit");
-			proveit.citationObjFromEditPopup(ref, $("#edit-pane").get());
-			proveit.saveEdit(ref);
+			proveit.changeRefFromEditPane(ref, $("#edit-pane").get());
+			proveit.saveRefFromEdit(ref);
 			acceptButton.unbind('click', acceptEdit);
 			$("#edit-pane").hide();
 			$("#view-pane").show();
@@ -468,15 +491,15 @@ window.proveit = {
 	},
 
 	/**
-	 * Adds a single row of popup
-	 * @param root root window for popup
-	 * @param list the param list from the reference, or null for added rows.
+	 * Add a row to an editPane or addPane.
+	 * @param root root element for pane
+	 * @param list the param array from the reference, or null for added rows.
 	 * @param descs description array to use, or null for no description
 	 * @param item the current param name
 	 * @param req true if current param name is required, otherwise not required.
 	 * @param fieldType true for label, false for textbox.
 	 */
-	addPopupRow : function(root, list, descs, item, req, fieldType)
+	addPaneRow : function(root, list, descs, item, req, fieldType)
 	{
 		var id = fieldType ? "preloadedparamrow" : "addedparamrow";
 		var newline = $('#'+id).clone(); // clone the hidden row
@@ -540,7 +563,7 @@ window.proveit = {
 
 	/**
 	 * Overly clever regex to parse template string (e.g. |last=Smith|first=John|title=My Life Story) into name and value pairs.
-	 * @param workingstring template string to parse.
+	 * @param workingString template string to parse.
 	 * @return Object with two properties, nameSplit and valSplit.
 	 * nameSplit is an array of all names, and valSplit is an array of all values.
 	 * While the length of nameSplit is equal to the number of name/value pairs (as expected),
@@ -550,34 +573,31 @@ window.proveit = {
 	 *
 	 * TODO: Remove the split code, and just use a regular regex (with two main groups for name and val), iteratively. Regex.find?  Make name and val indices match, and rework calling code as needed.  Also, check how this was done in the original code.
 	 */
-	splitNameVals : function (workingstring)
+	splitNameVals : function (workingString)
 	{
 		var split = {};
-		split.nameSplit = workingstring.substring(workingstring.indexOf("|") + 1).split(/=(?:[^|]*?(?:\[\[[^|\]]*(?:\|(?:[^|\]]*))?\]\])?)+(?:\||\}\})/
+		split.nameSplit = workingString.substring(workingString.indexOf("|") + 1).split(/=(?:[^|]*?(?:\[\[[^|\]]*(?:\|(?:[^|\]]*))?\]\])?)+(?:\||\}\})/
 ); // The first component is "ordinary" text (no pipes), while the second is a correctly balanced wikilink, with optional pipe.  Any combination of the two can appear.
-		split.valSplit = workingstring.substring(workingstring.indexOf("|"), workingstring.indexOf("}}")).split(/\|[^|=]*=/);
+		split.valSplit = workingString.substring(workingString.indexOf("|"), workingString.indexOf("}}")).split(/\|[^|=]*=/);
 		return split;
 	},
 
 	/**
-	 * This Function accesses the wiki edit box and scans the contained text for
-	 * citation tags. It then sets up the display chooser.
-	 *
-	 * TODO: Replace this with a formal parser, for maintainability.
+	 * Scan for references in the MWEditBox, and create a reference object and refBoxRow for each.
 	 */
-	scanRef : function()
+	scanForRefs : function()
 	{
-		this.log("Entering scanRef.");
+		this.log("Entering scanForRefs.");
 		// these are strings used to allow the correct parsing of the tag
 		var workingstring;
 		var cutupstring;
 		var text = this.getMWEditBox();
 		if(!text)
 		{
-			throw new Error("scanRef: MW edit box is not defined.");
+			throw new Error("scanForRefs: MW edit box is not defined.");
 		}
 
-		this.clearlist();
+		this.clearRefBox();
 
 		var textValue = $(text).val();
 		// since we should pick the name out before we get to the citation
@@ -603,7 +623,7 @@ window.proveit = {
 			for (var i = 0; i < currentScan.length; i++)
 			{
 				//this.log("currentScan[" + i + "]: " + currentScan[i]);
-				var citation = this.CitationFactory(currentScan[i]);
+				var citation = this.makeRef(currentScan[i]);
 				if(citation) // Full citation object
 				{
 					name = citation.name;
@@ -645,7 +665,7 @@ window.proveit = {
 			if(citations[j].name)
 			{
 				var pointer = pointers[citations[j].name];
-				citations[j].setPointerStrings(pointer.strings);
+				citations[j].setCitationStrings(pointer.strings);
 			}
 			this.addNewElement(citations[j]);
 		}
@@ -656,37 +676,41 @@ window.proveit = {
 		}
 	},
 
+	/**
+	 * Regex for parsing any reference text.
+	*/
 	REF_REGEX : /<[\s]*ref[\s]*name[\s]*=[\s]*(?:(?:\"(.*?)\")|(?:\'(.*?)\')|(?:(.*?)))[\s]*\/?[\s]*>/,
 
-	/*
-	 * Factory function for citations.  Takes text of a citation, and returns instance of the appropriate class.
-	 * @param citationText match citation
+	/**
+	 * Factory function for references.  Takes text of a reference, and returns instance of the appropriate class.
+	 * @param refText reference string
+	 * @return null if refText isn't a ref, otherwise the reference object
 	 */
-	CitationFactory : function(citationText)
+	makeRef : function(refText)
 	{
-		var isReference = /<[\s]*ref[^>]*>[^<]*\S[^<]*<[\s]*\/[\s]*ref[\s]*>/.test(citationText); // Tests for reference (non-pointer);
-		this.log("citationText: " + citationText + "; isReference: " + isReference);
+		var isReference = /<[\s]*ref[^>]*>[^<]*\S[^<]*<[\s]*\/[\s]*ref[\s]*>/.test(refText); // Tests for reference (non-pointer);
+		this.log("refText: " + refText + "; isReference: " + isReference);
 		if(!isReference)
 		{
 			return null;
 		}
-		var citeFunction = citationText.match(/{{[\s]*cite/i) ? this.Cite : citationText.match(/{{[\s]*Citation/i) ? this.Citation : this.RawReference;
+		var citeFunction = refText.match(/{{[\s]*cite/i) ? this.CiteReference : refText.match(/{{[\s]*Citation/i) ? this.Citation : this.RawReference;
 
 		if(citeFunction != this.RawReference)
 		{
-			var workingstring = citationText.match(/{{[\s]*(cite|Citation)[^}]*}}/i)[0];
-			var match = citationText.match(this.REF_REGEX);
+			var workingstring = refText.match(/{{[\s]*(cite|Citation)[^}]*}}/i)[0];
+			var match = refText.match(this.REF_REGEX);
 
 			if(match && match != null)
 			{
 				var name = match[1] || match[2] || match[3]; // 3 possibilities, corresponding to above regex, are <ref name="foo">, <ref name='bar'>, and <ref name=baz>
 			}
 
-			//this.log("scanRef: workingstring: " + workingstring);
+			//this.log("scanForRefs: workingstring: " + workingstring);
 			var cutupstring = workingstring.split(/\|/g);
 
 			// This little hack relies on the fact that 'e' appears first as the last letter of 'cite', and the type is next.
-			if(citeFunction == this.Cite)
+			if(citeFunction == this.CiteReference)
 			{
 				var typestart = cutupstring[0].toLowerCase().indexOf('e');
 				// First end curly brace
@@ -698,7 +722,7 @@ window.proveit = {
 			}
 		}
 		// type may be undefined, but that's okay.
-		var citation = new citeFunction({"name": name, "type": type, "save": true, "inMWEditBox": true, "orig": citationText});
+		var citation = new citeFunction({"name": name, "type": type, "save": true, "inMWEditBox": true, "orig": refText});
 
 		if(citeFunction != this.RawReference)
 		{
@@ -722,8 +746,12 @@ window.proveit = {
 		return citation;
 	},
 
-	// Root Citation type
-	AbstractCitation : function(argObj)
+	/**
+	 * Constructor for root reference type. Parent of RawReference, CiteReference, and CitationReference.
+	 * @constructor
+	 * @param argObj argument object with keys for each option
+	*/
+	AbstractReference : function(argObj)
 	{
 		// Cite has a non-trivial override of this.  This is defined early (and conditionally) because it is used in the constructor.
 		if(!this.setType)
@@ -740,7 +768,7 @@ window.proveit = {
 		this.update = function()
 		{
 			var newCiteText = this.toString();
-			var strings = this.getPointerStrings();
+			var strings = this.getCitationStrings();
 
 			/*
 			 * Update main citation in strings list.
@@ -767,7 +795,7 @@ window.proveit = {
 			else if(this.name != null) // They have added a name, so we should have a main pointer.
 			{
 				// Now that it has a name, it is a pointer to itself.
-				proveit.log("Adding " + newCiteText + " to pointerStrings");
+				proveit.log("Adding " + newCiteText + " to citationStrings");
 				strings.push(newCiteText);
 			}
 		};
@@ -881,7 +909,10 @@ window.proveit = {
 			}
 		};
 
-		// Convenience method.  Returns sorter for parameters.
+		/**
+		 * Convenience method.  Returns sorter for parameters.
+		 * @return sorter for parameters
+		*/
 		this.getSorter = function()
 		{
 			var thisCite = this; // Make closure work as intended.
@@ -912,19 +943,26 @@ window.proveit = {
 			};
 		};
 
-		// Returns descriptions for the current language.
+		/**
+		 * Returns descriptions for the current language.
+		 * @return descriptions
+		*/
 		this.getDescriptions = function()
 		{
 			//this could be made Cite-specific if needed.
 			return descriptions[proveit.LANG];
 		};
 
-		// Returns true if this object is valid, false otherwise.
-		// Assume all AbstractCitation objects are valid.  Can be overridden in subtypes.
+		/**
+		 * Returns true if this reference is valid, false otherwise.
+		 * Assume all AbstractReference objects are valid.  Can be overridden in subtypes.
+		 * @return AbstractReference.isValid always returns true
+		*/
 		this.isValid = function(){return true;};
 
 		/**
 		 * Generates label for reference using title, author, etc.
+		 * @return the label that was generated
 		 */
 		this.getLabel = function()
 		{
@@ -966,10 +1004,11 @@ window.proveit = {
 
 
 		/**
-		 * Gets insertion text from reference object.
+		 * Gets insertion text (for edit box).
 		 *
 		 * TODO: Generate a regex object instead (getInsertionRegExp), so highlighting would not fail due to trivial changes (e.g. spacing).
-		 * @param {If full is true, insert full text, otherwise ref name only} full
+		 * @param full If true, insert full text, otherwise ref name only
+		 * @return insertion text
 		 */
 		this.getInsertionText = function(full)
 		{
@@ -992,9 +1031,8 @@ window.proveit = {
 			}
 		};
 
-		/*
-		 * This function takes the currently selected or edited reference and
-		 * updates it in the edit box.
+		/**
+		 * Updates this reference in the edit box.
 		 */
 		this.updateInText = function()
 		{
@@ -1051,28 +1089,36 @@ window.proveit = {
 			return returnstring;
 		};
 
-		this.pointerStrings = [];
+		/**
+		 * Array of citation strings for this reference.
+		*/
+		this.citationStrings = [];
 
 		/**
-		 * sets pointerStrings to an array
+		 * Sets citationStrings to an array
 		 * @param strings array of pointer strings, not null
 		 */
-		this.setPointerStrings = function(strings)
+		this.setCitationStrings = function(strings)
 		{
-			this.pointerStrings = strings;
+			this.citationStrings = strings;
 		};
 
 		/**
+		 * Gets array of citationStrings.
 		 * @return (possibly empty) array of pointer strings.  Will not return null.
 		 */
-		this.getPointerStrings = function()
+		this.getCitationStrings = function()
 		{
-			return this.pointerStrings;
+			return this.citationStrings;
 		};
 	},
 
-	// A function representing a Cite style template.
-	Cite : function(argObj)
+	/** Constructor for CiteReference type.
+	 * @constructor
+	 * @extends AbstractReference
+	 * @param argObj the argument object, with keys for each option
+	*/
+	CiteReference : function(argObj)
 	{
 		/* Mostly an identity mapping, except for redirects.  I think
 		 * having the self-mappings is better than some kind of special case array.
@@ -1092,7 +1138,7 @@ window.proveit = {
 		        "episode":"episode"
 		};
 
-		// Sets the type, applying the mappings.  This is up top because it is used in AbstractCitation constructor.
+		// Sets the type, applying the mappings.  This is up top because it is used in AbstractReference constructor.
 		this.setType = function(rawType)
 		{
 			var mappedType = typeNameMappings[rawType];
@@ -1102,7 +1148,7 @@ window.proveit = {
 				this.type = rawType; // Use naive type as fallback.
 		};
 
-		proveit.AbstractCitation.call(this, argObj);
+		proveit.AbstractReference.call(this, argObj);
 
 		this.getSortIndex = function(param)
 		{
@@ -1252,7 +1298,7 @@ window.proveit = {
 	 */
 
 	Citation : function(argObj) {
-		proveit.AbstractCitation.call(this, argObj);
+		proveit.AbstractReference.call(this, argObj);
 
 		// None currently required;
 		var requiredParams = {};
@@ -1345,7 +1391,7 @@ window.proveit = {
 	 */
 	RawReference : function(argObj)
 	{
-		proveit.AbstractCitation.call(this, argObj);
+		proveit.AbstractReference.call(this, argObj);
 		this.type = 'raw';
 		this.toString = function()
 		{
@@ -1355,10 +1401,10 @@ window.proveit = {
 	},
 
 	/**
-	 * Convert the current contents of the add citation panel to a citation obj (i.e Cite(), Citation())
+	 * Convert the current contents of the add citation panel to a citation obj (i.e CiteReference(), Citation())
 	 * @param box typepane root of add GUI (pane for specific type, e.g. journal)
          *
-	 * TODO: This should be unified with citationObjFromEditPopup
+	 * TODO: This should be unified with changeRefFromEditPane
 	 *
 	 * @return cite object or null if no panel exists yet.
 	 */
@@ -1372,7 +1418,7 @@ window.proveit = {
 		// get <ref> name
 		var refName = $('#addrefname').val();
 
-		var citeFunc = this.togglestyle ? this.Cite : this.Citation;
+		var citeFunc = this.togglestyle ? this.CiteReference : this.Citation;
 		var tag = new citeFunc({"name": refName, "type": type});
 
 		var paramName, paramVal;
@@ -1435,12 +1481,12 @@ window.proveit = {
 		 * for the final box and make sure to grab the type as well
 		 */
 
-		this.insertRef(tag, true); // true means insert full text here, regardless of global toggle.
+		this.insertRefIntoMWEditBox(tag, true); // true means insert full text here, regardless of global toggle.
 		tag.save = true;
 		tag.inMWEditBox = true;
 		this.includeProveItEditSummary();
-// 		this.getRefbox().scrollToIndex(this.getRefbox().itemCount - 1);
-// 		this.getRefbox().selectedIndex = this.getRefbox().itemCount - 1;
+// 		this.getRefBox().scrollToIndex(this.getRefBox().itemCount - 1);
+// 		this.getRefBox().selectedIndex = this.getRefBox().itemCount - 1;
 		this.highlightTargetString(tag.orig);
 	},
 
@@ -1493,7 +1539,7 @@ window.proveit = {
 		var newCite;
 		if(menu.id == "citemenu")
 		{
-			newCite = new this.Cite({});
+			newCite = new this.CiteReference({});
 		}
 		else
 		{
@@ -1717,7 +1763,7 @@ window.proveit = {
 					       }});
 		// Lists of types (citeTypes, citationTypes) probably don't belong here
          	var citeTypes = ["web", "book", "journal", "conference", "encyclopedia", "news", "newsgroup", "press release", "episode"];
-		var descs = new this.AbstractCitation({}).getDescriptions();
+		var descs = new this.AbstractReference({}).getDescriptions();
 		for(var i = 0; i < citeTypes.length; i++)
 		{
 			citemenu.append($('<option/>', {value: citeTypes[i],
@@ -1783,7 +1829,7 @@ window.proveit = {
 						break;
 
 				      //	case 1: // edit
-						// proveit.updateEditPopup();
+						// proveit.updateEditPane();
 						//	$('tr.selected').dblclick();
 						//break;
 
@@ -1803,7 +1849,7 @@ window.proveit = {
 			}
 		}).click(function()
 			 {
-				 proveit.addPopupRow(document.getElementById("add-tab"));
+				 proveit.addPaneRow(document.getElementById("add-tab"));
 			 })
 		.next().next().button({
 			icons: {
@@ -1835,7 +1881,7 @@ window.proveit = {
 			}
 		}).click(function()
 			 {
-				 proveit.addPopupRow($("#edit-pane"));
+				 proveit.addPaneRow($("#edit-pane"));
 			 }).
 		next().next().
 		button({
@@ -1876,7 +1922,7 @@ window.proveit = {
 			}
 		);
 
-		this.scanRef();
+		this.scanForRefs();
 
 
 		$("#refs tr").eq(0).click().click(); // select first item in list.  TODO: Why two .click?
@@ -1908,7 +1954,7 @@ window.proveit = {
 	{
 		var refName = ref.name; //may be null or blank
 
-		//var refbox = this.getRefbox();
+		//var refbox = this.getRefBox();
 
 		var newchild = $('<tr><td class="number"></td><td class="type"></td><td class="title"></td><td class="edit"></td></tr>').get(0);
 		// removed <span class="pointers"></span>
@@ -2118,13 +2164,13 @@ window.proveit = {
 
 
 		var doEdit = function() {
-			thisproveit.updateEditPopup(ref);
+			thisproveit.updateEditPane(ref);
 
 			$("#view-pane").hide();
 			$("#edit-pane").show();
 		};
 
-		var pointStrings = ref.getPointerStrings();
+		var pointStrings = ref.getCitationStrings();
 
 		//var pointers = $('.pointers', newchild);
 
@@ -2262,7 +2308,7 @@ window.proveit = {
 
 			// button click event handler
 			ibidBtn.click(function(){
-					thisproveit.insertRef(ref, false);
+					thisproveit.insertRefIntoMWEditBox(ref, false);
 					return false;
 				});
 
@@ -2304,7 +2350,7 @@ window.proveit = {
 	 */
 	addNewElement : function(ref)
 	{
-		var refbox = this.getRefbox();
+		var refbox = this.getRefBox();
 		$(refbox).append(this.makeRefboxElement(ref, false));
 	}
 };
