@@ -200,13 +200,13 @@ div#mainPic.reportabug{
 /*** Picture Divs for USERS, DEVELOPERS, and ABOUT */
 
 a.pic940 {
-	background-image: url(img/features_image_link.jpg);
 	display: block;
 	height: 63px; width: 930px;
 	margin: 0 10px 10px 10px; padding: 130px 0 0 10px;
 	font-weight: bold;
 	font-size: 48px;
 	text-transform: uppercase;
+	text-shadow: 1px 1px 3px #000;
 	color: #fddb00;
 	} 
 
@@ -217,6 +217,7 @@ a.pic465 {
 	font-weight: bold;
 	font-size: 48px;
 	text-transform: uppercase;
+	text-shadow: 1px 1px 3px #000;
 	color: #fddb00;
 	} 
 

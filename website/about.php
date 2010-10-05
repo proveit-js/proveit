@@ -7,31 +7,14 @@ include_once 'header.php';
 ?>
 			<!-- Main Content Table -->
 
-				<div id="leadInPic"><img src="img/about_leadIn.jpg" alt="about us banner" /></div>
+					<div id="leadInPic"><img src="img/about_leadIn.jpg" alt="developers banner" /></div>
 
-				<table width="960" border="0" cellspacing="0" cellpadding="0" style="background-color: #2682c7; ">
+				<table border="0" cellspacing="0" cellpadding="0" style="background-color: #2682c7; ">
 					<tr>
 						<td>
-							 <div id="465pic" class="left"> 
-								<a href="#"> 
-									<img  src="img/research_image_link.jpg"> 
-								</a> 
-								<h1>Research</h1>
-							</div>
-							
-							 <div id="465pic" class="right"> 
-								<a href="#"> 
-									<img  src="img/theteam_image_link.jpg"> 
-								</a> 
-								<h1>The Team</h1>
-							</div> 
-								
-							<div id="mainBody"> 
-								<p class="leadIn"> </p>
-								
-							</div><!-- end #mainBody -->
+							<a class="pic465 left" style="background-image: url(img/theteam_image_link.jpg);" href="theTeam.php">The Team</a>
+							<a class="pic465 right" style="background-image: url(img/research_image_link.jpg);" href="research.php">Research </a>
 						</td>
-						
 					</tr>
 				</table> 
 

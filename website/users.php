@@ -1,6 +1,6 @@
 <?php
 
-$page = 'About';
+$page = 'Users';
 
 include_once 'header.php';
 
@@ -12,7 +12,7 @@ include_once 'header.php';
 				<table border="0" cellspacing="0" cellpadding="0" style="background-color: #2682c7; ">
 					<tr>
 						<td>
-							<a class="pic940" href="features.php">Features</a>
+							<a class="pic940" 	style="background-image: url(img/features_image_link.jpg);" href="features.php">Features</a>
 						</td>
 					</tr>
 					<tr>
@@ -24,7 +24,7 @@ include_once 'header.php';
 					<tr>
 						<td>
 							<a class="pic465 left" style="background-image: url(img/reportabug_image_link.jpg);" href="reportabug.php">Report-a-Bug</a>
-							<a class="pic465 right" style="background-image: url(img/reportabug_image_link.jpg);" href="reportabug.php">Report-a-Bug</a>
+							<a class="pic465 right" style="background-image: url(img/demo_image_link.jpg);" href="demo.php">Demo</a>
 						</td>
 					</tr>
 				</table> 
