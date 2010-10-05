@@ -2039,6 +2039,15 @@ window.proveit = {
 			case 'press release':
 				icon += 'transmit_blue.png';
 				break;
+			case 'interview':
+				icon += 'comments.png';
+				break;
+			case 'video':
+				icon += 'film.png';
+				break;
+			case 'episode':
+				icon += 'television.png';
+				break;
 			case 'raw':
 				icon += 'raw.png';
 				break;
