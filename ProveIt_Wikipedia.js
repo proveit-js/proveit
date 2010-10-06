@@ -890,7 +890,7 @@ window.proveit = {
 					"patent-number": "Patent number",
 					"country-code": "Country code (XX)",
 					work: "Work",
-					format: "File format",
+					format: "Format",
 					issn: "ISSN",
 					pmid: "PMID",
 					chapter: "Chapter",
@@ -899,7 +899,47 @@ window.proveit = {
 					conference: "Conference",
 					news: "News",
 					paper: "Paper",
-					"press release": "Press release"
+					"press release": "Press release",
+					interview: "Interview",
+					subject: "Subject",
+					subjectlink: "Subject article name",
+					subject2: "Subject two",
+					subject2link: "Subject two article name",
+					subject3: "Subject three",
+					subject3link: "Subject three article name",
+					subject4: "Subject four",
+					subject4link: "Subject four article name",
+					interviewer: "Interviewer",
+					cointerviewers: "Co-interviewers",
+					type: "Type",
+					program: "Program",
+					callsign: "Call sign",
+					city: "City",
+					archiveurl: "Archive URL",
+					archivedate: "Date archived",
+					episode: "Episode",
+					episodelink: "Episode article name",
+					series: "Series",
+					serieslink: "Series article name",
+					credits: "Credits",
+					network: "Network",
+					station: "Station",
+					airdate: "Airdate",
+					began: "Start date",
+					ended: "End date",
+					season: "Season number",
+					seriesno: "Season number",
+					number: "Number",
+					minutes: "Minutes",
+					transcript: "Transcript",
+					transcripturl: "Transcript URL",
+					video: "Video",
+					people: "People",
+					medium: "Production medium",
+					language: "Language",
+					time: "Time",
+					oclc: "OCLC",
+					ref: "Anchor ID"
 			}
 		};
 
@@ -1105,6 +1145,15 @@ window.proveit = {
 		{
 			return this.citationStrings;
 		};
+
+		/**
+		 * Get icon URL for reference
+		 * @return icon URL
+		 */
+		this.getIcon = function()
+		{
+			return proveit.STATIC_BASE + "page_white.png";
+		};
 	},
 
 	/** Constructor for CiteReference type.
@@ -1129,7 +1178,9 @@ window.proveit = {
 			paper:"journal",
 			"press release":"press release",
 		        "pressrelease":"press release",
-		        "episode":"episode"
+			interview:"interview",
+		        episode:"episode",
+			video:"video"
 		};
 
 		// Sets the type, applying the mappings.  This is up top because it is used in AbstractReference constructor.
@@ -1155,15 +1206,22 @@ window.proveit = {
 				"author",
 				"last",
 				"first",
+				"subject",
+				"subjectlink",
 				"author2",
 				"last2",
 				"first2",
+				"subject2",
+				"subectlink2",
 				"author3",
 				"last3",
 				"first3",
+				"subject3",
+				"subjectlink3",
 				"author4",
 				"last4",
 				"first4",
+				"subject4",
 				"author5",
 				"last5",
 				"first5",
@@ -1181,20 +1239,47 @@ window.proveit = {
 				"first9",
 				"authorlink",
 				"coauthors",
+				"interviewer",
+				"cointerviewers",
+				"type",
+				"program",
+				"episodelink",
+				"series",
+				"serieslink",
+				"credits",
+				"network",
+				"station",
+				"callsign",
+				"city",
+				"airdate",
+				"began",
+				"ended",
+				"season",
+				"seriesno",
+				"number",
+				"minutes",
+				"transcript",
+				"transcripturl",
+				"people",
 				"date",
 				"year",
 				"month",
 				"format",
+				"medium",
 				"work",
 				"publisher",
 				"location",
 				"pages",
 				"language",
 				"isbn",
+				"oclc",
 				"doi",
+				"id",
 				"archiveurl",
 				"archivedate",
-				"quote"
+				"time",
+				"quote",
+				"ref"
 			].indexOf(param);
 		};
 
@@ -1216,7 +1301,9 @@ window.proveit = {
 			news: { "title": true },
 			newsgroup : { "title": true },
 			"press release"	: { "title": true },
-			episode : { "title": true }
+			interview: { "last" : true }, // TODO: Interview requires last *or* subject.  Currently, we can't represent that.
+			episode : { "title": true },
+			video : { "title" : true }
 		};
 
 		/* Get required parameters for this citation type.
@@ -1243,7 +1330,9 @@ window.proveit = {
 		        news: [ "title", "author", "url", "publisher", "date", "accessdate", "pages" ],
 			newsgroup : [ "title", "author", "date", "newsgroup", "id", "url", "accessdate" ],
 		        "press release"	: [ "title", "url", "publisher", "date", "accessdate" ],
-		        episode : ["title", "series", "credits", "airdate", "city", "network", "season" ]
+			interview : ["last", "first", "subjectlink", "interviewer", "title", "callsign", "city", "date", "program", "accessdate"],
+		        episode : ["title", "series", "credits", "airdate", "city", "network", "season"],
+			video : ["people", "date", "url", "title", "medium", "location", "publisher"]
 		};
 
 		/* Default parameters, to be suggested when editing.
@@ -1284,6 +1373,29 @@ window.proveit = {
 		this.getEditLabel = function()
 		{
 			return "cite " + this.type;
+		};
+
+		var iconMapping =
+		{
+			web : "page_white_world.png",
+			book : "book.png",
+			journal : "page_white_text.png",
+			news : "newspaper.png",
+			newsgroup : "comments.png",
+			"press release" : "transmit_blue.png",
+			interview : "comments.png",
+			episode : "television.png",
+			video : "film.png"
+		};
+
+		this.getIcon = function()
+		{
+			var icon = iconMapping[this.type];
+			if(icon)
+			{
+				return proveit.STATIC_BASE + icon;
+			}
+			return proveit.AbstractCitation.getIcon.call(this);
 		};
 	},
 
@@ -1392,6 +1504,11 @@ window.proveit = {
 			return this.orig;
 		};
 		this.params['title'] = this.orig;
+
+		this.getIcon = function()
+		{
+			return proveit.STATIC_BASE + 'raw.png';
+		};
 	},
 
 	/**
@@ -1754,8 +1871,7 @@ window.proveit = {
 					       {
 						       proveit.changeCite(citemenu.get(0));
 					       }});
-		// Lists of types (citeTypes, citationTypes) probably don't belong here
-         	var citeTypes = ["web", "book", "journal", "conference", "encyclopedia", "news", "newsgroup", "press release", "episode"];
+         	var citeTypes = this.CiteReference.getTypes();
 		var descs = new this.AbstractReference({}).getDescriptions();
 		for(var i = 0; i < citeTypes.length; i++)
 		{
@@ -2009,50 +2125,24 @@ window.proveit = {
 		// $('td.details', newchild).html(details);
 
 		// pick an icon based on ref type
-		var icon = this.STATIC_BASE, url = '', refType = ref.type;
+		var icon = ref.getIcon(), url = '', refType = ref.type;
 
 		switch(refType)
 		{
 			case 'web':
-				icon += 'page_white_world.png';
 				url = ref.params['url'];
 				break;
 			case 'book':
-				icon += 'book.png';
 				if(ref.params['isbn'] != null)
 					url = wgServer + '/w/index.php?title=Special%3ABookSources&isbn=' + ref.params['isbn'];
 				break;
 			case 'journal':
 			case 'conference':
-			case 'paper':
-				icon += 'page_white_text.png';
 				if(ref.params['doi'] != null)
 					url = 'http://dx.doi.org/' + ref.params['doi'];
 				break;
 			case 'news':
-				icon += 'newspaper.png';
 				url = ref.params['url'];
-				break;
-			case 'newsgroup':
-				icon += 'comments.png';
-				break;
-			case 'press release':
-				icon += 'transmit_blue.png';
-				break;
-			case 'interview':
-				icon += 'comments.png';
-				break;
-			case 'video':
-				icon += 'film.png';
-				break;
-			case 'episode':
-				icon += 'television.png';
-				break;
-			case 'raw':
-				icon += 'raw.png';
-				break;
-			default:
-				icon += 'page_white.png';
 				break;
 		}
 		$('td.type', newchild).css('background-image','url('+icon+')');
@@ -2344,6 +2434,15 @@ window.proveit = {
 		var refbox = this.getRefBox();
 		$(refbox).append(this.makeRefboxElement(ref, false));
 	}
+};
+
+/**
+ * Static method.  Returns valid Cite reference types
+ * @return array of cite method types
+ */
+proveit.CiteReference.getTypes = function()
+{
+	return ["web", "book", "journal", "conference", "encyclopedia", "news", "newsgroup", "press release", "interview", "episode", "video"];
 };
 
 /**
