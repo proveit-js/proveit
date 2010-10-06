@@ -1567,15 +1567,6 @@ window.proveit = {
 	},
 
 	/**
-	 * Opens the Add Citation modal dialog window, and handles the user's input.
-	 */
-	openAddCitation : function()
-	{
-		var winData = {"proveit": this}; // ref will be set to the new reference, or remain null if the dialog is cancelled.
-		window.openDialog("add_dialog.xul", "add dialog", this.DIALOG_FEATURES, winData);
-	},
-
-	/**
 	 * Called from the add citation panel, this is the function used to
 	 * add the actual citation.
 	 *
