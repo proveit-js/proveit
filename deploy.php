@@ -1,33 +1,51 @@
 #!/usr/bin/php
 <?php
 $error = fopen('php://stderr', 'wb');
+chdir(dirname (__FILE__)); // Change to directory of script (should be repo root)
+define('REPO', 'https://proveit-js.googlecode.com/hg/');
+define('PROVEIT_FILE', 'ProveIt_Wikipedia.js');
+define('USER_AGENT', 'ProveIt deploy script (http://code.google.com/p/proveit-js/)');
+define('MW_API', 'http://en.wikipedia.org/w/api.php');
+
 $configuration = json_decode(file_get_contents('./deploy_configuration.json'));
 if(!(isset($configuration->username) && isset($configuration->password) && isset($configuration->page)))
 {
-    fwrite($error, 'You must provide a JSON file deploy_configuaration.json in the current working directory with username, password, and page fields set.');
+    fwrite($error, 'You must provide a JSON file, deploy_configuaration.json, in the repository root (but not committed) with username, password, and page fields set.');
     exit(1);
 }
-define('USER_AGENT', 'ProveIt deploy script (http://code.google.com/p/proveit-js/)');
+
+$_ = NULL; // unused, needed because only variables can be passed by reference.
+exec('hg outgoing ' . REPO, $_, $out_ret);
+if($out_ret === 0) // 0 unpushed changes, 1 otherwise
+{
+    fwrite($error, "Push your changes to the main repository, " . REPO . ", before running $argv[0].\n");
+    exit(2);
+}
+$revid = str_replace('+', '', exec('hg identify -i'));
+$orig_code = shell_exec('hg cat -r tip ' . PROVEIT_FILE);
+
 $closure_ch = curl_init('http://closure-compiler.appspot.com/compile');
 $params = http_build_query(array(
-    'code_url' => 'http://proveit-js.googlecode.com/hg/ProveIt_Wikipedia.js',
+    'js_code' => $orig_code,
     'compilation_level' => 'SIMPLE_OPTIMIZATIONS',
     'output_info' => 'compiled_code'
 ));
 curl_setopt($closure_ch, CURLOPT_POSTFIELDS, $params);
 curl_setopt($closure_ch, CURLOPT_RETURNTRANSFER, TRUE);
 curl_setopt($closure_ch, CURLOPT_USERAGENT, USER_AGENT);
+
 $minified = curl_exec($closure_ch);
+curl_close($closure_ch);
 $header = <<< EOF
-/* ProveIt Copyright 2010, Georgia Tech
+/* ProveIt, commit $revid, Copyright 2010, Georgia Tech
    Available under the GNU Free Documentation License, Creative Commons Attribution/Share-Alike License 3.0, and the GNU General Public License 2
    This is a minified version.  Changes can be made through our Google Code Project (http://code.google.com/p/proveit-js/) */
 
 EOF;
-$full_code = $header .$minified;
+$full_code = $header . $minified;
 $deploy_cookies = tempnam("/tmp", "deploy_cookie");
 
-$login_ch = curl_init('http://en.wikipedia.org/w/api.php');
+$login_ch = curl_init(MW_API);
 $login_data = array(
     'action' => 'login',
     'lgname' => $configuration->username,
@@ -41,7 +59,7 @@ curl_setopt($login_ch, CURLOPT_COOKIEJAR, $deploy_cookies);
 $login_resp = json_decode(curl_exec($login_ch));
 curl_close($login_ch);
 
-$token_ch = curl_init('http://en.wikipedia.org/w/api.php');
+$token_ch = curl_init(MW_API);
 $login_data['lgtoken'] = $login_resp->login->token;
 curl_setopt($token_ch, CURLOPT_POSTFIELDS, http_build_query($login_data));
 curl_setopt($token_ch, CURLOPT_USERAGENT, USER_AGENT);
@@ -51,7 +69,7 @@ curl_setopt($token_ch, CURLOPT_COOKIEJAR, $deploy_cookies);
 $token_resp = json_decode(curl_exec($token_ch));
 curl_close($token_ch);
 
-$edit_token_ch = curl_init('http://en.wikipedia.org/w/api.php');
+$edit_token_ch = curl_init(MW_API);
 $edit_token_params = http_build_query(array(
     'action' => 'query',
     'prop' => 'info|revisions',
@@ -70,32 +88,53 @@ curl_close($edit_token_ch);
 $page = array_pop($edit_token_resp['query']['pages']);
 $edit_token = $page['edittoken'];
 
-$edit_ch = curl_init('http://en.wikipedia.org/w/api.php');
-$edit_params = http_build_query(array(
+$edit_ch = curl_init(MW_API);
+$edit_params = array(
      'action' => 'edit',
      'title' => $configuration->page,
      'section' => 0,
      'text' => $full_code,
-     'summary' => 'Deploy latest version of ProveIt.',
+     'summary' => "Deploy latest version of ProveIt, commit $revid.",
      'notminor' => 1,
      'token' => $edit_token,
      'format' => 'json'
-));
-curl_setopt($edit_ch, CURLOPT_POST, 1);
-curl_setopt($edit_ch, CURLOPT_POSTFIELDS, $edit_params);
+);
+curl_setopt($edit_ch, CURLOPT_POSTFIELDS, http_build_query($edit_params));
 curl_setopt($edit_ch, CURLOPT_HTTPHEADER, array('Expect:'));
 curl_setopt($edit_ch, CURLOPT_USERAGENT, USER_AGENT);
 curl_setopt($edit_ch, CURLOPT_RETURNTRANSFER, TRUE);
 curl_setopt($edit_ch, CURLOPT_COOKIEFILE, $deploy_cookies);
-$edit_resp = json_decode(curl_exec($edit_ch));
-if($edit_resp->edit->result == 'Success')
+$edit_resp_str = curl_exec($edit_ch);
+$edit_resp = json_decode($edit_resp_str);
+$success_msg = "You have successfully deployed the latest version of ProveIt, commit $revid, to " . $configuration->page . "\n";
+$success = $edit_resp->edit->result == 'Success';
+if($success)
 {
-    echo "You have successfully deployed the latest version to " . $configuration->page;
+    echo $success_msg;
 }
-else
+else if(isset($edit_resp->edit->captcha))
 {
-    fwrite($error, "Failed to deploy.  Final response:");
-    fwrite($error, var_export($edit_resp, TRUE));
+    fwrite($error, "Solve CAPTCHA at " . "http://en.wikipedia.org" . $edit_resp->edit->captcha->url . ", then enter it and press return:\n");
+    $answer = trim(fgets(STDIN));
+    $edit_params['captchaid'] = $edit_resp->edit->captcha->id;
+    $edit_params['captchaword'] = $answer;
+    curl_setopt($edit_ch, CURLOPT_POSTFIELDS, http_build_query($edit_params));
+    $edit_resp = json_decode(curl_exec($edit_ch));
+    $success = $edit_resp->edit->result == 'Success';
+    if($success)
+    {
+	echo "CAPTCHA successful. $success_msg"; 
+	exit(0);
+    }
+    else
+    {
+	echo "CAPTCHA retry failed.";
+    }
+}
+if(!$success)
+{
+    fwrite($error, "Failed to deploy.  Final response:\n");
+    fwrite($error, $edit_resp_str);
 }
 curl_close($edit_ch);
 ?>
