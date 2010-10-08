@@ -18,17 +18,28 @@ include_once 'header.php';
 								<h1>Search and Destroy</h1>
 							</div><!-- end #mainPic -->
 							<div id="mainBody"> 
-								<p>ProveIt is an open-source Wikipedia referencing tool.  Quisque et leo ac lacus faucibus pellentesque et ac dui. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut sodales adipiscing sem at viverra. Cum sociis natoque penatibus et magnis dis parturient montes, </p>
-
 								<h3>How Do I Report a Bug?</h3>
-								<h4>Getting Started</h4>
+								<h4 id="GettingStarted">Getting Started</h4>
 								<p>All users are encouraged to report any bugs (or glitches) encountered while using ProveIt. Any and all help is appreciated, and will be used to further improve the ProveIt experience.</p>
-								<h4>Using Google Bug Tracker</h4>
-								<p>ProveIt is an open-source Wikipedia referencing tool.  Quisque et leo ac lacus faucibus pellentesque et ac dui. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut sodales adipiscing sem at viverra. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Aliquam erat volutpat. Curabitur dolor risus, hendrerit eget viverra a, pellentesque et elit. Suspendisse potenti. Duis eget semper leo. Cras dapibus, diam eu semper ullamcorper, augue leo mattis lorem, id porta lacus quam ut odio. Sed vehicula sem vitae sem mattis vehicula. Duis felis diam, vestibulum nec interdum sit amet, ultricies at libero.</p>							
-								<h4>Tips for Writing Bugs</h4>
-								<p>ProveIt is an open-source Wikipedia referencing tool.  Quisque et leo ac lacus faucibus pellentesque et ac dui. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut sodales adipiscing sem at viverra. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Aliquam erat volutpat. Curabitur dolor risus, hendrerit eget viverra a, pellentesque et elit. Suspendisse potenti. Duis eget semper leo. Cras dapibus, diam eu semper ullamcorper, augue leo mattis lorem, id porta lacus quam ut odio. Sed vehicula sem vitae sem mattis vehicula. Duis felis diam, vestibulum nec interdum sit amet, ultricies at libero.</p>							
-								<h4>Status, Labels, Owner, etc </h4>
-								<p>ProveIt is an open-source Wikipedia referencing tool.  Quisque et leo ac lacus faucibus pellentesque et ac dui. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut sodales adipiscing sem at viverra. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Aliquam erat volutpat. Curabitur dolor risus, hendrerit eget viverra a, pellentesque et elit. Suspendisse potenti. Duis eget semper leo. Cras dapibus, diam eu semper ullamcorper, augue leo mattis lorem, id porta lacus quam ut odio. Sed vehicula sem vitae sem mattis vehicula. Duis felis diam, vestibulum nec interdum sit amet, ultricies at libero.</p>							
+								<h4 id="Tips">Tips for Writing Bugs</h4>
+								<p>To help the ProveIt developers fix the bug, you should provide us with the information we need to reproduce it.  This will typically include:</p>
+								<ol>
+									<li>Your browser and its version.  For example, Firefox 3.6.10, Internet Explorer 8, or Chrome 7.0.517.24</li>
+									<li>The article you were editing</li>
+									<li>The expected result</li>
+									<li>The problem you experienced</li>
+								</ol>
+								<h4 id="Fields">Issue Tracker Fields</h4>
+								<dl>
+									<dt>Status</dt>
+									<dd>- The status of the bug.  Your issue will initially be marked New.  If it is verified, it will be changed to Accepted.  When we have begun working, it will be changed to Started.  Finally, when work is complete, it will be marked Fixed.</dd>
+									<dt>Label</dt>
+									<dd>- Various labels are used to help organize issues.  These include Type (e.g. Defect, Enhancement, or Task), Priority, and OpSys (operating system).</dd>
+									<dt>Owner</dt>
+									<dd>- This indicates the person with responsibility for monitoring the issue.  However, you should post any relevant information to the issue page, rather than contacting them directly.</dd>
+								</dl>
+
+								<h2><a href="http://code.google.com/p/proveit-js/issues/entry">Report a Bug Now</a></h2>
 								<!--table>      
 									<tr>
 										<td style="background-color: #2682c7; ">
@@ -46,23 +57,11 @@ include_once 'header.php';
 						<td> 
 							<h2> Contents </h2>
 							<div id="sideTableofContents">
-								<h3 class="first">Category 1</h3>
+								<h3 class="first">How Do I Report a Bug?</h3>
 								<ul>
-									<li><a href="#"> Item 1.1 </a></li>
-									<li><a href="#"> Item 2.1 </a></li>
-								</ul>
-								
-								<h3> Category 2</h3>
-								<ul>
-									<li><a href="#">Item 1.2</a></li>
-									<li><a href="#">Item 2.2 </a></li>
-									<li><a href="#">Item 3.2 </a></li>
-								</ul>
-								
-								<h3> Category 3 </h3>
-								<ul>
-									<li><a href="#">Item 1.3</a></li>
-									<li><a href="#">Item 2.3</a></li>
+									<li><a href="#GettingStarted">Getting Started</a></li>
+									<li><a href="#Tips">Tips for Writing Bugs</a></li>
+									<li><a href="#Fields">Issue Tracker Fields</a></li>
 								</ul>
 							</div>
 					  </td>
