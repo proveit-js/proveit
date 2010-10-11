@@ -215,7 +215,7 @@ window.proveit = {
 					var summary = thisproveit.getEditSummary();
 
 					if(summary.value.indexOf("ProveIt") == -1)
-					summary.value += " (edited by [[User:Superm401/ProveIt|Proveit]])";
+					summary.value += " (edited by [[User:ProveIt_GT|Proveit]])";
 					/*
 					else
 					{
