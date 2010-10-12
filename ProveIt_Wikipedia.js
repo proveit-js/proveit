@@ -1,4 +1,4 @@
-/**
+/*
  * ProveIt (http://code.google.com/p/proveit-js/) is a new tool for reliable referencing on Wikipedia
  *
  * Copyright 2008, 2009, 2010
@@ -14,30 +14,51 @@ if (typeof(proveit) != 'undefined')
 	throw new Error("proveit already exists");
 
 /**
+ * Electronic Learning Communities
  * @module elc
  */
 
 /**
  * Main class and namespace for ProveIt software.  This is the only global variable.
- * @class ProveIt
+ * @class proveit
  */
 window.proveit = {
+	/**
+	 * Approximately half the height of the edit box.  Used in scrolling when highlighting text.
+	 * @type Number
+	 */
 	HALF_EDIT_BOX_HEIGHT : 200,
 	// KNOWN_ACTIONS : ["edit", "submit"],
 
-	// KNOWN_NAMESPACES : [""],
+	// This could be preference-controlled, instead of hard-coded.
+	/**
+	 * Language used for descriptions
+	 * @type String
+	 */
+	LANG : "en",
 
-	LANG : "en", // currently used only for descriptions.  This could be preference-controlled, instead of hard-coded.
-
-	// //Text before param name (e.g. url, title, etc.) in creation box, to avoid collisions with unrelated ids.
+	/**
+	 * Text before param name (e.g. url, title, etc.) in creation box, to avoid collisions with unrelated ids.
+	 * @type String
+	 */
 	NEW_PARAM_PREFIX : "newparam",
 
-	// //Text before param name (e.g. url, title, etc.) in edit box, to avoid collisions with unrelated ids.
+	/**
+	 * Text before param name (e.g. url, title, etc.) in edit box, to avoid collisions with unrelated ids.
+	 * @type String
+	 */
 	EDIT_PARAM_PREFIX : "editparam",
 
+	/**
+	 * Base URL used for static content
+	 * @type String
+	 */
 	STATIC_BASE : "http://proveit-js.googlecode.com/hg/static/",
 
-	// // Convenience log function
+	/**
+	 * Convenience log function
+	 * @param {String} msg message to log
+	 */
 	log : function(msg)
 	{
 		if(typeof(console) === 'object' && console.log)
@@ -48,35 +69,20 @@ window.proveit = {
 		//this.consoleService.logStringMessage("[ProveIt] " + str);
 	},
 
-	// // Returns true if we are on a known domain, and the action is set to edit or submit
+	/**
+	 * Returns true if we are on a known domain, and the action is set to edit or submit
+	 * @return {Boolean} true if page is supported, false otherwise
+	 */
 	isSupportedEditPage : function()
 	{
 	        // "Regular" article or Wikipedia:Sandbox (exception for testing).  Also, must be edit or preview mode
 	        return (wgCanonicalNamespace == '' || wgPageName == 'Wikipedia:Sandbox') && (wgAction == 'edit' || wgAction == 'submit');
 	},
 
-	// /* If we are currently on an appropriate MediaWiki page as determined by isSupportedEditPage()
-	   // open the sidebar.
-	// */
-	// openIfSupportedEditPage : function ()
-	// {
-		// //this.log("windURL: " + windURL.spec);
-
-		// if(!this.isSupportedEditPage())
-		// {
-			// //this.log("Not MediaWiki");
-			// this.closeSidebar();
-		// }
-		// else
-		// {
-			// //this.log("Is MediaWiki");
-        		// //if(!isOpen)
-			// this.openSidebar();
-		// }
-	// },
-
-
-	// Convenience function.   Returns the refbox element.
+	/**
+	 * Convenience function.  Returns the refbox element.
+	 * @return {jQueryNode} reference box
+	 */
 	getRefBox : function()
 	{
 		//return document.getElementById("refbox");
@@ -85,8 +91,8 @@ window.proveit = {
 
 	/**
 	 * Provides the x (left) and y (top) offsets to a given element. From QuirksMode (http://www.quirksmode.org/js/findpos.html), a freely available site by Peter-Paul Koch
-	 * @param node any HTML node
-	 * @return offsets to node, as object with left and top properties.
+	 * @param {Node} node any HTML node
+	 * @return {Object} offsets to node, as object with left and top properties.
 	 */
 	getPosition : function(node)
 	{
@@ -101,9 +107,9 @@ window.proveit = {
 
 	/**
 	 * Highlights a given length of text, at a particular index.
-	 * @param startInd start index in Wikipedia edit box
-	 * @param length length of string to highlight
-	 * @return always true
+	 * @param {Number} startInd start index in Wikipedia edit box
+	 * @param {Number} length length of string to highlight
+	 * @return {Boolean} always true
 	*/
 	highlightLengthAtIndex : function(startInd, length)
 	{
@@ -130,8 +136,8 @@ window.proveit = {
 
 	/**
 	 * Highlights the first instance of a given string in the MediaWiki edit box.
-	 * @param targetStr the string in the edit box to highlight
-	 * @return true if successful, false otherwise
+	 * @param {String} targetStr the string in the edit box to highlight
+	 * @return {Boolean} true if successful, false otherwise
 	*/
 	highlightTargetString : function(targetStr)
 	{
@@ -149,7 +155,7 @@ window.proveit = {
 
 	/**
 	 * Convenience function. Returns the raw MediaWiki textarea element.
-	 * @return the edit box element
+	 * @return {Node} the edit box element
 	*/
 	getMWEditBox : function()
 	{
@@ -158,7 +164,7 @@ window.proveit = {
 
 	/**
 	 * Returns raw edit form element, which contains MWEditBox, among other things.
-	 * @return the edit form element
+	 * @return {Node} the edit form element
 	*/
 	getMWEditForm : function()
 	{
@@ -167,7 +173,7 @@ window.proveit = {
 
 	/**
 	 * Runs a given function on submission of edit form
-	 * @param subFunc function to run on submission
+	 * @param {Function} subFunc function to run on submission
 	*/
 	addOnsubmit : function(subFunc)
 	{
@@ -181,7 +187,7 @@ window.proveit = {
 
 	/**
 	 * Returns the raw MW edit summary element
-	 * @return the edit summary element
+	 * @return {Node} the edit summary element
 	*/
 	getEditSummary : function()
 	{
@@ -191,11 +197,13 @@ window.proveit = {
 	/**
 	 * Keep track of whether we have already added an onsubmit function to include ProveIt in the summary.
 	 * This guarantees the function will not be run twice.
+	 * @type Boolean
 	 */
 	summaryFunctionAdded : false,
 
 	/**
-	 * Does the user want us to ever add "Edited by ProveIt" summary?	 
+	 * Does the user want us to ever add "Edited by ProveIt" summary?
+	 * @type Boolean
 	*/
 	shouldAddSummary : true,
 
@@ -248,7 +256,7 @@ window.proveit = {
 
 	/**
 	 * Runs to see if we want to load ProveIt
-	 * @return always true
+	 * @return {Boolean} always true
 	 */
 	proveitonload : function() {
 		//this.log("this.shouldAddSummary: " + this.shouldAddSummary);
@@ -265,7 +273,7 @@ window.proveit = {
 
 	/**
 	 * Clears the refBox of refBoxRows, except for dummy rows.
-	 * @return false if refBox wasn't found
+	 * @return {Boolean} false if refBox wasn't found
 	 */
 
 	clearRefBox : function()
@@ -296,9 +304,9 @@ window.proveit = {
 	},
 
 	/** Inserts ref text into MW edit box.
-	 * @param ref Reference text to insert
-	 * @param full Insert the full reference text if true, citation otherwise.
-	 * @return false if errors
+	 * @param {String} ref Reference text to insert
+	 * @param {Boolean} full Insert the full reference text if true, citation otherwise.
+	 * @return {Boolean} false if errors
 	 */
 	insertRefIntoMWEditBox : function(ref, full)
 	{
@@ -334,10 +342,10 @@ window.proveit = {
 	/**
 	 * Modifies reference object from user-edited GUI. The reference object is mutated in place, so the return value is only for convenience.
 	 *
-	 * @param editPane the raw element of the editPane
-	 * @param ref the original citation object we're modifying
+	 * @param {Node} editPane the raw element of the editPane
+	 * @param {AbstractReference} ref the original citation object we're modifying
 	 *
-	 * @return ref same ref that was passed in
+	 * @return {AbstractReference} same ref that was passed in
 	 */
 	changeRefFromEditPane : function(ref, editPane)
 	{
@@ -385,7 +393,7 @@ window.proveit = {
 
 	/**
 	 * Creates refBoxRow, updates numbering for all refBoxRows, replaces old refBoxRow with new one, and updates ref text in MWEditBox.
-	 * @param ref the ref we want to save.
+	 * @param {AbstractReference} ref the ref we want to save.
 	 */
 	saveRefFromEdit : function(ref)
 	{
@@ -406,7 +414,7 @@ window.proveit = {
 
 	/**
 	 * Updates the edit pane when you choose a reference to edit.
-	 * @param ref the ref that was chosen.
+	 * @param {AbstractReference} ref the ref that was chosen.
 	 */
 	updateEditPane : function(ref)
 	{
@@ -492,12 +500,12 @@ window.proveit = {
 
 	/**
 	 * Add a row to an editPane or addPane.
-	 * @param root root element for pane
-	 * @param list the param array from the reference, or null for added rows.
-	 * @param descs description array to use, or null for no description
-	 * @param item the current param name
-	 * @param req true if current param name is required, otherwise not required.
-	 * @param fieldType true for label, false for textbox.
+	 * @param {Node} root root element for pane
+	 * @param {Object} params the param object from the reference, or null for added rows.
+	 * @param {Object} descs description object to use, or null for no description
+	 * @param {String} item the current param name
+	 * @param {Boolean} req true if current param name is required, otherwise not required.
+	 * @param {Boolean} fieldType true for label, false for textbox.
 	 */
 	addPaneRow : function(root, params, descs, item, req, fieldType)
 	{
@@ -551,27 +559,32 @@ window.proveit = {
 	 * currently active
 	 */
 
-	// togglestyle true signifies cite-style references, citation-style otherwise.  Used when creating a reference.
+	/**
+	 * true signifies cite-style references, citation-style otherwise.  Used when creating a reference.
+	 * @type Boolean
+	 */
 	togglestyle : true,
 
-	/* toggleinsert true signifies full references, name-only otherwise.  Used when inserting.
+	// TODO: This should be eliminated if only name only inserts are allowed.
+	/** true signifies full references, name-only otherwise.  Used when inserting.
 	 * Note that new references are always inserted in full.
 	 *
-	 * TODO: This should be eliminated if only name only inserts are allowed.
+	 * @type Boolean
 	 */
 	toggleinsert : false,
 
+	// TODO: Remove the split code, and just use a regular regex (with two main groups for name and val), iteratively. Regex.find?  Make name and val indices match, and rework calling code as needed.  Also, check how this was done in the original code.
 	/**
 	 * Overly clever regex to parse template string (e.g. |last=Smith|first=John|title=My Life Story) into name and value pairs.
-	 * @param workingString template string to parse.
-	 * @return Object with two properties, nameSplit and valSplit.
+	 *
 	 * nameSplit is an array of all names, and valSplit is an array of all values.
 	 * While the length of nameSplit is equal to the number of name/value pairs (as expected),
 	 * the length of valSplit is one greater due to a blank element at the beginning.
 	 * Thus nameSplit[i] corresponds to valSplit[i+1].
 	 * Calling code must take this into account.
 	 *
-	 * TODO: Remove the split code, and just use a regular regex (with two main groups for name and val), iteratively. Regex.find?  Make name and val indices match, and rework calling code as needed.  Also, check how this was done in the original code.
+	 * @param {String} workingString template string to parse.
+	 * @return {Object} object with two properties, nameSplit and valSplit.
 	 */
 	splitNameVals : function (workingString)
 	{
@@ -672,13 +685,14 @@ window.proveit = {
 
 	/**
 	 * Regex for parsing any reference text.
+	 * @type RegExp
 	*/
 	REF_REGEX : /<[\s]*ref[\s]*name[\s]*=[\s]*(?:(?:\"(.*?)\")|(?:\'(.*?)\')|(?:(.*?)))[\s]*\/?[\s]*>/,
 
 	/**
 	 * Factory function for references.  Takes text of a reference, and returns instance of the appropriate class.
-	 * @param refText reference string
-	 * @return null if refText isn't a ref, otherwise the reference object
+	 * @param {String} refText reference string
+	 * @return {AbstractReference} null if refText isn't a ref, otherwise the reference object
 	 */
 	makeRef : function(refText)
 	{
@@ -741,15 +755,20 @@ window.proveit = {
 	},
 
 	/**
-	 * Constructor for root reference type. Parent of RawReference, CiteReference, and CitationReference.
+	 * Root reference type. Parent of RawReference, CiteReference, and CitationReference.
+	 * @class AbstractReference
+	 * @for	proveit
 	 * @constructor
-	 * @param argObj argument object with keys for each option
+	 * @param {Object} argObj argument object with keys for each option
 	*/
 	AbstractReference : function(argObj)
 	{
 		// Cite has a non-trivial override of this.  This is defined early (and conditionally) because it is used in the constructor.
 		if(!this.setType)
 		{
+			/**
+			 * @param {String} type type of reference
+			 */
 			this.setType = function(type)
 			{
 				this.type = type;
@@ -757,7 +776,7 @@ window.proveit = {
 		}
 
 		/**
-		 * Update pointer strings after changing citation.  This runs after modifying a reference's fields (name, params), but before changing orig
+		 * Update citation strings after changing reference.  This runs after modifying a reference's fields (name, params), but before changing orig
 		 */
 		this.update = function()
 		{
@@ -794,32 +813,40 @@ window.proveit = {
 			}
 		};
 		/**
-		 <ref name/>
+		 * &lt;ref name /&gt; for reference
+		 * @type String
 		 */
 		 this.name = argObj.name != "" ? argObj.name : null; // Save blank names as null
 
-		/**
-		  type of reference, e.g. cite web, cite news.  Also ussed (including for Citation objects) to determine default fields.
+		/*
+		  type of reference, e.g. cite web, cite news.  Also used (including for CitationReference objects) to determine default fields.
 		 */
 		this.setType(argObj.type);
 
  		 //TODO: Re-examine whether both (or indeed either) of save or inMWEditBox are really necessary.  Can it be determined from context?
 
  		/**
-		  false indicates "dirty" citation that has yet to be updated in text and metadata.
+		 * flag to determine whether citation must be saved.  false indicates "dirty" citation that has yet to be updated in text and metadata.
+		 * @type Boolean
 		*/
 		this.save = argObj.save;
 
 		/**
-		 true if and only if the ref is in the MW edit box with the same value as this object's orig.
+		 * true if and only if the ref is in the MW edit box with the same value as this object's orig.
+		 * @type Boolean
  		 */
 		this.inMWEditBox = argObj.inMWEditBox;
 
 		/**
-		 original wikitext for reference
+		 * original wikitext for reference
+		 * @type String
 		 */
 		this.orig = argObj.orig;
 
+		/**
+		 * mapping of parameter names to values
+		 * @type Object
+		 */
 		this.params = {};
 
 		/* Used to map between parameter name and human-readable.  It can be
@@ -952,7 +979,7 @@ window.proveit = {
 
 		/**
 		 * Convenience method.  Returns sorter for parameters.
-		 * @return sorter for parameters
+		 * @return {Function} sorter for parameters
 		*/
 		this.getSorter = function()
 		{
@@ -986,7 +1013,7 @@ window.proveit = {
 
 		/**
 		 * Returns descriptions for the current language.
-		 * @return descriptions
+		 * @return {Object} descriptions
 		*/
 		this.getDescriptions = function()
 		{
@@ -997,13 +1024,13 @@ window.proveit = {
 		/**
 		 * Returns true if this reference is valid, false otherwise.
 		 * Assume all AbstractReference objects are valid.  Can be overridden in subtypes.
-		 * @return AbstractReference.isValid always returns true
+		 * @return {Boolean} AbstractReference.isValid always returns true
 		*/
 		this.isValid = function(){return true;};
 
 		/**
 		 * Generates label for reference using title, author, etc.
-		 * @return the label that was generated
+		 * @return {String} the label that was generated
 		 */
 		this.getLabel = function()
 		{
@@ -1048,8 +1075,8 @@ window.proveit = {
 		 * Gets insertion text (for edit box).
 		 *
 		 * TODO: Generate a regex object instead (getInsertionRegExp), so highlighting would not fail due to trivial changes (e.g. spacing).
-		 * @param full If true, insert full text, otherwise ref name only
-		 * @return insertion text
+		 * @param {Boolean} full If true, insert full text, otherwise ref name only
+		 * @return {String} insertion text
 		 */
 		this.getInsertionText = function(full)
 		{
@@ -1107,9 +1134,9 @@ window.proveit = {
 
 		/**
 		 * Internal helper method for toString.
-		 * @param template template for ref (currently "cite" or "Citation"
-		 * @param includeType true to include this.type, false otherwise
-		 * @return string for current reference
+		 * @param {String} template template for ref (currently "cite" or "Citation"
+		 * @param {Boolean} includeType true to include this.type, false otherwise
+		 * @return {String} string for current reference
 		 */
 		this.toStringInternal = function(template, includeType)
 		{
@@ -1132,12 +1159,13 @@ window.proveit = {
 
 		/**
 		 * Array of citation strings for this reference.
+		 * @type Array
 		*/
 		this.citationStrings = [];
 
 		/**
 		 * Sets citationStrings to an array
-		 * @param strings array of pointer strings, not null
+		 * @param {Array} strings array of citation strings, not null
 		 */
 		this.setCitationStrings = function(strings)
 		{
@@ -1146,7 +1174,7 @@ window.proveit = {
 
 		/**
 		 * Gets array of citationStrings.
-		 * @return (possibly empty) array of pointer strings.  Will not return null.
+		 * @return {Array} (possibly empty) array of citation strings.  Will not return null.
 		 */
 		this.getCitationStrings = function()
 		{
@@ -1155,7 +1183,7 @@ window.proveit = {
 
 		/**
 		 * Get icon URL for reference
-		 * @return icon URL
+		 * @return {String} icon URL
 		 */
 		this.getIcon = function()
 		{
@@ -1163,10 +1191,13 @@ window.proveit = {
 		};
 	},
 
-	/** Constructor for CiteReference type.
+	/**
+	 * Constructor for CiteReference type.
+	 * @class CiteReference
+	 * @for proveit
 	 * @constructor
 	 * @extends AbstractReference
-	 * @param argObj the argument object, with keys for each option
+	 * @param {Object} argObj the argument object, with keys for each option
 	*/
 	CiteReference : function(argObj)
 	{
@@ -1202,6 +1233,12 @@ window.proveit = {
 
 		proveit.AbstractReference.call(this, argObj);
 
+		// TODO: Should CiteReference.getSortIndex and CitationReference.getSortIndex be merged into AbstractCitation?  Less fine-grained, but simpler to maintain.
+		/**
+		 * Returns the sort index for a given parameter
+		 * @param {String} param parameter name
+		 * @return {Number} sort index if found, otherwise -1
+		 */
 		this.getSortIndex = function(param)
 		{
 			// This is the order fields will be displayed or outputted.
@@ -1306,7 +1343,10 @@ window.proveit = {
 			].indexOf(param);
 		};
 
-		// Returns this object as a string.
+		/**
+		 * Returns this reference as a string.
+		 * @return {String} reference as string
+		 */
 		this.toString = function()
 		{
 			return this.toStringInternal("cite", true);
@@ -1329,8 +1369,9 @@ window.proveit = {
 			video : { "title" : true }
 		};
 
-		/* Get required parameters for this citation type.
-		   NOTE: This will be null if this.type is unknown.
+		/**
+		 * Return required parameters for this citation type.
+		 * @return {Object} object with required parameters as keys and true as value; empty object for unknown type
 		*/
 		this.getRequiredParams = function()
 		{
@@ -1358,8 +1399,9 @@ window.proveit = {
 			video : ["people", "date", "url", "title", "medium", "location", "publisher"]
 		};
 
-		/* Default parameters, to be suggested when editing.
-		 * NOTE: This will be null if this.type is unknown.
+		/**
+		 * Returns default parameters (to be suggested when editing) for current reference
+		 * @return {Array} array of default parameter names; empty array if unknown
 		*/
 		this.getDefaultParams = function()
 		{
@@ -1425,6 +1467,11 @@ window.proveit = {
 
 	/**
 	 * A function for citation style tags.
+	 * @class CitationReference
+	 * @for proveit
+	 * @constructor
+	 * @extends AbstractReference
+	 * @param {Object} argObj argument object with keys for each option
 	 */
 
 	Citation : function(argObj) {
@@ -1444,7 +1491,11 @@ window.proveit = {
 			patent : ["inventor", "title", "issue-date", "patent-number", "country-code"]
 		};
 
-		// This is the order fields will be displayed or outputted.
+		/**
+		 * Returns the sort index for a given parameter
+		 * @param {String} param parameter name
+		 * @return {Number} sort index if found, otherwise -1
+		 */
 		this.getSortIndex = function(param)
 		{
 			// This is the order fields will be displayed or outputted.
@@ -1487,18 +1538,28 @@ window.proveit = {
 			].indexOf(param);
 		};
 
-		// Returns this object as a string.
+		/**
+		 * Returns this reference as a string.
+		 * @return {String} reference as string
+		 */
 		this.toString = function()
 		{
 			return this.toStringInternal("Citation", false);
 		};
 
+		/**
+		 * Return required parameters for this citation type.
+		 * @return {Object} object with required parameters as keys and true as value; empty object for unknown type
+		 */
 		this.getRequiredParams = function()
 		{
 			return requiredParams;
 		};
 
-		// Default parameters, to be suggested when editing.
+		/**
+		 * Returns default parameters (to be suggested when editing) for current reference
+		 * @return {Array} array of default parameter names; empty array if unknown
+		 */
 		this.getDefaultParams = function()
 		{
 			if(this.type)
@@ -1518,12 +1579,22 @@ window.proveit = {
 	},
 
 	/**
-	 * References that do not use a template
+	 * Constructor for RawReference type.
+	 * @class RawReference
+	 * @for proveit
+	 * @constructor
+	 * @extends AbstractReference
+	 * @param {Object} argObj the argument object, with keys for each option
 	 */
 	RawReference : function(argObj)
 	{
 		proveit.AbstractReference.call(this, argObj);
 		this.type = 'raw';
+
+		/**
+		 * Returns this reference as a string.
+		 * @return {String} reference as string
+		 */
 		this.toString = function()
 		{
 			return this.orig;
@@ -1536,13 +1607,12 @@ window.proveit = {
 		};
 	},
 
+	// TODO: This should be unified with changeRefFromEditPane
 	/**
-	 * Convert the current contents of the add citation panel to a citation obj (i.e CiteReference(), Citation())
-	 * @param box typepane root of add GUI (pane for specific type, e.g. journal)
-         *
-	 * TODO: This should be unified with changeRefFromEditPane
-	 *
-	 * @return cite object or null if no panel exists yet.
+	 * Convert the current contents of the add citation panel to a reference (i.e CiteReference(), CitationReference())
+	 * @for proveit
+	 * @param {Node} box typepane root of add GUI (pane for specific type, e.g. journal)
+         * @return {AbstractReference} ref or null if no panel exists yet.
 	 */
 	citationObjFromAddPopup : function(box)
 	{
@@ -1595,7 +1665,7 @@ window.proveit = {
 	 * Called from the add citation panel, this is the function used to
 	 * add the actual citation.
 	 *
-	 * @param tag tag being added
+	 * @param {AbstractReference} ref reference being added
 	 */
 	addCitation : function(tag) {
 		// get this working, lots of typing here.
@@ -1617,7 +1687,10 @@ window.proveit = {
 		this.highlightTargetString(tag.orig);
 	},
 
-	// Clear all rows of passed in add citation panes.
+	/**
+	 * Clear all rows of passed in add citation panes.
+	 * @param {Node} citePanes raw DOM element
+	 */
 	clearCitePanes : function(citePanes)
 	{
 		if(citePanes.hasChildNodes())
@@ -1626,6 +1699,10 @@ window.proveit = {
 		}
 	},
 
+	/**
+	 * Enable the remove functionality
+	 * @param {Node} row DOM element
+	 */
 	activateRemove : function(row)
 	{
 		$('.delete-field', row).click(function()
@@ -1640,8 +1717,8 @@ window.proveit = {
 	},
 
 	/**
-	 * Changes the panel for the add cite panel to the correct type of entry
-	 * @param menu Raw HTML menu element
+	 * Changes the panel for the add reference panel to the correct type of entry
+	 * @param {Node} menu Raw HTML menu element
 	 */
 	changeCite : function(menu) {
 		//this.log("menu.id: " + menu.id);
@@ -2058,11 +2135,11 @@ window.proveit = {
 	},
 
 	/**
-	 * Generates rich list item and all children, to be used by addNewElement, and when updating
+	 * Generates refbox row and all children, to be used by addNewElement, and when updating
 	 *
-	 * @param ref reference to generate from
-	 * @param isReplacement if true, this replaces another refbox item, so no number will be assigned, and the count will not be updated.
-	 * @return new richlistitem element for refbox
+	 * @param {AbstractReference} ref reference to generate from
+	 * @param {Boolean} isReplacement if true, this replaces another refbox item, so no number will be assigned, and the count will not be updated.
+	 * @return {Node} new refbox row for refbox
 	 */
 	makeRefboxElement : function(ref, isReplacement)
 	{
@@ -2416,6 +2493,11 @@ window.proveit = {
 		return newchild;
 	},
 
+	/**
+	 * Truncates title to fit ProveIt refbox row.
+	 * @param {String} title title to truncate
+	 * @return {String} truncated title
+	*/
 	truncateTitle : function(title)
 	{
 		var MAX_LENGTH = 86;
@@ -2433,6 +2515,11 @@ window.proveit = {
 		return truncated;
 	},
 
+	/**
+	 * Formats date as YYYY-MM-DD
+	 * @param {Date} date date to format
+	 * @return {String} formatted date as String
+	 */
 	formatDate : function(date1)
 	{
 		return date1.getFullYear() + '-' +
@@ -2443,7 +2530,7 @@ window.proveit = {
 	/**
 	 * Only to be used internally to add the citations to the list
 	 *
-	 * @param ref the reference to add
+	 * @param {AbstractReference} ref the reference to add
 	 */
 	addNewElement : function(ref)
 	{
@@ -2454,21 +2541,22 @@ window.proveit = {
 
 /**
  * Static method.  Returns valid Cite reference types
- * @return array of cite method types
+ * @for CiteReference
+ * @static
+ * @return {Array} array of cite method types
  */
 proveit.CiteReference.getTypes = function()
 {
 	return ["web", "book", "journal", "conference", "encyclopedia", "news", "newsgroup", "press release", "interview", "episode", "video"];
 };
 
-/**
- * Generic trim function, trims all leading and trailing whitespace.
- *
- * @return the trimmed string
- */
-
 if(!String.prototype.trim)
 {
+/**
+ * Generic trim function, trims all leading and trailing whitespace.
+	 * @for proveit
+	 * @return {String} the trimmed string
+ */
 	String.prototype.trim = function() {
 		return this.replace(/^\s+|\s+$/g, "");
 	};
