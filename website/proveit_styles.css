@@ -498,6 +498,22 @@ a.footerNavLink:hover {
 
 /* Begin Demo */
 
+form#demoForm fieldset {
+	border: none;
+	}
+
+form#demoForm label {
+	display: block;
+	margin: 10px 0 5px 0;
+	font-size: medium;
+	color: #fddb00;
+	}
+
+input#articleBtn {
+	padding: 0 5px; margin: 0 0 0 10px;
+	font-weight: bold;
+	}
+
 /* Override proveit_styles.css for proveit h1 on demo */
 div#proveit h1 {
 	/*position: static;
