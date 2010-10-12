@@ -258,7 +258,7 @@ window.proveit = {
 	 * Runs to see if we want to load ProveIt
 	 * @return {Boolean} always true
 	 */
-	proveitonload : function() {
+	load : function() {
 		//this.log("this.shouldAddSummary: " + this.shouldAddSummary);
 
 		this.summaryFunctionAdded = false;
@@ -399,7 +399,7 @@ window.proveit = {
 	{
 		if(!ref.save)
 		{
-		    var newRichItem = this.makeRefboxElement(ref, true);
+		    var newRichItem = this.makeRefBoxRow(ref, true);
 			var oldRichItem = $('.selected', this.getRefBox()).get(0);
 			this.log('newRichItem: ' + newRichItem + ', oldRichItem: ' + oldRichItem + 'oldRichItem.parentNode: ' + oldRichItem.parentNode);
 			var oldNumber = $('td.number',oldRichItem).text();
@@ -702,7 +702,7 @@ window.proveit = {
 		{
 			return null;
 		}
-		var citeFunction = refText.match(/{{[\s]*cite/i) ? this.CiteReference : refText.match(/{{[\s]*Citation/i) ? this.Citation : this.RawReference;
+		var citeFunction = refText.match(/{{[\s]*cite/i) ? this.CiteReference : refText.match(/{{[\s]*Citation/i) ? this.CitationReference : this.RawReference;
 
 		if(citeFunction != this.RawReference)
 		{
@@ -763,7 +763,7 @@ window.proveit = {
 	*/
 	AbstractReference : function(argObj)
 	{
-		// Cite has a non-trivial override of this.  This is defined early (and conditionally) because it is used in the constructor.
+		// CiteReference has a non-trivial override of this.  This is defined early (and conditionally) because it is used in the constructor.
 		if(!this.setType)
 		{
 			/**
@@ -1474,7 +1474,7 @@ window.proveit = {
 	 * @param {Object} argObj argument object with keys for each option
 	 */
 
-	Citation : function(argObj) {
+	CitationReference : function(argObj) {
 		proveit.AbstractReference.call(this, argObj);
 
 		// None currently required;
@@ -1614,7 +1614,7 @@ window.proveit = {
 	 * @param {Node} box typepane root of add GUI (pane for specific type, e.g. journal)
          * @return {AbstractReference} ref or null if no panel exists yet.
 	 */
-	citationObjFromAddPopup : function(box)
+	getRefFromAddPane : function(box)
 	{
 		this.log("Entering citationObjFromAddPopup");
 		// get this working, lots of typing here.
@@ -1634,7 +1634,7 @@ window.proveit = {
 		for (var i = 0; i < paramRows.length; i++)
 		{
 			var paramRow =  paramRows[i];
-			this.log("citationObjFromAddPopup: i: " + i + ", paramRow: " + paramRow);
+			this.log("getRefFromAddPane: i: " + i + ", paramRow: " + paramRow);
 			var valueTextbox = paramRow.getElementsByClassName("paramvalue")[0];
 
 			if($(paramRow).hasClass("addedrow")) // Added with "Add another field"
@@ -1645,12 +1645,12 @@ window.proveit = {
 			{
 				paramName = valueTextbox.id.substring(this.NEW_PARAM_PREFIX.length);
 			}
-			this.log("citationObjFromAddPopup: paramRow.childNodes.length: " + paramRow.childNodes.length);
-			this.log("citationObjFromAddPopup: valueTextbox.tagName: " + valueTextbox.tagName);
-			this.log("citationObjFromAddPopup: valueTextbox.id: " + valueTextbox.id);
+			this.log("getRefFromAddPane: paramRow.childNodes.length: " + paramRow.childNodes.length);
+			this.log("getRefFromAddPane: valueTextbox.refName: " + valueTextbox.refName);
+			this.log("getRefFromAddPane: valueTextbox.id: " + valueTextbox.id);
 
 			paramVal = valueTextbox.value.trim();
-			this.log("citationObjFromAddPopup: paramName: " + paramName + "; paramVal: " + paramVal);
+			this.log("getRefFromAddPane: paramName: " + paramName + "; paramVal: " + paramVal);
 			if(paramName != "" && paramVal != "")
 			{ // Non-blank
 				ref.params[paramName] = paramVal;
@@ -1667,24 +1667,24 @@ window.proveit = {
 	 *
 	 * @param {AbstractReference} ref reference being added
 	 */
-	addCitation : function(tag) {
+	addReference : function(ref) {
 		// get this working, lots of typing here.
 
-		this.addNewElement(tag);
+		this.addNewElement(ref);
 
-		tag.orig = tag.toString();
+		ref.orig = ref.toString();
 		/*
 		 * Cycle through the boxes and grab the id's versus the values, watch
 		 * for the final box and make sure to grab the type as well
 		 */
 
-		this.insertRefIntoMWEditBox(tag, true); // true means insert full text here, regardless of global toggle.
-		tag.save = true;
-		tag.inMWEditBox = true;
+		this.insertRefIntoMWEditBox(ref, true); // true means insert full text here, regardless of global toggle.
+		ref.save = true;
+		ref.inMWEditBox = true;
 		this.includeProveItEditSummary();
 // 		this.getRefBox().scrollToIndex(this.getRefBox().itemCount - 1);
 // 		this.getRefBox().selectedIndex = this.getRefBox().itemCount - 1;
-		this.highlightTargetString(tag.orig);
+		this.highlightTargetString(ref.orig);
 	},
 
 	/**
@@ -1720,7 +1720,7 @@ window.proveit = {
 	 * Changes the panel for the add reference panel to the correct type of entry
 	 * @param {Node} menu Raw HTML menu element
 	 */
-	changeCite : function(menu) {
+	changeAddPane : function(menu) {
 		//this.log("menu.id: " + menu.id);
 
 		// Reset scroll
@@ -1816,7 +1816,7 @@ window.proveit = {
 		}
 		$(genPane).show();
 		citePanes.insertBefore(genPane, citePanes.firstChild);
-		this.log("Exiting changeCite");
+		this.log("Exiting changeAddPane");
 	},
 
 	/**
@@ -1962,7 +1962,7 @@ window.proveit = {
 		var citemenu = $('<select/>', {id: 'citemenu',
 					       change: function()
 					       {
-						       proveit.changeCite(citemenu.get(0));
+						       proveit.changeAddPane(citemenu.get(0));
 					       }});
          	var citeTypes = this.CiteReference.getTypes();
 		var descs = new this.AbstractReference({}).getDescriptions();
@@ -1984,7 +1984,7 @@ window.proveit = {
 		var citationmenu = $('<select/>', {id: 'citemenu',
 		                                   change: function()
 						   {
-							   proveit.changeCite(citationmenu.get(0));
+							   proveit.changeAddPane(citationmenu.get(0));
 						   }});
 		var citationTypes = ['web', 'book', 'journal', 'encyclopedia', 'news', 'patent'];
 		for(var j = 0; j < citationTypes.length; j++)
@@ -2027,7 +2027,7 @@ window.proveit = {
 
 						case 1: // add
 						    cancelEdit();
-						    proveit.changeCite(document.getElementById(proveit.togglestyle ? 'citemenu' : 'citationmenu'));
+						    proveit.changeAddPane(document.getElementById(proveit.togglestyle ? 'citemenu' : 'citationmenu'));
 						break;
 
 				      //	case 1: // edit
@@ -2060,7 +2060,7 @@ window.proveit = {
 			}
 		}).click(function()
 			 {
-				 proveit.addCitation(proveit.citationObjFromAddPopup($('#add-tab .typepane').get(0)));
+				 proveit.addReference(proveit.getRefFromAddPane($('#add-tab .typepane').get(0)));
 				 $("#tabs").tabs( { selected: '#view-tab' } );
 				 $("div.scroll, #view-pane").scrollTop(100000); // scroll to new ref
 			 }).next().
@@ -2141,7 +2141,7 @@ window.proveit = {
 	 * @param {Boolean} isReplacement if true, this replaces another refbox item, so no number will be assigned, and the count will not be updated.
 	 * @return {Node} new refbox row for refbox
 	 */
-	makeRefboxElement : function(ref, isReplacement)
+	makeRefBoxRow : function(ref, isReplacement)
 	{
 		var refName = ref.name; //may be null or blank
 
@@ -2535,7 +2535,7 @@ window.proveit = {
 	addNewElement : function(ref)
 	{
 		var refbox = this.getRefBox();
-		$(refbox).append(this.makeRefboxElement(ref, false));
+		$(refbox).append(this.makeRefBoxRow(ref, false));
 	}
 };
 
@@ -2579,7 +2579,7 @@ if(!String.prototype.trim)
 		{
 		    addOnloadHook(function()
 		    {
-			proveit.proveitonload();
+			proveit.load();
 		    });
 		});
 
