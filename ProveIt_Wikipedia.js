@@ -499,7 +499,7 @@ window.proveit = {
 	 * @param req true if current param name is required, otherwise not required.
 	 * @param fieldType true for label, false for textbox.
 	 */
-	addPaneRow : function(root, list, descs, item, req, fieldType)
+	addPaneRow : function(root, params, descs, item, req, fieldType)
 	{
 		var id = fieldType ? "preloadedparamrow" : "addedparamrow";
 		var newline = $('#'+id).clone(); // clone the hidden row
@@ -534,7 +534,7 @@ window.proveit = {
 			}
 			$(paramName).text(desc);
 			$(paramName).attr('title',item);
-			$(paramValue).val(list[item]);
+			$(paramValue).val(params[item]);
 
 			$(newline).show();
 		}
@@ -600,21 +600,21 @@ window.proveit = {
 		this.clearRefBox();
 
 		var textValue = $(text).val();
-		// since we should pick the name out before we get to the citation
+		// since we should pick the name out before we get to the reference
 		// tag type, here's a variable to hold it
 		var name;
 
 		// key - name
 		// value -
-		//      object - key - "citation", value - citation obj .  Avoids repeating same object in citations array.
+		//      object - key - "reference", value - reference obj .  Avoids repeating same object in references array.
                 //               key - "strings", value - array of orig strings
-		var pointers = {};
+		var citations = {};
 
-		// Array of citation objects.  At end of function, addNewElement called on each.
-		var citations = [];
-		 // allRefs should count opening ref tags, but not ref pointer (not <ref name="..."" />)
+		// Array of reference objects.  At end of function, addNewElement called on each.
+		var references = [];
+		 // allRefs should count opening ref tags, but not ref citation (not <ref name="..."" />)
 		var allRefs = textValue.match(/<[\s]*ref[^\/>]*>/gi);
-		// currentScan holds the parsed (match objects) list of citations.  Regex matches full or name-only reference.
+		// currentScan holds the parsed (match objects) list of references.  Regex matches full or name-only reference.
 		var currentScan = textValue.match(/<[\s]*ref[^>]*>(?:[^<]*<[\s]*\/[\s]*ref[\s]*>)?/gi); // [^<]* doesn't handle embedded HTML tags (or comments) correctly.
 		// if there are results,
 		if (currentScan)
@@ -622,16 +622,16 @@ window.proveit = {
 			for (var i = 0; i < currentScan.length; i++)
 			{
 				//this.log("currentScan[" + i + "]: " + currentScan[i]);
-				var citation = this.makeRef(currentScan[i]);
-				if(citation) // Full citation object
+				var reference = this.makeRef(currentScan[i]);
+				if(reference) // Full reference object
 				{
-					name = citation.name;
+					name = reference.name;
 					if(!name) // with no name, no possibility of repeat name.
 					{
-						citations.push(citation);
+						references.push(reference);
 					}
 				}
-				else // Not full object.  Possibly pointer.
+				else // Not full reference.  Possibly citation.
 				{
 					var match = currentScan[i].match(this.REF_REGEX);
 					name = match && (match[1] || match[2] || match[3]);
@@ -639,34 +639,34 @@ window.proveit = {
 
 				if(name)
 				{
-					if(!pointers[name])
+					if(!citations[name])
 					{
 						// Create array of original reference strings
-						pointers[name] = {};
-						if(!pointers[name].strings)
+						citations[name] = {};
+						if(!citations[name].strings)
 						{
-							pointers[name].strings = [];
+							citations[name].strings = [];
 						}
 					}
-					if(citation && !pointers[name].citation) // citation, and not already one for this name
+					if(reference && !citations[name].reference) // reference, and not already one for this name
 					{
-						pointers[name].citation = citation;
-						citations.push(citation);
+						citations[name].reference = reference;
+						references.push(reference);
 					}
 
 					// Add to array
-					pointers[name].strings.push(currentScan[i]);
+					citations[name].strings.push(currentScan[i]);
 				}
 			}
 		}
-		for(var j = 0; j < citations.length; j++)
+		for(var j = 0; j < references.length; j++)
 		{
-			if(citations[j].name)
+			if(references[j].name)
 			{
-				var pointer = pointers[citations[j].name];
-				citations[j].setCitationStrings(pointer.strings);
+				var citation = citations[references[j].name];
+				references[j].setCitationStrings(citation.strings);
 			}
-			this.addNewElement(citations[j]);
+			this.addNewElement(references[j]);
 		}
 	},
 
@@ -682,7 +682,7 @@ window.proveit = {
 	 */
 	makeRef : function(refText)
 	{
-		var isReference = /<[\s]*ref[^>]*>[^<]*\S[^<]*<[\s]*\/[\s]*ref[\s]*>/.test(refText); // Tests for reference (non-pointer);
+		var isReference = /<[\s]*ref[^>]*>[^<]*\S[^<]*<[\s]*\/[\s]*ref[\s]*>/.test(refText); // Tests for reference (non-citation);
 		this.log("refText: " + refText + "; isReference: " + isReference);
 		if(!isReference)
 		{
@@ -768,16 +768,16 @@ window.proveit = {
 			 * Update main citation in strings list.
 			 *
 			 * TODO:
-			 * Use strings array here to find and update pointers that are not main citations.  As is, they are orphaned.
+			 * Use strings array here to find and update citations that are not main references.  As is, they are orphaned.
 			 * Both array and textbox should be updated.
-			 * It may be enough to just set all non-main pointers in text and array to this.getInsertionText(false).
+			 * It may be enough to just set all non-main citations in text and array to this.getInsertionText(false).
 			 * However, if they remove the name entirely (not recommended), that would be a problem.
 			 */
 			if(strings.length > 0) // This implies there was a name before
 			{
 				for(var i = 0; i < strings.length; i++)
 				{
-					// If we find the full citation as a pointer, update to the new text.
+					// If we find the full citation as a citation, update to the new text.
 					if(strings[i] == this.orig)
 					{
 						// this.orig itself is updated in updateInText
@@ -786,9 +786,9 @@ window.proveit = {
 					}
 				}
 			}
-			else if(this.name != null) // They have added a name, so we should have a main pointer.
+			else if(this.name != null) // They have added a name, so we should have a main citation.
 			{
-				// Now that it has a name, it is a pointer to itself.
+				// Now that it has a name, it is a citation to itself.
 				proveit.log("Adding " + newCiteText + " to citationStrings");
 				strings.push(newCiteText);
 			}
@@ -1554,8 +1554,8 @@ window.proveit = {
 		// get <ref> name
 		var refName = $('#addrefname').val();
 
-		var citeFunc = this.togglestyle ? this.CiteReference : this.Citation;
-		var tag = new citeFunc({"name": refName, "type": type});
+		var citeFunc = this.togglestyle ? this.CiteReference : this.CitationReference;
+		var ref = new citeFunc({"name": refName, "type": type});
 
 		var paramName, paramVal;
 
@@ -1583,12 +1583,12 @@ window.proveit = {
 			this.log("citationObjFromAddPopup: paramName: " + paramName + "; paramVal: " + paramVal);
 			if(paramName != "" && paramVal != "")
 			{ // Non-blank
-				tag.params[paramName] = paramVal;
+				ref.params[paramName] = paramVal;
 			}
 		}
-		tag.update();
-		this.log("Exiting citationObjFromAddPopup");
-		return tag;
+		ref.update();
+		this.log("Exiting getRefFromAddPane");
+		return ref;
 	},
 
 	/**
@@ -1653,47 +1653,47 @@ window.proveit = {
 		var citePanes = $(".addpanes", menu.parentNode.parentNode).get(0);
 		//this.log("citePanes: " + citePanes);
 		this.clearCitePanes(citePanes);
-		var newCiteType = menu.value;
+		var newRefType = menu.value;
 
 		var genPane = document.getElementById("dummyCitePane").cloneNode(true);
-		genPane.id = newCiteType;
+		genPane.id = newRefType;
 
 		// name the ref-name-row
 		$('.ref-name-row',genPane).children('input').attr('id','addrefname');
 		$('.ref-name-row',genPane).children('label').attr('for','addrefname');
 
 		// Somewhat hackish.  What's a better way?
-		var newCite;
+		var newRef;
 		if(menu.id == "citemenu")
 		{
-			newCite = new this.CiteReference({});
+			newRef = new this.CiteReference({});
 		}
 		else
 		{
-			newCite = new this.Citation({});
+			newRef = new this.CitationReference({});
 		}
-		newCite.type = newCiteType;
-		var descs = newCite.getDescriptions();
-		var defaultParams = newCite.getDefaultParams().slice(0); // copy
-		defaultParams.sort(newCite.getSorter());
-		//var required = newCite.getRequiredParams();
+		newRef.type = newRefType;
+		var descs = newRef.getDescriptions();
+		var defaultParams = newRef.getDefaultParams().slice(0); // copy
+		defaultParams.sort(newRef.getSorter());
+		//var required = newRef.getRequiredParams();
 
 		// Possibly, Cite objects should automatically include default parameters in their param maps.  That would seem to make this simpler.
 		for(var i = 0; i < defaultParams.length; i++)
                 {
-			newCite.params[defaultParams[i]] = "";
+			newRef.params[defaultParams[i]] = "";
 		}
 
-		this.log("changeCite: newCite: " + newCite);
+		this.log("changeAddPane: newRef: " + newRef);
 
 		// Should there be a getParamKeys or similar function for this, or even getSortedParamKeys?
 		var newParams = [];
-		for(param in newCite.params)
+		for(param in newRef.params)
 		{
 			newParams.push(param);
 		}
-		newParams.sort(newCite.getSorter());
-		var required = newCite.getRequiredParams();
+		newParams.sort(newRef.getSorter());
+		var required = newRef.getRequiredParams();
 
 		var paramList = genPane.getElementsByClassName("paramlist")[0];
 		for(var i = 0; i < newParams.length; i++)
@@ -1732,8 +1732,8 @@ window.proveit = {
 			this.activateRemove(paramBox);
 
 			paramBox.getElementsByClassName("paramvalue")[0].id = this.NEW_PARAM_PREFIX + param;
-			this.log("changeCite: param: " + param + "; newCite.params[param]: " + newCite.params[param]);
-			//paramBox.childNodes[2].value = newCite.params[param]; // Causes parameters to disappear.  Why?
+			this.log("changeAddPane: param: " + param + "; newRef.params[param]: " + newRef.params[param]);
+			//paramBox.childNodes[2].value = newRef.params[param]; // Causes parameters to disappear.  Why?
 			$(paramBox).show();
 			paramList.appendChild(paramBox);
 		}
@@ -2267,13 +2267,13 @@ window.proveit = {
 			$("#edit-pane").show();
 		};
 
-		var pointStrings = ref.getCitationStrings();
+		var citationStrings = ref.getCitationStrings();
 
 		//var pointers = $('.pointers', newchild);
 
-		var allPointers = $('<span class="all-pointers" />');
+		var allCitations = $('<span class="all-citations" />');
 
-		for(var i = 0; i < pointStrings.length; i++)
+		for(var i = 0; i < citationStrings.length; i++)
 		{
 			var dividend = i + 1;
 			var colName = "";
@@ -2284,7 +2284,7 @@ window.proveit = {
 				colName = String.fromCharCode(97 + mod) + colName;  // a = 97
 				dividend = Math.floor(dividend / 26);
 			}
-			var pointerHolder = $('<a href="#">' + colName + '</a>');
+			var citationHolder = $('<a href="#">' + colName + '</a>');
 			// Bind i
 			var clickFunc = (function(i)
 			{
@@ -2294,38 +2294,38 @@ window.proveit = {
 					var text = $(proveit.getMWEditBox()).val();
 					for(j = 0; j < i; j++)
 					{
-						last = text.indexOf(pointStrings[j], last);
+						last = text.indexOf(citationStrings[j], last);
 
-						// Shouldn't happen.  Indicates pointer strings are out of date.
+						// Shouldn't happen.  Indicates citation strings are out of date.
 						if(last == -1)
 						{
-							proveit.log("pointStrings[" + j + "]: " + pointStrings[j] + " not found.  Returning.");
+							proveit.log("citationStrings[" + j + "]: " + citationStrings[j] + " not found.  Returning.");
 							return false;
 						}
-						last += pointStrings[j].length;
+						last += citationStrings[j].length;
 					}
-					var startInd = text.indexOf(pointStrings[i], last);
+					var startInd = text.indexOf(citationStrings[i], last);
 					if(startInd == -1)
 					{
-						proveit.log("pointStrings[" + i + "]: " + pointStrings[i] + " not found.");
+						proveit.log("citationStrings[" + i + "]: " + citationStrings[i] + " not found.");
 					}
 					else
 					{
-						proveit.highlightLengthAtIndex(startInd, pointStrings[i].length);
+						proveit.highlightLengthAtIndex(startInd, citationStrings[i].length);
 					}
 					return false;
 				};
 			})(i);
 
-			pointerHolder.click(clickFunc);
-			allPointers.append(pointerHolder);
+			citationHolder.click(clickFunc);
+			allCitations.append(citationHolder);
 		}
 
 
-		if(pointStrings.length > 1)
+		if(citationStrings.length > 1)
 		{
 			var newP = $('<p />');
-			newP.append('This reference appears in the article <span class="num-pointers">' + pointStrings.length + ' times</span>: ').append(allPointers);
+			newP.append('This reference appears in the article <span class="num-citations">' + citationStrings.length + ' times</span>: ').append(allCitations);
 			expanded.append(newP);
 		}
 
@@ -2385,7 +2385,7 @@ window.proveit = {
 		}
 
 		// ibid button
-		if(pointStrings.length > 0)
+		if(citationStrings.length > 0)
 		{
 			// LARGE EDIT BUTTON
 
