@@ -687,7 +687,7 @@ window.proveit = {
 
 		if(citeFunction != this.RawReference)
 		{
-			var workingstring = refText.match(/{{[\s]*(cite|Citation).*?}}/i)[0];
+			var workingstring = refText.match(/{{[\s]*(cite|Citation)[\s\S]*?}}/i)[0];
 			var match = refText.match(this.REF_REGEX);
 
 			if(match && match != null)
