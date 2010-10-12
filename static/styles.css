@@ -13,9 +13,9 @@ div#proveit {
 	font-size: small;
 	}
 	
-div#proveit li a {
-	/*font-size: 18px;*/
-}
+div#proveit a img {
+	border: 0;
+	}
 
 div#proveit h1 {
 	float: right;
@@ -34,10 +34,10 @@ div#proveit h1 {
 /*	div#proveit h1 span {
 		font-weight: bold;
 	/*	font-size: 14px; */
-		}*/
-	div#proveit h1 button {
-		width: 20px; height: 20px;
-		margin: 0; padding: 0;
+		
+	div#proveit h1 button.ui-button-icon-only {
+		 margin: 3px 5px 0 0;
+		 height: 25px; width: 25px;
 		}
 /*
 div#tabs-1, div#tabs-2, div#tabs-3 {
@@ -51,7 +51,6 @@ div#proveit div#view-tab, div#proveit div#add-tab {
 	padding: 5px;
 	}
 			
-
 	
 /*** BEGIN CSS FOR REFLIST ***/
 	
@@ -221,7 +220,7 @@ div#proveit div.inputs input.paramdesc {
 	padding-right: 10px;
 	}			
 div#proveit div.inputs input.paramvalue {
-	width: 460px;
+	width: 480px; height: 18px;
 	font-size: 12px;
 	border: 1px solid #ccc;
 	}
@@ -299,13 +298,11 @@ div#proveit a.tab-link {
 div#proveit ul.ui-tabs-nav {
 	position: static;
 	}	
-/*
-div#proveit span.ui-button-icon-primary {
+	
+div#proveit button.ui-button-icon-only {
 	margin: 0; padding: 0;
+	height: 20px; width: 20px;
+	font-size: 11px;
+	vertical-align: top;
 	}
-
-div#proveit  span.ui-button-text {
-	font-size: 12px;
-	margin: 0 3px; padding: 0;
-	}
-*/
+	

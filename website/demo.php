@@ -1,6 +1,7 @@
 <?php
 
 $page = 'Demo';
+$jQuery = false;
 include_once 'header.php';
 
 ?>

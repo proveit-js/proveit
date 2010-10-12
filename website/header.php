@@ -4,11 +4,13 @@
 	<link href="proveit_styles.css" rel="stylesheet" type="text/css" />
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<title>ProveIt - <?php echo $page; ?></title>
+<?php if ($jQuery != false): ?>
 	<script type="text/javascript" src="http://www.google.com/jsapi"></script> 
 	<script type="text/javascript"> 
 		google.load("jquery", "1");
 		google.setOnLoadCallback(function(){});
 	</script> 
+<?php endif; ?>
 	<script src="scripts.js" type="text/javascript"></script>
 </head>
 <body>
