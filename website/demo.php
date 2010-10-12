@@ -1,7 +1,6 @@
 <?php
 
 $page = 'Demo';
-$jQuery = false;
 include_once 'header.php';
 
 ?>
@@ -55,13 +54,14 @@ $(function()
 <div id="mainBody">
 <p><span style="font-size: large;">Pick an article, any article.</span> See that cool-looking gadget in the bottom right corner of this window? <strong>That's ProveIt</strong>, and you can test drive it right here with any Wikipedia article. We've loaded the article on Georgia Tech by default, but if you want to try a different one, just type the article name into the box below and click "Load page."</p>
 <form id="demoForm" action="">
-<fieldset>
-<label for="articleName">Article name:</label> 
-<input id="articleName" size="35" value="Georgia Institute of Technology"/>
-<input id="articleBtn" type="submit" value="Load page"/><br/>
-</fieldset>
+	<fieldset>
+		<label for="articleName">Wikipedia article name:</label>
+		<input id="articleName" size="35" style="width: 300px;" value="Georgia Institute of Technology"/>
+		<input id="articleBtn" type="submit" value="Load article"/>
+
+		<label for="wpTextbox1">Wikipedia article content:</label>
+		<textarea rows="25" cols="115" style="width: 100%" id="wpTextbox1"></textarea>
+	</fieldset>
 </form>
-<span>Article content:</span><br/>
-<textarea rows="25" cols="115" style="width: 100%" id="wpTextbox1"></textarea><br/>
 </div>
 <?php include_once 'footer.php'; ?>
