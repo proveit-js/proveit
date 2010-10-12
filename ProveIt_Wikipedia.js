@@ -1388,6 +1388,7 @@ window.proveit = {
 			video : "film.png"
 		};
 
+		var superGetIcon = this.getIcon;
 		this.getIcon = function()
 		{
 			var icon = iconMapping[this.type];
@@ -1395,7 +1396,7 @@ window.proveit = {
 			{
 				return proveit.STATIC_BASE + icon;
 			}
-			return proveit.AbstractCitation.getIcon.call(this);
+			return superGetIcon.call(this);
 		};
 	},
 
