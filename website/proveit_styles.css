@@ -6,51 +6,6 @@
 	padding: 0; margin: 0;
 	}
 
-div#proveit a img {
-	border: 0;
-	}
-
-div#proveit button.ui-button-icon-only
-{
-	margin: 0; padding: 0;
-	height: 20px; width: 20px;
-	font-size: 11px;
-	vertical-align: top;
-	/*margin: 0 !important; padding: 0 !important;
-	height: 15px; width: 15px;
-	font-size: 11px;
-	vertical-align: top;*/
-}
-
-div#proveit h1 button.ui-button-icon-only
-{
-	 margin: 3px 5px 0 0; padding: 0;
-	 height: 25px; width: 25px;
-}
-
-div#proveit div.inputs input.paramvalue {
-	height: 18px;
-	width: 480px !important;
-	}
-	
-div#proveit h1 span.ui-icon
-{
-	/*display: none;*/
-}
-
-div#proveit span.ui-button-icon-primary
-{
-/*display: none;*/
-}
-	
-div#proveit h1 span.ui-button-text
-{
-	
-	/*padding: 0;*/
-	/*padding: 0.1em;*/
-	/*display: none;*/
-}
-	
 body {	
 	font-family: Arial, Helvetica, sans-serif;
 	background-color: #000;
@@ -60,6 +15,15 @@ div#superContainer a {
 	text-decoration:none;
 	}	
 
+	div#superContainer a:link, div#superContainer a:visited {
+		color: #FDDB00;
+		}
+	
+	div#superContainer a:hover {
+		color: goldenrod;
+		text-decoration: underline;
+		}
+	
 	div#superContainer a img
 	{
 		border: 0;
@@ -506,7 +470,7 @@ form#demoForm label {
 	display: block;
 	margin: 10px 0 5px 0;
 	font-size: medium;
-	color: #fddb00;
+	color: #2682c7;
 	}
 
 input#articleBtn {
@@ -514,11 +478,5 @@ input#articleBtn {
 	font-weight: bold;
 	}
 
-/* Override proveit_styles.css for proveit h1 on demo */
-div#proveit h1 {
-	/*position: static;
-	text-shadow: none;
-	text-transform: none;*/
-	}
 
 /* End Demo */
