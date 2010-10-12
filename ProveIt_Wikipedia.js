@@ -28,7 +28,6 @@ window.proveit = {
 	 * @type Number
 	 */
 	HALF_EDIT_BOX_HEIGHT : 200,
-	// KNOWN_ACTIONS : ["edit", "submit"],
 
 	// This could be preference-controlled, instead of hard-coded.
 	/**
@@ -65,8 +64,6 @@ window.proveit = {
 		{
 			console.log("[ProveIt] %o", msg);
 		}
-
-		//this.consoleService.logStringMessage("[ProveIt] " + str);
 	},
 
 	/**
@@ -85,7 +82,6 @@ window.proveit = {
 	 */
 	getRefBox : function()
 	{
-		//return document.getElementById("refbox");
 		return $("#refs");
 	},
 
@@ -278,27 +274,13 @@ window.proveit = {
 
 	clearRefBox : function()
 	{
-		// var deletion = function(box) {
-		// for (var i = 0; i < box.childNodes.length; i++) {
-		// // deletion(box.childNodes[i]);
-		// box.removeChild(box.childNodes[i]);
-		// }
-		// }
 		var box = this.getRefBox();
 		if(box == null)
 		{
 			this.log("Ref box is not loaded yet.");
 			return false;
 		}
-		// var size = box.childNodes.length;
-		// // this.log(size);
-		// for (var i = 0; i < size; i++)
-		// {
-			// var item = box.removeChild(box.childNodes[0]);
-		// }
-
 		var refs = $("tr:not('tr#dummyRef')", box);
-		//this.log(refs.length + " rows");
 		$(refs).remove();
 
 	},
@@ -325,7 +307,7 @@ window.proveit = {
 		var startPos = txtarea.selectionStart;
 		var endPos = txtarea.selectionEnd;
 		var selText = txtarea.value.substring(startPos, endPos);
-		// insert tags
+		// insert refs
 		txtarea.value = txtarea.value.substring(0, startPos) + insertionText
 				+ txtarea.value.substring(endPos, txtarea.value.length);
 		// set new selection
@@ -601,7 +583,7 @@ window.proveit = {
 	scanForRefs : function()
 	{
 		this.log("Entering scanForRefs.");
-		// these are strings used to allow the correct parsing of the tag
+		// these are strings used to allow the correct parsing of the ref
 		var workingstring;
 		var cutupstring;
 		var text = this.getMWEditBox();
@@ -613,8 +595,7 @@ window.proveit = {
 		this.clearRefBox();
 
 		var textValue = $(text).val();
-		// since we should pick the name out before we get to the reference
-		// tag type, here's a variable to hold it
+		// since we should pick the name out before we get to the reference type, here's a variable to hold it
 		var name;
 
 		// key - name
@@ -625,7 +606,7 @@ window.proveit = {
 
 		// Array of reference objects.  At end of function, addNewElement called on each.
 		var references = [];
-		 // allRefs should count opening ref tags, but not ref citation (not <ref name="..."" />)
+		 // allRefs should count opening refs, but not ref citation (not <ref name="..."" />)
 		var allRefs = textValue.match(/<[\s]*ref[^\/>]*>/gi);
 		// currentScan holds the parsed (match objects) list of references.  Regex matches full or name-only reference.
 		var currentScan = textValue.match(/<[\s]*ref[^>]*>(?:[^<]*<[\s]*\/[\s]*ref[\s]*>)?/gi); // [^<]* doesn't handle embedded HTML tags (or comments) correctly.
@@ -1129,9 +1110,6 @@ window.proveit = {
 			proveit.highlightTargetString(this.toString());
 		};
 
-		// label used in heading of edit box
-		// this.getEditLabel
-
 		/**
 		 * Internal helper method for toString.
 		 * @param {String} template template for ref (currently "cite" or "Citation"
@@ -1221,7 +1199,7 @@ window.proveit = {
 			video:"video"
 		};
 
-		// Sets the type, applying the mappings.  This is up top because it is used in AbstractReference constructor.
+		// Sets the type (e.g. web for cite web), applying the mappings.  This is up top because it is used in AbstractReference constructor.
 		this.setType = function(rawType)
 		{
 			var mappedType = typeNameMappings[rawType];
@@ -1412,7 +1390,6 @@ window.proveit = {
 				return []; // Return empty array rather than null to avoid dereferencing null.
 		};
 
-		// Returns true if this object is valid, false otherwise.
 		this.isValid = function()
 		{
 		        if(this.type == '')
@@ -1433,11 +1410,6 @@ window.proveit = {
 					break;
 			}
 			return allFound;
-		};
-
-		this.getEditLabel = function()
-		{
-			return "cite " + this.type;
 		};
 
 		var iconMapping =
@@ -1466,7 +1438,7 @@ window.proveit = {
 	},
 
 	/**
-	 * A function for citation style tags.
+	 * A function for citation style refs.
 	 * @class CitationReference
 	 * @for proveit
 	 * @constructor
@@ -1571,11 +1543,6 @@ window.proveit = {
 				return ["url", "title", "author", "date", "publisher"]; // Can't determine more specific defaults when editing a pre-existing Citation.
 			}
 		};
-
-		this.getEditLabel = function()
-		{
-			return "Citation";
-		};
 	},
 
 	/**
@@ -1616,7 +1583,6 @@ window.proveit = {
 	 */
 	getRefFromAddPane : function(box)
 	{
-		this.log("Entering citationObjFromAddPopup");
 		// get this working, lots of typing here.
 
 		var type = box.id;
@@ -2464,8 +2430,6 @@ window.proveit = {
 		// ibid button
 		if(citationStrings.length > 0)
 		{
-			// LARGE EDIT BUTTON
-
 			// create button
 			var ibidBtn = $('<button />',{
 					"class": 'insert',
