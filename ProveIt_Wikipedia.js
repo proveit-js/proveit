@@ -2025,8 +2025,17 @@ window.proveit = {
 				}
 		});
 
-		// Edit and view are the same tab, so we handle this specially.
-		jQuery('#view-link').click(cancelEdit);
+		// handle clicking on tabs
+		jQuery(viewLink).click(function(){
+				if(jQuery(viewTab).is(":hidden"))
+					showHideButton.click();
+				else
+					cancelEdit();	// Edit and view are the same tab, so we handle this specially.
+			});
+		jQuery(addLink).click(function(){
+				if(jQuery(addTab).is(":hidden"))
+					showHideButton.click();
+			});			
 
 		// add panel buttons
 		jQuery("#add-buttons button:first").button({
