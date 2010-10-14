@@ -494,7 +494,7 @@ window.proveit = {
 		var id = fieldType ? "preloadedparamrow" : "addedparamrow";
 		var newline = $('#'+id).clone(); // clone the hidden row
 		$(newline).attr('id',''); // clear the ID (can't have two elements with same ID)
-		//this.activateRemove(newline);
+		//this.removeField(newline);
 		var paramName = $('.paramdesc', newline).eq(0);
 		var paramValue = $('.paramvalue', newline).eq(0);
 
@@ -508,7 +508,7 @@ window.proveit = {
 		}
 		else
 		{
-			this.activateRemove(newline);
+			this.removeField(newline);
 		}
 
 		if(fieldType) // the description/name is a label (not a textbox)
@@ -1666,10 +1666,10 @@ window.proveit = {
 	},
 
 	/**
-	 * Enable the remove functionality
-	 * @param {Node} row DOM element
+	 * Remove a field (label + input] from Edit or Add pane
+	 * @param {Node} row DOM element to remove
 	 */
-	activateRemove : function(row)
+	removeField : function(row)
 	{
 		$('.delete-field', row).click(function()
 		{
@@ -1755,7 +1755,7 @@ window.proveit = {
 				}
 				else
 				{
-					this.activateRemove(paramBox);
+					this.removeField(paramBox);
 				}
 				label.text(descs[param]);
 				// Basically the same code as nameHbox above
@@ -1772,7 +1772,7 @@ window.proveit = {
 				nameTextbox.setAttribute("value", param);
 			}
 			paramBox.id = "";
-			this.activateRemove(paramBox);
+			this.removeField(paramBox);
 
 			paramBox.getElementsByClassName("paramvalue")[0].id = this.NEW_PARAM_PREFIX + param;
 			this.log("changeAddPane: param: " + param + "; newRef.params[param]: " + newRef.params[param]);
@@ -2368,7 +2368,7 @@ window.proveit = {
 		if(citationStrings.length > 1)
 		{
 			var newP = $('<p />');
-			newP.append('This reference appears in the article <span class="num-citations">' + citationStrings.length + ' times</span>: ').append(allCitations);
+			newP.append('This reference is cited in the article <span class="num-citations">' + citationStrings.length + ' times</span>: ').append(allCitations);
 			expanded.append(newP);
 		}
 
