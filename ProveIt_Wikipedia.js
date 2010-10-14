@@ -237,7 +237,7 @@ window.proveit = {
 					var summary = thisproveit.getEditSummary();
 
 					if(summary.value.indexOf("ProveIt") == -1)
-					summary.value += " (edited by [[User:ProveIt_GT|Proveit]])";
+					summary.value += " (edited with [[User:ProveIt_GT|ProveIt]])";
 					/*
 					else
 					{
@@ -512,7 +512,7 @@ window.proveit = {
 		var id = fieldType ? "preloadedparamrow" : "addedparamrow";
 		var newline = jQuery('#'+id).clone(); // clone the hidden row
 		jQuery(newline).attr('id',''); // clear the ID (can't have two elements with same ID)
-		//this.removeField(newline);
+		//this.activateRemoveField(newline);
 		var paramName = jQuery('.paramdesc', newline).eq(0);
 		var paramValue = jQuery('.paramvalue', newline).eq(0);
 
@@ -526,7 +526,7 @@ window.proveit = {
 		}
 		else
 		{
-			this.removeField(newline);
+			this.activateRemoveField(newline);
 		}
 
 		if(fieldType) // the description/name is a label (not a textbox)
@@ -1684,17 +1684,17 @@ window.proveit = {
 	},
 
 	/**
-	 * Remove a field (label + input] from Edit or Add pane
-	 * @param {Node} row DOM element to remove
+	 * Add event handler to Delete Field button in Add/Edit Reference panes
+	 * @param {Node} fieldRow the fieldRow DOM element to remove
 	 */
-	removeField : function(row)
+	activateRemoveField : function(fieldRow)
 	{
-		jQuery('.delete-field', row).click(function()
+		jQuery('.delete-field', fieldRow).click(function()
 		{
-			jQuery(row).hide(
+			jQuery(fieldRow).hide(
 				'highlight',{},'slow',
 				function() {
-					jQuery(row).remove();
+					jQuery(fieldRow).remove();
 					}
 				);
 		});
@@ -1773,7 +1773,7 @@ window.proveit = {
 				}
 				else
 				{
-					this.removeField(paramBox);
+					this.activateRemoveField(paramBox);
 				}
 				label.text(descs[param]);
 				// Basically the same code as nameHbox above
@@ -1790,7 +1790,7 @@ window.proveit = {
 				nameTextbox.setAttribute("value", param);
 			}
 			paramBox.id = "";
-			this.removeField(paramBox);
+			this.activateRemoveField(paramBox);
 
 			paramBox.getElementsByClassName("paramvalue")[0].id = this.NEW_PARAM_PREFIX + param;
 			this.log("changeAddPane: param: " + param + "; newRef.params[param]: " + newRef.params[param]);
