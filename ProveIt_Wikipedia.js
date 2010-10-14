@@ -2204,7 +2204,7 @@ window.proveit = {
 				url = ref.params['url'];
 				break;
 			case 'episode':
-				url = 'http://www.imdb.com/find?s=tt&q=' + escape(ref.params['title']);
+				url = 'http://www.imdb.com/find?s=ep&q=' + escape(ref.params['title']);
 				break;
 		}
 		$('td.type', newchild).css('background-image','url('+icon+')');
