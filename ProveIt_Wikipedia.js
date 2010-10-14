@@ -1420,7 +1420,7 @@ window.proveit = {
 			news : "newspaper.png",
 			newsgroup : "comments.png",
 			"press release" : "transmit_blue.png",
-			interview : "comments.png",
+			interview : "telephone.png",
 			episode : "television.png",
 			video : "film.png"
 		};
