@@ -55,6 +55,24 @@ window.proveit = {
 	STATIC_BASE : "http://proveit-js.googlecode.com/hg/static/",
 
 	/**
+	 * URL to jQuery script
+	 * @type String
+	 */	
+	JQUERY_SCRIPT_URL : "http://bits.wikimedia.org/skins-1.5/common/jquery.min.js",
+	
+	/**
+	 * URL to jQueryUI script
+	 * @type String
+	 */	
+	JQUERYUI_SCRIPT_URL : "http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.3/jquery-ui.min.js",
+	
+	/**
+	 * URL to jQueryUI stylesheet
+	 * @type String
+	 */	
+	JQUERYUI_STYLES_URL : "http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.3/themes/base/jquery-ui.css",	
+	
+	/**
 	 * Convenience log function
 	 * @param {String} msg message to log
 	 */
@@ -82,7 +100,7 @@ window.proveit = {
 	 */
 	getRefBox : function()
 	{
-		return $("#refs");
+		return jQuery("#refs");
 	},
 
 	/**
@@ -114,10 +132,10 @@ window.proveit = {
 			this.log("highlightStringAtIndex: invalid negative arguments");
 		}
 		var mwBox = this.getMWEditBox();
-		var origText = $(mwBox).val();
+		var origText = jQuery(mwBox).val();
 		var editTop = this.getPosition(this.getMWEditBox()).top;
 		var endInd = startInd + length;
-		$(mwBox).val(origText.substring(0, startInd));
+		jQuery(mwBox).val(origText.substring(0, startInd));
 		mwBox.scrollTop = 1000000; //Larger than any real textarea (hopefully)
 		var curScrollTop = mwBox.scrollTop;
 		mwBox.value += origText.substring(startInd);
@@ -139,7 +157,7 @@ window.proveit = {
 	{
 		var mwBox = this.getMWEditBox();
 		//content.window.scroll(0, editTop);
-		var origText = $(mwBox).val();
+		var origText = jQuery(mwBox).val();
 		var startInd = origText.indexOf(targetStr);
 		if(startInd == -1)
 		{
@@ -155,7 +173,7 @@ window.proveit = {
 	*/
 	getMWEditBox : function()
 	{
-		return $("#wpTextbox1")[0];
+		return jQuery("#wpTextbox1")[0];
 	},
 
 	/**
@@ -164,7 +182,7 @@ window.proveit = {
 	*/
 	getMWEditForm : function()
 	{
-		return $("#editform")[0];
+		return jQuery("#editform")[0];
 	},
 
 	/**
@@ -187,7 +205,7 @@ window.proveit = {
 	*/
 	getEditSummary : function()
 	{
-		return $("#wpSummary")[0];
+		return jQuery("#wpSummary")[0];
 	},
 
 	/**
@@ -280,8 +298,8 @@ window.proveit = {
 			this.log("Ref box is not loaded yet.");
 			return false;
 		}
-		var refs = $("tr:not('tr#dummyRef')", box);
-		$(refs).remove();
+		var refs = jQuery("tr:not('tr#dummyRef')", box);
+		jQuery(refs).remove();
 
 	},
 
@@ -331,9 +349,9 @@ window.proveit = {
 	 */
 	changeRefFromEditPane : function(ref, editPane)
 	{
-		var paramBoxes = $("div.input-row", editPane);
+		var paramBoxes = jQuery("div.input-row", editPane);
 
-		var refName = $('#editrefname').val();
+		var refName = jQuery('#editrefname').val();
 		ref.name = refName != "" ? refName : null; // Save blank names as null
 
 		// Clear old params
@@ -346,7 +364,7 @@ window.proveit = {
 			//this.log("item: " + i);
 			var paramRow = paramBoxes[i];
 			var valueTextbox = paramRow.getElementsByClassName("paramvalue")[0];
-			if($(paramRow).hasClass("addedrow")) // Added with "Add another field"
+			if(jQuery(paramRow).hasClass("addedrow")) // Added with "Add another field"
 			{
 				paramName = paramRow.getElementsByClassName("paramdesc")[0].value.trim();
 			}
@@ -382,12 +400,12 @@ window.proveit = {
 		if(!ref.save)
 		{
 		    var newRichItem = this.makeRefBoxRow(ref, true);
-			var oldRichItem = $('.selected', this.getRefBox()).get(0);
+			var oldRichItem = jQuery('.selected', this.getRefBox()).get(0);
 			this.log('newRichItem: ' + newRichItem + ', oldRichItem: ' + oldRichItem + 'oldRichItem.parentNode: ' + oldRichItem.parentNode);
-			var oldNumber = $('td.number',oldRichItem).text();
-			$('td.number',newRichItem).text(oldNumber); // preserve old numbering
+			var oldNumber = jQuery('td.number',oldRichItem).text();
+			jQuery('td.number',newRichItem).text(oldNumber); // preserve old numbering
 			oldRichItem.parentNode.replaceChild(newRichItem, oldRichItem);
-			$(newRichItem).addClass('selected');
+			jQuery(newRichItem).addClass('selected');
 
 			ref.updateInText();
 			this.includeProveItEditSummary();
@@ -400,7 +418,7 @@ window.proveit = {
 	 */
 	updateEditPane : function(ref)
 	{
-		$('#editrefname').val(ref.name || "");
+		jQuery('#editrefname').val(ref.name || "");
 
 		// Don't contaminate actual object with junk params.
 		var tempParams = {};
@@ -445,36 +463,36 @@ window.proveit = {
 		   Javascript does destructive sorting, which in this case, is convenient...
 		*/
 
-		$('#edit-fields').children('.paramlist').children().remove('div:not(.hidden)'); // clear all fields in the edit box (except the hidden ones)
+		jQuery('#edit-fields').children('.paramlist').children().remove('div:not(.hidden)'); // clear all fields in the edit box (except the hidden ones)
 
 		for(var i = 0; i < paramNames.length; i++)
 		{
 			//this.log("Calling addPaneRow on tempParams." + item);
 			//this.log("i: " + i + ", paramNames[i]: " + paramNames[i]);
-			this.addPaneRow($("#edit-pane").get(), tempParams, ref.getDescriptions(), paramNames[i], required[paramNames[i]], true);
+			this.addPaneRow(jQuery("#edit-pane").get(), tempParams, ref.getDescriptions(), paramNames[i], required[paramNames[i]], true);
 		}
 
-		var acceptButton = $('#edit-buttons .accept');
+		var acceptButton = jQuery('#edit-buttons .accept');
 		var acceptEdit = function()
 		{
 			proveit.log("Entering acceptEdit");
-			proveit.changeRefFromEditPane(ref, $("#edit-pane").get());
+			proveit.changeRefFromEditPane(ref, jQuery("#edit-pane").get());
 			proveit.saveRefFromEdit(ref);
 			acceptButton.unbind('click', acceptEdit);
-			$("#edit-pane").hide();
-			$("#view-pane").show();
+			jQuery("#edit-pane").hide();
+			jQuery("#view-pane").show();
 		};
 
 		// Without setTimeout, scoll reset doesn't work in Firefox.
 		setTimeout(function()
 		{
 		    // Reset scroll
-		    $('#edit-fields').scrollTop(0);
+		    jQuery('#edit-fields').scrollTop(0);
 		}, 0);
 
 		acceptButton.click(acceptEdit);
 
-		$('.tab-link').one('click', function()
+		jQuery('.tab-link').one('click', function()
 		{
 			acceptButton.unbind('click', acceptEdit);
 		});
@@ -492,19 +510,19 @@ window.proveit = {
 	addPaneRow : function(root, params, descs, item, req, fieldType)
 	{
 		var id = fieldType ? "preloadedparamrow" : "addedparamrow";
-		var newline = $('#'+id).clone(); // clone the hidden row
-		$(newline).attr('id',''); // clear the ID (can't have two elements with same ID)
+		var newline = jQuery('#'+id).clone(); // clone the hidden row
+		jQuery(newline).attr('id',''); // clear the ID (can't have two elements with same ID)
 		//this.removeField(newline);
-		var paramName = $('.paramdesc', newline).eq(0);
-		var paramValue = $('.paramvalue', newline).eq(0);
+		var paramName = jQuery('.paramdesc', newline).eq(0);
+		var paramValue = jQuery('.paramvalue', newline).eq(0);
 
 
-		$('.paramlist', root).append(newline);
+		jQuery('.paramlist', root).append(newline);
 
 		if(req) // if field is required...
 		{
-			$(paramName).addClass('required'); // visual indicator that label is required
-			$('.delete-field', newline).remove(); // don't let people remove required fields
+			jQuery(paramName).addClass('required'); // visual indicator that label is required
+			jQuery('.delete-field', newline).remove(); // don't let people remove required fields
 		}
 		else
 		{
@@ -522,17 +540,17 @@ window.proveit = {
 				this.log("Undefined description for param: " + item + ".  Using directly as description.");
 				desc = item;
 			}
-			$(paramName).text(desc);
-			$(paramName).attr('title',item);
-			$(paramValue).val(params[item]);
+			jQuery(paramName).text(desc);
+			jQuery(paramName).attr('title',item);
+			jQuery(paramValue).val(params[item]);
 
-			$(newline).show();
+			jQuery(newline).show();
 		}
 		else
 		{
 			// added a new row, so make it fancy
-			$(newline).show('highlight',{},'slow');
-			$('.inputs', root).scrollTop(100000);
+			jQuery(newline).show('highlight',{},'slow');
+			jQuery('.inputs', root).scrollTop(100000);
 		}
 	},
 
@@ -594,7 +612,7 @@ window.proveit = {
 
 		this.clearRefBox();
 
-		var textValue = $(text).val();
+		var textValue = jQuery(text).val();
 		// since we should pick the name out before we get to the reference type, here's a variable to hold it
 		var name;
 
@@ -1588,7 +1606,7 @@ window.proveit = {
 		var type = box.id;
 
 		// get <ref> name
-		var refName = $('#addrefname').val();
+		var refName = jQuery('#addrefname').val();
 
 		var citeFunc = this.togglestyle ? this.CiteReference : this.CitationReference;
 		var ref = new citeFunc({"name": refName, "type": type});
@@ -1596,14 +1614,14 @@ window.proveit = {
 		var paramName, paramVal;
 
 		var paramList = box.getElementsByClassName("paramlist")[0];
-		var paramRows = $('div', paramList);
+		var paramRows = jQuery('div', paramList);
 		for (var i = 0; i < paramRows.length; i++)
 		{
 			var paramRow =  paramRows[i];
 			this.log("getRefFromAddPane: i: " + i + ", paramRow: " + paramRow);
 			var valueTextbox = paramRow.getElementsByClassName("paramvalue")[0];
 
-			if($(paramRow).hasClass("addedrow")) // Added with "Add another field"
+			if(jQuery(paramRow).hasClass("addedrow")) // Added with "Add another field"
 			{
 				paramName = paramRow.getElementsByClassName("paramdesc")[0].value.trim();
 			}
@@ -1671,12 +1689,12 @@ window.proveit = {
 	 */
 	removeField : function(row)
 	{
-		$('.delete-field', row).click(function()
+		jQuery('.delete-field', row).click(function()
 		{
-			$(row).hide(
+			jQuery(row).hide(
 				'highlight',{},'slow',
 				function() {
-					$(row).remove();
+					jQuery(row).remove();
 					}
 				);
 		});
@@ -1690,10 +1708,10 @@ window.proveit = {
 		//this.log("menu.id: " + menu.id);
 
 		// Reset scroll
-		$('#add-fields').scrollTop(0);
-		$(menu.parentNode).show(); // cite/citation vbox.
+		jQuery('#add-fields').scrollTop(0);
+		jQuery(menu.parentNode).show(); // cite/citation vbox.
 
-		var citePanes = $(".addpanes", menu.parentNode.parentNode).get(0);
+		var citePanes = jQuery(".addpanes", menu.parentNode.parentNode).get(0);
 		//this.log("citePanes: " + citePanes);
 		this.clearCitePanes(citePanes);
 		var newRefType = menu.value;
@@ -1702,8 +1720,8 @@ window.proveit = {
 		genPane.id = newRefType;
 
 		// name the ref-name-row
-		$('.ref-name-row',genPane).children('input').attr('id','addrefname');
-		$('.ref-name-row',genPane).children('label').attr('for','addrefname');
+		jQuery('.ref-name-row',genPane).children('input').attr('id','addrefname');
+		jQuery('.ref-name-row',genPane).children('label').attr('for','addrefname');
 
 		// Somewhat hackish.  What's a better way?
 		var newRef;
@@ -1747,11 +1765,11 @@ window.proveit = {
 			if(descs[param])
 			{
 				paramBox = document.getElementById("preloadedparamrow").cloneNode(true);
-				var label = $('.paramdesc', paramBox);
+				var label = jQuery('.paramdesc', paramBox);
 				if(required[param])
 				{
 					label.addClass("required");
-					$('.delete-field', paramBox).remove(); // don't let people remove required fields
+					jQuery('.delete-field', paramBox).remove(); // don't let people remove required fields
 				}
 				else
 				{
@@ -1761,7 +1779,7 @@ window.proveit = {
 				// Basically the same code as nameHbox above
 				label.attr("for", this.NEW_PARAM_PREFIX + param);
 				if(param == 'accessdate')
-					$('.paramvalue', paramBox).val(this.formatDate(new Date));
+					jQuery('.paramvalue', paramBox).val(this.formatDate(new Date));
 			}
 			else
 			{
@@ -1777,10 +1795,10 @@ window.proveit = {
 			paramBox.getElementsByClassName("paramvalue")[0].id = this.NEW_PARAM_PREFIX + param;
 			this.log("changeAddPane: param: " + param + "; newRef.params[param]: " + newRef.params[param]);
 			//paramBox.childNodes[2].value = newRef.params[param]; // Causes parameters to disappear.  Why?
-			$(paramBox).show();
+			jQuery(paramBox).show();
 			paramList.appendChild(paramBox);
 		}
-		$(genPane).show();
+		jQuery(genPane).show();
 		citePanes.insertBefore(genPane, citePanes.firstChild);
 		this.log("Exiting changeAddPane");
 	},
@@ -1791,93 +1809,93 @@ window.proveit = {
 	createGUI : function()
 	{
 	    // Keep jQuery UI CSS version in sync with JS above.
-	    importStylesheetURI('http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.3/themes/base/jquery-ui.css');
+	    importStylesheetURI(this.JQUERYUI_STYLES_URL);
 		importStylesheetURI(this.STATIC_BASE + 'styles.css');
 
 		// more JqueryUI CSS: http://blog.jqueryui.com/2009/06/jquery-ui-172/
-		var gui = $('<div/>', {id: 'proveit'});
-		var tabs = $('<div/>', {id: 'tabs'});
-		var created = $('<h1/>');
-		var createdLink = $('<a/>', {title: 'Created by the ELC Lab at Georgia Tech',
+		var gui = jQuery('<div/>', {id: 'proveit'});
+		var tabs = jQuery('<div/>', {id: 'tabs'});
+		var created = jQuery('<h1/>');
+		var createdLink = jQuery('<a/>', {title: 'Created by the ELC Lab at Georgia Tech',
 			                     href: 'http://www.cc.gatech.edu/elc',
 					     target: '_blank'});
-		var logo = $('<img/>', {src: this.STATIC_BASE + 'logo.png', alt: 'ProveIt', height: 30, width: 118 });
+		var logo = jQuery('<img/>', {src: this.STATIC_BASE + 'logo.png', alt: 'ProveIt', height: 30, width: 118 });
 		createdLink.append(logo);
 		created.append(createdLink);
-		var showHideButton = $('<button/>', {text: 'show/hide'});
+		var showHideButton = jQuery('<button/>', {text: 'show/hide'});
 		created.append(showHideButton);
 		tabs.append(created);
-		var header = $('<ul/>');
-		var view = $('<li/>');
-		var viewLink = $('<a/>', {id: 'view-link', "class": 'tab-link', href: '#view-tab'});
+		var header = jQuery('<ul/>');
+		var view = jQuery('<li/>');
+		var viewLink = jQuery('<a/>', {id: 'view-link', "class": 'tab-link', href: '#view-tab'});
 		viewLink.append('References (');
-		var numRefs = $('<span/>', {id: 'numRefs'}).
+		var numRefs = jQuery('<span/>', {id: 'numRefs'}).
 			append('0');
 		viewLink.append(numRefs).
 			append(')');
 		view.append(viewLink);
 		header.append(view);
-		var add = $('<li/>');
-		var addLink = $('<a/>', {id: 'add-link', "class": 'tab-link', href: '#add-tab'}).
+		var add = jQuery('<li/>');
+		var addLink = jQuery('<a/>', {id: 'add-link', "class": 'tab-link', href: '#add-tab'}).
 			append('Add a Reference');
 		add.append(addLink);
 		header.append(add);
 		tabs.append(header);
-		var viewTab = $('<div/>', {id: 'view-tab'});
-		var viewPane = $('<div/>', {id: 'view-pane'});
-		var viewScroll = $('<div/>', {"class": 'scroll',
+		var viewTab = jQuery('<div/>', {id: 'view-tab'});
+		var viewPane = jQuery('<div/>', {id: 'view-pane'});
+		var viewScroll = jQuery('<div/>', {"class": 'scroll',
 					      style: 'height: 210px;'});
-		var refTable = $('<table/>', {id: 'refs'});
-		var dummyRef = $('<tr/>', {id: 'dummyRef',
+		var refTable = jQuery('<table/>', {id: 'refs'});
+		var dummyRef = jQuery('<tr/>', {id: 'dummyRef',
 					   style: 'display: none;'});
-		dummyRef.append($('<td/>', {"class": 'number'})).
-			append($('<td/>', {"class": 'type'})).
-			append($('<td/>', {"class": 'title'}));
-			//append($('<td/>', {"class": 'details'}));
-		var editTd = $('<td/>', {"class": 'edit'}).
-			append($('<button/>', {text: 'edit'}));
+		dummyRef.append(jQuery('<td/>', {"class": 'number'})).
+			append(jQuery('<td/>', {"class": 'type'})).
+			append(jQuery('<td/>', {"class": 'title'}));
+			//append(jQuery('<td/>', {"class": 'details'}));
+		var editTd = jQuery('<td/>', {"class": 'edit'}).
+			append(jQuery('<button/>', {text: 'edit'}));
 		dummyRef.append(editTd);
 		refTable.append(dummyRef);
 		viewScroll.append(refTable);
 		viewPane.append(viewScroll);
 		viewTab.append(viewPane);
 		// div#edit-pane
-		var editPane = $('<div/>', {id: 'edit-pane', style: 'display: none'});
+		var editPane = jQuery('<div/>', {id: 'edit-pane', style: 'display: none'});
 		// div#edit-fields
-		var editFields = $('<div/>', {id: 'edit-fields',
+		var editFields = jQuery('<div/>', {id: 'edit-fields',
 					      "class": 'inputs scroll',
 					      style: 'height: 170px',
 					      tabindex: 0});
 		// div.ref-name-row
-        var refNameRow = $('<div/>', {"class": 'ref-name-row',
+        var refNameRow = jQuery('<div/>', {"class": 'ref-name-row',
 					      tabindex: -1});
-		var refLabel = $('<label/>', {'for': 'editrefname',
+		var refLabel = jQuery('<label/>', {'for': 'editrefname',
 					      title: 'This is a unique identifier that can be used to refer to this reference elsewhere on the page.',
 					      "class": 'paramdesc'}).
 			append('&lt;ref&gt; name');
 		refNameRow.append(refLabel);
-		refNameRow.append($('<input/>', {id: 'editrefname',
+		refNameRow.append(jQuery('<input/>', {id: 'editrefname',
 	                                       "class": 'paramvalue'}));
 		// div.paramlist
-		var paramList = $('<div/>', {"class": 'paramlist'});
+		var paramList = jQuery('<div/>', {"class": 'paramlist'});
 
 		editFields.append(refNameRow);
 		editFields.append(paramList);
 		editPane.append(editFields);
 
 		// div#edit-buttons
-		var editButtons = $('<div/>', {id: 'edit-buttons'});
-		var addFieldButton = $('<button/>', {style: 'margin-right: 50px;'}).
+		var editButtons = jQuery('<div/>', {id: 'edit-buttons'});
+		var addFieldButton = jQuery('<button/>', {style: 'margin-right: 50px;'}).
 			append('add field');
 		editButtons.append(addFieldButton);
-		var reqSpan = $('<span/>', {"class": 'required',
+		var reqSpan = jQuery('<span/>', {"class": 'required',
 					    text: 'bold'});
 		editButtons.append(reqSpan).
 			append(' = required field');
-		var saveButton = $('<button/>', {"class": 'right-side accept',
+		var saveButton = jQuery('<button/>', {"class": 'right-side accept',
 		                                 text: 'update edit form'});
 		editButtons.append(saveButton);
-		var cancelButton = $('<button/>', {"class": 'right-side cancel',
+		var cancelButton = jQuery('<button/>', {"class": 'right-side cancel',
 			                           text: 'cancel'});
 		editButtons.append(cancelButton);
 		editPane.append(editButtons);
@@ -1885,47 +1903,47 @@ window.proveit = {
 		tabs.append(viewTab);
 
 		// dumy cite pane
-		var dummyCite = $('<div/>', {id: 'dummyCitePane',
+		var dummyCite = jQuery('<div/>', {id: 'dummyCitePane',
 					     "class": 'typepane',
 					     style: 'display: none'});
 		var addRefNameRow = refNameRow.clone();
-		//$('input', addRefNameRow).attr('id', 'addrefname');
-		//$('label', addRefNameRow).attr('for', 'addrefname');
+		//jQuery('input', addRefNameRow).attr('id', 'addrefname');
+		//jQuery('label', addRefNameRow).attr('for', 'addrefname');
 		dummyCite.append(addRefNameRow);
-		dummyCite.append($('<div/>', {"class": 'paramlist'}));
+		dummyCite.append(jQuery('<div/>', {"class": 'paramlist'}));
 		tabs.append(dummyCite);
 
-		var preloadedparam = $('<div/>', {id: 'preloadedparamrow',
+		var preloadedparam = jQuery('<div/>', {id: 'preloadedparamrow',
 						  "class": 'preloadedrow input-row',
 						  style: 'display: none'}).
-			append($('<label/>', {"class": 'paramdesc'}));
-		var paramvalue = $('<input/>', {"class": 'paramvalue',
+			append(jQuery('<label/>', {"class": 'paramdesc'}));
+		var paramvalue = jQuery('<input/>', {"class": 'paramvalue',
 				                tabindex: -1});
 	        preloadedparam.append(paramvalue);
-		var deleteButton = $('<button/>', {"class": 'delete-field'}).
+		var deleteButton = jQuery('<button/>', {"class": 'delete-field'}).
 			append('delete field');
 		preloadedparam.append(deleteButton);
 		tabs.append(preloadedparam);
-		var addedparam = $('<div/>', {id: 'addedparamrow',
+		var addedparam = jQuery('<div/>', {id: 'addedparamrow',
 					      "class": 'addedrow input-row',
  					      style: 'display: none'}).
-		        append($('<input/>', {"class": 'paramdesc',
+		        append(jQuery('<input/>', {"class": 'paramdesc',
 					      tabindex: -1})).
 			append(paramvalue.clone()).
 			append(deleteButton.clone());
 		tabs.append(addedparam);
-		var addTab = $('<div/>', {id: 'add-tab'});
-		var addFields = $('<div/>', {id: 'add-fields',
+		var addTab = jQuery('<div/>', {id: 'add-tab'});
+		var addFields = jQuery('<div/>', {id: 'add-fields',
 					     "class": 'inputs scroll',
 					     style: 'height: 170px'});
-		var cite = $('<div/>', {style: 'display: none',
+		var cite = jQuery('<div/>', {style: 'display: none',
 					id: 'cite',
 				        "class": 'input-row'});
-		var refCiteTypeLabel = $('<label/>', {'for': 'citemenu',
+		var refCiteTypeLabel = jQuery('<label/>', {'for': 'citemenu',
 						  "class": 'paramdesc required',
 						  text: 'Reference type'});
 		cite.append(refCiteTypeLabel);
-		var citemenu = $('<select/>', {id: 'citemenu',
+		var citemenu = jQuery('<select/>', {id: 'citemenu',
 					       change: function()
 					       {
 						       proveit.changeAddPane(citemenu.get(0));
@@ -1934,20 +1952,20 @@ window.proveit = {
 		var descs = new this.AbstractReference({}).getDescriptions();
 		for(var i = 0; i < citeTypes.length; i++)
 		{
-			citemenu.append($('<option/>', {value: citeTypes[i],
+			citemenu.append(jQuery('<option/>', {value: citeTypes[i],
 						        text: descs[citeTypes[i]]}));
 		}
 		cite.append(citemenu);
 		addFields.append(cite);
-		addFields.append($('<div/>', {"class": 'addpanes',
+		addFields.append(jQuery('<div/>', {"class": 'addpanes',
 					      id: 'citepanes',
 					      tabindex: 0}));
-		var citation = $('<div/>', {style: 'display: none',
+		var citation = jQuery('<div/>', {style: 'display: none',
 					    id: 'citation',
 					    "class": 'input-row'});
 		var refCitationTypeLabel = refCiteTypeLabel.clone().attr('for', 'citationmenu');
 		citation.append(refCitationTypeLabel);
-		var citationmenu = $('<select/>', {id: 'citemenu',
+		var citationmenu = jQuery('<select/>', {id: 'citemenu',
 		                                   change: function()
 						   {
 							   proveit.changeAddPane(citationmenu.get(0));
@@ -1955,16 +1973,16 @@ window.proveit = {
 		var citationTypes = ['web', 'book', 'journal', 'encyclopedia', 'news', 'patent'];
 		for(var j = 0; j < citationTypes.length; j++)
 		{
-			citationmenu.append($('<option/>', {value: citationTypes[i],
+			citationmenu.append(jQuery('<option/>', {value: citationTypes[i],
 			                                    text: descs[citationTypes[i]]}));
 		}
 		citation.append(citationmenu);
 		addFields.append(citation).
-			append($('<div/>', {"class": 'addpanes',
+			append(jQuery('<div/>', {"class": 'addpanes',
 					    id: 'citationpanes', style: 'display: none;'}));
 		addTab.append(addFields);
-		var addButtons = $('<div/>', {id: 'add-buttons'});
-		addButtons.append($('<button/>', {style: 'margin-right: 50px;',
+		var addButtons = jQuery('<div/>', {id: 'add-buttons'});
+		addButtons.append(jQuery('<button/>', {style: 'margin-right: 50px;',
 						  text: 'add field'})).
 			append(reqSpan.clone()).
 			append(" = required").
@@ -1973,22 +1991,22 @@ window.proveit = {
 		addTab.append(addButtons);
 		tabs.append(addTab);
 		gui.append(tabs);
-		$(document.body).prepend(gui);
+		jQuery(document.body).prepend(gui);
 
 		var cancelEdit = function() {
-				$("#edit-pane").hide();
-				$("#view-pane").show();
+				jQuery("#edit-pane").hide();
+				jQuery("#view-pane").show();
 		};
 
 		// set up tabs
-		$("#tabs").tabs({
+		jQuery("#tabs").tabs({
 			selected: 0,
 				show: function(event,ui)
 				{
 					switch(ui.index)
 					{
 						case 0: // view
-						//$('tr.selected').focus();
+						//jQuery('tr.selected').focus();
 						break;
 
 						case 1: // add
@@ -1998,7 +2016,7 @@ window.proveit = {
 
 				      //	case 1: // edit
 						// proveit.updateEditPane();
-						//	$('tr.selected').dblclick();
+						//	jQuery('tr.selected').dblclick();
 						//break;
 
 						default:
@@ -2008,10 +2026,10 @@ window.proveit = {
 		});
 
 		// Edit and view are the same tab, so we handle this specially.
-		$('#view-link').click(cancelEdit);
+		jQuery('#view-link').click(cancelEdit);
 
 		// add panel buttons
-		$("#add-buttons button:first").button({
+		jQuery("#add-buttons button:first").button({
 			icons: {
 				primary: 'ui-icon-circle-plus'
 			}
@@ -2026,9 +2044,9 @@ window.proveit = {
 			}
 		}).click(function()
 			 {
-				 proveit.addReference(proveit.getRefFromAddPane($('#add-tab .typepane').get(0)));
-				 $("#tabs").tabs( { selected: '#view-tab' } );
-				 $("div.scroll, #view-pane").scrollTop(100000); // scroll to new ref
+				 proveit.addReference(proveit.getRefFromAddPane(jQuery('#add-tab .typepane').get(0)));
+				 jQuery("#tabs").tabs( { selected: '#view-tab' } );
+				 jQuery("div.scroll, #view-pane").scrollTop(100000); // scroll to new ref
 			 }).next().
 		button({
 			icons: {
@@ -2036,20 +2054,20 @@ window.proveit = {
 				}
 		}).click(function()
 			 {
-				 $("#tabs").tabs( { selected: '#view-tab' } );
+				 jQuery("#tabs").tabs( { selected: '#view-tab' } );
 			 });
 
 		// cancel buttons
-		$("button.cancel").click(cancelEdit);
+		jQuery("button.cancel").click(cancelEdit);
 
 		// edit panel buttons
-		$("#edit-buttons button:first").button({
+		jQuery("#edit-buttons button:first").button({
 			icons: {
 				primary: 'ui-icon-circle-plus'
 			}
 		}).click(function()
 			 {
-				 proveit.addPaneRow($("#edit-pane"));
+				 proveit.addPaneRow(jQuery("#edit-pane"));
 			 }).
 		next().next().
 		button({
@@ -2063,7 +2081,7 @@ window.proveit = {
 		});
 
 		// delete field button
-		$(".delete-field").button({
+		jQuery(".delete-field").button({
 			icons: {
 				primary: 'ui-icon-close'
 			},
@@ -2081,23 +2099,23 @@ window.proveit = {
 		// set up the minimize button
 		showHideButton.toggle(
 			function() {
-				$("#view-tab, #add-tab").hide();
-				$(this).button("option", "icons", { primary: 'ui-icon-triangle-1-n' } );
+				jQuery("#view-tab, #add-tab").hide();
+				jQuery(this).button("option", "icons", { primary: 'ui-icon-triangle-1-n' } );
 			},
 			function() {
-				$("#view-tab, #add-tab").show();
-				$(this).button("option", "icons", { primary: 'ui-icon-triangle-1-s' } );
+				jQuery("#view-tab, #add-tab").show();
+				jQuery(this).button("option", "icons", { primary: 'ui-icon-triangle-1-s' } );
 			}
 		);
 
 		this.scanForRefs();
 
 
-		$("#refs tr").eq(0).click().click(); // select first item in list.  TODO: Why two .click?
+		jQuery("#refs tr").eq(0).click().click(); // select first item in list.  TODO: Why two .click?
 
 		// alternate row colors
-		$("#refs tr:even").addClass('light');
-		$("#refs tr:odd").addClass('dark');
+		jQuery("#refs tr:even").addClass('light');
+		jQuery("#refs tr:odd").addClass('dark');
 	},
 
 	/**
@@ -2113,18 +2131,18 @@ window.proveit = {
 
 		//var refbox = this.getRefBox();
 
-		var newchild = $('<tr><td class="number"></td><td class="type"></td><td class="title"></td><td class="edit"></td></tr>').get(0);
+		var newchild = jQuery('<tr><td class="number"></td><td class="type"></td><td class="title"></td><td class="edit"></td></tr>').get(0);
 		// removed <span class="pointers"></span>
 		// removed <td class="details"></td>
 
 		if(!ref.isValid())
 		{
 			// Flag as invalid.
-			$(newchild).addClass('invalid');
+			jQuery(newchild).addClass('invalid');
 		}
 		// grab the nodes that need changed out of it
 		//var newlabel = newchild.getElementsByClassName("richitemlabel")[0];
-		var neweditimage = $('.edit button', newchild).get(0);
+		var neweditimage = jQuery('.edit button', newchild).get(0);
 		//var newinsertimage = newchild.getElementsByClassName("richiteminsert")[0];
 		//newchild.hidden = false;
 		var thisproveit = this;
@@ -2138,8 +2156,8 @@ window.proveit = {
 			shortTitle = this.truncateTitle(title);
 		}
 
-		$('td.title', newchild).text(shortTitle);
-		$('td.title', newchild).attr('title', title);
+		jQuery('td.title', newchild).text(shortTitle);
+		jQuery('td.title', newchild).attr('title', title);
 
 		// deal with variations of date info
 		var formattedYear = '';
@@ -2155,7 +2173,7 @@ window.proveit = {
 			}
 		}
 
-		//$('td.year', newchild).text(formattedYear);
+		//jQuery('td.year', newchild).text(formattedYear);
 
 		// deal with variations of author info
 		var formattedAuthor = '';
@@ -2181,7 +2199,7 @@ window.proveit = {
 			// details = '(' + formattedYear + ')';
 		// else if (formattedAuthor != '')
 			// details = '(' + formattedAuthor + ')';
-		// $('td.details', newchild).html(details);
+		// jQuery('td.details', newchild).html(details);
 
 		// generate a URL based on ref type
 		var icon = ref.getIcon(), url = '', refType = ref.type;
@@ -2207,8 +2225,8 @@ window.proveit = {
 				url = 'http://www.imdb.com/find?s=ep&q=' + escape(ref.params['title']);
 				break;
 		}
-		$('td.type', newchild).css('background-image','url('+icon+')');
-		$('td.type', newchild).attr('title',ref.type);
+		jQuery('td.type', newchild).css('background-image','url('+icon+')');
+		jQuery('td.type', newchild).attr('title',ref.type);
 
 
 		var authorByline = '', yearByline = '', refTypeByline = '';
@@ -2267,19 +2285,19 @@ window.proveit = {
 
 
 		// create expanded <div>
-		var expanded = $('<div />',{
+		var expanded = jQuery('<div />',{
 							"class": 'expanded'
 						});
 
 		// append the infobar to the expanded info box
-		$(expanded).append(byline);
+		jQuery(expanded).append(byline);
 
 		// append the expanded info box to the title <td>
-		$('td.title', newchild).append(expanded);
+		jQuery('td.title', newchild).append(expanded);
 
 
 
-		//$('td.author', newchild).html(formattedAuthor);
+		//jQuery('td.author', newchild).html(formattedAuthor);
 
 		// single click event handler
 
@@ -2292,16 +2310,16 @@ window.proveit = {
 		if(!isReplacement)
 		{
 		    // get ref number by counting number of refs (this includes dummy ref, but not the one we're creating)
-		    var numRefs = $('#refs tr').length;
-		    $('td.number', newchild).text(numRefs);
-		    $('#numRefs').text(numRefs); // update the number of refs in the view tab
+		    var numRefs = jQuery('#refs tr').length;
+		    jQuery('td.number', newchild).text(numRefs);
+		    jQuery('#numRefs').text(numRefs); // update the number of refs in the view tab
 		}
 		// event handler for selecting a ref)
-		$(newchild).click(function() {
+		jQuery(newchild).click(function() {
 				thisproveit.highlightTargetString(ref.orig);
 				//thisproveit.highlightTargetString(ref.orig);
-				$("#refs tr").removeClass('selected');
-				$(newchild).addClass('selected');
+				jQuery("#refs tr").removeClass('selected');
+				jQuery(newchild).addClass('selected');
 			});
 
 
@@ -2309,15 +2327,15 @@ window.proveit = {
 		var doEdit = function() {
 			thisproveit.updateEditPane(ref);
 
-			$("#view-pane").hide();
-			$("#edit-pane").show();
+			jQuery("#view-pane").hide();
+			jQuery("#edit-pane").show();
 		};
 
 		var citationStrings = ref.getCitationStrings();
 
-		//var pointers = $('.pointers', newchild);
+		//var pointers = jQuery('.pointers', newchild);
 
-		var allCitations = $('<span class="all-citations" />');
+		var allCitations = jQuery('<span class="all-citations" />');
 
 		for(var i = 0; i < citationStrings.length; i++)
 		{
@@ -2330,14 +2348,14 @@ window.proveit = {
 				colName = String.fromCharCode(97 + mod) + colName;  // a = 97
 				dividend = Math.floor(dividend / 26);
 			}
-			var citationHolder = $('<a href="#">' + colName + '</a>');
+			var citationHolder = jQuery('<a href="#">' + colName + '</a>');
 			// Bind i
 			var clickFunc = (function(i)
 			{
 				return function()
 				{
 					var last = 0, j = 0;
-					var text = $(proveit.getMWEditBox()).val();
+					var text = jQuery(proveit.getMWEditBox()).val();
 					for(j = 0; j < i; j++)
 					{
 						last = text.indexOf(citationStrings[j], last);
@@ -2370,7 +2388,7 @@ window.proveit = {
 
 		if(citationStrings.length > 1)
 		{
-			var newP = $('<p />');
+			var newP = jQuery('<p />');
 			newP.append('This reference is cited in the article <span class="num-citations">' + citationStrings.length + ' times</span>: ').append(allCitations);
 			expanded.append(newP);
 		}
@@ -2381,12 +2399,12 @@ window.proveit = {
 		// SMALL EDIT BUTTON
 
 			// create button
-			var smallEditBtn = $('<button />',{
+			var smallEditBtn = jQuery('<button />',{
 					text: 'edit'
 				});
 
 			// transform button
-			$(smallEditBtn).button({
+			jQuery(smallEditBtn).button({
 				icons: {
 					primary: 'ui-icon-pencil'
 				},
@@ -2397,18 +2415,18 @@ window.proveit = {
 			smallEditBtn.click(doEdit);
 
 			// append button
-			$('.edit', newchild).append(smallEditBtn);
+			jQuery('.edit', newchild).append(smallEditBtn);
 
 		// LARGE EDIT BUTTON
 
 			// create button
-			var editBtn = $('<button />',{
+			var editBtn = jQuery('<button />',{
 					"class": 'edit',
 					text: 'edit this reference'
 				});
 
 			// transform button
-			$(editBtn).button({
+			jQuery(editBtn).button({
 				icons: {
 					primary: 'ui-icon-pencil'
 				},
@@ -2422,25 +2440,25 @@ window.proveit = {
 			expanded.append(editBtn);
 
 		// ROW EVENT HANDLER
-			$(newchild).dblclick(doEdit);
+			jQuery(newchild).dblclick(doEdit);
 		}
 		else
 		{
 			// needed to keep all rows the same height
-			$('.edit', newchild).append('&nbsp;');
+			jQuery('.edit', newchild).append('&nbsp;');
 		}
 
 		// ibid button
 		if(citationStrings.length > 0)
 		{
 			// create button
-			var ibidBtn = $('<button />',{
+			var ibidBtn = jQuery('<button />',{
 					"class": 'insert',
 					text: 'insert this reference at cursor'
 				});
 
 			// transform button
-			$(ibidBtn).button({
+			jQuery(ibidBtn).button({
 				icons: {
 					primary: 'ui-icon-arrowthick-1-e'
 				},
@@ -2502,7 +2520,7 @@ window.proveit = {
 	addNewElement : function(ref)
 	{
 		var refbox = this.getRefBox();
-		$(refbox).append(this.makeRefBoxRow(ref, false));
+		jQuery(refbox).append(this.makeRefBoxRow(ref, false));
 	}
 };
 
@@ -2534,7 +2552,7 @@ if(!String.prototype.trim)
     // Copied from jQuery script loader in ajax function.  This should make sure jQuery is loaded before we proceed (esp. in Chrome/Safari).
     var head = document.getElementsByTagName('head')[0];
     var jquery_script = document.createElement('script');
-    jquery_script.src = 'http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js';
+    jquery_script.src = proveit.JQUERY_SCRIPT_URL;
     var jquery_done = false;
 
     jquery_script.onload = jquery_script.onreadystatechange = function() {
@@ -2542,7 +2560,7 @@ if(!String.prototype.trim)
     			this.readyState === "loaded" || this.readyState === "complete") ) {
     		jquery_done = true;
 
-		$.getScript('http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.3/jquery-ui.min.js', function()
+		jQuery.getScript(proveit.JQUERYUI_SCRIPT_URL, function()
 		{
 		    addOnloadHook(function()
 		    {
