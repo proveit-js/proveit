@@ -2183,7 +2183,7 @@ window.proveit = {
 			// details = '(' + formattedAuthor + ')';
 		// $('td.details', newchild).html(details);
 
-		// pick an icon based on ref type
+		// generate a URL based on ref type
 		var icon = ref.getIcon(), url = '', refType = ref.type;
 
 		switch(refType)
@@ -2202,6 +2202,9 @@ window.proveit = {
 				break;
 			case 'news':
 				url = ref.params['url'];
+				break;
+			case 'episode':
+				url = 'http://www.imdb.com/find?s=tt&q=' + escape(ref.params['title']);
 				break;
 		}
 		$('td.type', newchild).css('background-image','url('+icon+')');
