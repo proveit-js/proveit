@@ -17,41 +17,75 @@ include_once 'header.php';
 								<h1>A Look Inside</h1>
 							</div><!-- end #mainPic -->
 							<div id="mainBody"> 
-								<p class="leadIn">There's more to ProveIt than meets the eye. Adding, editing, viewing, and locating references on Wikipedia has never been this easy. Extra Text, Extra Text Extra Text, Extra Text Extra Text, Extra Text Extra Text, Extra Text </p>
-
-								<h3> FREE TO USE AND IMPROVE</h3>
-								<h4> <a id="Free"> Get ProveIt for Free </a> </h4>
+							
+								<p class="leadIn">There's more to ProveIt than meets the eye. Adding, editing, viewing, and locating references on Wikipedia has never been this easy. </p>
 								
-								<p>ProveIt is an Open-Source Wikipedia referencing tool.  It's entirely FREE to use. Getting started is simple and easy: You'll cite references like there's no tomorrow. </p>
-								
-								<h4> <a id="ImproveIt"> Contribute and Improve It</a></h4>
+								<h3>Easily create, edit, and find references<h3>
 
-								<p>ProveIt is entirely open-source. As a developer, you can contribute to ProveIt by adding and improving features that would benefit ProveIt users . We are convinced that the dedicated open-source community can help make ProveIt the definitive referencing tool for Wikipedia citations -- forever ending the woes of millions of Wikipedia editors and contributors.</p>		
-								<h3> Easily Create Citations </h3>
-                                <h4> <a id="SimpleGui">Clean and Simple Interface</a></h4>	
-                                
-                                <p>ProveIt is an open-source Wikipedia referencing tool.  Quisque et leo ac lacus faucibus pellentesque et ac dui. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut sodales adipiscing sem at viverra. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Aliquam erat volutpat.</p>		
-                                
-                                 <h4> <a id="ViewAll">View All References Per Article</a></h4>	
-                                
-                                <p>ProveIt is an open-source Wikipedia referencing tool.  Quisque et leo ac lacus faucibus pellentesque et ac dui. Lorem ipsum dolor sit amet, consectetur adipiscing elit. </p>	
-                                
-                                 <h4> <a id="LocateRef">Locate References in One Click</a></h4>	
-                                
-                                <p>ProveIt is an open-source Wikipedia referencing tool.  Quisque et leo ac lacus faucibus pellentesque et ac dui. Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>	
-                                
-                                <h4> <a id="AddEdit">Add and Edit References</a></h4>	
-                                
-                                <p>ProveIt is an open-source Wikipedia referencing tool.  Quisque et leo ac lacus faucibus pellentesque et ac dui. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut sodales adipiscing sem at viverra. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Aliquam erat volutpat.</p>	
-                                
-								<h3> Produce Clean Code </h3>
-                                <h4> <a id="CleanCode">Clean, Accurate Code Everytime</a></h4>	
-                                
-                                <p>ProveIt is an open-source Wikipedia referencing tool.  Quisque et leo ac lacus faucibus pellentesque et ac dui. Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>		
-                                
-                                <h4> <a id="Automatic">Automatic Wikipedia Formatting</a></h4>	
-                                
-                                <p>ProveIt is an open-source Wikipedia referencing tool.  Quisque et leo ac lacus faucibus pellentesque et ac dui. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut sodales adipiscing sem at viverra. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Aliquam erat volutpat.</p>										
+								<h4>Use most popular citation formats</h4>
+								<ul>
+									<li>Optimized for one of Wikipedia&rsquo;s most common citation formats, Cite</li>
+									<li>Supports all major reference types -- some better than others</li>
+								</ul>
+
+								<h4>There when you need it, gone when you don&rsquo;t</h4>
+								<ul>
+									<li>Automatically loads when you&rsquo;re on a Wikipedia edit page, hides when you leave</li>
+									<li>Manually show or hide ProveIt with one click</li>
+								</ul>
+
+								<h4>Instantly find the reference you want</h4>
+								<ul>
+									<li>Visualizes all references in a single list</li>
+									<li>Easily scannable -- title and icon for ref type</li>
+									<li>Click a reference to instantly locate it in the Wikipedia edit box</li>
+								</ul>	
+
+								<h4>No need to memorize complex syntax</h4>
+								<ul>
+									<li>Visual interface for adding and editing references</li>
+									<li>Shows which fields are required and which are optional</li>
+									<li>Add and remove fields with one click</li>
+								</ul>	
+
+								<h4>References with multiple citations -- no longer a headache</h4>
+								<ul>
+									<li>Visually groups together multiple citations of a reference under a single heading</li>
+									<li>Cite the reference anywhere else in the article with one click</li>
+								</ul>	
+
+								<h4>Create valid references and fix ones that aren&rsquo;t</h4>
+								<ul>
+									<li>Produces clean, valid code every time</li>
+									<li>Broken or invalid references are easily identifiable in red</li>
+								</ul>	
+
+								<hr />
+
+								<h3>Easily install, update, and use ProveIt</h3>
+
+								<h4>Free and open source</h4>
+								<ul>
+									<li>Just like Wikipedia itself</li>
+									<li>Never costs you anything to use</li>
+									<li>Constantly improved by the open source community -- or improve it yourself</li>
+								</ul>	
+
+								<h4>Quick installation</h4>
+								<ul>
+									<li>Just copy one line of code into your Wikipedia user page and save it</li>
+								</ul>	
+
+								<h4>Works anywhere, any browser, all of the time</h4>
+								<ul>
+									<li>Cross-browser compatible: Internet Explorer, Firefox, Chrome, Safari, Opera, etc.</li>
+									<li>Linked to your Wikipedia account, so it shows up as soon as you log in -- no need to install on multiple computers</li>
+								</ul>
+
+								<h4>Automatic updates</h4>
+								<ul>
+									<li>Always loads the latest fixes and features, instantly and automatically -- you do nothing</li>
+								</ul>											
 								<!--table>      
 									<tr>
 										<td style="background-color: #2682c7; ">
@@ -69,24 +103,22 @@ include_once 'header.php';
 						<td> 
 							<h2> More To It</h2>
 							<div id="sideTableofContents">
-								<h3 class="first"> Free to Use and Improve</h3>
+								<h3 class="first">Easily create, edit, and find references</h3>
 								<ul>
-									<li><a href="#Free"> Get ProveIt for Free </a></li>
-									<li><a href="#ImproveIt"> Contribute and Improve It </a></li>
+									<li><a href="#">Use most popular citation formats</a></li>
+									<li><a href="#">There when you need it, gone when you don&rsquo;t</a></li>
+									<li><a href="#">Instantly find the reference you want</a></li>
+									<li><a href="#">No need to memorize complex syntax</a></li>
+									<li><a href="#">References with multiple citations -- no longer a headache</a></li>
+									<li><a href="#">Create valid references and fix ones that aren&rsquo;t</a></li>
 								</ul>
 								
-								<h3> Easily Create Citations</h3>
+								<h3>Easily install, update, and use ProveIt</h3>
 								<ul>
-                                	<li><a href="#SimpleGui"> Simple User Interface </a></li>
-									<li><a href="#ViewAll">View All References Together</a></li>
-									<li><a href="#LocateRef">Locate References in One Click </a></li>
-									<li><a href="#AddEdit">Add and Edit References</a></li>
-								</ul>
-								
-								<h3> Produce Clean Code </h3>
-								<ul>
-									<li><a href="#CleanCode">Clean, Accurate Code Everytime</a></li>
-									<li><a href="#Automatic">Automatic Wikipedia Formatting</a></li>
+									<li><a href="#">Free and open source</a></li>
+									<li><a href="#">Quick installation</a></li>
+									<li><a href="#">Works anywhere, any browser, all of the time</a></li>
+									<li><a href="#">Automatic updates</a></li>
 								</ul>
 							</div>
 					  </td>

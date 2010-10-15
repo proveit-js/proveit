@@ -27,8 +27,8 @@ div#superContainer a {
 	div#superContainer a img
 	{
 		border: 0;
-		position:relative;
-		}	
+		/*position:relative;*/
+		}
 	
 div#superContainer p {
 	margin: 0px 5px 10px 5px;
@@ -39,9 +39,20 @@ div#superContainer p {
 		margin: 10px 5px;
 		}
 
-div#superContainer li {
-	line-height:18px;
-	font-size:14px;
+div#superContainer ul {
+	margin-bottom: 15px;
+	}
+	
+	div#superContainer li {
+		line-height:18px;
+		font-size:14px;
+		margin-left: 20px;
+		}
+	
+div#superContainer hr {
+	height: 1px;
+	background-color: goldenrod;
+	border: 0;
 	}
 
 div#superContainer td {
@@ -72,9 +83,21 @@ div#superContainer h2 {
 	font-weight:bold;
 	text-shadow: 1px 1px 1px #777;
 	text-transform: uppercase;
-	}	
+	}
 	
 /* --- begin main nav menu --- */
+
+/* screenshot styles */
+
+a.screenshot img {
+	border: 0;
+	margin: 0 0 0 10px; padding: 0;
+	}
+	
+h3.screenshot {
+	margin: 5px 0 10px 10px; padding: 0;
+	color: #FDDB00;
+	}
 
 ul#primary-nav {
 	list-style: none;
