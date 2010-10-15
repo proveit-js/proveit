@@ -2,116 +2,43 @@
 /* CSS Document */
 
 /*--------------------- General Styling ---------*/
-* {
-	padding: 0; margin: 0;
-	}
-
-div#proveit a img {
-	border: 0;
-	}
-
-div#proveit button.ui-button-icon-only
-{
-	margin: 0; padding: 0;
-	height: 20px; width: 20px;
-	font-size: 11px;
-	vertical-align: top;
-	/*margin: 0 !important; padding: 0 !important;
-	height: 15px; width: 15px;
-	font-size: 11px;
-	vertical-align: top;*/
+*{
+padding: 0px;
+margin: 0px;
 }
 
-div#proveit h1 button.ui-button-icon-only
-{
-	 margin: 3px 5px 0 0; padding: 0;
-	 height: 25px; width: 25px;
-}
-
-div#proveit div.inputs input.paramvalue {
-	height: 18px;
-	width: 480px !important;
-	}
+body{
 	
-div#proveit h1 span.ui-icon
-{
-	/*display: none;*/
-}
-
-div#proveit span.ui-button-icon-primary
-{
-/*display: none;*/
-}
-	
-div#proveit h1 span.ui-button-text
-{
-	
-	/*padding: 0;*/
-	/*padding: 0.1em;*/
-	/*display: none;*/
-}
-	
-body {	
 	font-family: Arial, Helvetica, sans-serif;
 	background-color: #000;
-	}
+}
 
-div#superContainer a {
-	text-decoration:none;
-	}	
-
-	div#superContainer a img
-	{
-		border: 0;
-		position:relative;
-		}	
-	
-div#superContainer p {
+p{
 	margin: 0px 5px 10px 5px;
 	padding: 0;
-	}
 
-	div#superContainer p.leadIn {
-		margin: 10px 5px;
-		}
+}
 
-div#superContainer li {
-	line-height:18px;
-	font-size:14px;
-	}
+p.leadIn{
+	margin: 10px 5px;
+}
 
-div#superContainer td {
-	vertical-align:top;	
-	}
+li{
+line-height:18px;
+font-size:14px;
+}
 
-div#superContainer h1{
-	position: absolute; 
-	bottom:5px;
-	left:0px;
-	font-size:48px;
-	font-weight:bold;
-	color:#fddb00;
-	padding-left:10px;
-	text-shadow: 1px 1px 3px #000;
-	text-transform: uppercase;
-	}	
+a img
+{
+	border: 0;
+	position:relative;
+}
 
-div#superContainer h2 {
-	width:254px; /*-- offseting the Padding to create indentation-*/
-/*	float:right; */
-	background-color:#FFF;
-	color:#2682c7;
-	margin:5px 0px 5px 0px;
-	padding:10px 15px 10px 5px;
-	font-size:24px;
-	text-align:right;
-	font-weight:bold;
-	text-shadow: 1px 1px 1px #777;
-	text-transform: uppercase;
-	}	
-	
+td{
+vertical-align:top;	
+}
+
 /* --- begin main nav menu --- */
-
 ul#primary-nav {
 	list-style: none;
 	margin: 35px 0 0 0; padding: 0 0 0.5em 0;
@@ -119,67 +46,67 @@ ul#primary-nav {
 	border-bottom: 2px solid #FDDB00;
 	}
 
-	ul#primary-nav li {
-		list-style: none;
-		margin: 0 1em 0 0; padding: 0;
-		display: inline;
-		}
+ul#primary-nav li {
+	list-style: none;
+	margin: 0 1em 0 0; padding: 0;
+	display: inline;
+	}
 	
-		ul#primary-nav li a:link, ul#primary-nav li a:visited {
-			color: #fff;
-			font-size: 20px;
-			text-transform: uppercase;
-			}
+ul#primary-nav li a:link, ul#primary-nav li a:visited {
+	color: #fff;
+	font-size: 20px;
+	text-transform: uppercase;
+	}
 	
-		ul#primary-nav li a:hover {
-			color: #2682c7;
-			}	
-			
-			ul#primary-nav li a.selected:link, ul#primary-nav li a.selected:visited {	
-				color: #FDDB00;
-				}
+ul#primary-nav li a:hover {
+	color: #2682c7;
+	}	
 
-			ul#primary-nav li a.selected:hover {	
-				color: #2682c7;
-				}				
+ul#primary-nav  ul {
+	display: none;
+	list-style: none;
+	margin: 0; padding: 0;
+	position: absolute;
+	top: 70px;
+	}
 
-	ul#primary-nav  ul {
-		display: none;
-		list-style: none;
-		margin: 0; padding: 0;
-		position: absolute;
-		top: 70px;
-		}
-
-		ul#primary-nav ul li {
-			list-style: none;
-			margin: 0 0.5em 0 0; padding: 0;
-			display: inline;
-			}
+ul#primary-nav ul li {
+	list-style: none;
+	margin: 0 0.5em 0 0; padding: 0;
+	display: inline;
+	}
 	
-			ul#primary-nav ul li a:link, ul#primary-nav ul li a:visited {
-				font-size: 14px;
-				/*color: #FDDB00;*/
-				text-transform: none;
-				}
+ul#primary-nav ul li a:link, ul#primary-nav ul li a:visited {
+	font-size: 14px;
+	/*color: #FDDB00;*/
+	text-transform: none;
+	}
 	
-			ul#primary-nav ul li a:hover {
-				/*color: #2682c7; */
-				}	
+ul#primary-nav ul li a:hover {
+	/*color: #2682c7; */
+	}	
 
+ul#primary-nav li a.selected:link, ul#primary-nav li a.selected:visited {	
+	color: #FDDB00;
+	}
+
+ul#primary-nav li a.selected:hover {	
+	color: #2682c7;
+	}	
+	
 /* --- end main nav menu --- */
 
 /*------------------------- DIV Formatting ---*/
 
-div#superContainer {
+div#superContainer{
 	width:960px;
 	margin:auto;	
-	}
+}
 
-div#logoContainer {
+div#logoContainer{
 	margin-top:19px;
 	width:250px;
-	}
+}
 
 /*
 div#navContainer{
@@ -187,103 +114,95 @@ div#navContainer{
 }
 */
 
-div#getProveIt {
+div#getProveIt{
 	width:250px;
-	}
+}
 
-div#leadInPic {
+div#leadInPic{
 	width:960px;
 	text-align:center;
 	background-color:#2682c7;
 	padding:10px 0px 6px 0px;
-	}
+}
 
-div.borderLine {
+div.borderLine{
 	border-bottom:#fddb00 2px solid;
-	}
+}
 
-	div.borderLine.content {
-		margin: 10px 15px 5px 10px;
-		}
+div.borderLine.content{
+	margin: 10px 15px 5px 10px;
+}
 
-	div.borderLine.footer {
-		width:960px;
-		margin: 15px 0px 15px 0px;
-		}
+div.borderLine.footer{
+	width:960px;
+	margin: 15px 0px 15px 0px;
+}
 
-	div.borderLine.subcontent {
-		width:274px;
-		}
+div.borderLine.subcontent{
+	width:274px;
+}
 
-div#mainBody {
+div#mainBody{
 	display: block;
 	border-top:#fddb00 2px solid;
 	margin: 10px 15px 5px 10px;
 	padding: 5px 0; /* top + bottom, left + right */
 	font-size:14px;
 	line-height: 18px;
-	color:#FFF;	
-	}
+	color:#FFF;
 	
-	div#mainBody h3 {
-		font-size:18px;
-		font-weight:bold;
-		color:#fddb00;
-		padding:5px 0px 5px 5px;
-		text-shadow: 0px 0px 3px #2633ad;
-		text-transform: uppercase;
-		}
-		
-	div#mainBody h4 {
-		margin: 0px;
-		font-size: 16px;
-		color:#ffffff;
-		padding: 2px 0px 2px 5px;
-		}	
+}
 
 /*------ Main Picture for Each Page-------*/
-
-div#mainPic {
+div#mainPic{
 	position:relative;
 	height:193px;
 	width:661px; 
 	margin:5px 5px 5px 10px;
-	}
+}
 
-	div#mainPic.index {
-		background-image:url(img/citationPopo.jpg);	
-		}
+div#mainPic.index{
+	background-image:url(img/citationPopo.jpg);	
+}
 
-	div#mainPic.features {
-		background-image:url(img/features.jpg);	
-		}
+div#mainPic.features{
+	background-image:url(img/features.jpg);	
+}
 
-	div#mainPic.tutorials {
-		background-image:url(img/tutorials.jpg);	
-		}
+div#mainPic.tutorials{
+	background-image:url(img/tutorials.jpg);	
+}
 
-	div#mainPic.documentation {
-		background-image:url(img/documentation.jpg);	
-		}
+div#mainPic.documentation{
+	background-image:url(img/documentation.jpg);	
+}
 
-	div#mainPic.screenshots {
-		background-image:url(img/screenshots.jpg);	
-		}
+div#mainPic.screenshots{
+	background-image:url(img/screenshots.jpg);	
+}
 
-	div#mainPic.theteam {
-		background-image:url(img/theteam.jpg);	
-		}
+div#mainPic.theteam{
+	background-image:url(img/theteam.jpg);	
+}
 
-	div#mainPic.research {
-		background-image:url(img/research.jpg);	
-		}
+div#mainPic.research{
+	background-image:url(img/research.jpg);	
+}
 
-	div#mainPic.reportabug {
-		background-image:url(img/reportabug.jpg);	
-		}
+div#mainPic.reportabug{
+	background-image:url(img/reportabug.jpg);	
+}
 
+div#mainPic.wiki{
+	background-image:url(img/wiki.jpg);	
+}
+
+div#mainPic.gCode{
+	background-image:url(img/gCode.jpg);	
+}
 
 /* END Main Picture for each Page */
+
 
 /*** Picture Divs for USERS, DEVELOPERS, and ABOUT */
 
@@ -321,7 +240,20 @@ a.left {
 
 /*** END Picture Divs for USERS, DEVELOPERS, and ABOUT */
 
-div#recommendationHeader {
+h1{
+	position: absolute; 
+	bottom:5px;
+	left:0px;
+	font-size:48px;
+	font-weight:bold;
+	color:#fddb00;
+	padding-left:10px;
+	text-shadow: 1px 1px 3px #000;
+	text-transform: uppercase;
+
+}
+
+div#recommendationHeader{
 	margin: 0px 10px 0px 10px;
 	font-weight:bold;
 	color:#fddb00;
@@ -329,180 +261,277 @@ div#recommendationHeader {
 	font-size:36px;
 	text-shadow: 1px 1px 2px #2633ad;
 	border-bottom: #fddb00 2px solid;
-	}
+}
 
-div.recommend {
+div.recommend{
 	position:relative;
 	background-color:#FFF;
 	margin:10px 10px 25px 10px;
 	width:323px;
 	height:80px;
-	}
+}
 
-	div.recommend.left {
-		float:left;
-		}
+div.recommend.left{
+	float:left;
+}
 
-	div.recommend.right {
-		float:right;
-		}
+div.recommend.right{
+	float:right;
+}
 
-div.recommendText {
+
+
+div.recommendText{
 	display:block;
 	position:absolute;
 	font-size:18px;
 	margin-top:10px;
-	}
+}
 
-	div.recommendText.firstLine {
-		bottom:40px;
-		left:10px;
-		color:#2682c7;
-		text-shadow: 0px 0px 1px #777;
-		}
 
-	div.recommendText.secondLine {
-		bottom:20px;
-		left:10px;
-		}
+div.recommendText.firstLine{
+	bottom:40px;
+	left:10px;
+	color:#2682c7;
+	text-shadow: 0px 0px 1px #777;
+}
 
-div#sideTableofContents {
+div.recommendText.secondLine{
+	bottom:20px;
+	left:10px;
+}
+
+
+div#sideTableofContents li a{
+/*	width:254px;
+	text-align:right;
+	float: right; 
+	background-color:#fddb00;
+	*/
+	margin:5px 0px 5px 0px;
+	padding:7px 5px 7px 5px;
+}
+
+
+div#sideTableofContents li{
+	list-style: none;
+}
+
+h2{
+	width:254px; /*-- offseting the Padding to create indentation-*/
+/*	float:right; */
+	background-color:#FFF;
+	color:#2682c7;
+	margin:5px 0px 5px 0px;
+	padding:10px 15px 10px 5px;
+	font-size:24px;
+	text-align:right;
+	font-weight:bold;
+	text-shadow: 1px 1px 1px #777;
+	text-transform: uppercase;
+}
+
+div#sideTableofContents{
 	width:254px;
 	text-align:right;
 	/*float: right;*/
 	background-color:#fddb00;
 	padding:5px 15px 25px 5px;
+}
+
+div#sideTableofContents h3{
+	font-size:16px;
+	color:#000;
+	font-weight:bold;
+	margin: 14px 5px 0px 0px;
+	text-transform: uppercase;
+}
+
+div#sideTableofContents h3.first{
+	margin-top: 5px;
+	text-transform: uppercase;
+	
+}
+
+div#mainBody h3 {
+	font-size:18px;
+	font-weight:bold;
+	color:#fddb00;
+	padding:5px 0px 5px 5px;
+	text-shadow: 0px 0px 3px #2633ad;
+	text-transform: uppercase;
 	}
+	
+div#mainBody h4{
+	margin: 0px;
+	font-size: 16px;
+	color:#ffffff;
+	padding: 2px 0px 2px 5px;
+	
 
-	div#sideTableofContents h3 {
-		font-size:16px;
-		color:#000;
-		font-weight:bold;
-		margin: 14px 5px 0px 0px;
-		text-transform: uppercase;
-		}
-
-		div#sideTableofContents h3.first {
-			margin-top: 5px;
-			text-transform: uppercase;
-			}
-
-	div#sideTableofContents li {
-		list-style: none;
-		}
-		
-		div#sideTableofContents li a {
-		/*	width:254px;
-			text-align:right;
-			float: right; 
-			background-color:#fddb00;
-			*/
-			margin:5px 0px 5px 0px;
-			padding:7px 5px 7px 5px;
-			}			
-
-			/*------ feature highlight links ---*/
-			div#sideTableofContents li a:link, div#sideTableofContents li a:visited, div#sideTableofContents li a:active {
-				line-height:18px;
-				color:#000;
-				}
-
-			div#sideTableofContents li a:hover {
-				color:#2682c7;
-				text-decoration:underline;
-				}
-			/*------ END feature highlight links ---*/			
-
+}
 
 /*--- footer divs --- */
 
-div#footerContainer {
+div#footerContainer{
 	margin: 10px 0px 20px 0px;
-	}
+}
 
-div#footerCredits {
+div#footerCredits{
 	font-size:12px;
 	float:right;
 	margin-right:10px;
-	}
+}
 
-div#footerNav {
+div#footerNav{
 	margin-left:70px;
 	font-size:12px;
-	}
-	
-	div#footerNav a.selected:link, div#footerNav a.selected:visited {
-		font-weight: bold;
-		text-transform: uppercase;
-		}	
-	
+}
 /*------------------------- END DIV Formatting ---*/
 
 
 /*---- IMAGE ROLLOVER ----*/
-a.getProveit:link, a.getProveit:visited {
+a.getProveit {
 	display:block;
 	width:250px; 
 	height:100px; 
 	background-image:url(img/get.jpg); 
 	background-repeat:no-repeat; 
 	overflow:hidden;
-	} 
+} 
 
-a.getProveit:hover { 
+a:hover.getProveit { 
 	width:250px; 
 	height:100px; 
 	background-image:url(img/get_rollover.jpg); 
 	background-repeat:no-repeat;
-	}
+}
 /*----END IMAGE ROLLOVER ----*/
+
+
+
+
+
+/* BEGIN HYPERLINK FORMATTING */
+
+a{
+	text-decoration:none;
+}
+
+
+/********** BODY HYPERLINKS ********/
+
+/*------ feature highlight links ---*/
+div#sideTableofContents li a:link{
+	line-height:18px;
+	color:#000;
+}
+
+div#sideTableofContents li a:visited{
+	color:#000;
+}
+
+div#sideTableofContents li a:active{
+	color:#000;
+}
+
+div#sideTableofContents li a:hover{
+	color:#2682c7;
+	text-decoration:underline;
+}
+/*------ END feature highlight links ---*/
 
 
 /*-- Recommendations Hyperlinks--*/
 
-a.recommendLink:link, a.recommendLink:visited, a.recommendLink:active {
-	display:block;
-	color:#000;
-	font-weight:bold;
-	}
-	
-a.recommendLink:hover {
-	text-decoration:underline;
-	}
-	
+a.recommendLink:link{
+display:block;
+color:#000;
+font-weight:bold;
+}
+
+a.recommendLink:visited{
+display:block;
+color:#000;
+font-weight:bold;
+}
+
+a.recommendLink:active{
+display:block;
+color:#000;
+font-weight:bold;
+}
+
+a.recommendLink:hover{
+display:block;	
+color:#000;
+font-weight:bold;
+text-decoration:underline;
+}
 /*-- END Recommendations Hyperlinks--*/
 
-/*-- Credit Hyperlinks--*/
-a.footerLink:link, a.footerLink:visited, a.footerLink:active {
-	color:#FFF;
-	}
 
-a.footerLink:hover {
+
+/********** FOOTER HYPERLINKS ********/
+/*-- Credit Hyperlinks--*/
+a.footerLink:link{
+	color:#FFF;
+}
+
+a.footerLink:visited{
+	color:#FFF;
+}
+
+a.footerLink:active{
+	color:#FFF;
+}
+
+a.footerLink:hover{
+	color:#FFF;
 	text-decoration:underline;
-	}
-	
+}
 /*-- END Credit Hyperlinks--*/
+
 
 /*-- Footer Navigation Links --*/
 
-a.footerNavLink:link, a.footerNavLink:visited, a.footerNavLink:active {
+a.footerNavLink:link{
 	color:#fddb00;
 	display:inline;
-	}
+}
 
-a.footerNavLink:hover {
+a.footerNavLink:visited{
+	color:#fddb00;
+	display:inline;
+}
+
+a.footerNavLink:active{
+	color:#fddb00;
+	display:inline;
+}
+
+a.footerNavLink:hover{
+	color:#fddb00;
+	display:inline;
 	text-decoration:underline;
-	}
+	
+}
 
+div#footerNav a.selected:link, div#footerNav a.selected:visited{
+	font-weight: bold;
+	text-transform: uppercase;
+}
 /*-- END Footer Navigation Links --*/
+/*------------------------- end of Hyperlink Formatting ---*/
+
 
 /* Begin Demo */
 
 /* Override proveit_styles.css for proveit h1 on demo */
-div#proveit h1 {
-	/*position: static;
+div#proveit h1{
+	position: static;
 	text-shadow: none;
-	text-transform: none;*/
-	}
+	text-transform: none;
+}
 
 /* End Demo */

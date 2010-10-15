@@ -19,8 +19,8 @@
 									
 									<br/><span style="color:#FFF; padding-right:10px;">DEVELOPERS </span>
 									<a href="documentation.php" class="footerNavLink <?php if($page == 'Documentation') echo ' selected'; ?>">Documentation</a> -			
-									<a href="http://code.google.com/p/proveit-js/" class="footerNavLink">Google Code Home </a> -
-									<a href="" class="footerNavLink"> Wiki </a> 
+									<a href="gCode.php" class="footerNavLink"  <?php if($page == 'gCode') echo ' selected'; ?>">Google Code Home </a> -
+									<a href="wiki.php" class="footerNavLink"  <?php if($page == 'Wiki') echo ' selected'; ?>"> Wiki </a> 
 									   
 									<br/><span style="color:#FFF; padding-right:10px;">ABOUT US </span>
 									<a href="research.php" class="footerNavLink <?php if($page == 'Research') echo ' selected'; ?>">Research </a> -

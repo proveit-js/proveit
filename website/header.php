@@ -4,13 +4,11 @@
 	<link href="proveit_styles.css" rel="stylesheet" type="text/css" />
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<title>ProveIt - <?php echo $page; ?></title>
-<?php if ($jQuery != false): ?>
 	<script type="text/javascript" src="http://www.google.com/jsapi"></script> 
 	<script type="text/javascript"> 
 		google.load("jquery", "1");
 		google.setOnLoadCallback(function(){});
 	</script> 
-<?php endif; ?>
 	<script src="scripts.js" type="text/javascript"></script>
 </head>
 <body>
@@ -36,12 +34,14 @@ switch($page)
 	case 'Features':
 	case 'Screenshots':
 	case 'Tutorials':
-	case 'Report a Bug':
+	case 'Report-a-Bug':
 	case 'Demo':
 		$primary = 'Users';
 		break;
 	
 	case 'Documentation':
+	case 'Wiki':
+	case 'gCode':
 		$primary = 'Developers';
 		break;
 	
@@ -59,7 +59,7 @@ switch($page)
 									<li><a href="features.php"<?= $page == 'Features' ? ' class="selected"' : '' ?>>Features</a></li>
 									<li><a href="screenshots.php"<?= $page == 'Screenshots' ? ' class="selected"' : '' ?>>Screenshots</a></li>
 									<li><a href="tutorials.php"<?= $page == 'Tutorials' ? ' class="selected"' : '' ?>>Tutorials</a></li>
-									<li><a href="reportabug.php"<?= $page == 'Report a Bug' ? ' class="selected"' : '' ?>>Report a Bug</a></li>
+									<li><a href="reportabug.php"<?= $page == 'Report-a-Bug' ? ' class="selected"' : '' ?>>Report a Bug</a></li>
 									<li><a href="demo.php"<?= $page == 'Demo' ? ' class="selected"' : '' ?>>Demo</a></li>
 								</ul>
 							</li>
@@ -67,8 +67,8 @@ switch($page)
 								<a href="developers.php" class="primary-nav-link<?= $primary == 'Developers' ? ' selected' : '' ?>">Developers</a>
 								<ul<?= $primary == 'Developers' ? ' style="display: block;"' : '' ?>>
 									<li><a href="documentation.php"<?= $page == 'Documentation' ? ' class="selected"' : '' ?>>Documentation</a></li>
-									<li><a href="http://code.google.com/p/proveit-js/">Google Code Project</a></li>
-									<li><a href="http://code.google.com/p/proveit-js/w/list">Wiki</a></li>
+									<li><a href="gCode.php" <?= $page == 'gCode' ? ' class="selected"' : '' ?>>Google Code Project</a></li>
+									<li><a href="wiki.php" <?= $page == 'Wiki' ? ' class="selected"' : '' ?>>Wiki</a></li>
 								</ul>
 							</li>
 							<li>
