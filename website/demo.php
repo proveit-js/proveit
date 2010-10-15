@@ -1,7 +1,6 @@
 <?php
 
 $page = 'Demo';
-$jQuery = false;
 include_once 'header.php';
 
 ?>
@@ -11,9 +10,16 @@ include_once 'header.php';
 <script type="text/javascript">
 //<![CDATA[
 
-function loadArticle()
+function loadArticle(articleName)
 {
-  var articleName = $('#articleName').val();
+  if(articleName == null)
+    articleName = $('#articleName').val();
+  else
+    $('#articleName').val(articleName);
+	
+  $('#articleName').attr('readonly','readonly');
+  $('#articleBtn').attr('disabled','disabled');
+  
   var apiURL = 'http://en.wikipedia.org/w/api.php?action=query&prop=revisions&titles=' + encodeURIComponent(articleName) + '&rvprop=content&format=json&callback=?';
   $.getJSON(apiURL, function(response)
   {
@@ -21,6 +27,11 @@ function loadArticle()
     {
       throw response.error; 
     }
+	else
+	{
+      $('#articleName').removeAttr('readonly');
+      $('#articleBtn').removeAttr('disabled');	  
+	}
     var pages = response.query.pages;
     for(var key in pages)
     {
@@ -48,20 +59,24 @@ wgAction="edit";
 $(function()
 {
     loadArticle();
-    $('#demoForm').submit(loadArticle);
+    $('#demoForm').submit(function(){
+			loadArticle()
+		});
 });
 //]]>
 </script>
 <div id="mainBody">
-<p><span style="font-size: large;">Pick an article, any article.</span> See that cool-looking gadget in the bottom right corner of this window? <strong>That's ProveIt</strong>, and you can test drive it right here with any Wikipedia article. We've loaded the article on Georgia Tech by default, but if you want to try a different one, just type the article name into the box below and click "Load page."</p>
+<p><span style="font-size: large;">Pick an article, any article.</span> See that cool-looking gadget in the bottom right corner of this window? <strong>That's ProveIt</strong>, and you can test drive it right here with any Wikipedia article. We've preloaded the article on Georgia Tech by default, but if you want to try a different one, just type the article name into the box below and click "Load article."</p>
 <form id="demoForm" action="">
-<fieldset>
-<label for="articleName">Article name:</label> 
-<input id="articleName" size="35" value="Georgia Institute of Technology"/>
-<input id="articleBtn" type="submit" value="Load page"/><br/>
-</fieldset>
+	<fieldset>
+		<label for="articleName">Wikipedia article name:</label>
+		<input id="articleName" size="35" style="width: 300px;" value="Georgia Institute of Technology"/>
+		<input id="articleBtn" type="submit" value="Load article"/>
+		<div>Other suggestions: <a href="#" onclick="loadArticle('ANAK Society')">ANAK Society</a> &#183; <a href="#" onclick="loadArticle('Tech Tower')">Tech Tower</a> &#183; <a href="#" onclick="loadArticle('Ramblin\' Wreck')">Ramblin' Wreck</a></div>
+
+		<label for="wpTextbox1">Wikipedia article content:</label>
+		<textarea rows="25" cols="115" style="width: 100%" id="wpTextbox1"></textarea>
+	</fieldset>
 </form>
-<span>Article content:</span><br/>
-<textarea rows="25" cols="115" style="width: 100%" id="wpTextbox1"></textarea><br/>
 </div>
 <?php include_once 'footer.php'; ?>

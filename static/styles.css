@@ -74,7 +74,10 @@ div#proveit tr.selected td {
 div#proveit tr:hover td {
 	background-color: #000;
 	color: #fff;
-	}	
+	}
+div#proveit tr.selected:hover td {
+	background-color: #2682c7;
+	}
 div#proveit td {
 	padding: 5px 3px 3px 3px;
 	vertical-align: top;
@@ -163,7 +166,7 @@ div#proveit div.expanded {
 		text-decoration: none;
 		}
 	
-	div#proveit div.expanded span.all-pointers a {
+	div#proveit div.expanded span.all-citations a {
 		margin: 0 0.5em;
 		text-transform: uppercase;
 		}
@@ -282,8 +285,6 @@ div#proveit .notification {
 div#proveit .hidden {
 	display: none;
 	}
-
-
 
 /*
  jqueryUI class modifications start here 
