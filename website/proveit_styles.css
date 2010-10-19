@@ -37,7 +37,7 @@ div#superContainer p {
 	padding: 0;
 	}
 
-div#superContainer ul {
+div#superContainer ul, div#superContainer ol {
 	margin-bottom: 15px;
 	}
 	
@@ -83,7 +83,12 @@ div#superContainer h3 {
 	margin: 0; padding: 2px 0 2px 5px;
 	font-size: 16px;
 	color: #fff;
-	}		
+	}
+
+div#superContainer code {
+	display: block;
+	padding: 10px;
+	}
 	
 /* screenshot styles */
 
