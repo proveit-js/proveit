@@ -20,6 +20,8 @@ include_once 'header.php';
 							</div><!-- end #mainPic -->
 							<div id="mainBody"> 
 							
+								<h2>How to Install ProveIt</h2>
+							
 								<p>Installing ProveIt is a piece of cake. Just follow these simple instructions:</p>
 
 								<ol>								
@@ -36,17 +38,7 @@ include_once 'header.php';
    
 							</div><!-- end #mainBody -->
 						</td>
-						<td id="sideTableofContents">
-							<h2> Features </h2>
-							
-							<h3> Open-Source</h3>
-							<ul>
-								<li><a href="#">Get ProveIt Now for Free </a></li>
-								<li><a href="#">Contribute and ImproveIt</a></li>
-							</ul>
-							
-
-					  </td>
+						<td id="sideTableofContents">&nbsp;</td>
 					</tr>
 				</table> 
 
