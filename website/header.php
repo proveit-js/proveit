@@ -12,14 +12,15 @@
 	<script src="scripts.js" type="text/javascript"></script>
 </head>
 <body>
-<div id="superContainer">
+
 <!-- Navigation Table -->
-				<table width="960" border="0" cellspacing="0" cellpadding="0" style="margin-bottom: 15px; ">
+<div style="background-color: #333;">
+				<table id="headerTable">
 					<tr>
 						<td style="width: 250px; ">
 							<div id="logoContainer">
 								<a href="index.php" class="img"><img src="img/proveit_logo.png" alt="ProveIt logo" /></a>
-							</div><!-- end #logoContainer -->
+							</div>
 						</td>
 						<td style="width: 460px;">
 
@@ -82,10 +83,10 @@ switch($page)
 							
 						</td>
 						<td style="width: 250px; ">
-							<div id="getProveIt">
-								<a href="" class="getProveit">&nbsp;</a>
-							</div><!-- end #getProveIt -->
+							<div id="getProveIt"><a href="install.php"></a></div>
 						 </td>
 					</tr>
 				</table>
 			<!-- End of Navigation Table -->
+</div>
+<div id="superContainer">	

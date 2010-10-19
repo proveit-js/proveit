@@ -8,15 +8,19 @@
 
 body {	
 	font-family: Arial, Helvetica, sans-serif;
+	color: #fff;
 	background-color: #000;
 	}
 
-div#superContainer a {
-	text-decoration:none;
-	}	
+div#superContainer {
+	padding: 0 25px;
+	}
+	
+div#superContainer a {}	
 
 	div#superContainer a:link, div#superContainer a:visited {
 		color: #FDDB00;
+		text-decoration:none;
 		}
 	
 	div#superContainer a:hover {
@@ -24,20 +28,14 @@ div#superContainer a {
 		text-decoration: underline;
 		}
 	
-	div#superContainer a img
-	{
-		border: 0;
-		/*position:relative;*/
-		}
+a img {
+	border: none;
+	}
 	
 div#superContainer p {
-	margin: 0px 5px 10px 5px;
+	margin: 0 0 10px 0;
 	padding: 0;
 	}
-
-	div#superContainer p.leadIn {
-		margin: 10px 5px;
-		}
 
 div#superContainer ul {
 	margin-bottom: 15px;
@@ -50,9 +48,10 @@ div#superContainer ul {
 		}
 	
 div#superContainer hr {
-	height: 1px;
-	background-color: goldenrod;
-	border: 0;
+	height: 2px;
+	background-color: #333;
+	border: none;
+	margin: 10px 0; padding: 0;
 	}
 
 div#superContainer td {
@@ -61,49 +60,45 @@ div#superContainer td {
 
 div#superContainer h1{
 	position: absolute; 
-	bottom:5px;
-	left:0px;
+	bottom:5px; left:0px;
 	font-size:48px;
 	font-weight:bold;
-	color:#fddb00;
-	padding-left:10px;
-	text-shadow: 1px 1px 3px #000;
+	color: #fff;
+	padding-left: 10px;
+	/*text-shadow: 1px 1px 3px #000;*/
 	text-transform: uppercase;
 	}	
 
+	
 div#superContainer h2 {
-	width:254px; /*-- offseting the Padding to create indentation-*/
-/*	float:right; */
-	background-color:#FFF;
-	color:#2682c7;
-	margin:5px 0px 5px 0px;
-	padding:10px 15px 10px 5px;
-	font-size:24px;
-	text-align:right;
-	font-weight:bold;
-	text-shadow: 1px 1px 1px #777;
+	font-size: 18px;
+	font-weight: bold;
+	color: #fff;
+	margin: 0; padding:5px 0px 5px 0;
+	/*text-shadow: 0px 0px 3px #2633ad;*/
 	text-transform: uppercase;
 	}
 	
-/* --- begin main nav menu --- */
-
+div#superContainer h3 {
+	margin: 0; padding: 2px 0 2px 5px;
+	font-size: 16px;
+	color: #fff;
+	}		
+	
 /* screenshot styles */
 
 a.screenshot img {
 	border: 0;
-	margin: 0 0 0 10px; padding: 0;
+	margin: 5px 0 15px 0; padding: 0;
 	}
 	
-h3.screenshot {
-	margin: 5px 0 10px 10px; padding: 0;
-	color: #FDDB00;
-	}
+/* --- begin main nav menu --- */
 
 ul#primary-nav {
 	list-style: none;
-	margin: 35px 0 0 0; padding: 0 0 0.5em 0;
+	margin: 0 0 5px 0; padding: 0 0 5px 0;
 	width: 440px;
-	border-bottom: 2px solid #FDDB00;
+	border-bottom: 2px solid #000;
 	}
 
 	ul#primary-nav li {
@@ -113,21 +108,23 @@ ul#primary-nav {
 		}
 	
 		ul#primary-nav li a:link, ul#primary-nav li a:visited {
-			color: #fff;
+			color: #FDDB00;
 			font-size: 20px;
 			text-transform: uppercase;
+			text-decoration: none;
 			}
-	
-		ul#primary-nav li a:hover {
-			color: #2682c7;
-			}	
 			
 			ul#primary-nav li a.selected:link, ul#primary-nav li a.selected:visited {	
-				color: #FDDB00;
-				}
+				color: #fff;
+				}			
+
+		ul#primary-nav li a:hover {
+			color: goldenrod;
+			text-decoration: underline;
+			}	
 
 			ul#primary-nav li a.selected:hover {	
-				color: #2682c7;
+				color: #fff;
 				}				
 
 	ul#primary-nav  ul {
@@ -162,79 +159,65 @@ div#superContainer {
 	width:960px;
 	margin:auto;	
 	}
+	
+table#headerTable {
+	width: 960px;
+	margin: 0 auto 20px auto; padding: 0 0 10px 0;
+	}
 
 div#logoContainer {
 	margin-top:19px;
 	width:250px;
 	}
 
-/*
-div#navContainer{
-	margin: 35px 10px 0px 10px;	
-}
-*/
-
 div#getProveIt {
 	width:250px;
 	}
+	/*---- IMAGE ROLLOVER ----*/
+	div#getProveIt a:link, div#getProveIt a:visited {
+		display: block;
+		width: 250px; height: 100px; 
+		background: url(img/get.jpg) no-repeat; 
+		} 
 
+	div#getProveIt a:hover { 
+		background: url(img/get_rollover.jpg) no-repeat; 
+		}
+	/*----END IMAGE ROLLOVER ----*/
+	
 div#leadInPic {
 	width:960px;
 	text-align:center;
-	background-color:#2682c7;
-	padding:10px 0px 6px 0px;
+	display: none;
 	}
-
-div.borderLine {
-	border-bottom:#fddb00 2px solid;
-	}
-
-	div.borderLine.content {
-		margin: 10px 15px 5px 10px;
-		}
-
-	div.borderLine.footer {
-		width:960px;
-		margin: 15px 0px 15px 0px;
-		}
-
-	div.borderLine.subcontent {
-		width:274px;
-		}
 
 div#mainBody {
 	display: block;
-	border-top:#fddb00 2px solid;
-	margin: 10px 15px 5px 10px;
-	padding: 5px 0; /* top + bottom, left + right */
-	font-size:14px;
+	border-top: 2px solid #333;
+	margin: 15px 0; padding: 15px 0 0 0;
+	font-size: 14px;
 	line-height: 18px;
-	color:#FFF;	
+	color: #FFF;	
+	}
+
+table#mainTable {
+	width: 940px;
+	margin-left: 20px;
+	margin-top: 15px;
+	border-bottom: 2px solid #333;
 	}
 	
-	div#mainBody h3 {
-		font-size:18px;
-		font-weight:bold;
-		color:#fddb00;
-		padding:5px 0px 5px 5px;
-		text-shadow: 0px 0px 3px #2633ad;
-		text-transform: uppercase;
-		}
-		
-	div#mainBody h4 {
-		margin: 0px;
-		font-size: 16px;
-		color:#ffffff;
-		padding: 2px 0px 2px 5px;
-		}	
+td#mainContent {
+	width: 661px;
+	}
 
 /*------ Main Picture for Each Page-------*/
 
 div#mainPic {
-	position:relative;
-	height:193px;
-	width:661px; 
-	margin:5px 5px 5px 10px;
+	position: relative;
+	height: 193px;
+	width: 661px; 
+	margin:0;
 	}
 
 	div#mainPic.index {
@@ -353,97 +336,49 @@ div.recommendText {
 		left:10px;
 		}
 
-div#sideTableofContents {
-	width:254px;
+td#sideTableofContents {
+/*	width:254px;*/
 	text-align:right;
-	/*float: right;*/
-	background-color:#fddb00;
-	padding:5px 15px 25px 5px;
+	padding-left: 20px;
 	}
-
-	div#sideTableofContents h3 {
-		font-size:16px;
-		color:#000;
-		font-weight:bold;
-		margin: 14px 5px 0px 0px;
-		text-transform: uppercase;
+	td#sideTableofContents h2 {
+		font-size: 24px;
 		}
-
-		div#sideTableofContents h3.first {
-			margin-top: 5px;
-			text-transform: uppercase;
-			}
-
-	div#sideTableofContents li {
+	td#sideTableofContents li {
 		list-style: none;
+		margin: 3px 0;
 		}
-		
-		div#sideTableofContents li a {
-		/*	width:254px;
-			text-align:right;
-			float: right; 
-			background-color:#fddb00;
-			*/
-			margin:5px 0px 5px 0px;
-			padding:7px 5px 7px 5px;
-			}			
-
-			/*------ feature highlight links ---*/
-			div#sideTableofContents li a:link, div#sideTableofContents li a:visited, div#sideTableofContents li a:active {
-				line-height:18px;
-				color:#000;
-				}
-
-			div#sideTableofContents li a:hover {
-				color:#2682c7;
-				text-decoration:underline;
-				}
-			/*------ END feature highlight links ---*/			
-
 
 /*--- footer divs --- */
 
-div#footerContainer {
-	margin: 10px 0px 20px 0px;
+table#footer {
+	margin: 15px 0;
+	font-size: 12px;
+	width: 100%;
+	border-collapse: collapse;
+	color: #fff;
 	}
+	table#footer td {
+		vertical-align: middle;
+		}
 
-div#footerCredits {
-	font-size:12px;
-	float:right;
-	margin-right:10px;
-	}
-
-div#footerNav {
-	margin-left:70px;
-	font-size:12px;
+td#footerLogo {
+	width: 150px;
 	}
 	
-	div#footerNav a.selected:link, div#footerNav a.selected:visited {
-		font-weight: bold;
-		text-transform: uppercase;
+td#footerNav {
+	padding-left: 130px;
+	}
+	td#footerNav a.selected:link, td#footerNav a.selected:visited {
+		color: #fff;
 		}	
+		
+td#footerCredits {
+	width: 274px;
+	text-align: right;
+	}
 	
 /*------------------------- END DIV Formatting ---*/
-
-
-/*---- IMAGE ROLLOVER ----*/
-a.getProveit:link, a.getProveit:visited {
-	display:block;
-	width:250px; 
-	height:100px; 
-	background-image:url(img/get.jpg); 
-	background-repeat:no-repeat; 
-	overflow:hidden;
-	} 
-
-a.getProveit:hover { 
-	width:250px; 
-	height:100px; 
-	background-image:url(img/get_rollover.jpg); 
-	background-repeat:no-repeat;
-	}
-/*----END IMAGE ROLLOVER ----*/
-
 
 /*-- Recommendations Hyperlinks--*/
 
@@ -458,30 +393,6 @@ a.recommendLink:hover {
 	}
 	
 /*-- END Recommendations Hyperlinks--*/
-
-/*-- Credit Hyperlinks--*/
-a.footerLink:link, a.footerLink:visited, a.footerLink:active {
-	color:#FFF;
-	}
-
-a.footerLink:hover {
-	text-decoration:underline;
-	}
-	
-/*-- END Credit Hyperlinks--*/
-
-/*-- Footer Navigation Links --*/
-
-a.footerNavLink:link, a.footerNavLink:visited, a.footerNavLink:active {
-	color:#fddb00;
-	display:inline;
-	}
-
-a.footerNavLink:hover {
-	text-decoration:underline;
-	}
-
-/*-- END Footer Navigation Links --*/
 
 /* Begin Demo */
 
@@ -500,6 +411,5 @@ input#articleBtn {
 	padding: 0 5px; margin: 0 0 0 10px;
 	font-weight: bold;
 	}
-
-
+	
 /* End Demo */
