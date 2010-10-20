@@ -102,7 +102,7 @@ include_once 'header.php';
 								</table -->     
 							</div><!-- end #mainBody -->
 						</td>
-						<td id="sideTableofContents">
+						<td id="sideTableofContents" style="visibility: hidden;">
 							<h2> More To It</h2>
 							<h3>Easily create, edit, and find references</h3>
 							<ul>

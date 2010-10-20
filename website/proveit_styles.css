@@ -8,8 +8,8 @@
 
 body {	
 	font-family: Arial, Helvetica, sans-serif;
-	color: #fff;
-	background-color: #000;
+	color: #000;
+	background-color: #fff;
 	}
 
 div#superContainer {
@@ -20,11 +20,12 @@ div#superContainer a {}
 
 	div#superContainer a:link, div#superContainer a:visited {
 		color: #FDDB00;
-		text-decoration:none;
+		color: #333;
+		text-decoration:underline;
 		}
 	
 	div#superContainer a:hover {
-		color: goldenrod;
+		color: #2682c7;
 		text-decoration: underline;
 		}
 	
@@ -49,7 +50,7 @@ div#superContainer ul, div#superContainer ol {
 	
 div#superContainer hr {
 	height: 2px;
-	background-color: #333;
+	background-color: #FDDB00;
 	border: none;
 	margin: 10px 0; padding: 0;
 	}
@@ -74,6 +75,7 @@ div#superContainer h2 {
 	font-size: 18px;
 	font-weight: bold;
 	color: #fff;
+	color: #2682c7;
 	margin: 0; padding:5px 0px 5px 0;
 	/*text-shadow: 0px 0px 3px #2633ad;*/
 	text-transform: uppercase;
@@ -82,7 +84,7 @@ div#superContainer h2 {
 div#superContainer h3 {
 	margin: 0; padding: 2px 0 2px 5px;
 	font-size: 16px;
-	color: #fff;
+	color: #000;
 	}
 
 div#superContainer code {
@@ -102,8 +104,8 @@ a.screenshot img {
 ul#primary-nav {
 	list-style: none;
 	margin: 0 0 5px 0; padding: 0 0 5px 0;
-	width: 440px;
-	border-bottom: 2px solid #000;
+	width: 420px;
+	border-bottom: 2px solid #666;
 	}
 
 	ul#primary-nav li {
@@ -124,7 +126,7 @@ ul#primary-nav {
 				}			
 
 		ul#primary-nav li a:hover {
-			color: goldenrod;
+			color: #2682c7;
 			text-decoration: underline;
 			}	
 
@@ -198,18 +200,18 @@ div#leadInPic {
 
 div#mainBody {
 	display: block;
-	border-top: 2px solid #333;
+	border-top: 2px solid #FDDB00;
 	margin: 15px 0; padding: 15px 0 0 0;
 	font-size: 14px;
 	line-height: 18px;
-	color: #FFF;	
+	color: #000;	
 	}
 
 table#mainTable {
 	width: 940px;
 	margin-left: 20px;
 	margin-top: 15px;
-	border-bottom: 2px solid #333;
+	border-bottom: 2px solid #FDDB00;
 	}
 	
 td#mainContent {
@@ -351,7 +353,7 @@ td#sideTableofContents {
 		}
 	td#sideTableofContents li {
 		list-style: none;
-		margin: 3px 0;
+		margin: 10px 0;
 		}
 
 /*--- footer divs --- */
@@ -361,7 +363,7 @@ table#footer {
 	font-size: 12px;
 	width: 100%;
 	border-collapse: collapse;
-	color: #fff;
+	color: #000;
 	}
 	table#footer td {
 		vertical-align: middle;
@@ -375,7 +377,8 @@ td#footerNav {
 	padding-left: 130px;
 	}
 	td#footerNav a.selected:link, td#footerNav a.selected:visited {
-		color: #fff;
+		color: #000;
+		font-weight: bold;
 		}	
 		
 td#footerCredits {

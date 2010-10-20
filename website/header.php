@@ -14,7 +14,7 @@
 <body>
 
 <!-- Navigation Table -->
-<div style="background-color: #333;">
+<div style="background-color: #000;">
 				<table id="headerTable">
 					<tr>
 						<td style="width: 250px; ">
@@ -22,7 +22,7 @@
 								<a href="index.php" class="img"><img src="img/proveit_logo.png" alt="ProveIt logo" /></a>
 							</div>
 						</td>
-						<td style="width: 460px;">
+						<td>
 
 <?php
 
