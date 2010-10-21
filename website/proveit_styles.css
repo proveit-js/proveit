@@ -50,7 +50,7 @@ div#superContainer ul, div#superContainer ol {
 	
 div#superContainer hr {
 	height: 2px;
-	background-color: #FDDB00;
+	background-color: #ccc;
 	border: none;
 	margin: 10px 0; padding: 0;
 	}
@@ -115,14 +115,14 @@ ul#primary-nav {
 		}
 	
 		ul#primary-nav li a:link, ul#primary-nav li a:visited {
-			color: #FDDB00;
+			color: #fff;
 			font-size: 20px;
 			text-transform: uppercase;
 			text-decoration: none;
 			}
 			
 			ul#primary-nav li a.selected:link, ul#primary-nav li a.selected:visited {	
-				color: #fff;
+				color: #fddb00;
 				}			
 
 		ul#primary-nav li a:hover {
@@ -131,7 +131,7 @@ ul#primary-nav {
 			}	
 
 			ul#primary-nav li a.selected:hover {	
-				color: #fff;
+				color: #2682c7;
 				}				
 
 	ul#primary-nav  ul {
@@ -200,7 +200,7 @@ div#leadInPic {
 
 div#mainBody {
 	display: block;
-	border-top: 2px solid #FDDB00;
+	border-top: 2px solid #ccc;
 	margin: 15px 0; padding: 15px 0 0 0;
 	font-size: 14px;
 	line-height: 18px;
@@ -211,7 +211,7 @@ table#mainTable {
 	width: 940px;
 	margin-left: 20px;
 	margin-top: 15px;
-	border-bottom: 2px solid #FDDB00;
+	border-bottom: 2px solid #ccc;
 	}
 	
 td#mainContent {
@@ -363,7 +363,7 @@ table#footer {
 	font-size: 12px;
 	width: 100%;
 	border-collapse: collapse;
-	color: #000;
+	color: #ccc;
 	}
 	table#footer td {
 		vertical-align: middle;
