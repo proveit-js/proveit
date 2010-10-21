@@ -81,10 +81,11 @@ div#superContainer h2 {
 	text-transform: uppercase;
 	}
 	
-div#superContainer h3 {
+div#superContainer h3, div#superContainer label {
 	margin: 0; padding: 2px 0 2px 5px;
 	font-size: 16px;
 	color: #000;
+	font-weight: bold;
 	}
 
 div#superContainer code {
@@ -411,8 +412,6 @@ form#demoForm fieldset {
 form#demoForm label {
 	display: block;
 	margin: 10px 0 5px 0;
-	font-size: medium;
-	color: #2682c7;
 	}
 
 input#articleBtn {
