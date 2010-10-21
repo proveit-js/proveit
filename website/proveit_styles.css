@@ -40,12 +40,13 @@ div#superContainer p {
 
 div#superContainer ul, div#superContainer ol {
 	margin-bottom: 15px;
+	margin-left: 20px;
 	}
 	
 	div#superContainer li {
 		line-height:18px;
 		font-size:14px;
-		margin-left: 20px;
+		margin: 5px 0;
 		}
 	
 div#superContainer hr {
