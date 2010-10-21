@@ -8,61 +8,71 @@ include_once 'header.php';
 
 			<!-- Main Content Table -->
 
-				<div id="leadInPic"><img src="img/theteam_leadIn.jpg" alt="doc_banner" /></div>
-
-				<table width="960" border="0" cellspacing="0" cellpadding="0" style="background-color: #2682c7; ">
+				<table id="mainTable">
 					<tr>
-						<td style="width: 686px;">
+						<td id="mainContent">
 
 							<div id="mainPic" class="theteam">
 								<h1>Who's Behind it?</h1>
 							</div><!-- end #mainPic -->
 							<div id="mainBody"> 
-								<p>ProveIt is an open-source Wikipedia referencing tool.  Quisque et leo ac lacus faucibus pellentesque et ac dui. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut sodales adipiscing sem at viverra. Cum sociis natoque penatibus et magnis dis parturient montes, </p>
+								<p>ProveIt has been in development since 2008 and is a highly collaborative effort. These are some of the folks who have helped out with this project since it began.</p>
+								
+								<h2>Current Team Members</h2>
+								
+								<h3>Kurt Luther (Lead Researcher &amp; Project Manager)</h3>
+								<p>Kurt is a 5th-year Ph.D. candidate in social computing at Georgia Tech. His dissertation work examines the role of leadership in online creative collaboration. He has been editing the English language Wikipedia since December 2005 under the username <a href="http://en.wikipedia.org/wiki/User:MaxVeers">MaxVeers</a>. He was a primary contributor to two Featured Articles, <a href="http://en.wikipedia.org/wiki/Tech_Tower">Tech Tower</a> and <a href="http://en.wikipedia.org/wiki/ANAK_Society">ANAK Society</a>, both of which have been featured on Wikipedia's home page. In 2010 he received a <a href="http://en.wikipedia.org/wiki/Wikipedia:Four_Award">Four Award</a> for his work on the ANAK Society article. He is also a founding member of <a href="http://en.wikipedia.org/wiki/Wikipedia:WikiProject_Georgia_Tech">WikiProject Georgia Tech</a>.</p>
+								
+								<h3>Matthew Flaschen (Lead Developer) </h3>
+								<p>bio goes here</p>										
 
-								<h3>Kurt Luther</h3>
-								<h4>Project Manager, Programmer, UI Designer</h4>
-								<p>ProveIt is an open-source Wikipedia referencing tool.  Quisque et leo ac lacus faucibus pellentesque et ac dui. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut sodales adipiscing sem at viverra. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Aliquam erat volutpat. Curabitur dolor risus, hendrerit eget viverra a, pellentesque et elit. Suspendisse potenti. Duis eget semper leo. Cras dapibus, diam eu semper ullamcorper, augue leo mattis lorem, id porta lacus quam ut odio. Sed vehicula sem vitae sem mattis vehicula. Duis felis diam, vestibulum nec interdum sit amet, ultricies at libero.</p>
-								<h3>Matthew Flaschen</h3>
-								<h4> Lead Programmer </h4>
-								<p>ProveIt is an open-source Wikipedia referencing tool.  Quisque et leo ac lacus faucibus pellentesque et ac dui. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut sodales adipiscing sem at viverra. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Aliquam erat volutpat. Curabitur dolor risus, hendrerit eget viverra a, pellentesque et elit. Suspendisse potenti. Duis eget semper leo. Cras dapibus, diam eu semper ullamcorper, augue leo mattis lorem, id porta lacus quam ut odio. Sed vehicula sem vitae sem mattis vehicula. Duis felis diam, vestibulum nec interdum sit amet, ultricies at libero.</p>										
-
-								<h3>Terris Johnson</h3>
-								<h4> Lead UI and Web Designer </h4>
-								<p>ProveIt is an open-source Wikipedia referencing tool.  Quisque et leo ac lacus faucibus pellentesque et ac dui. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut sodales adipiscing sem at viverra. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Aliquam erat volutpat. Curabitur dolor risus, hendrerit eget viverra a, pellentesque et elit. Suspendisse potenti. Duis eget semper leo. Cras dapibus, diam eu semper ullamcorper, augue leo mattis lorem, id porta lacus quam ut odio. Sed vehicula sem vitae sem mattis vehicula. Duis felis diam, vestibulum nec interdum sit amet, ultricies at libero.</p>									
-								<!--table>      
-									<tr>
-										<td style="background-color: #2682c7; ">
-											<div id="recommendationHeader"> RECOMMENDED TUTORIALS </div> 
-											<div class="recommend left"> <div class="recommendText firstLine"> Getting Started with</div>
-											<div class="recommendText secondLine"><a href="" class="recommendLink"> ProveIt</a></div></div> 
-		
-											<div class="recommend right"> <div class="recommendText firstLine"> Quick Interface </div>
-											<div class="recommendText secondLine"> <a href="features.php" class="recommendLink"> WALKTHROUGH </a></div></div>
-										</td>
-									</tr>
-								</table -->     
+								<h3>Terris Johnson (Lead Designer) </h3>
+								<p>Terris is a 5th-year Computational Media student at Georgia Tech. He was born in Louisville, Kentucky and moved to Atlanta, GA at the age of 12. Coming from a background in visual design and a deep interest in psychology, Terris' interest in computing focuses on user-interface and user-experience design. He has been involved with undergraduate research for over 4 years. Terris joined the ProveIt team as user-interface and website designer hoping to help deliver a product that is not only functional, but also beautiful.</p>									
+								<h3>Prof. Amy Bruckman</h3>
+								<p>Amy is an associate professor at Georgia Tech.</p>
+								
+								<h2>Former Team Members</h2>
+								
+								<h3>Prof. Andrea Forte</h3>
+								<p>Andrea received her Ph.D. in human-centered computing from Georgia Tech in 2009 and is now an assistant professor at Drexel University.</p>
+								
+								<h3>Christopher Jordan</h3>
+								<p>Christopher received his B.S. from Georgia Tech.</p>
 							</div><!-- end #mainBody -->
 						</td>
-						<td> 
+						<td id="sideTableofContents"> 
 							<h2> More About Us</h2>
-							<div id="sideTableofContents">
 								<h3 class="first">Kurt Luther</h3>
 								<ul>
-									<li><a href="#"> Kurt's Website</a></li>
-									<li><a href="#"> ELC Lab</a></li>
+									<li><a href="http://www.kurtluther.com/"> Kurt's website</a></li>
 								</ul>
 								
 								<h3> Matthew Flaschen</h3>
 								<ul>
-									<li><a href="#">Matt's Website</a></li>
+									<li><a href="#">Matt's website</a></li>
 								</ul>
 								
 								<h3> Terris Johnson </h3>
 								<ul>
-									<li><a href="#">Terris' Website</a></li>
+									<li><a href="#">Terris' website</a></li>
 								</ul>
-							</div>
+								
+								<h3> Prof. Amy Bruckman </h3>
+								<ul>
+									<li><a href="http://www.cc.gatech.edu/~asb/">Amy's website</a></li>
+								</ul>
+
+								<h3> Prof. Andrea Forte </h3>
+								<ul>
+									<li><a href="http://www.andreaforte.net/">Andrea's website</a></li>
+								</ul>
+								
+								<h3> Christopher Jordan </h3>
+								<ul>
+									<li><a href="#">Chris' website</a></li>
+								</ul>								
+								
+							
 					  </td>
 					</tr>
 				</table> 
