@@ -577,21 +577,25 @@ window.proveit = {
 	/**
 	 * Overly clever regex to parse template string (e.g. |last=Smith|first=John|title=My Life Story) into name and value pairs.
 	 *
-	 * nameSplit is an array of all names, and valSplit is an array of all values.
-	 * While the length of nameSplit is equal to the number of name/value pairs (as expected),
-	 * the length of valSplit is one greater due to a blank element at the beginning.
-	 * Thus nameSplit[i] corresponds to valSplit[i+1].
-	 * Calling code must take this into account.
+	 * names is an array of all names, and values is an array of all values.  They have equal lengths.
 	 *
 	 * @param {String} workingString template string to parse.
-	 * @return {Object} object with two properties, nameSplit and valSplit.
+	 * @return {Object} object with two properties, names and values.
 	 */
 	splitNameVals : function (workingString)
 	{
 		var split = {};
-		split.nameSplit = workingString.substring(workingString.indexOf("|") + 1).split(/=(?:[^|]*?(?:\[\[[^|\]]*(?:\|(?:[^|\]]*))?\]\])?)+(?:\||\}\})/
+		split.names = workingString.substring(workingString.indexOf("|") + 1).split(/=(?:[^|]*?(?:\[\[[^|\]]*(?:\|(?:[^|\]]*))?\]\])?)+(?:\||\}\})/
 ); // The first component is "ordinary" text (no pipes), while the second is a correctly balanced wikilink, with optional pipe.  Any combination of the two can appear.
-		split.valSplit = workingString.substring(workingString.indexOf("|"), workingString.indexOf("}}")).split(/\|[^|=]*=/);
+		/*
+		 * IE incorrectly drops	empty elements when you use regex literals.  We work around this by dropping empty elements conditionally
+		 * and starting after the equals sign below.
+		 */
+		while(split.names[split.names.length - 1].trim() == "")
+		{
+			split.names.length--;
+		}
+		split.values = workingString.substring(workingString.indexOf("=") + 1, workingString.indexOf("}}")).split(/\|[^|=]*=/);
 		return split;
 	},
 
@@ -734,15 +738,15 @@ window.proveit = {
 		if(citeFunction != this.RawReference)
 		{
 			var split = this.splitNameVals(workingstring);
-			var nameSplit = split.nameSplit;
-			var valSplit = split.valSplit;
+			var names = split.names;
+			var values = split.values;
 
-			for (var j = 0; j < nameSplit.length - 1; j++)
+			for (var j = 0; j < names.length; j++)
 			{
 				/* Drop blank space, and |'s without params, which are never correct for
 				 citation templates.*/
-				var paramName = nameSplit[j].trim().replace(/(?:\s*\|)*(.*)/, "$1");
-				var paramVal = valSplit[j + 1].trim();
+				var paramName = names[j].trim().replace(/(?:\s*\|)*(.*)/, "$1");
+				var paramVal = values[j].trim();
 						       // Should there be a setParam function?  It could handle empty values, and even drop (siliently or otherwise) invalid parameters.  Alternatively, should params be passed in the constructor?
 				if (paramVal != "")
 				{
