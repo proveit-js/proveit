@@ -55,12 +55,6 @@ window.proveit = {
 	STATIC_BASE : "http://proveit-js.googlecode.com/hg/static/",
 
 	/**
-	 * URL to jQuery script
-	 * @type String
-	 */	
-	JQUERY_SCRIPT_URL : "http://bits.wikimedia.org/skins-1.5/common/jquery.min.js",
-	
-	/**
 	 * URL to jQueryUI script
 	 * @type String
 	 */	
@@ -273,13 +267,18 @@ window.proveit = {
 	 * @return {Boolean} always true
 	 */
 	load : function() {
-		//this.log("this.shouldAddSummary: " + this.shouldAddSummary);
 
 		this.summaryFunctionAdded = false;
 
 		if(this.isSupportedEditPage())
 		{
-			this.createGUI();
+			jQuery.getScript(proveit.JQUERYUI_SCRIPT_URL, function()
+			{
+				addOnloadHook(function()
+				{
+					proveit.createGUI();
+				});
+			});
 		}
 
 		return true;
@@ -2560,37 +2559,7 @@ if(!String.prototype.trim)
 	};
 };
 
-(function()
-{
-    // Copied from jQuery script loader in ajax function.  This should make sure jQuery is loaded before we proceed (esp. in Chrome/Safari).
-    var head = document.getElementsByTagName('head')[0];
-    var jquery_script = document.createElement('script');
-    jquery_script.src = proveit.JQUERY_SCRIPT_URL;
-    var jquery_done = false;
-
-    jquery_script.onload = jquery_script.onreadystatechange = function() {
-    	if ( !jquery_done && (!this.readyState ||
-    			this.readyState === "loaded" || this.readyState === "complete") ) {
-    		jquery_done = true;
-
-		jQuery.getScript(proveit.JQUERYUI_SCRIPT_URL, function()
-		{
-		    addOnloadHook(function()
-		    {
-			proveit.load();
-		    });
-		});
-
-    		// Handle memory leak in IE
-    		jquery_script.onload = jquery_script.onreadystatechange = null;
-    		if ( head && jquery_script.parentNode ) {
-    			head.removeChild( jquery_script );
-    		}
-    	}
-    };
-    head.appendChild(jquery_script);
-
-})();
+proveit.load();
 
 // Local Variables:
 // js2-basic-offset: 8
