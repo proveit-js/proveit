@@ -113,6 +113,31 @@ window.proveit = {
 		return {"left": left, "top": top};
 	},
 
+	// Based on answer by CMS on StackOverflow.
+	/**
+	 * Sets selection of given input, with cross-browser support.
+	 *
+	 * @param {Node} input raw DOM node
+	 * @param {Number} selectionStart start index, 0-based
+	 * @param {Number} selectionEnd end index exclusive, 0-based.
+	 */
+	setSelectionRange : function(input, selectionStart, selectionEnd)
+	{
+		if (input.setSelectionRange)
+		{
+			input.focus();
+			input.setSelectionRange(selectionStart, selectionEnd);
+		}
+		else if (input.createTextRange)
+		{
+			var range = input.createTextRange();
+			range.collapse(true);
+			range.moveEnd('character', selectionEnd);
+			range.moveStart('character', selectionStart);
+			range.select();
+		}
+	},
+
 	/**
 	 * Highlights a given length of text, at a particular index.
 	 * @param {Number} startInd start index in Wikipedia edit box
@@ -138,7 +163,7 @@ window.proveit = {
 			mwBox.scrollTop = curScrollTop + this.HALF_EDIT_BOX_HEIGHT;
 		}
 		mwBox.focus();
-		mwBox.setSelectionRange(startInd, endInd);
+		this.setSelectionRange(mwBox, startInd, endInd);
 		return true;
 	},
 
