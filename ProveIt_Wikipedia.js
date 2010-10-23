@@ -115,9 +115,9 @@ window.proveit = {
 
 	// Based on answer by CMS on StackOverflow.
 	/**
-	 * Sets selection of given input, with cross-browser support.
+	 * Sets selection of given input, with cross-browser support.  Textarea should already be focused.
 	 *
-	 * @param {Node} input raw DOM node
+	 * @param {Node} input raw DOM node, already focused.
 	 * @param {Number} selectionStart start index, 0-based
 	 * @param {Number} selectionEnd end index exclusive, 0-based.
 	 */
@@ -125,7 +125,6 @@ window.proveit = {
 	{
 		if (input.setSelectionRange)
 		{
-			input.focus();
 			input.setSelectionRange(selectionStart, selectionEnd);
 		}
 		else if (input.createTextRange)
@@ -155,6 +154,7 @@ window.proveit = {
 		var editTop = this.getPosition(this.getMWEditBox()).top;
 		var endInd = startInd + length;
 		jQuery(mwBox).val(origText.substring(0, startInd));
+		mwBox.focus();
 		mwBox.scrollTop = 1000000; //Larger than any real textarea (hopefully)
 		var curScrollTop = mwBox.scrollTop;
 		mwBox.value += origText.substring(startInd);
@@ -162,7 +162,6 @@ window.proveit = {
 		{
 			mwBox.scrollTop = curScrollTop + this.HALF_EDIT_BOX_HEIGHT;
 		}
-		mwBox.focus();
 		this.setSelectionRange(mwBox, startInd, endInd);
 		return true;
 	},
