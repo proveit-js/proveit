@@ -69,7 +69,7 @@ $(function()
 					<tr>
 						<td id="mainContent">
 							<div id="mainBody">
-								<h2>Pick an article, any article</h2> 
+								<h2>Demo</h2> 
 
 								<p>See that cool-looking gadget in the bottom right corner of this window? <strong>That's ProveIt</strong>, and you can test drive it right here with any Wikipedia article. We've preloaded the article on Georgia Tech by default, but if you want to try a different one, just type the article name into the box below and click "Load article."</p>
 								<form id="demoForm" action="">

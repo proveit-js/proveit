@@ -38,17 +38,20 @@ switch($page)
 	case 'Tutorials':
 	case 'Report-a-Bug':
 	case 'Demo':
+	case 'Users':
 		$primary = 'Users';
 		break;
 	
 	case 'Documentation':
 	case 'Wiki':
 	case 'gCode':
+	case 'Developers':
 		$primary = 'Developers';
 		break;
 	
 	case 'Research':
 	case 'The Team':
+	case 'About':
 		$primary = 'About';
 }
 
@@ -69,7 +72,7 @@ switch($page)
 								<a href="developers.php" class="primary-nav-link<?= $primary == 'Developers' ? ' selected' : '' ?>">Developers</a>
 								<ul<?= $primary == 'Developers' ? ' style="display: block;"' : '' ?>>
 									<li><a href="documentation.php"<?= $page == 'Documentation' ? ' class="selected"' : '' ?>>Documentation</a></li>
-									<li><a href="gCode.php" <?= $page == 'gCode' ? ' class="selected"' : '' ?>>Google Code Project</a></li>
+									<li><a href="http://code.google.com/p/proveit-js/">Google Code Project</a></li>
 									<li><a href="wiki.php" <?= $page == 'Wiki' ? ' class="selected"' : '' ?>>Wiki</a></li>
 								</ul>
 							</li>

@@ -280,40 +280,56 @@ div#mainPic {
 
 /*** Picture Divs for USERS, DEVELOPERS, and ABOUT */
 
-a.pic940 {
-	display: block;
-	height: 63px; width: 930px;
-	margin: 0 10px 10px 10px; padding: 130px 0 0 10px;
-	font-weight: bold;
-	font-size: 48px;
-	text-transform: uppercase;
-	text-shadow: 1px 1px 3px #000;
-	color: #fddb00;
-	} 
-
-a.pic465 {
-	display: block;
-	height: 63px; width: 455px;
-	padding: 130px 0 0 10px;
-	font-weight: bold;
-	font-size: 48px;
-	text-transform: uppercase;
-	text-shadow: 1px 1px 3px #000;
-	color: #fddb00;
-	} 
-
-a.right {
-	float: right;
-	margin: 0 10px 10px 5px;
+div#portal {
+	padding: 10px 0; margin: 10px 0;
+	border-bottom: 2px solid #ccc;
 	}
+	
+	div#portal br {
+		clear: both;
+		}
 
-a.left {
-	float: left;
-	margin: 0 5px 10px 10px;
-	}
+	div#portal a.pic940 {
+		display: block;
+		height: 63px; width: 930px;
+		margin: 0 10px 10px 10px; padding: 130px 0 0 10px;
+		font-weight: bold;
+		font-size: 48px;
+		text-transform: uppercase;
+		/*text-shadow: 1px 1px 3px #000;*/
+		} 
+
+	div#portal a.pic465 {
+		display: block;
+		height: 63px; width: 455px;
+		padding: 130px 0 0 10px;
+		font-weight: bold;
+		font-size: 48px;
+		text-transform: uppercase;
+		/*text-shadow: 1px 1px 3px #000;*/	
+		} 
+		
+	div#portal  a:link, div#portal  a:visited {
+		color: #fff;
+		text-decoration: none;
+		}
+	div#portal a:hover {
+		color: #2682c7;
+		text-decoration: underline;
+		}
+
+	div#portal a.right {
+		float: right;
+		margin: 0 10px 10px 5px;
+		}
+
+	div#portal a.left {
+		float: left;
+		margin: 0 5px 10px 10px;
+		}
 
 /*** END Picture Divs for USERS, DEVELOPERS, and ABOUT */
-
+/*
 div#recommendationHeader {
 	margin: 0px 10px 0px 10px;
 	font-weight:bold;
@@ -358,7 +374,7 @@ div.recommendText {
 		bottom:20px;
 		left:10px;
 		}
-
+*/
 td#sideTableofContents {
 /*	width:254px;*/
 	text-align:right;

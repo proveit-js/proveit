@@ -15,7 +15,7 @@
 								<br />
 								
 								<a href="documentation.php" class="<?php if($page == 'Documentation') echo ' selected'; ?>">Documentation</a> -			
-								<a href="gCode.php" class="<?php if($page == 'gCode') echo ' selected'; ?>">Google Code Home </a> -
+								<a href="http://code.google.com/p/proveit-js/" class="<?php if($page == 'gCode') echo ' selected'; ?>">Google Code Project </a> -
 								<a href="wiki.php" class="<?php if($page == 'Wiki') echo ' selected'; ?>"> Wiki </a>
 								<br />
 
