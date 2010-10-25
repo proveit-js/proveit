@@ -16,7 +16,7 @@ include_once 'header.php';
 						<td id="mainContent">
 
 							<div id="mainPic" class="install">
-								<h1>Lock and Load</h1>
+								<h1>Install ProveIt</h1>
 							</div><!-- end #mainPic -->
 							<div id="mainBody"> 
 							
