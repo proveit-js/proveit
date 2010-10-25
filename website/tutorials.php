@@ -15,7 +15,7 @@ include_once 'header.php';
 						<td style="width: 686px;">
 
 							<div id="mainPic" class="tutorials">
-								<h1>Learning ProveIt</h1>
+								<h1>Tutorials</h1>
 							</div><!-- end #mainPic -->
 							<div id="mainBody"> 
 								<p class="leadIn">ProveIt is an open-source Wikipedia referencing tool.  Quisque et leo ac lacus faucibus pellentesque et ac dui. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut sodales adipiscing sem at viverra. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Aliquam erat volutpat. Curabitur dolor risus, hendrerit eget viverra a, pellentesque et elit. Suspendisse potenti. Duis eget semper leo. Cras dapibus, diam eu semper ullamcorper, augue leo mattis lorem, id porta lacus quam ut odio. Sed vehicula sem vitae sem mattis vehicula. Duis felis diam, vestibulum nec interdum sit amet, ultricies at libero.</p>

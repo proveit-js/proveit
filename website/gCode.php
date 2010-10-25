@@ -8,14 +8,14 @@ include_once 'header.php';
 
 			<!-- Main Content Table -->
 
-				<div id="leadInPic"><img src="img/gCode_leadIn.jpg" alt="doc_banner" /></div>
+				<div id="leadInPic"><img src="img/gCode.jpg" alt="doc_banner" /></div>
 
 				<table width="960" border="0" cellspacing="0" cellpadding="0" style="background-color: #2682c7; ">
 					<tr>
 						<td style="width: 686px;">
 
 							<div id="mainPic" class="gCode">
-								<h1>The Building Blocks</h1>
+								<h1>Google Code Proj.</h1>
 							</div><!-- end #mainPic -->
 							<div id="mainBody"> 
 								<p>ProveIt is an open-source Wikipedia referencing tool.  Quisque et leo ac lacus faucibus pellentesque et ac dui. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut sodales adipiscing sem at viverra. Cum sociis natoque penatibus et magnis dis parturient montes, </p>

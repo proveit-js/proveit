@@ -2,6 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"> 
 <head>
 	<link href="proveit_styles.css" rel="stylesheet" type="text/css" />
+	<link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon" />
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<title>ProveIt - <?php echo $page; ?></title>
 	<script type="text/javascript" src="http://www.google.com/jsapi"></script> 

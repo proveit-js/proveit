@@ -13,7 +13,7 @@ include_once 'header.php';
 						<td id="mainContent">
 
 							<div id="mainPic" class="theteam">
-								<h1>Who's Behind it?</h1>
+								<h1>The Team</h1>
 							</div><!-- end #mainPic -->
 							<div id="mainBody"> 
 								<p>ProveIt has been in development since 2008 and is a highly collaborative effort. These are some of the folks who have helped out with this project since it began.</p>

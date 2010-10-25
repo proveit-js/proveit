@@ -16,7 +16,7 @@ include_once 'header.php';
 						<td id="mainContent">
 
 							<div id="mainPic" class="features">
-								<h1>A Look Inside</h1>
+								<h1>Features</h1>
 							</div><!-- end #mainPic -->
 							<div id="mainBody"> 
 							

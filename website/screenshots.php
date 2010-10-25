@@ -16,7 +16,7 @@ include_once 'header.php';
 					<tr>
 						<td id="mainContent">	
 							<div id="mainPic" class="screenshots">
-								<h1>See For Yourself</h1>
+								<h1>Screenshots</h1>
 							</div><!-- end #mainPic -->						
 							<div id="mainBody">
 								<p>Click any screenshot to view it at full size.</p>

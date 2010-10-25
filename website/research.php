@@ -13,7 +13,7 @@ include_once 'header.php';
 						<td id="mainContent">
 
 							<div id="mainPic" class="research">
-								<h1>From the Lab</h1>
+								<h1>Research</h1>
 							</div><!-- end #mainPic -->
 							<div id="mainBody"> 
 							
