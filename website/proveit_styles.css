@@ -260,8 +260,22 @@ div#mainPic {
 	div#mainPic.reportabug {
 		background-image:url(img/reportabug.jpg);	
 		}
+		
+	div#mainPic.install {
+		background-image:url(img/install.jpg);	
+		}
 
+	div#mainPic.wiki {
+		background-image:url(img/wiki.jpg);	
+		}	
 
+	div#mainPic.gCode {
+		background-image:url(img/gCode.jpg);	
+		}		
+		
+	div#mainPic.install {
+		background-image:url(img/install.jpg);	
+		}
 /* END Main Picture for each Page */
 
 /*** Picture Divs for USERS, DEVELOPERS, and ABOUT */
