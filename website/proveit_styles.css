@@ -70,7 +70,12 @@ div#superContainer h1{
 	/*text-shadow: 1px 1px 3px #000;*/
 	text-transform: uppercase;
 	}	
-
+	
+	div#superContainer h1.index{
+	color:#fddb00;
+	text-shadow: 1px 1px 2px #444;
+	}
+	
 	
 div#superContainer h2 {
 	font-size: 18px;
@@ -228,9 +233,10 @@ div#mainPic {
 	width: 661px; 
 	margin:0;
 	}
-
+	
 	div#mainPic.index {
-		background-image:url(img/citationPopo.jpg);	
+		background-image:url(img/index.jpg);	
+		height: 375px;
 		}
 
 	div#mainPic.features {
