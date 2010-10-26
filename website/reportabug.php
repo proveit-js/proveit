@@ -15,7 +15,7 @@ include_once 'header.php';
 						<td style="width: 686px;">
 
 							<div id="mainPic" class="reportabug">
-								<h1>Report-a-Bug</h1>
+								<h1>Report a Bug</h1>
 							</div><!-- end #mainPic -->
 							<div id="mainBody"> 
 								<h3>How Do I Report a Bug?</h3>
