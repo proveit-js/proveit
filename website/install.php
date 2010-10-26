@@ -27,8 +27,9 @@ include_once 'header.php';
 								<ol>								
 									<li>Log in to Wikipedia. Currently, you must have a Wikipedia account to use ProveIt.</li>
 									<li>Go to <a href="http://en.wikipedia.org/w/index.php?title=Special:MyPage/skin.js&action=edit">Special:MyPage/skin.js&action=edit</a>.</li>
-									<li>Copy and paste this line of code:
-									 <code>importScript('User:ProveIt GT/ProveIt.js');</code>
+									<li>Copy and paste these two lines of code:
+									 <code>importScript('User:ProveIt GT/ProveIt.js');<br />
+									 // [[User:ProveIt GT/ProveIt.js]]</code>
 									 </li>
 									<li>Save. You may have to <a href="http://en.wikipedia.org/wiki/Wikipedia:Bypass_your_cache">bypass your cache</a> to see the changes.</li>
 								</ol>

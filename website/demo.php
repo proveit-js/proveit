@@ -79,13 +79,13 @@ $(function()
 										<label for="articleName">Wikipedia article name:</label>
 										<input id="articleName" size="35" style="width: 300px;" value="Georgia Institute of Technology"/>
 										<input id="articleBtn" type="submit" value="Load article"/>
-										<div>Other suggestions: <a href="#" onclick="loadArticle('ANAK Society')">ANAK Society</a> - <a href="#" onclick="loadArticle('Tech Tower')">Tech Tower</a> - <a href="#" onclick="loadArticle('Ramblin\' Wreck')">Ramblin' Wreck</a></div>
+										<p style="margin: 10px 0 20px 0;">More suggestions: <a href="#" onclick="loadArticle('Tech Tower')">Tech Tower</a> - <a href="#" onclick="loadArticle('ANAK Society')">ANAK Society</a> - <a href="#" onclick="loadArticle('Ramblin\' Wreck')">Ramblin' Wreck</a></p>
 
 										<label for="wpTextbox1"><a id="articleLink"></a> article from Wikipedia:</label>
-                                                                                 <p>Wikipedia article used and made available under the <a href="http://creativecommons.org/licenses/by-sa/3.0/">Creative Commons Attribution/Share-Alike License 3.0 (Unported)</a>.</p>
 										<textarea rows="25" cols="115" style="width: 100%" id="wpTextbox1"></textarea>
 									</fieldset>
 								</form>
+								<p>Wikipedia article used and made available under the <a href="http://creativecommons.org/licenses/by-sa/3.0/">Creative Commons Attribution/Share-Alike License 3.0 (Unported)</a>.</p>
 							</div>
 						</td>
 					</tr>

@@ -17,6 +17,8 @@ include_once 'header.php';
 							</div><!-- end #mainPic -->
 							<div id="mainBody"> 
 							
+							<p>Our research on ProveIt is supported by <a href="http://nsf.gov/awardsearch/showAward.do?AwardNumber=0537251">grant #0537251</a> from the National Science Foundation.</p>
+							
 								<h2>Demonstrations</h2>
 								<p>We have demoed ProveIt at the following symposium:</p>
 								
