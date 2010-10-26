@@ -39,7 +39,19 @@ include_once 'header.php';
    
 							</div><!-- end #mainBody -->
 						</td>
-						<td id="sideTableofContents">&nbsp;</td>
+						<td id="sideTableofContents">
+						
+						<h2>Release Notes</h2>
+						<h3>Latest Release</h3>
+						<p>version 0.90, released 10/26/2010</p>
+						
+						<h3>New in This Release</h3>
+						<ul>
+							<li>Fixed compatibility issues in Chrome and IE</li>
+							<li>Now using Wikipedia's jQuery library</li>
+						</ul>
+						
+						</td>
 					</tr>
 				</table> 
 

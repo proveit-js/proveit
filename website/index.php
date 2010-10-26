@@ -48,7 +48,7 @@ include_once 'header.php';
 							<h2>Install</h2>
 							
 							<ul>
-								<li><a href="install.php">One-time installation</a></li>
+								<li><a href="install.php">No download required</a></li>
 							</ul>	
 	
 					  </td>

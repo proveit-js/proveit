@@ -16,7 +16,7 @@ include_once 'header.php';
 								<h1>The Team</h1>
 							</div><!-- end #mainPic -->
 							<div id="mainBody"> 
-								<p>ProveIt has been in development since 2008 and is a highly collaborative effort. These are some of the folks who have helped out with this project since it began.</p>
+								<p>ProveIt has been in development at <a href="http://www.gatech.edu/">Georgia Tech</a> since 2008 and is a highly collaborative effort. These are some of the folks who have helped out with this project since it began.</p>
 								
 								<h2>Current Team Members</h2>
 								
