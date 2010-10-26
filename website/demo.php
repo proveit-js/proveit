@@ -16,7 +16,9 @@ function loadArticle(articleName)
     articleName = $('#articleName').val();
   else
     $('#articleName').val(articleName);
-	
+  
+  $('#articleLink').text(articleName).attr('href', wgServer + '/wiki/' + encodeURIComponent(articleName));
+
   $('#articleName').attr('readonly','readonly');
   $('#articleBtn').attr('disabled','disabled');
   
@@ -79,7 +81,8 @@ $(function()
 										<input id="articleBtn" type="submit" value="Load article"/>
 										<div>Other suggestions: <a href="#" onclick="loadArticle('ANAK Society')">ANAK Society</a> - <a href="#" onclick="loadArticle('Tech Tower')">Tech Tower</a> - <a href="#" onclick="loadArticle('Ramblin\' Wreck')">Ramblin' Wreck</a></div>
 
-										<label for="wpTextbox1">Wikipedia article content:</label>
+										<label for="wpTextbox1"><a id="articleLink"></a> article from Wikipedia:</label>
+                                                                                 <p>Wikipedia article used and made available under the <a href="http://creativecommons.org/licenses/by-sa/3.0/">Creative Commons Attribution/Share-Alike License 3.0 (Unported)</a>.</p>
 										<textarea rows="25" cols="115" style="width: 100%" id="wpTextbox1"></textarea>
 									</fieldset>
 								</form>
