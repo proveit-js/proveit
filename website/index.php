@@ -20,7 +20,7 @@ include_once 'header.php';
 							</div><!-- end #mainPic -->
 							<div id="mainBody"> 
 								<h2>Wikipedia Referencing Simplified</h2>
-								<p>ProveIt is a free, open-source referencing tool that makes it that makes it really easy to find, edit, add, and cite references in Wikipedia articles. ProveIt only needs to be installed once and can be accessed from any computer and any web broswer.</p>	
+								<p>ProveIt is a free, open-source referencing tool that makes it that makes it really easy to find, edit, add, and cite references in Wikipedia articles. ProveIt only needs to be installed once and can be accessed from any computer and any web browser.</p>	
 
 								<h2>By Wikipedians, For Wikipedians</h2>
 								<p>ProveIt was created by a group of Wikipedia editors, researchers, and fans. We know Wikipedia, we love Wikipedia, and want want to make it better -- for us and everyone else, especially new users.</p>
