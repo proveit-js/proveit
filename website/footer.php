@@ -15,11 +15,11 @@
 								<br />
 								
 								<a href="documentation.php" class="<?php if($page == 'Documentation') echo ' selected'; ?>">Documentation</a> -			
-								<a href="http://code.google.com/p/proveit-js/" class="<?php if($page == 'gCode') echo ' selected'; ?>">Google Code Project </a> -
-								<a href="wiki.php" class="<?php if($page == 'Wiki') echo ' selected'; ?>"> Wiki </a>
+								<a href="http://code.google.com/p/proveit-js/" class="<?php if($page == 'gCode') echo ' selected'; ?>">Google Code Project</a> -
+								<a href="http://code.google.com/p/proveit-js/w/list" class="<?php if($page == 'Wiki') echo ' selected'; ?>">Wiki</a>
 								<br />
 
-								<a href="research.php" class="<?php if($page == 'Research') echo ' selected'; ?>">Research </a> -
+								<a href="research.php" class="<?php if($page == 'Research') echo ' selected'; ?>">Research</a> -
 								<a href="theteam.php" class="<?php if($page == 'The Team') echo ' selected'; ?>">The Team</a>
 							</td>
 		
