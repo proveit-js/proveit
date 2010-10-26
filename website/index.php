@@ -16,7 +16,7 @@ include_once 'header.php';
 						<td id="mainContent">
 
 							<div id="mainPic" class="index">
-								<h1>NOW IT'S EASY</h1>
+								<h1>Now It's Easy</h1>
 							</div><!-- end #mainPic -->
 							<div id="mainBody"> 
 								<h2>Wikipedia Referencing Simplified</h2>
@@ -39,11 +39,17 @@ include_once 'header.php';
 								<li><a href="features.php">Open-source, completely free</a></li>
 							</ul>
 
-							<h2>Demo ProveIt</h2>
+							<h2>Demo </h2>
 							
 							<ul>
 								<li><a href="demo.php">Try ProveIt right now!</a></li>
-							</ul>							
+							</ul>		
+
+							<h2>Install</h2>
+							
+							<ul>
+								<li><a href="install.php">One-time installation</a></li>
+							</ul>	
 	
 					  </td>
 					</tr>
