@@ -43,8 +43,8 @@ switch($page)
 		break;
 	
 	case 'Documentation':
-	case 'Wiki':
-	case 'gCode':
+	//case 'Wiki':
+	//case 'gCode':
 	case 'Developers':
 		$primary = 'Developers';
 		break;
@@ -73,7 +73,7 @@ switch($page)
 								<ul<?= $primary == 'Developers' ? ' style="display: block;"' : '' ?>>
 									<li><a href="documentation.php"<?= $page == 'Documentation' ? ' class="selected"' : '' ?>>Documentation</a></li>
 									<li><a href="http://code.google.com/p/proveit-js/">Google Code Project</a></li>
-									<li><a href="wiki.php" <?= $page == 'Wiki' ? ' class="selected"' : '' ?>>Wiki</a></li>
+									<li><a href="http://code.google.com/p/proveit-js/w/list">Wiki</a></li>
 								</ul>
 							</li>
 							<li>
