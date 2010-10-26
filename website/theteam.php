@@ -24,7 +24,15 @@ include_once 'header.php';
 								<p>Kurt is a 5th-year Ph.D. candidate in social computing at Georgia Tech. His dissertation work examines the role of leadership in online creative collaboration. He has been editing the English language Wikipedia since December 2005 under the username <a href="http://en.wikipedia.org/wiki/User:MaxVeers">MaxVeers</a>. He was a primary contributor to two Featured Articles, <a href="http://en.wikipedia.org/wiki/Tech_Tower">Tech Tower</a> and <a href="http://en.wikipedia.org/wiki/ANAK_Society">ANAK Society</a>, both of which have been featured on Wikipedia's home page. In 2010 he received a <a href="http://en.wikipedia.org/wiki/Wikipedia:Four_Award">Four Award</a> for his work on the ANAK Society article. He is also a founding member of <a href="http://en.wikipedia.org/wiki/Wikipedia:WikiProject_Georgia_Tech">WikiProject Georgia Tech</a>.</p>
 								
 								<h3>Matthew Flaschen (Lead Developer) </h3>
-								<p>bio goes here</p>										
+								<p>Matthew is a 5th-year Georgia Tech Computer Science undergraduate and Wikipedia administrator.  He has been writing for and editing Wikipedia with the username <a href="http://en.wikipedia.org/wiki/User:Superm401">Superm401</a> since 2004.  He also participates in the <a href="http://en.wikipedia.org/wiki/Wikipedia:Adopt-a-user">adoption program</a> for mentoring new contributors.  His experience in Wikipedia scripting and interest in article verifiability led him to join the Electronic Learning Communities lab as research assistant.  You can reach him at matt<a
+href="http://mailhide.recaptcha.net/d?k=01F0OoRULNEwCmtg4FLP4z1w==&amp;c=38bm1T9WD3xm8LxwFxQn5fWtjQxnEfWHdmPosAg5qpc="
+onclick="window.open('http://mailhide.recaptcha.net/d?k=01F0OoRULNEwCmtg4FLP4z1w==&amp;c=38bm1T9WD3xm8LxwFxQn5fWtjQxnEfWHdmPosAg5qpc=',
+'',
+'toolbar=0,scrollbars=0,location=0,statusbar=0,menubar=0,resizable=0,width=500,height=300');
+return false;" title="Reveal this e-mail address">...</a>@gatech.edu, or
+via his <a href="http://en.wikipedia.org/wiki/User:Superm401">Wikipedia
+user page</a>.
+</p>										
 
 								<h3>Terris Johnson (Lead Designer) </h3>
 								<p>Terris is a 5th-year Computational Media student at Georgia Tech. He was born in Louisville, Kentucky and moved to Atlanta, GA at the age of 12. Coming from a background in visual design and a deep interest in psychology, Terris' interest in computing focuses on user-interface and user-experience design. He has been involved with undergraduate research for over 4 years. Terris joined the ProveIt team as user-interface and website designer hoping to help deliver a product that is not only functional, but also beautiful.</p>									
@@ -49,7 +57,7 @@ include_once 'header.php';
 								
 								<h3> Matthew Flaschen</h3>
 								<ul>
-									<li><a href="#">Matt's website</a></li>
+									<li><a href="http://www.prism.gatech.edu/~mflaschen3/">Matt's website</a></li>
 								</ul>
 								
 								<h3> Terris Johnson </h3>
