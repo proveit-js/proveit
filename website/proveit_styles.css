@@ -99,6 +99,18 @@ div#superContainer code {
 	padding: 10px;
 	}
 	
+div#superContainer dl {
+	margin: 20px 0 20px 10px;
+	}
+	
+div#superContainer dt {
+	font-weight: bold;
+	}
+	
+div#superContainer dd {
+	margin-left: 10px;
+	}
+	
 /* screenshot styles */
 
 a.screenshot img {
