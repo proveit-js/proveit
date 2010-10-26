@@ -58,7 +58,7 @@ wgAction="edit";
 
 $(function()
 {
-    loadArticle();
+    jQuery.getScript(proveit.JQUERYUI_SCRIPT_URL, loadArticle);
     $('#demoForm').submit(function(){
 			loadArticle()
 		});
