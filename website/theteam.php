@@ -30,8 +30,8 @@ onclick="window.open('http://mailhide.recaptcha.net/d?k=01F0OoRULNEwCmtg4FLP4z1w
 '',
 'toolbar=0,scrollbars=0,location=0,statusbar=0,menubar=0,resizable=0,width=500,height=300');
 return false;" title="Reveal this e-mail address">...</a>@gatech.edu, or
-via his <a href="http://en.wikipedia.org/wiki/User:Superm401">Wikipedia
-user page</a>.
+via his <a href="http://en.wikipedia.org/wiki/User_talk:Superm401">Wikipedia
+talk page</a>.
 </p>										
 
 								<h3>Terris Johnson (Lead Designer) </h3>
