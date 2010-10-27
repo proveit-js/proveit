@@ -62,8 +62,9 @@ function loadArticle(articleName)
 $(function()
 {
     jQuery.getScript(proveit.JQUERYUI_SCRIPT_URL, loadArticle);
-    $('#demoForm').submit(function(){
-			loadArticle()
+    $('#demoForm').submit(function(evt){
+	            loadArticle();
+		    evt.preventDefault();
 		});
 });
 //]]>
