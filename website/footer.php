@@ -7,20 +7,20 @@
 							
 							<!-- Footer Navigation -->
 							<td id="footerNav"> 
-								<a href="features.php" class=" <?php if($page == 'Features') echo ' selected'; ?>">Features</a> -
-								<a href="screenshots.php" class=" <?php if($page == 'Screenshots') echo ' selected'; ?>">Screenshots</a> -
-								<a href="tutorials.php" class="<?php if($page == 'Tutorials') echo ' selected'; ?>">Tutorials</a> -
-								<a href="reportabug.php" class="<?php if($page == 'Report-a-Bug') echo ' selected'; ?>">Report a Bug</a> -
-								<a href="demo.php" class="<?php if($page == 'Demo') echo ' selected'; ?>">Demo</a>
+								<a href="features.php"<?php if($page == 'Features') echo ' class="selected"'; ?>>Features</a> -
+								<a href="screenshots.php"<?php if($page == 'Screenshots') echo ' class="selected"'; ?>>Screenshots</a> -
+								<a href="tutorials.php"<?php if($page == 'Tutorials') echo ' class="selected"'; ?>>Tutorials</a> -
+								<a href="reportabug.php"<?php if($page == 'Report-a-Bug') echo 'class="selected"'; ?>>Report a Bug</a> -
+								<a href="demo.php"<?php if($page == 'Demo') echo ' class="selected"'; ?>>Demo</a>
 								<br />
 								
-								<a href="documentation.php" class="<?php if($page == 'Documentation') echo ' selected'; ?>">Documentation</a> -			
-								<a href="http://code.google.com/p/proveit-js/" class="<?php if($page == 'gCode') echo ' selected'; ?>">Google Code Project</a> -
-								<a href="http://code.google.com/p/proveit-js/w/list" class="<?php if($page == 'Wiki') echo ' selected'; ?>">Wiki</a>
+								<a href="documentation.php"<?php if($page == 'Documentation') echo ' class="selected"'; ?>>Documentation</a> -			
+								<a href="http://code.google.com/p/proveit-js/"<?php if($page == 'gCode') echo ' class="selected"'; ?>>Google Code Project</a> -
+								<a href="http://code.google.com/p/proveit-js/w/list"<?php if($page == 'Wiki') echo ' class="selected"'; ?>>Wiki</a>
 								<br />
 
-								<a href="research.php" class="<?php if($page == 'Research') echo ' selected'; ?>">Research</a> -
-								<a href="theteam.php" class="<?php if($page == 'The Team') echo ' selected'; ?>">The Team</a>
+								<a href="research.php"<?php if($page == 'Research') echo ' class="selected"'; ?>>Research</a> -
+								<a href="theteam.php"<?php if($page == 'The Team') echo ' class="selected"'; ?>>The Team</a>
 							</td>
 		
 							<!-- Footer Credits -->
