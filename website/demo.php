@@ -6,6 +6,14 @@ include_once 'header.php';
 ?>
 <script src="wikibits.js" type="text/javascript"></script>
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js" type="text/javascript"></script>
+<script type="text/javascript">
+// wg's deliberately global
+wgServer="http://en.wikipedia.org",
+wgCanonicalNamespace="",
+wgCanonicalSpecialPageName=false,
+wgNamespaceNumber=0,
+wgAction="edit";
+</script>
 <script src="http://proveit-js.googlecode.com/hg/ProveIt_Wikipedia.js" type="text/javascript"></script>
 <script type="text/javascript">
 //<![CDATA[
@@ -50,13 +58,6 @@ function loadArticle(articleName)
   });
   return false;
 }
-
-// wg's deliberately global
-wgServer="http://en.wikipedia.org",
-wgCanonicalNamespace="",
-wgCanonicalSpecialPageName=false,
-wgNamespaceNumber=0,
-wgAction="edit";
 
 $(function()
 {
