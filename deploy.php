@@ -1,16 +1,18 @@
 #!/usr/bin/php
 <?php
-$error = fopen('php://stderr', 'wb');
 chdir(dirname (__FILE__)); // Change to directory of script (should be repo root)
 define('REPO', 'https://proveit-js.googlecode.com/hg/');
 define('PROVEIT_FILE', 'ProveIt_Wikipedia.js');
 define('USER_AGENT', 'ProveIt deploy script (http://code.google.com/p/proveit-js/)');
 define('MW_API', 'http://en.wikipedia.org/w/api.php');
+define('REV_SHORT', 'r');
+define('REV_LONG', 'rev');
 
+$options = getopt(REV_SHORT . ':', array(REV_LONG . ':'));
 $configuration = json_decode(file_get_contents('./deploy_configuration.json'));
 if(!(isset($configuration->username) && isset($configuration->password) && isset($configuration->page)))
 {
-    fwrite($error, 'You must provide a JSON file, deploy_configuaration.json, in the repository root (but not committed) with username, password, and page fields set.');
+    fwrite(STDERR, 'You must provide a JSON file, deploy_configuaration.json, in the repository root (but not committed) with username, password, and page fields set.');
     exit(1);
 }
 
@@ -18,12 +20,31 @@ $_ = NULL; // unused, needed because only variables can be passed by reference.
 exec('hg outgoing ' . REPO, $_, $out_ret);
 if($out_ret === 0) // 0 unpushed changes, 1 otherwise
 {
-    fwrite($error, "Push your changes to the main repository, " . REPO . ", before running $argv[0].\n");
+    fwrite(STDERR, "Push your changes to the main repository, " . REPO . ", before running $argv[0].\n");
     exit(2);
 }
-$revid = str_replace('+', '', exec('hg identify -i'));
-$orig_code = shell_exec('hg cat -r tip ' . PROVEIT_FILE);
+if(isset($options[REV_SHORT]))
+{
+    $opt_revid = $options[REV_SHORT];
+}
+else if(isset($options[REV_LONG]))
+{
+    $opt_revid = $options[REV_LONG];
+}
+else
+{
+    fwrite(STDERR, "You must specify the revision to deploy.\n");
+    exit(4);
+}
 
+$revid = exec('hg identify -i -r ' . $opt_revid, $_, $id_ret);
+if($id_ret != 0)
+{
+    fwrite(STDERR, "Invalid revision id: " . $opt_revid . "\n");
+    exit(5);
+}
+
+$orig_code = shell_exec('hg cat -r ' . $revid . ' ' . PROVEIT_FILE);
 $closure_ch = curl_init('http://closure-compiler.appspot.com/compile');
 $params = http_build_query(array(
     'js_code' => $orig_code,
@@ -94,7 +115,7 @@ $edit_params = array(
      'title' => $configuration->page,
      'section' => 0,
      'text' => $full_code,
-     'summary' => "Deploy latest version of ProveIt, commit $revid.",
+     'summary' => "Deploy commit $revid of ProveIt.",
      'notminor' => 1,
      'token' => $edit_token,
      'format' => 'json'
@@ -106,7 +127,7 @@ curl_setopt($edit_ch, CURLOPT_RETURNTRANSFER, TRUE);
 curl_setopt($edit_ch, CURLOPT_COOKIEFILE, $deploy_cookies);
 $edit_resp_str = curl_exec($edit_ch);
 $edit_resp = json_decode($edit_resp_str);
-$success_msg = "You have successfully deployed the latest version of ProveIt, commit $revid, to " . $configuration->page . "\n";
+$success_msg = "You have successfully deployed commit $revid of ProveIt to " . $configuration->page . "\n";
 $success = $edit_resp->edit->result == 'Success';
 if($success)
 {
@@ -114,7 +135,7 @@ if($success)
 }
 else if(isset($edit_resp->edit->captcha))
 {
-    fwrite($error, "Solve CAPTCHA at " . "http://en.wikipedia.org" . $edit_resp->edit->captcha->url . ", then enter it and press return:\n");
+    fwrite(STDERR, "Solve CAPTCHA at " . "http://en.wikipedia.org" . $edit_resp->edit->captcha->url . ", then enter it and press return:\n");
     $answer = trim(fgets(STDIN));
     $edit_params['captchaid'] = $edit_resp->edit->captcha->id;
     $edit_params['captchaword'] = $answer;
@@ -124,17 +145,17 @@ else if(isset($edit_resp->edit->captcha))
     if($success)
     {
 	echo "CAPTCHA successful. $success_msg"; 
-	exit(0);
     }
     else
     {
-	echo "CAPTCHA retry failed.";
+	fwrite(STDERR, "CAPTCHA retry failed.");
     }
 }
+curl_close($edit_ch);
 if(!$success)
 {
-    fwrite($error, "Failed to deploy.  Final response:\n");
-    fwrite($error, $edit_resp_str);
+    fwrite(STDERR, "Failed to deploy.  Final response:\n");
+    fwrite(STDERR, $edit_resp_str);
+    exit(3);
 }
-curl_close($edit_ch);
 ?>
