@@ -66,9 +66,10 @@ include_once 'header.php';
 
 								<h2>Easily install, update, and use ProveIt</h2>
 
-								<h3>Free and open source</h3>
+								<h3 id="foss">Free and open source</h3>
 								<ul>
-									<li>Just like Wikipedia itself</li>
+									<li>Available under the <a href="http://www.gnu.org/licenses/gpl-2.0.html">GNU General Public License version 2</a> (GPLv2), <a href="http://en.wikipedia.org/wiki/Wikipedia:Text_of_Creative_Commons_Attribution-ShareAlike_3.0_Unported_License">Creative Commons Attribution/Share-Alike License 3.0</a> (CC-BY-SA-3.0), and the <a href="http://en.wikipedia.org/wiki/Wikipedia:Text_of_the_GNU_Free_Documentation_License">GNU Free Documentation License</a> (GFDL).</li>
+									<li>These are the same licenses used for Wikipedia's text (CC-BY-SA and GFDL), plus the GPL.</li>
 									<li>Never costs you anything to use</li>
 									<li>Constantly improved by the open source community -- or improve it yourself</li>
 								</ul>	
@@ -116,7 +117,7 @@ include_once 'header.php';
 							
 							<h3>Easily install, update, and use ProveIt</h3>
 							<ul>
-								<li><a href="#">Free and open source</a></li>
+								<li><a href="#foss">Free and open source</a></li>
 								<li><a href="#">Quick installation</a></li>
 								<li><a href="#">Works anywhere, any browser, all of the time</a></li>
 								<li><a href="#">Automatic updates</a></li>

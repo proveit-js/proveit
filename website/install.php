@@ -22,11 +22,11 @@ include_once 'header.php';
 							
 								<h2>How to Install ProveIt</h2>
 							
-								<p>Installing ProveIt is a piece of cake. Just follow these simple instructions:</p>
+                                                                <p>ProveIt is <a href="features.php#foss">free and open source</a>, and installing it's a piece of cake. Just follow these simple instructions:</p>
 
 								<ol>								
 									<li>Log in to Wikipedia. Currently, you must have a Wikipedia account to use ProveIt.</li>
-									<li>Go to <a href="http://en.wikipedia.org/w/index.php?title=Special:MyPage/skin.js&action=edit">Special:MyPage/skin.js&action=edit</a>.</li>
+									<li>Go to your <a href="http://en.wikipedia.org/w/index.php?title=Special:MyPage/skin.js&amp;action=edit">user script page</a>.</li>
 									<li>Copy and paste these two lines of code:
 									 <code>importScript('User:ProveIt GT/ProveIt.js');<br />
 									 // [[User:ProveIt GT/ProveIt.js]]</code>
