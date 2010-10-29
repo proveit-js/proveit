@@ -57,15 +57,15 @@ window.proveit = {
 	/**
 	 * URL to jQueryUI script
 	 * @type String
-	 */	
+	 */
 	JQUERYUI_SCRIPT_URL : "http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.3/jquery-ui.min.js",
-	
+
 	/**
 	 * URL to jQueryUI stylesheet
 	 * @type String
-	 */	
-	JQUERYUI_STYLES_URL : "http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.3/themes/base/jquery-ui.css",	
-	
+	 */
+	JQUERYUI_STYLES_URL : "http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.3/themes/base/jquery-ui.css",
+
 	/**
 	 * Convenience log function
 	 * @param {String} msg message to log
@@ -596,6 +596,96 @@ window.proveit = {
 	 */
 	toggleinsert : false,
 
+	/* Cross-Browser Split 1.0.1
+	 (c) Steven Levithan <stevenlevithan.com>; MIT License
+	 http://blog.stevenlevithan.com/archives/cross-browser-split
+	 An ECMA-compliant, uniform cross-browser split method
+	 */
+	/**
+	 * @param {String} str input string to split
+	 * @param separator separator to split on, as RegExp or String
+	 * @param {Number} limit
+	 */
+	split : function (str, separator, limit)
+	{
+		// if `separator` is not a regex, use the native `split`
+		if (Object.prototype.toString.call(separator) !== "[object RegExp]") {
+			return proveit.split._nativeSplit.call(str, separator, limit);
+		}
+
+		var output = [],
+		lastLastIndex = 0,
+		flags = (separator.ignoreCase ? "i" : "") +
+			(separator.multiline  ? "m" : "") +
+			(separator.sticky     ? "y" : ""),
+			separator = RegExp(separator.source, flags + "g"), // make `global` and avoid `lastIndex` issues by working with a copy
+		separator2, match, lastIndex, lastLength;
+
+		str = str + ""; // type conversion
+		if (!proveit.split._compliantExecNpcg) {
+			separator2 = RegExp("^" + separator.source + "$(?!\\s)", flags); // doesn't need /g or /y, but they don't hurt
+		}
+
+		/* behavior for `limit`: if it's...
+		 - `undefined`: no limit.
+		 - `NaN` or zero: return an empty array.
+		 - a positive number: use `Math.floor(limit)`.
+		 - a negative number: no limit.
+		 - other: type-convert, then use the above rules. */
+		if (limit === undefined || +limit < 0) {
+			limit = Infinity;
+		} else {
+			limit = Math.floor(+limit);
+			if (!limit) {
+				return [];
+			}
+		}
+
+		while (match = separator.exec(str)) {
+			lastIndex = match.index + match[0].length; // `separator.lastIndex` is not reliable cross-browser
+
+			if (lastIndex > lastLastIndex) {
+				output.push(str.slice(lastLastIndex, match.index));
+
+				// fix browsers whose `exec` methods don't consistently return `undefined` for nonparticipating capturing groups
+				if (!proveit.split._compliantExecNpcg && match.length > 1) {
+					match[0].replace(separator2, function () {
+								 for (var i = 1; i < arguments.length - 2; i++) {
+									 if (arguments[i] === undefined) {
+										 match[i] = undefined;
+									 }
+								 }
+							 });
+				}
+
+				if (match.length > 1 && match.index < str.length) {
+					Array.prototype.push.apply(output, match.slice(1));
+				}
+
+				lastLength = match[0].length;
+				lastLastIndex = lastIndex;
+
+				if (output.length >= limit) {
+					break;
+				}
+			}
+
+			if (separator.lastIndex === match.index) {
+				separator.lastIndex++; // avoid an infinite loop
+			}
+		}
+
+		if (lastLastIndex === str.length) {
+			if (lastLength || !separator.test("")) {
+				output.push("");
+			}
+		} else {
+			output.push(str.slice(lastLastIndex));
+		}
+
+		return output.length > limit ? output.slice(0, limit) : output;
+	},
+
 	// TODO: Remove the split code, and just use a regular regex (with two main groups for name and val), iteratively. Regex.find?  Make name and val indices match, and rework calling code as needed.  Also, check how this was done in the original code.
 	/**
 	 * Overly clever regex to parse template string (e.g. |last=Smith|first=John|title=My Life Story) into name and value pairs.
@@ -608,17 +698,11 @@ window.proveit = {
 	splitNameVals : function (workingString)
 	{
 		var split = {};
-		split.names = workingString.substring(workingString.indexOf("|") + 1).split(/=(?:[^|]*?(?:\[\[[^|\]]*(?:\|(?:[^|\]]*))?\]\])?)+(?:\||\}\})/
-); // The first component is "ordinary" text (no pipes), while the second is a correctly balanced wikilink, with optional pipe.  Any combination of the two can appear.
-		/*
-		 * IE incorrectly drops	empty elements when you use regex literals.  We work around this by dropping empty elements conditionally
-		 * and starting after the equals sign below.
-		 */
-		while(split.names[split.names.length - 1].trim() == "")
-		{
-			split.names.length--;
-		}
-		split.values = workingString.substring(workingString.indexOf("=") + 1, workingString.indexOf("}}")).split(/\|[^|=]*=/);
+		// The first component is "ordinary" text (no pipes), while the second is a correctly balanced wikilink, with optional pipe.  Any combination of the two can appear.
+		split.names = proveit.split(workingString.substring(workingString.indexOf("|") + 1), /=(?:[^|]*?(?:\[\[[^|\]]*(?:\|(?:[^|\]]*))?\]\])?)+(?:\||\}\})/);
+		split.names.length--; // Remove single empty element at end
+
+		split.values = proveit.split(workingString.substring(workingString.indexOf("=") + 1, workingString.indexOf("}}")), /\|[^|=]*=/);
 		return split;
 	},
 
@@ -2062,7 +2146,7 @@ window.proveit = {
 		jQuery(addLink).click(function(){
 				if(jQuery(addTab).is(":hidden"))
 					showHideButton.click();
-			});			
+			});
 
 		// add panel buttons
 		jQuery("#add-buttons button:first").button({
@@ -2582,6 +2666,9 @@ if(!String.prototype.trim)
 		return this.replace(/^\s+|\s+$/g, "");
 	};
 };
+
+proveit.split._compliantExecNpcg = /()??/.exec("")[1] === undefined; // NPCG: nonparticipating capturing group
+proveit.split._nativeSplit = String.prototype.split;
 
 proveit.load();
 
