@@ -606,7 +606,8 @@ window.proveit = {
 	 *
 	 * @param {String} str input string to split
 	 * @param separator separator to split on, as RegExp or String
-	 * @param {Number} limit
+	 * @param {Number} limit limit on number of splits.  If the parameter is absent, no limit is imposed.
+	 * @return {Array} array resulting from split
 	 */
 	split : function (str, separator, limit)
 	{
