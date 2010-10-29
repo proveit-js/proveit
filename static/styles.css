@@ -286,10 +286,12 @@ div#proveit .hidden {
 	display: none;
 	}
 
+div#proveit input {
+	padding: 0px;    
+	}
+
 /*
  jqueryUI class modifications start here 
- Do not add #proveit to below, or jQueryUI background 
- images will not display properly.
 */
 
 div#proveit a.tab-link {
