@@ -602,6 +602,8 @@ window.proveit = {
 	 An ECMA-compliant, uniform cross-browser split method
 	 */
 	/**
+	 * Cross-browser implementation of ECMAScript String.prototype.split function.
+	 *
 	 * @param {String} str input string to split
 	 * @param separator separator to split on, as RegExp or String
 	 * @param {Number} limit
