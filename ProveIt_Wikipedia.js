@@ -1933,14 +1933,17 @@ window.proveit = {
 		var createdLink = jQuery('<a/>', {title: 'Created by the ELC Lab at Georgia Tech',
 			                     href: 'http://www.cc.gatech.edu/elc',
 					     target: '_blank'});
+		// Main logo in upper-right
 		var logo = jQuery('<img/>', {src: this.STATIC_BASE + 'logo.png', alt: 'ProveIt', height: 30, width: 118 });
 		createdLink.append(logo);
 		created.append(createdLink);
+		// Minimize/maximize button
 		var showHideButton = jQuery('<button/>', {text: 'show/hide'});
 		created.append(showHideButton);
 		tabs.append(created);
 		var header = jQuery('<ul/>');
 		var view = jQuery('<li/>');
+		// View tab link
 		var viewLink = jQuery('<a/>', {id: 'view-link', "class": 'tab-link', href: '#view-tab'});
 		viewLink.append('References (');
 		var numRefs = jQuery('<span/>', {id: 'numRefs'}).
@@ -1950,15 +1953,19 @@ window.proveit = {
 		view.append(viewLink);
 		header.append(view);
 		var add = jQuery('<li/>');
+		// Add tab link
 		var addLink = jQuery('<a/>', {id: 'add-link', "class": 'tab-link', href: '#add-tab'}).
 			append('Add a Reference');
 		add.append(addLink);
 		header.append(add);
 		tabs.append(header);
+		// View tab
 		var viewTab = jQuery('<div/>', {id: 'view-tab'});
+		// View pane used for displaying references; within view tab
 		var viewPane = jQuery('<div/>', {id: 'view-pane'});
 		var viewScroll = jQuery('<div/>', {"class": 'scroll',
 					      style: 'height: 210px;'});
+		// Ref list root element
 		var refTable = jQuery('<table/>', {id: 'refs'});
 		var dummyRef = jQuery('<tr/>', {id: 'dummyRef',
 					   style: 'display: none;'});
@@ -1973,7 +1980,7 @@ window.proveit = {
 		viewScroll.append(refTable);
 		viewPane.append(viewScroll);
 		viewTab.append(viewPane);
-		// div#edit-pane
+		// div#edit-pane, within view tab
 		var editPane = jQuery('<div/>', {id: 'edit-pane', style: 'display: none'});
 		// div#edit-fields
 		var editFields = jQuery('<div/>', {id: 'edit-fields',
@@ -1997,7 +2004,7 @@ window.proveit = {
 		editFields.append(paramList);
 		editPane.append(editFields);
 
-		// div#edit-buttons
+		// div#edit-buttons, part of edit pane
 		var editButtons = jQuery('<div/>', {id: 'edit-buttons'});
 		var addFieldButton = jQuery('<button/>', {style: 'margin-right: 50px;'}).
 			append('add field');
@@ -2046,6 +2053,7 @@ window.proveit = {
 			append(paramvalue.clone()).
 			append(deleteButton.clone());
 		tabs.append(addedparam);
+		// Add tab
 		var addTab = jQuery('<div/>', {id: 'add-tab'});
 		var addFields = jQuery('<div/>', {id: 'add-fields',
 					     "class": 'inputs scroll',
@@ -2095,6 +2103,7 @@ window.proveit = {
 			append(jQuery('<div/>', {"class": 'addpanes',
 					    id: 'citationpanes', style: 'display: none;'}));
 		addTab.append(addFields);
+		// Add buttons, part of add tab
 		var addButtons = jQuery('<div/>', {id: 'add-buttons'});
 		addButtons.append(jQuery('<button/>', {style: 'margin-right: 50px;',
 						  text: 'add field'})).
