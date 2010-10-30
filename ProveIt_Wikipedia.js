@@ -115,21 +115,21 @@ window.proveit = {
 
 	// Based on answer by CMS on StackOverflow.
 	/**
-	 * Sets selection of given input, with cross-browser support.  Textarea should already be focused.
+	 * Sets selection of given form node, with cross-browser support.  Textarea should already be focused.
 	 *
-	 * @param {Node} input raw DOM node, already focused.
+	 * @param {Node} node raw DOM form node, already focused.
 	 * @param {Number} selectionStart start index, 0-based
 	 * @param {Number} selectionEnd end index exclusive, 0-based.
 	 */
-	setSelectionRange : function(input, selectionStart, selectionEnd)
+	setSelectionRange : function(node, selectionStart, selectionEnd)
 	{
-		if (input.setSelectionRange)
+		if (node.setSelectionRange)
 		{
-			input.setSelectionRange(selectionStart, selectionEnd);
+			node.setSelectionRange(selectionStart, selectionEnd);
 		}
-		else if (input.createTextRange)
+		else if (node.createTextRange)
 		{
-			var range = input.createTextRange();
+			var range = node.createTextRange();
 			range.collapse(true);
 			range.moveEnd('character', selectionEnd);
 			range.moveStart('character', selectionStart);
