@@ -150,10 +150,10 @@ window.proveit = {
 			this.log("highlightStringAtIndex: invalid negative arguments");
 		}
 		var mwBox = this.getMWEditBox();
-		var origText = jQuery(mwBox).val();
+		var origText = mwBox.value;
 		var editTop = this.getPosition(this.getMWEditBox()).top;
 		var endInd = startInd + length;
-		jQuery(mwBox).val(origText.substring(0, startInd));
+		mwBox.value = origText.substring(0, startInd);
 		mwBox.focus();
 		mwBox.scrollTop = 1000000; //Larger than any real textarea (hopefully)
 		var curScrollTop = mwBox.scrollTop;
@@ -175,7 +175,7 @@ window.proveit = {
 	{
 		var mwBox = this.getMWEditBox();
 		//content.window.scroll(0, editTop);
-		var origText = jQuery(mwBox).val();
+		var origText = mwBox.value;
 		var startInd = origText.indexOf(targetStr);
 		if(startInd == -1)
 		{
@@ -726,7 +726,7 @@ window.proveit = {
 
 		this.clearRefBox();
 
-		var textValue = jQuery(text).val();
+		var textValue = text.value;
 		// since we should pick the name out before we get to the reference type, here's a variable to hold it
 		var name;
 
@@ -2487,7 +2487,7 @@ window.proveit = {
 				return function()
 				{
 					var last = 0, j = 0;
-					var text = jQuery(proveit.getMWEditBox()).val();
+					var text = proveit.getMWEditBox().value;
 					for(j = 0; j < i; j++)
 					{
 						last = text.indexOf(citationStrings[j], last);
