@@ -445,9 +445,9 @@ window.proveit = {
 
 		// Don't contaminate actual object with junk params.
 		var tempParams = {};
-		for(e in ref.params)
+		for(var param in ref.params)
 		{
-			tempParams[e] = ref.params[e];
+			tempParams[param] = ref.params[param];
 		}
 
 		// Add default params with blank values.
@@ -465,7 +465,7 @@ window.proveit = {
 
 		var paramNames = new Array();
 
-		for(item in tempParams)	//First run through just to get names.
+		for(var item in tempParams)	//First run through just to get names.
 		{
 			//this.log(item);
 			paramNames.push(item);
@@ -1531,7 +1531,7 @@ window.proveit = {
 			var req = this.getRequiredParams();
 			var i = 0;
 			var allFound = true;
-			for(reqParam in req)
+			for(var reqParam in req)
 			{
 				/* Ignore parameters in req object that are null, undefined, or false.
 				   They are not required. */
@@ -2634,7 +2634,7 @@ window.proveit = {
 
 	/**
 	 * Formats date as YYYY-MM-DD
-	 * @param {Date} date date to format
+	 * @param {Date} date1 date to format
 	 * @return {String} formatted date as String
 	 */
 	formatDate : function(date1)
