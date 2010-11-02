@@ -6,79 +6,66 @@ include_once 'header.php';
 
 ?>
 
-			<!-- Main Content Table -->
-
-				<div id="leadInPic"><img src="img/tutorials_leadIn.jpg" alt="[" /></div>
-
-				<table width="960" border="0" cellspacing="0" cellpadding="0" style="background-color: #2682c7; ">
+				<table id="mainTable">
 					<tr>
-						<td style="width: 686px;">
+						<td id="mainContent">
 
 							<div id="mainPic" class="tutorials">
 								<h1>Tutorials</h1>
 							</div><!-- end #mainPic -->
-							<div id="mainBody"> 
-								<p class="leadIn">ProveIt is an open-source Wikipedia referencing tool.  Quisque et leo ac lacus faucibus pellentesque et ac dui. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut sodales adipiscing sem at viverra. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Aliquam erat volutpat. Curabitur dolor risus, hendrerit eget viverra a, pellentesque et elit. Suspendisse potenti. Duis eget semper leo. Cras dapibus, diam eu semper ullamcorper, augue leo mattis lorem, id porta lacus quam ut odio. Sed vehicula sem vitae sem mattis vehicula. Duis felis diam, vestibulum nec interdum sit amet, ultricies at libero.</p>
-
-								<h3> Setting Up ProveIt</h3>
-								<h4> <a id="Free"> Getting Started with ProveIt </a> </h4>
+							<div id="mainBody"> 						
 								
-								<p>ProveIt is an Open-Source Wikipedia referencing tool.  It's entirely FREE to use. Getting started is simple and easy: You'll cite references like there's no tomorrow. </p>
+								<h2>Installing ProveIt</h2>
+								<p>Please see our <a href="install.php">ProveIt install guide</a>.</p>
 								
-								<h4> <a id="ImproveIt"> Removing ProveIt </a></h4>
-
-								<p>ProveIt is entirely open-source. As a developer, you can contribute to ProveIt by adding and improving features that would benefit ProveIt users . We are convinced that the dedicated open-source community can help make ProveIt the definitive referencing tool for Wikipedia citations -- forever ending the woes of millions of Wikipedia editors and contributors.</p>			
-								<h3> References</h3>
-								<h4> <a id="Free"> Adding a New Reference </a> </h4>
+								<h2>Showing or Hiding ProveIt</h2>
+								<p>Once installed, ProveIt will automatically show itself as soon as you load the Edit page for any Wikipedia article. When you leave that page, ProveIt will automatically hide itself.</p>
 								
-								<p>ProveIt is an Open-Source Wikipedia referencing tool.  It's entirely FREE to use. Getting started is simple and easy: You'll cite references like there's no tomorrow. </p>
+								<h2>Minimizing or Maximizing ProveIt</h2>
+								<p>Occasionally, you may want to manually minimize or maximize ProveIt while on an article's Edit page. To minimize ProveIt, simply click the button in the top right corner of ProveIt. The button has a "down" arrow and is located to the right of the ProveIt logo. ProveIt will immediately go into minimized mode and allow you to focus on editing the article.</p>
+								<p>To maximize ProveIt (return it to its original size), simply click the button again.</p>
 								
-								<h4> <a id="ImproveIt"> Editing an Exisitng Reference </a></h4>
-
-								<p>ProveIt is entirely open-source. As a developer, you can contribute to ProveIt by adding and improving features that would benefit ProveIt users . We are convinced that the dedicated open-source community can help make ProveIt the definitive referencing tool for Wikipedia citations -- forever ending the woes of millions of Wikipedia editors and contributors.</p>			
-								<h4>Deleting a Reference</h4>
-								<p>ProveIt is entirely open-source. As a developer, you can contribute to ProveIt by adding and improving features that would benefit ProveIt users . We are convinced that the dedicated open-source community can help make ProveIt the definitive referencing tool for Wikipedia citations -- forever ending the woes of millions of Wikipedia editors and contributors.</p>			
-								<!--table>      
-									<tr>
-										<td style="background-color: #2682c7; ">
-											<div id="recommendationHeader"> RECOMMENDED TUTORIALS </div> 
-											<div class="recommend left"> <div class="recommendText firstLine"> Getting Started with</div>
-											<div class="recommendText secondLine"><a href="" class="recommendLink"> ProveIt</a></div></div> 
-		
-											<div class="recommend right"> <div class="recommendText firstLine"> Quick Interface </div>
-											<div class="recommendText secondLine"> <a href="features.php" class="recommendLink"> WALKTHROUGH </a></div></div>
-										</td>
-									</tr>
-								</table -->     
-							</div> <!-- end #mainBody -->
-						</td>
-						<td> 
-							<h2> HOW TO USE IT </h2>
-							<div id="sideTableofContents">
-								<h3 class="first"> Setting Up ProveIt </h3>
-								<ul>
-									<li><a href="#"> Getting Started with ProveIt </a></li>
-									<li><a href="#"> Removing ProveIt </a></li>
-								</ul>
+								<h2>Selecting a Reference</h2>
+								<p>ProveIt loads all parseable references in a Wikipedia article &mdash; basically, anything surrounded by &lt;ref&gt; tags. These references appear in a list on ProveIt's References tab, ordered roughly by where they are first cited in the article.</p>
+								<p>To select a reference:</p>
+								<ol>
+									<li>Make sure you are on the References tab (click it if you aren't).</li>
+									<li>Scroll through the list of references until you find the one you want.</li>
+									<li>Click the reference. ProveIt will display an expanded view with more information about the reference, including the type, number of citations, author, and year, if available. At the same time, ProveIt will highlight the text of the first citation of the reference in Wikipedia's edit form.</li>
+									<li>If the reference is cited multiple times in the article (see <a href="#">below</a>), you can select each citation individually. Just click the corresponding letter of each citation (e.g. A, B, C&hellip;) and ProveIt will highlight the shortened reference text in the Wikipedia edit form.</li>
+								</ol>
+								<p>To select another reference, just repeat these steps.</p>
 								
-								<h3> References</h3>
-								<ul>
-									<li><a href="#">Adding a New Reference</a></li>
-									<li><a href="#">Editing an Exisitng Reference </a></li>
-									<li><a href="#">Deleting a Reference </a></li>
-								</ul>
+								<h2>Editing a Reference</h2>
+								<p>First, make sure you are on the References tab (click it if you aren't). From here, there are two methods of editing a reference:</p>
+								<p><strong>Method 1</strong>: Scroll through the list of references until you find the one you want to edit. Then click the "edit" button (it looks like a pencil) located directly to the right of the reference's title.</p>
+								<p><strong>Method 2</strong>: Select a reference using the <a href="#">instructions</a> above. Then click the "edit this reference" button located directly beneath the reference info.</p>
+								<p><strong>Note</strong>: If you do not see an edit button, it means the reference is "raw" (doesn't use the Cite or Citation templates). ProveIt does not yet support editing raw references.</p>
+								<p>After clicking the edit button, ProveIt will load the Edit pane and populate it with fields contained in the reference. You can change the information in any of these fields by typing in the white boxes.</p>
+								<p>To add a field, click the "add field" button and provide a label (left box) and value (right box) in the white boxes that appear. To delete a field, click the "delete field" button (looks like an "&times;") directly to the right of the field. Required fields, indicated by <b>boldface</b> labels, cannot be deleted.</p>
+								<p>When you are done editing the reference, click the "update edit form" button. This will cause ProveIt to update the reference text in the Wikipedia edit form. However, please note that your changes will not be saved to the article until you click the "Save page" button on Wikipedia.</p>
+								<p>At any time, you can quit editing (your changes won't be saved) by clicking the "cancel" button or one of the tabs at the top of ProveIt.</p>
 								
-								<h3> The ProveIt Interface </h3>
-								<ul>
-									<li><a href="#">Quick Interface Walkthrough</a></li>
-									<li><a href="#">Various Reference Icons</a></li>
-								</ul>
-								<h3> Configuration </h3>
-								<ul>
-									<li><a href="summary.php">Edit Summary</a></li>
-								</ul>
+								<h2>Adding a New Reference</h2>
+								<p>To add a new reference, first click in the Wikipedia edit form where you want your new reference to appear. Then, click the Add a Reference tab at the top of ProveIt. ProveIt will load the Add pane and populate it with required and optional fields. You can add information in any of these fields by typing in the white boxes.</p>
+								<p>By default, the pane is set up for adding a new website-type reference. To add a different type of reference, just click the menu to the right of the "Reference type" label. Choosing a new reference type will automatically load the appropriate required and optional fields.</p> 
+								<p>To add a field, click the "add field" button and provide a label (left box) and value (right box) in the white boxes that appear. To delete a field, click the "delete field" button (looks like an "&times;") directly to the right of the field. Required fields, indicated by <b>boldface</b> labels, cannot be deleted.</p>
+								<p>When you are done adding information, click the "insert into edit form" button. This will cause ProveIt to insert the text for your new reference where you left your cursor in the Wikipedia edit form. However, please note that your new reference will not be saved to the article until you click the "Save page" button on Wikipedia.</p>
+								<p>At any time, you can quit adding a reference by clicking the "cancel" button or the References tab at the top of ProveIt.</p>								
+							
+								<h2>Citing a Reference</h2>
+								<p>Wikipedia allows you to cite a reference more than once (i.e. use the reference multiple times in the article), and so does ProveIt.</p>
+								<p>To cite a reference more than once, the reference must have a name. If somebody hasn't already named the reference, you will have to name it. To name the reference, open it in ProveIt's Edit pane using the <a href="#">instructions</a> above and type a short, descriptive name into the white box to the right of the "&lt;ref&gt; name" label. Then click the "update edit form" button.</p>
+								<p>To cite a reference:</p>
+								<ol>
+									<li>Select the reference in ProveIt using the <a href="#">instructions</a> above.</li>
+									<li>Click in the Wikipedia edit form where you want the new citation to appear.</li>
+									<li>Click the "insert this reference at cursor" button beneath the selected reference info in ProveIt. This will insert the abbreviated reference text into the Wikipedia edit form where you left your cursor. If the insert button doesn't appear, it means the reference is raw or requires a name (see above).</li>
+								</ol>
 							</div>
-					  </td>
+
+						</td>
+						<td id="sideTableofContents">&nbsp;  </td>
 					</tr>
 				</table> 
 
