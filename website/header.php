@@ -42,7 +42,7 @@ switch($page)
 		$primary = 'Users';
 		break;
 	
-	case 'Documentation':
+	//case 'Documentation':
 	//case 'Wiki':
 	//case 'gCode':
 	case 'Developers':
@@ -71,7 +71,7 @@ switch($page)
 							<li>
 								<a href="developers.php" class="primary-nav-link<?= $primary == 'Developers' ? ' selected' : '' ?>">Developers</a>
 								<ul<?= $primary == 'Developers' ? ' style="display: block;"' : '' ?>>
-									<li><a href="documentation.php"<?= $page == 'Documentation' ? ' class="selected"' : '' ?>>Documentation</a></li>
+									<li><a href="yuidocs/index.html">Documentation</a></li>
 									<li><a href="http://code.google.com/p/proveit-js/">Google Code Project</a></li>
 									<li><a href="http://code.google.com/p/proveit-js/w/list">Wiki</a></li>
 								</ul>

@@ -22,19 +22,19 @@ include_once 'header.php';
 							
 								<h2>How to Install ProveIt</h2>
 							
-                                                                <p>ProveIt is <a href="features.php#foss">free and open source</a>, and installing it's a piece of cake. Just follow these simple instructions:</p>
+                                <p>ProveIt is <a href="features.php#foss">free and open source</a>, and installing it's a piece of cake. Just follow these simple instructions:</p>
 
 								<ol>								
-									<li>Log in to Wikipedia. Currently, you must have a Wikipedia account to use ProveIt.</li>
-									<li>Go to your <a href="http://en.wikipedia.org/w/index.php?title=Special:MyPage/skin.js&amp;action=edit">user script page</a>.</li>
-									<li>Copy and paste these two lines of code:
+									<li><a href="http://en.wikipedia.org/w/index.php?title=Special:UserLogin&returnto=User:ProveIt_GT">Log in</a> to Wikipedia. If you don't have an account, you'll have to <a href="http://en.wikipedia.org/w/index.php?title=Special:UserLogin&type=signup&returnto=User:ProveIt_GT">create one</a>. Currently, you must have a Wikipedia account to use ProveIt.</li>
+									<li>Go to your <a href="http://en.wikipedia.org/w/index.php?title=Special:MyPage/skin.js&amp;action=edit">user script page</a>. It's normal if you have to create this page, or if it's empty.</li>
+									<li>Copy and paste these two lines of code into that page. Don't add or modify any other lines unless you know what you're doing.
 									 <code>importScript('User:ProveIt GT/ProveIt.js');<br />
 									 // [[User:ProveIt GT/ProveIt.js]]</code>
 									 </li>
 									<li>Save. You may have to <a href="http://en.wikipedia.org/wiki/Wikipedia:Bypass_your_cache">bypass your cache</a> to see the changes.</li>
 								</ol>
 
-								<p>That's it! You can start using ProveIt immediately. Just go to any Wikipedia article and click the Edit tab.</p>
+								<p>That's it! You can start using ProveIt immediately. You can start with <a href="http://en.wikipedia.org/w/index.php?title=Georgia_Institute_of_Technology&action=edit">Georgia Institute of Technology</a> or go to any other Wikipedia article and click the Edit tab.</p>
 
    
 							</div><!-- end #mainBody -->

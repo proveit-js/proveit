@@ -14,7 +14,7 @@
 								<a href="demo.php"<?php if($page == 'Demo') echo ' class="selected"'; ?>>Demo</a>
 								<br />
 								
-								<a href="documentation.php"<?php if($page == 'Documentation') echo ' class="selected"'; ?>>Documentation</a> -			
+								<a href="yuidocs/index.html">Documentation</a> -			
 								<a href="http://code.google.com/p/proveit-js/"<?php if($page == 'gCode') echo ' class="selected"'; ?>>Google Code Project</a> -
 								<a href="http://code.google.com/p/proveit-js/w/list"<?php if($page == 'Wiki') echo ' class="selected"'; ?>>Wiki</a>
 								<br />
