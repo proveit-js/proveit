@@ -11,7 +11,20 @@ body {
 	color: #000;
 	background-color: #fff;
 	}
+	
+/*------------ Styles in Progress -----*/	
+dt {
+	font-style: italic;
 
+  }	
+
+dd{
+	margin-bottom: 5px;
+
+  }
+/*------------ END Styles in Progress -----*/	
+  
+  
 div#superContainer {
 	padding: 0 25px;
 	}
@@ -225,6 +238,15 @@ div#mainBody {
 	line-height: 18px;
 	color: #000;	
 	}
+	
+	div#mainBody ol{
+		margin-left:30px;
+	}
+
+		div#mainBody ol li{
+			margin-bottom:2px;
+			
+		}
 
 table#mainTable {
 	width: 940px;

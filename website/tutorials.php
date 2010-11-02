@@ -6,6 +6,8 @@ include_once 'header.php';
 
 ?>
 
+			<!-- Main Content Table -->
+
 				<table id="mainTable">
 					<tr>
 						<td id="mainContent">
@@ -13,62 +15,124 @@ include_once 'header.php';
 							<div id="mainPic" class="tutorials">
 								<h1>Tutorials</h1>
 							</div><!-- end #mainPic -->
-							<div id="mainBody"> 						
+							<div id="mainBody"> 
+								<h2>Need Help?</h2>
+									<p>Having trouble locating a particular ProveIt feature? Or maybe you simply forgot how to minimize the ProveIt interface? Here are a number of quick reference tutorials to make your ProveIt experience easier.</p>
+								<br/>
 								
-								<h2>Installing ProveIt</h2>
-								<p>Please see our <a href="install.php">ProveIt install guide</a>.</p>
-								
-								<h2>Showing or Hiding ProveIt</h2>
-								<p>Once installed, ProveIt will automatically show itself as soon as you load the Edit page for any Wikipedia article. When you leave that page, ProveIt will automatically hide itself.</p>
-								
-								<h2>Minimizing or Maximizing ProveIt</h2>
-								<p>Occasionally, you may want to manually minimize or maximize ProveIt while on an article's Edit page. To minimize ProveIt, simply click the button in the top right corner of ProveIt. The button has a "down" arrow and is located to the right of the ProveIt logo. ProveIt will immediately go into minimized mode and allow you to focus on editing the article.</p>
-								<p>To maximize ProveIt (return it to its original size), simply click the button again.</p>
-								
-								<h2>Selecting a Reference</h2>
-								<p>ProveIt loads all parseable references in a Wikipedia article &mdash; basically, anything surrounded by &lt;ref&gt; tags. These references appear in a list on ProveIt's References tab, ordered roughly by where they are first cited in the article.</p>
-								<p>To select a reference:</p>
+								<hr/>
+								<h2> Managing ProveIt </h2>
+								<h3 id="Installing">Installing ProveIt</h3>
 								<ol>
-									<li>Make sure you are on the References tab (click it if you aren't).</li>
-									<li>Scroll through the list of references until you find the one you want.</li>
-									<li>Click the reference. ProveIt will display an expanded view with more information about the reference, including the type, number of citations, author, and year, if available. At the same time, ProveIt will highlight the text of the first citation of the reference in Wikipedia's edit form.</li>
-									<li>If the reference is cited multiple times in the article (see <a href="#">below</a>), you can select each citation individually. Just click the corresponding letter of each citation (e.g. A, B, C&hellip;) and ProveIt will highlight the shortened reference text in the Wikipedia edit form.</li>
+									<li>Create or Log-In Wikipedia User Account</li>
+									<li>Click on the "Edit" button on your Wikipedia User Account Page</li>
+									<li>Copy the ProveIt User-Script text from below: 
+										<code>importScript('User:ProveIt GT/ProveIt.js');<br />
+										// [[User:ProveIt GT/ProveIt.js]]</code> </li>
+									<li>Paste ProveIt Script link on Wikipedia User Account --> User Script page</li>
+									<li>Click "Save Changes"</li>
 								</ol>
-								<p>To select another reference, just repeat these steps.</p>
-								
-								<h2>Editing a Reference</h2>
-								<p>First, make sure you are on the References tab (click it if you aren't). Then, scroll through the list of references until you find the one you want to edit. From here, there are three ways to edit a reference:</p>
-								<p><strong>Method 1</strong>: Double-click the reference you want to edit.</p>
-								<p><strong>Method 2</strong>: Click the "edit" button (it looks like a pencil) located directly to the right of the reference's title.</p>
-								<p><strong>Method 3</strong>: Select a reference using the <a href="#">instructions</a> above. Then click the "edit this reference" button located directly beneath the reference info.</p>
-								<p><strong>Note</strong>: If you do not see an edit button, it means the reference is "raw" (doesn't use the Cite or Citation templates). ProveIt does not yet support editing raw references.</p>
-								<p>After clicking the edit button, ProveIt will load the Edit pane and populate it with fields contained in the reference. You can change the information in any of these fields by typing in the white boxes.</p>
-								<p>To add a field, click the "add field" button and provide a label (left box) and value (right box) in the white boxes that appear. To delete a field, click the "delete field" button (looks like an "&times;") directly to the right of the field. Required fields, indicated by <b>boldface</b> labels, cannot be deleted.</p>
-								<p>When you are done editing the reference, click the "update edit form" button. This will cause ProveIt to update the reference text in the Wikipedia edit form. However, please note that your changes will not be saved to the article until you click the "Save page" button on Wikipedia.</p>
-								<p>At any time, you can quit editing (your changes won't be saved) by clicking the "cancel" button or one of the tabs at the top of ProveIt.</p>
-								
-								<h2>Adding a New Reference</h2>
-								<p>To add a new reference, first click in the Wikipedia edit form where you want your new reference to appear. Then, click the Add a Reference tab at the top of ProveIt. ProveIt will load the Add pane and populate it with required and optional fields. You can add information in any of these fields by typing in the white boxes.</p>
-								<p>By default, the pane is set up for adding a new website-type reference. To add a different type of reference, just click the menu to the right of the "Reference type" label. Choosing a new reference type will automatically load the appropriate required and optional fields.</p> 
-								<p>To add a field, click the "add field" button and provide a label (left box) and value (right box) in the white boxes that appear. To delete a field, click the "delete field" button (looks like an "&times;") directly to the right of the field. Required fields, indicated by <b>boldface</b> labels, cannot be deleted.</p>
-								<p>When you are done adding information, click the "insert into edit form" button. This will cause ProveIt to insert the text for your new reference where you left your cursor in the Wikipedia edit form. However, please note that your new reference will not be saved to the article until you click the "Save page" button on Wikipedia.</p>
-								<p>At any time, you can quit adding a reference by clicking the "cancel" button or the References tab at the top of ProveIt.</p>								
-							
-								<h2>Citing a Reference</h2>
-								<p>Wikipedia allows you to cite a reference more than once (i.e. use the reference multiple times in the article), and so does ProveIt.</p>
-								<p>To cite a reference more than once, the reference must have a name. If somebody hasn't already named the reference, you will have to name it. To name the reference, open it in ProveIt's Edit pane using the <a href="#">instructions</a> above and type a short, descriptive name into the white box to the right of the "&lt;ref&gt; name" label. Then click the "update edit form" button.</p>
-								<p>To cite a reference:</p>
-								<ol>
-									<li>Select the reference in ProveIt using the <a href="#">instructions</a> above.</li>
-									<li>Click in the Wikipedia edit form where you want the new citation to appear.</li>
-									<li>Click the "insert this reference at cursor" button beneath the selected reference info in ProveIt. This will insert the abbreviated reference text into the Wikipedia edit form where you left your cursor. If the insert button doesn't appear, it means the reference is raw or requires a name (see above).</li>
-								</ol>
-							</div>
+									
 
+								<h3 id="Uninstalling">Uninstalling ProveIt</h3>
+								<ol>
+									<li>Log-In to your Wikipedia User Account</li>
+									<li>Locate User-Script Page</li>
+									<li>Click Edit</li>
+									<li>Delete the ProveIt User-Script text</li>
+									<li>Click "Save Changes"</li>
+								</ol>
+								
+								<h3 id="Unpdating">Updating ProveIt</h3>
+								<ol>
+									<li>ProveIt Updates Automatically</li>
+								</ol>
+								<br/>
+								
+								<hr/>
+								<h2>ProveIt Interface</h2>
+								<h3 id="Showing"> Showing ProveIt </h3>
+								<h3 id="Hiding"> Hiding ProveIt </h3>
+								<h3 id="Minimizing">Minimizing</h3>
+								<ol>
+									<li>Click the minimize button (upside-down triangle) in the top-right corner of the ProveIt Interface</li>
+								</ol>
+								
+								<h3 id="Maximizing">Maximizing</h3>
+								<ol>
+									<li>Click the minimize button (triangle) in the top-right corner of the ProveIt Interface</li>
+								</ol>
+								<br/>
+								
+								<hr/>
+								<h2>References</h2>
+								
+								<h3 id="Finding">Finding a Reference</h3>
+								<p>ProveIt loads all parseable references in a Wikipedia article -- basically, anything surrounded by <ref> tags. These references appear in a list on ProveIt's References tab, ordered roughly by where they are first cited in the article.</p>
+								<ol>
+									<li>Click "References" Tab (if unable to see list of references)</li>
+									<li>Locate reference of interest in the list of references</li>
+									<li>Click the desired reference</li>
+									<li>You will be automatically directed to the location of the reference</li>
+								</ol>
+								
+								<h3 id="NumUses">Finding a Specific Citation of a Reference Using its "Number of Uses"</h3>
+								<ol>
+									<li>Click "References" Tab (if unable to see list of references)</li>
+									<li>Locate reference of interest in the list of references</li>
+									<li>Click the desired reference</li>
+									<li>The reference's "number of uses" should be visible (if any)</li>
+									<li>Click the desired letter (a, b, c, d, ....)</li>
+									<li>You will be automatically directed to the location of the specific citation</li>
+								</ol>
+
+								<h3 id="Adding">Adding a Reference</h3>
+								<ol>
+									<li>Click the "Add a Reference" Tab</li>
+									<li>Select Reference Type from drop-down menu</li>
+									<li>Input Information ( required information will be marked <strong>bold</strong> )</li>
+									<li>Click "insert into edit form"</li>
+								</ol>
+								
+								<h3 id="Citing">Citing a Reference Using "Insert at Cursor"</h3>
+								<ol>
+									<li>Click the "References" Tab</li>
+									<li>Locate reference of interest in the list of references</li>
+									<li>Click the desired reference</li>
+									<li>Locate the cursor in the Wikipedia edit form
+									<li>Click to place the cursor in the desired location in the edit form (your citation will be placed here) </li>
+									<li>Click "insert at cursor"</li>
+								</ol>
+								<br/>
+
+							</div><!-- end #mainBody -->
 						</td>
-						<td id="sideTableofContents">&nbsp;  </td>
+						<td id="sideTableofContents"> 
+							<h2>Contents </h2>
+							
+							<h3> Managing ProveIt </h3>
+							<ul>
+								<li><a href="#Installing">Installing ProveIt</a></li>
+								<li><a href="#Uninstalling">Uninstalling ProveIt</a></li>
+								<li><a href="#Updating">Updating</a></li>
+							</ul>
+							
+							<h3> ProveIt Interface </h3>
+							<ul>
+								<li
+								<li><a href="#Minimizing">Minimizing</a></li>
+								<li><a href="#Maximizing">Maximizing</a></li>
+							</ul>
+							
+							<h3> References </h3>
+							<ul>
+								<li><a href="#Finding">Finding a Reference</a></li>
+								<li><a href="#NumUses">...Using "Number of Uses"</a></li>
+								<li><a href="#Adding">Adding a Reference</a></li>
+								<li><a href="#Citing">...Using "Insert at Cursor"</a></li>
+							</ul>
+					  </td>
 					</tr>
 				</table> 
-
 
 <?php include_once 'footer.php'; ?>

@@ -16,15 +16,17 @@ include_once 'header.php';
 								<h1>Report a Bug</h1>
 							</div><!-- end #mainPic -->
 							<div id="mainBody"> 
-								<h2>How Do I Report a Bug?</h2>
+								<h2>HOW TO REPORT A BUG</h2>
 								
 								<h3 id="GettingStarted">Getting Started</h3>
 								<p>All users are encouraged to report any bugs (or glitches) encountered while using ProveIt. Any and all help is appreciated, and will be used to further improve the ProveIt experience.</p>
+								<br/>
 								
+								<hr />
 								<h3 id="Fields">Issue Tracker</h3>
 								<p>We use Google Code's issue tracker to manage bug reports. To create a new bug report, go to the <a href="http://code.google.com/p/proveit-js/issues/entry?template=Defect%20report%20from%20user">New Issue</a> page. You'll see a number of fields:</p>
 								<dl>
-									<dt>Summary</dt>
+									<dt><i>Summary</i></dt>
 									<dd>A brief, one-line summary of the problem you're having.</dd>
 									<dt>Description</dt>
 									<dd>A detailed description of your problem. See our <a href="#Tips">tips for writing good bug reports</a> below.</dd>
@@ -37,7 +39,9 @@ include_once 'header.php';
 								</dl>
 								
 								<p>Once you've filled out the Status and Description fields, click the "Submit issue" button. You're done! Thanks in advance.</p>
-
+								<br/>
+								
+								<hr />
 								<h3 id="Tips">Tips for Writing Bug Reports</h3>
 								<p>To help the ProveIt developers fix the bug, please provide enough information for them to reproduce it. This will typically include:</p>
 								<ul>
