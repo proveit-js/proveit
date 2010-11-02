@@ -37,9 +37,10 @@ include_once 'header.php';
 								<p>To select another reference, just repeat these steps.</p>
 								
 								<h2>Editing a Reference</h2>
-								<p>First, make sure you are on the References tab (click it if you aren't). From here, there are two methods of editing a reference:</p>
-								<p><strong>Method 1</strong>: Scroll through the list of references until you find the one you want to edit. Then click the "edit" button (it looks like a pencil) located directly to the right of the reference's title.</p>
-								<p><strong>Method 2</strong>: Select a reference using the <a href="#">instructions</a> above. Then click the "edit this reference" button located directly beneath the reference info.</p>
+								<p>First, make sure you are on the References tab (click it if you aren't). Then, scroll through the list of references until you find the one you want to edit. From here, there are three ways to edit a reference:</p>
+								<p><strong>Method 1</strong>: Double-click the reference you want to edit.</p>
+								<p><strong>Method 2</strong>: Click the "edit" button (it looks like a pencil) located directly to the right of the reference's title.</p>
+								<p><strong>Method 3</strong>: Select a reference using the <a href="#">instructions</a> above. Then click the "edit this reference" button located directly beneath the reference info.</p>
 								<p><strong>Note</strong>: If you do not see an edit button, it means the reference is "raw" (doesn't use the Cite or Citation templates). ProveIt does not yet support editing raw references.</p>
 								<p>After clicking the edit button, ProveIt will load the Edit pane and populate it with fields contained in the reference. You can change the information in any of these fields by typing in the white boxes.</p>
 								<p>To add a field, click the "add field" button and provide a label (left box) and value (right box) in the white boxes that appear. To delete a field, click the "delete field" button (looks like an "&times;") directly to the right of the field. Required fields, indicated by <b>boldface</b> labels, cannot be deleted.</p>
