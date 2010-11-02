@@ -18,7 +18,6 @@ include_once 'header.php';
 							<div id="mainBody"> 
 								<h2>Need Help?</h2>
 									<p>Having trouble locating a particular ProveIt feature? Or maybe you simply forgot how to minimize the ProveIt interface? Here are a number of quick reference tutorials to make your ProveIt experience easier.</p>
-								<br/>
 								
 								<hr/>
 								<h2> Managing ProveIt </h2>

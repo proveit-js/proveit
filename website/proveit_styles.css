@@ -13,6 +13,10 @@ body {
 	}
 	
 /*------------ Styles in Progress -----*/	
+p{
+	line-height:20px;
+}
+
 dt {
 	font-style: italic;
 
