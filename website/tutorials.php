@@ -51,16 +51,12 @@ include_once 'header.php';
 								
 								<hr/>
 								<h2>ProveIt Interface</h2>
-								<h3 id="Showing"> Showing ProveIt </h3>
-								<h3 id="Hiding"> Hiding ProveIt </h3>
-								<h3 id="Minimizing">Minimizing</h3>
-								<ol>
-									<li>Click the minimize button (upside-down triangle) in the top-right corner of the ProveIt Interface</li>
-								</ol>
+								<h3 id="ShowHide"> Showing/Hiding ProveIt </h3>
+								<p>Once installed, ProveIt will automatically show itself as soon as you load the Edit page for any Wikipedia article. When you leave that page, ProveIt will automatically hide itself.</p>
 								
-								<h3 id="Maximizing">Maximizing</h3>
+								<h3 id="MaxMin">Maximizing/Minimizing</h3>
 								<ol>
-									<li>Click the minimize button (triangle) in the top-right corner of the ProveIt Interface</li>
+									<li>Click the maximize/minimize button (triangle) in the top-right corner of the ProveIt Interface.</li>
 								</ol>
 								<br/>
 								
@@ -120,8 +116,8 @@ include_once 'header.php';
 							<h3> ProveIt Interface </h3>
 							<ul>
 								<li
-								<li><a href="#Minimizing">Minimizing</a></li>
-								<li><a href="#Maximizing">Maximizing</a></li>
+								<li><a href="#ShowHide">Show/Hide ProveIt</a></li>
+								<li><a href="#MaxMin">Maximizing/Minimizing ProveIt</a></li>
 							</ul>
 							
 							<h3> References </h3>
