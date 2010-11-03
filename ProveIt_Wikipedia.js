@@ -10,19 +10,22 @@
  * ALL RIGHTS RESERVED
  */
 
-if (typeof(proveit) != 'undefined')
-	throw new Error("proveit already exists");
-
 /**
  * Electronic Learning Communities
  * @module elc
  */
 
+/*
+ Second parameter (pre-existing proveit object, if any) passed to extend overrides first.
+ Gives users option to easily override initial constants, such as shouldAddSummary.
+
+ If proveit is unintentionally imported more than once, the first import will take precedence.
+*/
 /**
  * Main class and namespace for ProveIt software.  This is the only global variable.
  * @class proveit
  */
-window.proveit = {
+window.proveit = jQuery.extend({
 	/**
 	 * Approximately half the height of the edit box.  Used in scrolling when highlighting text.
 	 * @type Number
@@ -2654,7 +2657,7 @@ window.proveit = {
 		var refbox = this.getRefBox();
 		jQuery(refbox).append(this.makeRefBoxRow(ref, false));
 	}
-};
+}, window.proveit);
 
 /**
  * Static method.  Returns valid Cite reference types
