@@ -24,6 +24,19 @@ include_once 'header.php';
 								<h3>Minimizing or Maximizing ProveIt</h3>
 								<p>Occasionally, you may want to manually minimize or maximize ProveIt while on an article's Edit page. To minimize ProveIt, simply click the button in the top right corner of ProveIt. The button has a "down" arrow and is located to the right of the ProveIt logo. ProveIt will immediately go into minimized mode and allow you to focus on editing the article.</p>
 								<p>To maximize ProveIt (return it to its original size), simply click the button again.</p>
+								
+								<h3>Disabling automatic summary</h3>
+								<p>If you would rather not use ProveIt's summary:</p>
+								    <ol>
+									    <li>Login to Wikipedia.</li>
+									    <li>Go to your user <a href="http://en.wikipedia.org/wiki/Special:MyPage/skin.js?action=edit">script page</a>.</li>
+									    <li>Find the line:<br/>
+										    <code>importScript('User:Superm401/ProveIt.js');</code></li>
+									    <li>On the previous line, add:<br/>
+										    <code>proveit = { shouldAddSummary: false };</code></li>
+									    <li>If it doesn't take effect immediately, you may want to <a href="http://en.wikipedia.org/wiki/Wikipedia:Bypass_your_cache">bypass your cache</a>.</li>
+								    </ol>
+
 								<hr />
 								
 								<h2>Reference Help</h2>
