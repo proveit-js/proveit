@@ -35,24 +35,26 @@ switch($page)
 {
 	case 'Features':
 	case 'Screenshots':
+	case 'User Guide':
 	case 'Tutorials':
 	case 'Report-a-Bug':
-	case 'Demo':
 	case 'Users':
 		$primary = 'Users';
 		break;
-	
-	//case 'Documentation':
-	//case 'Wiki':
-	//case 'gCode':
+		
 	case 'Developers':
 		$primary = 'Developers';
+		break;
+	
+	case 'Demo':
+		$primary = 'Demo';
 		break;
 	
 	case 'Research':
 	case 'The Team':
 	case 'About':
 		$primary = 'About';
+		break;
 }
 
 ?>
@@ -63,9 +65,9 @@ switch($page)
 								<ul<?= $primary == 'Users' ? ' style="display: block;"' : '' ?>>
 									<li><a href="features.php"<?= $page == 'Features' ? ' class="selected"' : '' ?>>Features</a></li>
 									<li><a href="screenshots.php"<?= $page == 'Screenshots' ? ' class="selected"' : '' ?>>Screenshots</a></li>
+									<li><a href="userguide.php"<?= $page == 'User Guide' ? ' class="selected"' : '' ?>>User Guide</a></li>
 									<li><a href="tutorials.php"<?= $page == 'Tutorials' ? ' class="selected"' : '' ?>>Tutorials</a></li>
 									<li><a href="reportabug.php"<?= $page == 'Report-a-Bug' ? ' class="selected"' : '' ?>>Report a Bug</a></li>
-									<li><a href="demo.php"<?= $page == 'Demo' ? ' class="selected"' : '' ?>>Demo</a></li>
 								</ul>
 							</li>
 							<li>
@@ -75,6 +77,9 @@ switch($page)
 									<li><a href="http://code.google.com/p/proveit-js/">Google Code Project</a></li>
 									<li><a href="http://code.google.com/p/proveit-js/w/list">Wiki</a></li>
 								</ul>
+							</li>
+							<li>
+								<a href="demo.php" class="primary-nav-link<?= $primary == 'Demo' ? ' selected' : '' ?>">Demo</a>
 							</li>
 							<li>
 								<a href="about.php" class="primary-nav-link<?= $primary == 'About' ? ' selected' : '' ?>">About</a>
