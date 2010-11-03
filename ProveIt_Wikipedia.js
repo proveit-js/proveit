@@ -389,10 +389,10 @@ window.proveit = jQuery.extend({
 			// this.log(item + ":" + paramBoxes[item].id);
 			//this.log("item: " + i);
 			var paramRow = paramBoxes[i];
-			var valueTextbox = paramRow.getElementsByClassName("paramvalue")[0];
+			var valueTextbox = jQuery(".paramvalue", paramRow)[0];
 			if(jQuery(paramRow).hasClass("addedrow")) // Added with "Add another field"
 			{
-				paramName = paramRow.getElementsByClassName("paramdesc")[0].value.trim();
+				paramName = jQuery(".paramdesc", paramRow)[0].value.trim();
 			}
 			else
 			{
@@ -1356,7 +1356,7 @@ window.proveit = jQuery.extend({
 		{
 			// This is the order fields will be displayed or outputted.
 
-			return [
+			return jQuery.inArray(param, [
 				"url",
 				"title",
 				"accessdate",
@@ -1453,7 +1453,7 @@ window.proveit = jQuery.extend({
 				"time",
 				"quote",
 				"ref"
-			].indexOf(param);
+			]);
 		};
 
 		/**
@@ -1730,17 +1730,17 @@ window.proveit = jQuery.extend({
 
 		var paramName, paramVal;
 
-		var paramList = box.getElementsByClassName("paramlist")[0];
+		var paramList = jQuery(".paramlist", box)[0];
 		var paramRows = jQuery('div', paramList);
 		for (var i = 0; i < paramRows.length; i++)
 		{
 			var paramRow =  paramRows[i];
 			this.log("getRefFromAddPane: i: " + i + ", paramRow: " + paramRow);
-			var valueTextbox = paramRow.getElementsByClassName("paramvalue")[0];
+			var valueTextbox = jQuery(".paramvalue", paramRow)[0];
 
 			if(jQuery(paramRow).hasClass("addedrow")) // Added with "Add another field"
 			{
-				paramName = paramRow.getElementsByClassName("paramdesc")[0].value.trim();
+				paramName = jQuery(".paramdesc", paramRow)[0].value.trim();
 			}
 			else
 			{
@@ -1873,7 +1873,7 @@ window.proveit = jQuery.extend({
 		newParams.sort(newRef.getSorter());
 		var required = newRef.getRequiredParams();
 
-		var paramList = genPane.getElementsByClassName("paramlist")[0];
+		var paramList = jQuery(".paramlist", genPane)[0];
 		for(var i = 0; i < newParams.length; i++)
 		{
 			var param = newParams[i];
@@ -1903,13 +1903,13 @@ window.proveit = jQuery.extend({
 				// Throwing an error here doesn't make sense if user-added fields can be copied over.
 				// throw new Error("Undefined description for param: " + param);
 				paramBox = document.getElementById("addedparamrow").cloneNode(true);
-				var nameTextbox = paramBox.getElementsByClassName("paramdesc")[0];
+				var nameTextbox = jQuery(".paramdesc", paramBox)[0];
 				nameTextbox.setAttribute("value", param);
 			}
 			paramBox.id = "";
 			this.activateRemoveField(paramBox);
 
-			paramBox.getElementsByClassName("paramvalue")[0].id = this.NEW_PARAM_PREFIX + param;
+			jQuery(".paramvalue", paramBox)[0].id = this.NEW_PARAM_PREFIX + param;
 			this.log("changeAddPane: param: " + param + "; newRef.params[param]: " + newRef.params[param]);
 			//paramBox.childNodes[2].value = newRef.params[param]; // Causes parameters to disappear.  Why?
 			jQuery(paramBox).show();
@@ -2276,10 +2276,7 @@ window.proveit = jQuery.extend({
 			jQuery(newchild).addClass('invalid');
 		}
 		// grab the nodes that need changed out of it
-		//var newlabel = newchild.getElementsByClassName("richitemlabel")[0];
 		var neweditimage = jQuery('.edit button', newchild).get(0);
-		//var newinsertimage = newchild.getElementsByClassName("richiteminsert")[0];
-		//newchild.hidden = false;
 		var thisproveit = this;
 
 		var title = '';
