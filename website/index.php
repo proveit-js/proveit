@@ -31,26 +31,27 @@ include_once 'header.php';
 							</div><!-- end #mainBody -->
 						</td>
 						<td id="sideTableofContents">
-							<h2> Features </h2>
-							
+							<h2>Features</h2>
 							<ul>
 								<li><a href="features.php">Easily find, add, and edit references</a></li>
 								<li><a href="features.php">Use ProveIt anytime, anywhere</a></li>
 								<li><a href="features.php">Open-source, completely free</a></li>
 							</ul>
 
-							<h2>Demo </h2>
-							
+							<h2>Demo</h2>
 							<ul>
 								<li><a href="demo.php">Try ProveIt right now!</a></li>
 							</ul>		
 
 							<h2>Install</h2>
-							
 							<ul>
 								<li><a href="install.php">No download required</a></li>
+							</ul>
+							
+							<h2>Report a Bug</h2>
+							<ul>
+								<li><a href="reportabug.php">Help make ProveIt better</a></li>
 							</ul>	
-	
 					  </td>
 					</tr>
 				</table> 

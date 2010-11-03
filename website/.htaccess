@@ -1,0 +1,7 @@
+Options -Indexes
+
+RewriteEngine on
+RewriteBase /
+
+ErrorDocument 404 /proveit/website/notfound.php
+
