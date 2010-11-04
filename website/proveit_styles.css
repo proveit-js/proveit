@@ -320,6 +320,10 @@ div#mainPic {
 	div#mainPic.install {
 		background-image:url(img/install.jpg);	
 		}
+		
+	div#mainPic.userguide {
+		background-image:url(img/userguide.jpg);	
+		}
 /* END Main Picture for each Page */
 
 /*** Picture Divs for USERS, DEVELOPERS, and ABOUT */
