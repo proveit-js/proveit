@@ -116,30 +116,6 @@ window.proveit = jQuery.extend({
 		return {"left": left, "top": top};
 	},
 
-	// Based on answer by CMS on StackOverflow.
-	/**
-	 * Sets selection of given form node, with cross-browser support.  Textarea should already be focused.
-	 *
-	 * @param {Node} node raw DOM form node, already focused.
-	 * @param {Number} selectionStart start index, 0-based
-	 * @param {Number} selectionEnd end index exclusive, 0-based.
-	 */
-	setSelectionRange : function(node, selectionStart, selectionEnd)
-	{
-		if (node.setSelectionRange)
-		{
-			node.setSelectionRange(selectionStart, selectionEnd);
-		}
-		else if (node.createTextRange)
-		{
-			var range = node.createTextRange();
-			range.collapse(true);
-			range.moveEnd('character', selectionEnd);
-			range.moveStart('character', selectionStart);
-			range.select();
-		}
-	},
-
 	/**
 	 * Highlights a given length of text, at a particular index.
 	 * @param {Number} startInd start index in Wikipedia edit box
@@ -152,20 +128,14 @@ window.proveit = jQuery.extend({
 		{
 			this.log("highlightStringAtIndex: invalid negative arguments");
 		}
-		var mwBox = this.getMWEditBox();
-		var origText = mwBox.value;
-		var editTop = this.getPosition(this.getMWEditBox()).top;
-		var endInd = startInd + length;
-		mwBox.value = origText.substring(0, startInd);
-		mwBox.focus();
-		mwBox.scrollTop = 1000000; //Larger than any real textarea (hopefully)
-		var curScrollTop = mwBox.scrollTop;
-		mwBox.value += origText.substring(startInd);
-		if(curScrollTop > 0)
+		var box = this.getMWEditBox();
+		jQuery(box).focus().textSelection('setSelection',
 		{
-			mwBox.scrollTop = curScrollTop + this.HALF_EDIT_BOX_HEIGHT;
-		}
-		this.setSelectionRange(mwBox, startInd, endInd);
+			start: startInd,
+			end: startInd + length
+		}).textSelection('scrollToCaretPosition', {force: true});
+		var editTop = this.getPosition(box).top;
+		window.scroll(0, editTop);
 		return true;
 	},
 
@@ -176,9 +146,7 @@ window.proveit = jQuery.extend({
 	*/
 	highlightTargetString : function(targetStr)
 	{
-		var mwBox = this.getMWEditBox();
-		//content.window.scroll(0, editTop);
-		var origText = mwBox.value;
+		var origText = this.getMWEditValue();
 		var startInd = origText.indexOf(targetStr);
 		if(startInd == -1)
 		{
@@ -195,6 +163,22 @@ window.proveit = jQuery.extend({
 	getMWEditBox : function()
 	{
 		return jQuery("#wpTextbox1")[0];
+	},
+
+	/**
+	 * Provides value of edit box with CR normalization
+	 *
+	 * @return {String} value of edit box with CRs stripped if document.selection exists
+	 */
+	getMWEditValue : function()
+	{
+		var box = this.getMWEditBox();
+		var value = box.value;
+		if(!box.selectionStart && document.selection) // IE 8-like behavior
+		{
+			value = value.replace(/\r\n/g, "\n");
+		}
+		return value;
 	},
 
 	/**
@@ -342,26 +326,16 @@ window.proveit = jQuery.extend({
 			this.log("insertRefIntoMWEditBox: txtarea is null");
 			return false;
 		}
+		txtarea = jQuery(txtarea);
 		var insertionText = ref.getInsertionText(full);
-
-		// save textarea scroll position
-		var textScroll = txtarea.scrollTop;
-		// get current selection
-		txtarea.focus();
-		var startPos = txtarea.selectionStart;
-		var endPos = txtarea.selectionEnd;
-		var selText = txtarea.value.substring(startPos, endPos);
-		// insert refs
-		txtarea.value = txtarea.value.substring(0, startPos) + insertionText
-				+ txtarea.value.substring(endPos, txtarea.value.length);
-		// set new selection
-
-		txtarea.selectionStart = startPos;
-		txtarea.selectionEnd = txtarea.selectionStart + insertionText.length;
-
-		// restore textarea scroll position
-		txtarea.scrollTop = textScroll;
-
+		 // Replace existing selection (if any), then scroll
+		txtarea.textSelection('encapsulateSelection',
+		{
+			post: insertionText,
+			// replace: true
+			replace: false
+		});
+		txtarea.textSelection('scrollToCaretPosition', {force: true});
 		this.includeProveItEditSummary();
 	},
 
@@ -721,15 +695,10 @@ window.proveit = jQuery.extend({
 		// these are strings used to allow the correct parsing of the ref
 		var workingstring;
 		var cutupstring;
-		var text = this.getMWEditBox();
-		if(!text)
-		{
-			throw new Error("scanForRefs: MW edit box is not defined.");
-		}
 
 		this.clearRefBox();
 
-		var textValue = text.value;
+		var textValue = this.getMWEditValue();
 		// since we should pick the name out before we get to the reference type, here's a variable to hold it
 		var name;
 
@@ -1225,12 +1194,8 @@ window.proveit = jQuery.extend({
 			if (!txtarea || txtarea == null)
 				return;
 
-			var textScroll = txtarea.scrollTop;
-			// get current selection
 			txtarea.focus();
-			var startPos = txtarea.selectionStart;
-			var endPos = txtarea.selectionEnd;
-			var text = txtarea.value;
+			var text = proveit.getMWEditValue();
 
 			text = text.replace(this.orig, this.toString());
 
@@ -2490,7 +2455,7 @@ window.proveit = jQuery.extend({
 				return function()
 				{
 					var last = 0, j = 0;
-					var text = proveit.getMWEditBox().value;
+					var text = proveit.getMWEditValue();
 					for(j = 0; j < i; j++)
 					{
 						last = text.indexOf(citationStrings[j], last);
