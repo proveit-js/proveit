@@ -17,26 +17,15 @@ include_once 'header.php';
 							</div><!-- end #mainPic -->
 							<div id="mainBody"> 
 								<h2>Need Help?</h2>
-									<p>Having trouble locating a particular ProveIt feature? Or maybe you simply forgot something simple? Here are a number of quick-reference tutorials for making your ProveIt experience easier. If you need additional help, please visit our <a href="userguide.php">User Guide</a> page for more in-depth explanations.</p>
+									<p>Having trouble with a ProveIt feature? Or maybe you forgot something? Here are a number of quick reference tutorials for making your ProveIt experience easier. If you need additional help, please visit our <a href="userguide.php">User Guide</a> page for more in-depth explanations.</p>
 								
 								<hr/>
 								<h2> Managing ProveIt </h2>
 								<h3 id="InstallUninstall">Install/Uninstalling ProveIt</h3>
-								<ol>
-									<li>Create or Log-In Wikipedia User Account</li>
-									<li>Click on the "Edit" button on your Wikipedia User Account Page</li>
-									<li>Copy the ProveIt user script text from below: 
-										<code>importScript('User:ProveIt GT/ProveIt.js');<br />
-										// [[User:ProveIt GT/ProveIt.js]]</code> </li>
-									<li>Paste the ProveIt user script onto the Wikipedia user script page</li>
-									<li>Click "Save Changes"</li>
-									<li>To Uninstall, delete the ProveIt Script and click "Save Changes"</li>
-								</ol>
+								<p>Please see our <a href="install.php">ProveIt install guide</a>.</p> 
 								
 								<h3 id="Updating">Updating ProveIt</h3>
-								<ol>
-									<li>ProveIt Updates Automatically</li>
-								</ol>
+								<p>ProveIt updates automatically, so you don't have to worry about it.</p>
 								
 								<hr/>
 								<h2>ProveIt Interface</h2>
@@ -53,19 +42,19 @@ include_once 'header.php';
 								
 								<hr/>
 								<h2>Locating References</h2>
-								<p> Finding, adding, and editing references is easier than ever with ProveIt. Here are a few tutorials to glide you through. We will be using the book <strong><i>The Catcher in the Rye</i> by J.D. Salinger</strong> as an example for all of the following tutorials.</p>
+								<p>We will use the book <i>The Catcher in the Rye</i> by J.D. Salinger as an example for the following tutorials.</p>
 								<h3 id="Finding">Finding a Reference</h3>
 								<ol>
-									<li>Click the "References" Tab (if you do not see a list of references in ProveIt)</li>
-									<li>Click <i>Cather in the Rye</i> in the reference viewer</li>
+									<li>Click the "References" tab (if you do not see a list of references in ProveIt)</li>
+									<li>Find "The Catcher in the Rye" in the list of references and click it</li>
 									<li>You will be automatically directed to the location of the reference</li>
 								</ol>
 								
 								<h3 id="SpecfCite">Finding a Specific Citation of a Reference</h3>
 								<ol>
-									<li>Click the "References" Tab (if you do not see a list of references in ProveIt)</li>
-									<li>Click <i>The Cathcher in the Rye</i> in the Reference viewer</li>
-									<li>If <i>The Catcher in the Rye</i> has been cited more than once, look for "This reference is cited in the article # times: A, B, C, ..."</li>
+									<li>Click the "References" tab (if you do not see a list of references in ProveIt)</li>
+									<li>Find "The Catcher in the Rye" in the list of references and click it</li>
+									<li>If <i>The Catcher in the Rye</i> has been cited more than once, look for "This reference is cited in the article # times"</li>
 									<li>Each letter in this list represents one citation of <i>The Catcher in the Rye</i> in the Wikipedia article</li>
 									<li>Click the desired letter</li>
 									<li>You will be automatically directed to the location of the specific citation</li>
@@ -75,11 +64,11 @@ include_once 'header.php';
 								<h2>Adding References</h2>
 								
 								<h3 id="Adding">Adding a New Reference</h3>
-								<p> Say you only have the following information for the book <strong><i>The Catcher in the Rye</i> by J.D. Salinger</strong>:</p>
+								<p> Say you only have the following information for the book <i>The Catcher in the Rye</i> by J.D. Salinger:</p>
 								<code>Salinger, J.D. The Catcher in the Rye. New York: Bantam, 1964.</code>
 								<p> Since the only information required for a book reference is its Title, so you have more than enough information to create a competent reference using ProveIt.</p>
 								<ol>
-									<li>Click the "Add a Reference" Tab</li>
+									<li>Click the "Add a Reference" tab</li>
 									<li>Select "Book" from the "Reference Type" drop-down menu</li>
 									<li>Type <i>J.D. Salinger</i> into the "Author" field</li>
 									<li>Type <i>The Catcher in the Rye</i> in the "Title" field</li>
@@ -92,23 +81,20 @@ include_once 'header.php';
 								
 								<h3 id="Citing">Creating a New Citation of an Existing Reference</h3>
 								<ol>
-									<li>Click the "References" Tab (if you do not see a list of references in ProveIt)</li>
-									<li>Click <i>The Catcher in the Rye</i> in the list of references</li>
+									<li>Click the "References" tab (if you do not see a list of references in ProveIt)</li>
+									<li>Find "The Catcher in the Rye" in the list of references and click it</li>
 									<li>Make sure that the cursor in the Wikipedia edit box is in the location where you want to make a new citation of <i>The Catcher in the Rye</i>
 									<li>Click <strong>insert this reference at cursor</strong> to create a new citation of <i>The Catcher in the Rye</i></li>						
 								</ol>
 								
 								<h3 id="NoCite">No "Insert This Reference At Cursor" Button?</h3>
-								<p>If you do not see an <strong>insert this reference at cursor</strong> button, this means that the reference does not have a "&lt ref &gt name". A "&lt ref &gt name" is an abbreviated name, or shorthand, for a reference. "&lt ref &gt name" used to be the fastest method for citing existing references on Wikipedia -- ProveIt makes it faster.</p>
-								<p>Say <i> The Catcher in the Rye</i> reference in our reference viewer, does not have the <strong>insert this reference at cursor</strong> button. We will have to create a "&lt ref &gt name" for this reference.</p>
-								
-								
+								<p>If you do not see an <strong>insert this reference at cursor</strong> button, this means that the reference does not have a "&lt;ref&gt; name". A "&lt;ref&gt; name" is an abbreviated name, or shorthand, for a reference.</p>
+								<p>Say the <i>Catcher in the Rye</i> reference does not have the <strong>insert this reference at cursor</strong> button. We will have to create a "&lt;ref&gt; name" for this reference.</p>
 								
 								<ol>
-									<li>Click <i> The Catcher in the Rye</i> in the reference viewer</li>
+									<li>Find "The Catcher in the Rye" in the list of references and click it</li>
 									<li>Click the <strong>edit this reference </strong> button</li>
-									<li>Locate the "&lt ref &gt name" field</li>
-									<li>Type in "CITR"</li>
+									<li>Type <i>CITR</i> in the "&lt;ref&gt; name" field</li>
 									<li>Click <strong> update edit form</strong> to save your changes</li>
 								</ol>
 								
@@ -118,7 +104,7 @@ include_once 'header.php';
 							<h3 id="Editing"> Editing an Existing Reference </h3>
 								<ol>
 									<li>Click the "References" Tab (if you do not see a list of references in ProveIt)</li>
-									<li>Click <i> The Catcher in the Rye</i> in the reference viewer</li>
+									<li>Find "The Catcher in the Rye" in the list of references and click it</li>
 									<li>Click the <strong>edit this reference </strong> button</li>
 									<li>You should see a blue background and various fields filled in with referencing information about <i> The Catcher in the Rye</i></li>
 									<li>Type your changes in the corresponding fields (Title, Author, Publisher, etc...)</li>
