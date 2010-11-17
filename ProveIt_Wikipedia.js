@@ -331,11 +331,9 @@ window.proveit = jQuery.extend({
 		 // Replace existing selection (if any), then scroll
 		txtarea.textSelection('encapsulateSelection',
 		{
-			post: insertionText,
-			// replace: true
-			replace: false
-		});
-		txtarea.textSelection('scrollToCaretPosition', {force: true});
+			peri: insertionText,
+			replace: true
+		}).textSelection('scrollToCaretPosition', {force: true});
 		this.includeProveItEditSummary();
 	},
 
@@ -1747,10 +1745,6 @@ window.proveit = jQuery.extend({
 		this.insertRefIntoMWEditBox(ref, true); // true means insert full text here, regardless of global toggle.
 		ref.save = true;
 		ref.inMWEditBox = true;
-		this.includeProveItEditSummary();
-// 		this.getRefBox().scrollToIndex(this.getRefBox().itemCount - 1);
-// 		this.getRefBox().selectedIndex = this.getRefBox().itemCount - 1;
-		this.highlightTargetString(ref.orig);
 	},
 
 	/**
@@ -2394,18 +2388,6 @@ window.proveit = jQuery.extend({
 
 		// append the expanded info box to the title <td>
 		jQuery('td.title', newchild).append(expanded);
-
-
-
-		//jQuery('td.author', newchild).html(formattedAuthor);
-
-		// single click event handler
-
-		// newchild.addEventListener("click", function()
-		// {
-			// thisproveit.highlightTargetString(ref.orig);
-		// }, false);
-		//alert(ref.orig);
 
 		if(!isReplacement)
 		{
