@@ -4,7 +4,10 @@
 	<link href="proveit_styles.css" rel="stylesheet" type="text/css" />
 	<link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon" />
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<title>ProveIt - <?php echo $page; ?></title>
+    <meta http-equiv="content-language" content="en" /> 
+    <meta name="description" content="ProveIt is a free, open-source referencing tool that makes it that makes it really easy to find, edit, add, and cite references in Wikipedia articles." /> 
+    <meta name="author" content="ELC Lab at Georgia Tech" /> 	
+	<title>ProveIt - Wikipedia References Made Easy - <?php echo $page; ?></title>
 	<script type="text/javascript" src="http://www.google.com/jsapi"></script> 
 	<script type="text/javascript"> 
 		google.load("jquery", "1");
