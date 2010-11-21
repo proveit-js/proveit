@@ -10,9 +10,10 @@ define('REV_LONG', 'rev');
 
 $options = getopt(REV_SHORT . ':', array(REV_LONG . ':'));
 $configuration = json_decode(file_get_contents('./deploy_configuration.json'));
-if(!(isset($configuration->username) && isset($configuration->password) && isset($configuration->page)))
+if(!(isset($configuration->username) && isset($configuration->password) && isset($configuration->page) 
+     && isset($configuration->ssh->host) && isset($configuration->ssh->username) && isset($configuration->ssh->password) && isset($configuration->ssh->path)))
 {
-    fwrite(STDERR, 'You must provide a JSON file, deploy_configuaration.json, in the repository root (but not committed) with username, password, and page fields set.');
+    fwrite(STDERR, 'You must provide a JSON file, deploy_configuaration.json, in the repository root (but not committed) with username, password, page, and ssh configuration fields set.');
     exit(1);
 }
 
@@ -44,7 +45,17 @@ if($id_ret != 0)
     exit(5);
 }
 
-$orig_code = shell_exec('hg cat -r ' . $revid . ' ' . PROVEIT_FILE);
+$temp_dir = tempnam("/tmp", "proveit_deploy_r{$revid}_");
+if(!$temp_dir)
+{
+    fwrite(STDERR, "Failed to create temporary file.\n");
+    exit(9);
+}
+unlink($temp_dir); // We need a directory, rather than file.
+shell_exec("hg archive -r $revid $temp_dir");
+chdir($temp_dir);
+
+$orig_code = file_get_contents(PROVEIT_FILE);
 $closure_ch = curl_init('http://closure-compiler.appspot.com/compile');
 $params = http_build_query(array(
     'js_code' => $orig_code,
@@ -158,4 +169,51 @@ if(!$success)
     fwrite(STDERR, $edit_resp_str);
     exit(3);
 }
-?>
+
+system('./yuidoc.sh');
+echo "Connecting to {$configuration->ssh->host}\n";
+$con = ssh2_connect($configuration->ssh->host);
+
+$auth_ret = ssh2_auth_password($con, $configuration->ssh->username, $configuration->ssh->password);
+if(!$auth_ret)
+{
+    fwrite(STDERR, 'SSH password authentication failed.\n');
+    exit(6);
+}
+
+$sftp = ssh2_sftp($con);
+if(!$sftp)
+{
+    fwrite(STDERR, "Failed to open SFTP subsystem.\n");
+    exit(7);
+}
+
+function sftp_walk($con, $sftp, $local_dir, $remote_dir)
+{
+    $dir = opendir($local_dir);
+    ssh2_sftp_mkdir($sftp, $remote_dir, 0755, true);
+    while (($file = readdir($dir)) !== false)
+    {
+	$local_file = $local_dir . '/' . $file;
+	$remote_file = $remote_dir . '/' . $file;
+	if(!is_dir($local_file))
+	{
+	    echo "Transferring $local_file to $remote_file\n";
+       	    $scp_ret = ssh2_scp_send($con, $local_file, $remote_file, 0755);
+	    if(!$scp_ret)
+	    {
+		fwrite(STDERR, "Failed to transfer file.\n");
+		exit(8);
+	    }
+	}
+	else if($file != "." && $file != "..")
+	{
+	    sftp_walk($con, $sftp, $local_file, $remote_file);
+	}
+    }
+}
+
+sftp_walk($con, $sftp, 'yui_docs/html', $configuration->ssh->path);
+chdir(dirname(__FILE__));
+system("rm -r $temp_dir");
+echo "You have succesfully deployed the ProveIt API documentation.\n";
