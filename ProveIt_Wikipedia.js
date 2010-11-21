@@ -1896,7 +1896,7 @@ window.proveit = jQuery.extend({
 		var tabs = jQuery('<div/>', {id: 'tabs'});
 		var created = jQuery('<h1/>');
 		var createdLink = jQuery('<a/>', {title: 'Created by the ELC Lab at Georgia Tech',
-			                     href: 'http://www.cc.gatech.edu/elc',
+			                     href: 'http://proveit.cc.gatech.edu',
 					     target: '_blank'});
 		// Main logo in upper-right
 		var logo = jQuery('<img/>', {src: this.STATIC_BASE + 'logo.png', alt: 'ProveIt', height: 30, width: 118 });
