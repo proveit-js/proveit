@@ -8,7 +8,7 @@ include_once 'header.php';
 			<!-- Main Content Table -->
 
 				<div id="leadInPic">
-					<img src="img/install.jpg" alt="Install" height="167" width="940" />
+					<img src="/img/install.jpg" alt="Install" height="167" width="940" />
 				</div>
 
 				<table id="mainTable">
@@ -22,7 +22,7 @@ include_once 'header.php';
 							
 								<h2>How to Install ProveIt</h2>
 							
-                                <p>ProveIt is <a href="features.php#foss">free and open source</a>, and installing it's a piece of cake. Just follow these simple instructions:</p>
+                                <p>ProveIt is <a href="/users/features#foss">free and open source</a>, and installing it's a piece of cake. Just follow these simple instructions:</p>
 
 								<ol>								
 									<li><a href="http://en.wikipedia.org/w/index.php?title=Special:UserLogin&returnto=User:ProveIt_GT">Log in</a> to Wikipedia. If you don't have an account, you'll have to <a href="http://en.wikipedia.org/w/index.php?title=Special:UserLogin&type=signup&returnto=User:ProveIt_GT">create one</a>. Currently, you must have a Wikipedia account to use ProveIt.</li>

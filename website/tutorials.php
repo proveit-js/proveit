@@ -17,14 +17,14 @@ include_once 'header.php';
 							</div><!-- end #mainPic -->
 							<div id="mainBody"> 
 								<h2>Need Help?</h2>
-									<p>Having trouble with a ProveIt feature? Or maybe you forgot something? Here are a number of quick reference tutorials for making your ProveIt experience easier. If you need additional help, please visit our <a href="userguide.php">User Guide</a> page for more in-depth explanations.</p>
+									<p>Having trouble with a ProveIt feature? Or maybe you forgot something? Here are a number of quick reference tutorials for making your ProveIt experience easier. If you need additional help, please visit our <a href="/users/guide">User Guide</a> page for more in-depth explanations.</p>
 								<h3> Follow Along, Step-by-Step</h3>	
 									<p>The following tutorials will use the <a href="http://en.wikipedia.org/w/index.php?title=Georgia_Institute_of_Technology&action=edit&oldid=397007847">Georgia Institute of Technology</a> Wikipedia article as a basis. We recommend that you open <a href="http://en.wikipedia.org/w/index.php?title=Georgia_Institute_of_Technology&action=edit&oldid=397007847">the article</a> in another tab, to follow along with the tutorials below. Though the tutorials will use particular references, all actions are not reference specific (some articles, however, may not have all of the necessary information to use certain features). Simply reproduce these actions for any reference of your choosing, on any Wikipedia article of your choosing.</p>
 								
 								<hr/>
 								<h2> Managing ProveIt </h2>
 								<h3 id="InstallUninstall">Install/Uninstalling ProveIt</h3>
-								<p>Please see our <a href="install.php">ProveIt install guide</a>.</p> 
+								<p>Please see our <a href="/install">ProveIt install guide</a>.</p> 
 								
 								<h3 id="Updating">Updating ProveIt</h3>
 								<p>ProveIt updates automatically, so you don't have to worry about it.</p>

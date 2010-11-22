@@ -1,19 +1,19 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd"> 
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"> 
 <head>
-	<link href="proveit_styles.css" rel="stylesheet" type="text/css" />
-	<link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon" />
+	<title>ProveIt - Wikipedia References Made Easy - <?php echo $page; ?></title>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta http-equiv="content-language" content="en" /> 
     <meta name="description" content="ProveIt is a free, open-source referencing tool that makes it that makes it really easy to find, edit, add, and cite references in Wikipedia articles." /> 
     <meta name="author" content="ELC Lab at Georgia Tech" /> 	
-	<title>ProveIt - Wikipedia References Made Easy - <?php echo $page; ?></title>
+	<link href="/proveit_styles.css" rel="stylesheet" type="text/css" />
+	<link rel="shortcut icon" href="/img/favicon.ico" type="image/x-icon" />	
 	<script type="text/javascript" src="http://www.google.com/jsapi"></script> 
 	<script type="text/javascript"> 
 		google.load("jquery", "1");
 		google.setOnLoadCallback(function(){});
 	</script> 
-	<script src="scripts.js" type="text/javascript"></script>
+	<script src="/scripts.js" type="text/javascript"></script>
 </head>
 <body>
 
@@ -23,7 +23,7 @@
 					<tr>
 						<td style="width: 250px; ">
 							<div id="logoContainer">
-								<a href="index.php" class="img"><img src="img/proveit_logo.png" alt="ProveIt logo" /></a>
+								<a href="/" class="/img"><img src="/img/proveit_logo.png" alt="ProveIt logo" /></a>
 							</div>
 						</td>
 						<td>
@@ -60,42 +60,41 @@ switch($page)
 		break;
 }
 
-?>
-						
+?>					
 						<ul id="primary-nav">				
 							<li>
-								<a href="users.php" class="primary-nav-link<?= $primary == 'Users' ? ' selected' : '' ?>">Users</a>
+								<a href="/users" class="primary-nav-link<?= $primary == 'Users' ? ' selected' : '' ?>">Users</a>
 								<ul<?= $primary == 'Users' ? ' style="display: block;"' : '' ?>>
-									<li><a href="features.php"<?= $page == 'Features' ? ' class="selected"' : '' ?>>Features</a></li>
-									<li><a href="screenshots.php"<?= $page == 'Screenshots' ? ' class="selected"' : '' ?>>Screenshots</a></li>
-									<li><a href="userguide.php"<?= $page == 'User Guide' ? ' class="selected"' : '' ?>>User Guide</a></li>
-									<li><a href="tutorials.php"<?= $page == 'Tutorials' ? ' class="selected"' : '' ?>>Tutorials</a></li>
-									<li><a href="reportabug.php"<?= $page == 'Report-a-Bug' ? ' class="selected"' : '' ?>>Report a Bug</a></li>
+									<li><a href="/users/features"<?= $page == 'Features' ? ' class="selected"' : '' ?>>Features</a></li>
+									<li><a href="/users/screenshots"<?= $page == 'Screenshots' ? ' class="selected"' : '' ?>>Screenshots</a></li>
+									<li><a href="/users/guide"<?= $page == 'User Guide' ? ' class="selected"' : '' ?>>User Guide</a></li>
+									<li><a href="/users/tutorials"<?= $page == 'Tutorials' ? ' class="selected"' : '' ?>>Tutorials</a></li>
+									<li><a href="/users/bugreport"<?= $page == 'Report-a-Bug' ? ' class="selected"' : '' ?>>Report a Bug</a></li>
 								</ul>
 							</li>
 							<li>
-								<a href="developers.php" class="primary-nav-link<?= $primary == 'Developers' ? ' selected' : '' ?>">Developers</a>
+								<a href="/developers" class="primary-nav-link<?= $primary == 'Developers' ? ' selected' : '' ?>">Developers</a>
 								<ul<?= $primary == 'Developers' ? ' style="display: block;"' : '' ?>>
-									<li><a href="yuidocs/index.html">Documentation</a></li>
+									<li><a href="/yuidocs/index.html">Documentation</a></li>
 									<li><a href="http://code.google.com/p/proveit-js/">Google Code Project</a></li>
 									<li><a href="http://code.google.com/p/proveit-js/w/list">Wiki</a></li>
 								</ul>
 							</li>
 							<li>
-								<a href="demo.php" class="primary-nav-link<?= $primary == 'Demo' ? ' selected' : '' ?>">Demo</a>
+								<a href="/demo" class="primary-nav-link<?= $primary == 'Demo' ? ' selected' : '' ?>">Demo</a>
 							</li>
 							<li>
-								<a href="about.php" class="primary-nav-link<?= $primary == 'About' ? ' selected' : '' ?>">About</a>
+								<a href="/about" class="primary-nav-link<?= $primary == 'About' ? ' selected' : '' ?>">About</a>
 								<ul<?= $primary == 'About' ? ' style="display: block;"' : '' ?>>
-									<li><a href="research.php"<?= $page == 'Research' ? ' class="selected"' : '' ?>>Research</a></li>
-									<li><a href="theteam.php"<?= $page == 'The Team' ? ' class="selected"' : '' ?>>The Team</a></li>
+									<li><a href="/about/research"<?= $page == 'Research' ? ' class="selected"' : '' ?>>Research</a></li>
+									<li><a href="/about/team"<?= $page == 'The Team' ? ' class="selected"' : '' ?>>The Team</a></li>
 								</ul>
 							</li>
 						</ul><!-- end #primary-nav -->
 							
 						</td>
 						<td style="width: 250px; ">
-							<div id="getProveIt"><a href="install.php"></a></div>
+							<div id="getProveIt"><a href="/install"></a></div>
 						 </td>
 					</tr>
 				</table>

@@ -16,7 +16,7 @@ include_once 'header.php';
 							<div id="mainBody"> 						
 								<h2>General Help</h2>
 								<h3>Installing ProveIt</h3>
-								<p>Please see our <a href="install.php">ProveIt install guide</a>.</p>
+								<p>Please see our <a href="/install">ProveIt install guide</a>.</p>
 								
 								<h3>Showing or Hiding ProveIt</h3>
 								<p>Once installed, ProveIt will automatically show itself as soon as you load the Edit page for any Wikipedia article. When you leave that page, ProveIt will automatically hide itself.</p>

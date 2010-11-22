@@ -18,7 +18,7 @@ include_once 'header.php';
 							<div id="mainBody"> 
 								<p>ProveIt has been in development at <a href="http://www.gatech.edu/">Georgia Tech</a> since 2008 and is a highly collaborative effort. These are some of the folks who have helped out with this project since it began.</p>
     
-								<p>You can contact us <a href="http://www.google.com/recaptcha/mailhide/d?k=018gtRX99FRA2NimJqUPHqyw==&amp;c=_Kwjk_EjaYDNriFFeDTlO0EJWETETrLl5p82YBF9xr0=">here</a>.  However, if you find a problem in ProveIt, please consider filing a <a href="/reportabug.php">bug report</a> instead.</p>
+								<p>You can contact us <a href="http://www.google.com/recaptcha/mailhide/d?k=018gtRX99FRA2NimJqUPHqyw==&amp;c=_Kwjk_EjaYDNriFFeDTlO0EJWETETrLl5p82YBF9xr0=">here</a>.  However, if you find a problem in ProveIt, please consider filing a <a href="/users/bugreport">bug report</a> instead.</p>
 
 								<h2>Current Team Members</h2>
 								

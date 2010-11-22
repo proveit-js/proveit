@@ -3,5 +3,21 @@ Options -Indexes
 RewriteEngine on
 RewriteBase /
 
-ErrorDocument 404 /proveit/website/notfound.php
+ErrorDocument 404 /notfound.php
 
+RewriteRule ^users/?$ users.php
+RewriteRule ^users/guide/?$ userguide.php
+RewriteRule ^users/bugreport/?$ reportabug.php
+RewriteRule ^users/(.*)/?$ $1.php
+
+RewriteRule ^developers/?$ developers.php
+
+RewriteRule ^about/?$ about.php
+RewriteRule ^about/team/?$ theteam.php
+RewriteRule ^about/(.*)/?$ $1.php
+
+RewriteRule ^demo/?$ demo.php
+
+RewriteRule ^install/?$ install.php
+
+RewriteRule ^(.*)\.html$ $1.php [NC,L]

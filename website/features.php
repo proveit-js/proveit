@@ -8,7 +8,7 @@ include_once 'header.php';
 			<!-- Main Content Table -->
 
 				<div id="leadInPic">
-					<img src="img/features_leadIn.jpg" alt="Features" height="167" width="940" />
+					<img src="/img/features_leadIn.jpg" alt="Features" height="167" width="940" />
 				</div>
 
 				<table id="mainTable">
@@ -89,18 +89,7 @@ include_once 'header.php';
 								<ul>
 									<li>Always loads the latest fixes and features, instantly and automatically -- you do nothing</li>
 								</ul>											
-								<!--table>      
-									<tr>
-										<td style="background-color: #2682c7; ">
-											<div id="recommendationHeader"> RECOMMENDED TUTORIALS </div> 
-											<div class="recommend left"> <div class="recommendText firstLine"> Getting Started with</div>
-											<div class="recommendText secondLine"><a href="" class="recommendLink"> ProveIt</a></div></div> 
-		
-											<div class="recommend right"> <div class="recommendText firstLine"> Quick Interface </div>
-											<div class="recommendText secondLine"> <a href="features.php" class="recommendLink"> WALKTHROUGH </a></div></div>
-										</td>
-									</tr>
-								</table -->     
+    
 							</div><!-- end #mainBody -->
 						</td>
 						<td id="sideTableofContents" style="visibility: hidden;">

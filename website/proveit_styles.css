@@ -220,11 +220,11 @@ div#getProveIt {
 	div#getProveIt a:link, div#getProveIt a:visited {
 		display: block;
 		width: 250px; height: 100px; 
-		background: url(img/get.jpg) no-repeat; 
+		background: url(/img/get.jpg) no-repeat; 
 		} 
 
 	div#getProveIt a:hover { 
-		background: url(img/get_rollover.jpg) no-repeat; 
+		background: url(/img/get_rollover.jpg) no-repeat; 
 		}
 	/*----END IMAGE ROLLOVER ----*/
 	
@@ -273,56 +273,56 @@ div#mainPic {
 	}
 	
 	div#mainPic.index {
-		background-image:url(img/index.jpg);	
+		background-image:url(/img/index.jpg);	
 		height: 375px;
 		}
 
 	div#mainPic.features {
-		background-image:url(img/features.jpg);	
+		background-image:url(/img/features.jpg);	
 		}
 
 	div#mainPic.tutorials {
-		background-image:url(img/tutorials.jpg);	
+		background-image:url(/img/tutorials.jpg);	
 		}
 
 	div#mainPic.documentation {
-		background-image:url(img/documentation.jpg);	
+		background-image:url(/img/documentation.jpg);	
 		}
 
 	div#mainPic.screenshots {
-		background-image:url(img/screenshots.jpg);	
+		background-image:url(/img/screenshots.jpg);	
 		}
 
 	div#mainPic.theteam {
-		background-image:url(img/theteam.jpg);	
+		background-image:url(/img/theteam.jpg);	
 		}
 
 	div#mainPic.research {
-		background-image:url(img/research.jpg);	
+		background-image:url(/img/research.jpg);	
 		}
 
 	div#mainPic.reportabug {
-		background-image:url(img/reportabug.jpg);	
+		background-image:url(/img/reportabug.jpg);	
 		}
 		
 	div#mainPic.install {
-		background-image:url(img/install.jpg);	
+		background-image:url(/img/install.jpg);	
 		}
 
 	div#mainPic.wiki {
-		background-image:url(img/wiki.jpg);	
+		background-image:url(/img/wiki.jpg);	
 		}	
 
 	div#mainPic.gCode {
-		background-image:url(img/gCode.jpg);	
+		background-image:url(/img/gCode.jpg);	
 		}		
 		
 	div#mainPic.install {
-		background-image:url(img/install.jpg);	
+		background-image:url(/img/install.jpg);	
 		}
 		
 	div#mainPic.userguide {
-		background-image:url(img/userguide.jpg);	
+		background-image:url(/img/userguide.jpg);	
 		}
 /* END Main Picture for each Page */
 
