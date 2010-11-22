@@ -27,7 +27,8 @@
 							<!-- Footer Credits -->
 							<td id="footerCredits"> 
 								<a href="http://www.ic.gatech.edu/">Georgia Tech | Interactive Computing</a><br/> 
-								<a href="http://www.cc.gatech.edu/elc/">Electronic Learning Communities Lab</a>
+								<a href="http://www.cc.gatech.edu/elc/">Electronic Learning Communities Lab</a><br/>
+								 <a href="http://www.google.com/recaptcha/mailhide/d?k=018gtRX99FRA2NimJqUPHqyw==&amp;c=_Kwjk_EjaYDNriFFeDTlO0EJWETETrLl5p82YBF9xr0=">Contact Us via Email</a>
 							</td>
 						</tr>
 					</table>
