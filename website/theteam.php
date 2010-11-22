@@ -18,7 +18,7 @@ include_once 'header.php';
 							<div id="mainBody"> 
 								<p>ProveIt has been in development at <a href="http://www.gatech.edu/">Georgia Tech</a> since 2008 and is a highly collaborative effort. These are some of the folks who have helped out with this project since it began.</p>
     
-								<p>You can contact us <a href="http://www.google.com/recaptcha/mailhide/d?k=018gtRX99FRA2NimJqUPHqyw==&amp;c=_Kwjk_EjaYDNriFFeDTlO0EJWETETrLl5p82YBF9xr0=">here</a>.  However, if you find a problem in ProveIt, you should consider filing a <a href="/reportabug.php">bug</a> instead.</p>
+								<p>You can contact us <a href="http://www.google.com/recaptcha/mailhide/d?k=018gtRX99FRA2NimJqUPHqyw==&amp;c=_Kwjk_EjaYDNriFFeDTlO0EJWETETrLl5p82YBF9xr0=">here</a>.  However, if you find a problem in ProveIt, please consider filing a <a href="/reportabug.php">bug report</a> instead.</p>
 
 								<h2>Current Team Members</h2>
 								
@@ -44,7 +44,7 @@ talk page</a>.
 								<h2>Former Team Members</h2>
 								
 								<h3>Prof. Andrea Forte (Former Lead Researcher &amp; Project Manager)</h3>
-								<p>Andrea received her Ph.D. in human-centered computing from Georgia Tech in 2009 and is now an assistant professor in the <a href="http://www.ischool.drexel.edu/">College of Information Science and Technology</a> at Drexel University.</p>
+								<p>Andrea received her Ph.D. in human-centered computing from Georgia Tech in 2009 and is now an assistant professor in the <a href="http://www.ischool.drexel.edu/">College of Information Science and Technology</a> at Drexel University. She is also the program chair of WikiSym 2011.</p>
 								
 								<h3>Christopher Jordan (Former Lead Developer)</h3>
 								<p>Christopher received his B.S. from Georgia Tech.</p>
@@ -75,14 +75,7 @@ talk page</a>.
 								<h3> Prof. Andrea Forte</h3>
 								<ul>
 									<li><a href="http://www.andreaforte.net/">Andrea's website</a></li>
-								</ul>
-								
-								<h3> Christopher Jordan</h3>
-								<ul>
-									<li><a href="#">Chris' website</a></li>
-								</ul>								
-								
-							
+								</ul>											
 					  </td>
 					</tr>
 				</table> 
