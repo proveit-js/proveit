@@ -19,5 +19,3 @@ RewriteRule ^about/(.*)/?$ $1.php
 RewriteRule ^demo/?$ demo.php
 
 RewriteRule ^install/?$ install.php
-
-RewriteRule ^(.*)\.html$ $1.php [NC,L]
