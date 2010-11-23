@@ -41,12 +41,12 @@ talk page</a>.
 								<h3>Prof. Amy Bruckman</h3>
 								<p>Amy is an associate professor in the <a href="http://www.ic.gatech.edu/">School of Interactive Computing</a> at the Georgia Institute of Technology. Bruckman received her Ph.D. from the MIT Media Lab's Epistemology and Learning group in 1997, her M.S.V.S. from the Media Lab's Interactive Cinema Group in 1991, and a B.A. in physics from Harvard University in 1987. In 1999, she was named one of the 100 top young innovators in science and technology in the world (TR100) by Technology Review magazine. In 2002, she was awarded the Jan Hawkins Award for Early Career Contributions to Humanistic Research and Scholarship in Learning Technologies. She is interested in peer production of content online, and has studied why people contribute to Wikipedia and how Wikipedia's social organization has changed over time. She is a member of the Steering Committee for the ACM Conference Wikis and Open Collaboration (WikiSym), and was program chair of <a href="http://www.wikisym.org/ws2009/">WikiSym 2009</a>.</p>
 								
-								<h2>Former Team Members</h2>
+								<h2>Version 1.0 Team Members</h2>
 								
-								<h3>Prof. Andrea Forte (Former Lead Researcher &amp; Project Manager)</h3>
+								<h3>Prof. Andrea Forte (Project Founder &amp; Project Manager)</h3>
 								<p>Andrea received her Ph.D. in human-centered computing from Georgia Tech in 2009 and is now an assistant professor in the <a href="http://www.ischool.drexel.edu/">College of Information Science and Technology</a> at Drexel University. She is also the program chair of WikiSym 2011.</p>
 								
-								<h3>Christopher Jordan (Former Lead Developer)</h3>
+								<h3>Christopher Jordan (Lead Developer)</h3>
 								<p>Christopher received his B.S. from Georgia Tech.</p>
 							</div><!-- end #mainBody -->
 						</td>

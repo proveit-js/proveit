@@ -43,12 +43,11 @@ include_once 'header.php';
 						
 						<h2>Release Notes</h2>
 						<h3>Latest Release</h3>
-						<p>version 0.90, released 10/26/2010</p>
+						<p>version 2.0, released 11/23/2010</p>
 						
 						<h3>New in This Release</h3>
 						<ul>
-							<li>Fixed compatibility issues in Chrome and IE</li>
-							<li>Now using Wikipedia's jQuery library</li>
+							<li>Fixed compatibility issues in Chrome and Internet Explorer browsers</li>
 						</ul>
 						
 						</td>
