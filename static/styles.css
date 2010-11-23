@@ -72,8 +72,8 @@ div#proveit tr.selected td {
 	background-color: #2682c7;
 	}
 div#proveit tr:hover td {
-	background-color: #000;
-	color: #fff;
+	background-color: #fddc05;
+	color: #000;
 	}
 div#proveit tr.selected:hover td {
 	background-color: #2682c7;
