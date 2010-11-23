@@ -98,7 +98,7 @@ switch($page)
 							</li>
 							<li>
 								<a href="/about" class="primary-nav-link<?= $primary == 'About' ? ' selected' : '' ?>">About</a>
-								<ul<?= $primary == 'About' ? ' style="display: block;"' : '' ?>>
+								<ul class="about"<?= $primary == 'About' ? ' style="display: block;"' : '' ?>>
 									<li><a href="/about/research"<?= $page == 'Research' ? ' class="selected"' : '' ?>>Research</a></li>
 									<li><a href="/about/team"<?= $page == 'The Team' ? ' class="selected"' : '' ?>>The Team</a></li>
 								</ul>

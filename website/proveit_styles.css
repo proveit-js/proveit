@@ -183,6 +183,10 @@ ul#primary-nav {
 			margin: 0 0.5em 0 0; padding: 0;
 			display: inline;
 			}
+			
+			ul#primary-nav ul.about {
+				padding-left: 248px;
+				}
 	
 			ul#primary-nav ul li a:link, ul#primary-nav ul li a:visited {
 				font-size: 14px;
