@@ -328,6 +328,10 @@ div#mainPic {
 	div#mainPic.userguide {
 		background-image:url(/img/userguide.jpg);	
 		}
+		
+	div#mainPic.notfound {
+		background-image:url(/img/notfound.jpg);	
+		}		
 /* END Main Picture for each Page */
 
 /*** Picture Divs for USERS, DEVELOPERS, and ABOUT */
