@@ -18,7 +18,7 @@ include_once 'header.php';
 							
 							<h2>Sorry buddy</h2>
 							
-							<p>We couldn't find the page you were looking for. Feel free to <a href="javascript:history.go(-1)"> go back to the previous page </a> or wait here for me to finish your citation. I'm just kidding, I can help you get back <a href="index.php"> home</a>.</p>
+							<p>We couldn't find the page you were looking for. Feel free to <a href="javascript:history.go(-1)">go back to the previous page</a> or wait here for me to finish your citation. I'm just kidding, I can help you get back <a href="/">home</a>.</p>
     
 							</div><!-- end #mainBody -->
 						</td>
