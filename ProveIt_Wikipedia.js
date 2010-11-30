@@ -129,11 +129,22 @@ window.proveit = jQuery.extend({
 			this.log("highlightStringAtIndex: invalid negative arguments");
 		}
 		var box = this.getMWEditBox();
+		var origText = box.value;
+		var editTop = this.getPosition(box).top;
+		box.value = origText.substring(0, startInd);
+		box.focus();
+		box.scrollTop = 1000000; //Larger than any real textarea (hopefully)
+		var curScrollTop = box.scrollTop;
+		box.value += origText.substring(startInd);
+		if(curScrollTop > 0)
+		{
+			box.scrollTop = curScrollTop + this.HALF_EDIT_BOX_HEIGHT;
+		}
 		jQuery(box).focus().textSelection('setSelection',
 		{
 			start: startInd,
 			end: startInd + length
-		}).textSelection('scrollToCaretPosition', {force: true});
+		});
 		var editTop = this.getPosition(box).top;
 		window.scroll(0, editTop);
 		return true;
