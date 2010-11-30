@@ -344,7 +344,12 @@ window.proveit = jQuery.extend({
 		{
 			peri: insertionText,
 			replace: true
-		}).textSelection('scrollToCaretPosition', {force: true});
+		});
+		var caretPos = txtarea.textSelection('getCaretPosition', {startAndEnd: true});
+
+		// This is slightly redundant.  It is called primarily for the scrollig workaround
+		this.highlightLengthAtIndex(caretPos[0], caretPos[1] - caretPos[0]);
+
 		this.includeProveItEditSummary();
 	},
 
