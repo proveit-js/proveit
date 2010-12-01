@@ -43,11 +43,11 @@ include_once 'header.php';
 						
 						<h2>Release Notes</h2>
 						<h3>Latest Release</h3>
-						<p>version 2.01, released 11/30/2010</p>
+						<p>version 2.02, released 11/30/2010</p>
 						
 						<h3>New in This Release</h3>
 						<ul>
-							<li>Fixed scroll-to-reference problem</li>
+							<li>Fixed scroll-to-reference when selecting or inserting a reference or citation.</li>
 						</ul>
 						
 						</td>
