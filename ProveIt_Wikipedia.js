@@ -238,6 +238,12 @@ window.proveit = jQuery.extend({
 	shouldAddSummary : true,
 
 	/**
+	 * Keep ProveIt maximized on load.  If false, it will start minimized.
+	 * @type Boolean
+	 */
+	loadMaximized : true,
+
+	/**
 	 * Specifies to include ProveIt edit summary on next save.
 	 * Can be disabled by modifying shouldAddSummary
 	 */
@@ -2209,17 +2215,30 @@ window.proveit = jQuery.extend({
 			text: false
 		});
 
+		var viewAndAdd = jQuery("#view-tab, #add-tab");
+
+		function minimize()
+		{
+			viewAndAdd.hide();
+			showHideButton.button("option", "icons", { primary: 'ui-icon-triangle-1-n' } );
+		}
+
+		function maximize()
+		{
+			viewAndAdd.show();
+			showHideButton.button("option", "icons", { primary: 'ui-icon-triangle-1-s' } );
+		}
+
 		// set up the minimize button
 		showHideButton.toggle(
-			function() {
-				jQuery("#view-tab, #add-tab").hide();
-				jQuery(this).button("option", "icons", { primary: 'ui-icon-triangle-1-n' } );
-			},
-			function() {
-				jQuery("#view-tab, #add-tab").show();
-				jQuery(this).button("option", "icons", { primary: 'ui-icon-triangle-1-s' } );
-			}
+			minimize,
+			maximize
 		);
+
+		if(!this.loadMaximized)
+		{
+			minimize();
+		}
 
 		this.scanForRefs();
 
