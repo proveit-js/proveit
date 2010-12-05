@@ -8,6 +8,10 @@
  * Atlanta, GA 30332-0415
  *
  * ALL RIGHTS RESERVED
+ *
+ * ProveIt is available under the GNU Free Documentation License (GFDL-1.3.txt), Creative Commons
+ * Attribution/Share-Alike License 3.0 (http://creativecommons.org/licenses/by-sa/3.0/), and the GNU
+ * General Public License 2 (GPL-2.txt)
  */
 
 /**
@@ -53,6 +57,8 @@ window.proveit = jQuery.extend({
 
 	/**
 	 * Base URL used for static content
+	 *
+	 * This directory includes icons from the Silk set (http://www.famfamfam.com/lab/icons/silk/), by Mark James
 	 * @type String
 	 */
 	STATIC_BASE : "http://proveit-js.googlecode.com/hg/static/",
