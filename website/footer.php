@@ -23,6 +23,7 @@
 
 								<a href="/about/research"<?php if($page == 'Research') echo ' class="selected"'; ?>>Research</a> -
 								<a href="/about/team"<?php if($page == 'The Team') echo ' class="selected"'; ?>>The Team</a> -
+								<a href="/about/credits"<?php if($page == 'Credits') echo ' class="selected"'; ?>>Credits</a> -
 								<a href="http://www.google.com/recaptcha/mailhide/d?k=018gtRX99FRA2NimJqUPHqyw==&amp;c=_Kwjk_EjaYDNriFFeDTlO0EJWETETrLl5p82YBF9xr0=">Email Us</a>
 							</td>
 		

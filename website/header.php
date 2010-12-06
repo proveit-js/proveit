@@ -69,6 +69,7 @@ switch($page)
 	case 'Research':
 	case 'The Team':
 	case 'About':
+	case 'Credits':
 		$primary = 'About';
 		break;
 }
@@ -101,6 +102,7 @@ switch($page)
 								<ul class="about"<?= $primary == 'About' ? ' style="display: block;"' : '' ?>>
 									<li><a href="/about/research"<?= $page == 'Research' ? ' class="selected"' : '' ?>>Research</a></li>
 									<li><a href="/about/team"<?= $page == 'The Team' ? ' class="selected"' : '' ?>>The Team</a></li>
+									<li><a href="/about/credits"<?= $page == 'Credits' ? ' class="selected"' : '' ?>>Credits</a></li>
 								</ul>
 							</li>
 						</ul><!-- end #primary-nav -->
