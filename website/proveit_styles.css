@@ -332,6 +332,10 @@ div#mainPic {
 	div#mainPic.notfound {
 		background-image:url(/img/notfound.jpg);	
 		}		
+		
+	div#mainPic.credits{
+		background-image:url(/img/credits.jpg);	
+		}	
 /* END Main Picture for each Page */
 
 /*** Picture Divs for USERS, DEVELOPERS, and ABOUT */
