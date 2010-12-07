@@ -15,6 +15,8 @@ include_once 'header.php';
 							</div><!-- end #mainPic -->
 							<div id="mainBody"> 						
 								<h2>General Help</h2>
+								<p>Note: the links on this page are specific to the English Wikipedia. However, equivalent links with similar names should exist on other Wikipedias.</p>
+								
 								<h3>Installing ProveIt</h3>
 								<p>Please see our <a href="/install">ProveIt install guide</a>.</p>
 								
@@ -24,6 +26,16 @@ include_once 'header.php';
 								<h3>Minimizing or Maximizing ProveIt</h3>
 								<p>Occasionally, you may want to manually minimize or maximize ProveIt while on an article's Edit page. To minimize ProveIt, simply click the button in the top right corner of ProveIt. The button has a "down" arrow and is located to the right of the ProveIt logo. ProveIt will immediately go into minimized mode and allow you to focus on editing the article.</p>
 								<p>To maximize ProveIt (return it to its original size), simply click the button again.</p>
+								<p>ProveIt loads minimized by default. To change this:</p>
+								<ol>
+									    <li>Log in to Wikipedia.</li>
+									    <li>Go to your <a href="http://en.wikipedia.org/wiki/Special:MyPage/skin.js?action=edit">user script page</a>.</li>
+									    <li>Find the line:
+										    <code>importScript('User:ProveIt_GT/ProveIt.js');</code></li>
+									    <li>On the previous line, add:
+										    <code>proveit = { loadMaximized: true };</code></li>
+									    <li>If it doesn't take effect immediately, you may want to <a href="http://en.wikipedia.org/wiki/Wikipedia:Bypass_your_cache">bypass your cache</a>.</li>									
+								</ol>								
 								
 								<h3>Edit Summary Message</h3>
 								<p>When you use ProveIt to modify a Wikipedia article, ProveIt appends a short message ("edited with <a href="http://en.wikipedia.org/wiki/User:ProveIt_GT">ProveIt</a>") to the edit summary when you save the changes. This purpose of this message is twofold: (1) to help us do research on how ProveIt is being used, and (2) to raise awareness about ProveIt and attract new users. The message does <em>not</em> appear anywhere in the article itself and is only viewable from the History tab.</p>
