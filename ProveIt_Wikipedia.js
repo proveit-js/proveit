@@ -247,7 +247,7 @@ window.proveit = jQuery.extend({
 	 * Keep ProveIt maximized on load.  If false, it will start minimized.
 	 * @type Boolean
 	 */
-	loadMaximized : true,
+	loadMaximized : false,
 
 	/**
 	 * Specifies to include ProveIt edit summary on next save.
