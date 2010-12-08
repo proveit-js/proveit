@@ -36,7 +36,7 @@
 					<tr>
 						<td style="width: 250px; ">
 							<div id="logoContainer">
-								<a href="/" class="/img"><img src="/img/proveit_logo.png" alt="ProveIt logo" /></a>
+								<a href="/"><img src="/img/proveit_logo.png" alt="ProveIt logo" /></a>
 							</div>
 						</td>
 						<td>

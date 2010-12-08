@@ -510,5 +510,10 @@ input#articleBtn {
 	padding: 0 5px; margin: 0 0 0 10px;
 	font-weight: bold;
 	}
+
+#proveit div.expanded button {
+	margin: 0.3em 0 0.1em 0;
+	}
+
 	
 /* End Demo */

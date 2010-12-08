@@ -24,8 +24,8 @@ include_once 'header.php';
 								
 								<h2>English Wikipedia</h2>
 
-								<ol>								
-									<li><strong><a href="http://en.wikipedia.org/w/index.php?title=Special:UserLogin&returnto=User:ProveIt_GT">Log in</a> to Wikipedia.</strong> If you don't have an account, you'll have to <a href="http://en.wikipedia.org/w/index.php?title=Special:UserLogin&type=signup&returnto=User:ProveIt_GT">create one</a> to use ProveIt.</li>
+								<ol>
+									<li><strong><a href="http://en.wikipedia.org/w/index.php?title=Special:UserLogin&amp;returnto=User:ProveIt_GT">Log in</a> to Wikipedia.</strong> If you don't have an account, you'll have to <a href="http://en.wikipedia.org/w/index.php?title=Special:UserLogin&amp;type=signup&amp;returnto=User:ProveIt_GT">create one</a> to use ProveIt.</li>
 									<li><strong>Go to your <a href="http://en.wikipedia.org/w/index.php?title=Special:MyPage/skin.js&amp;action=edit">user script page</a>.</strong> You may have to create this page if it's empty. Also, if you're using Wikipedia's new skin, the page may redirect past some warning text in pink boxes &mdash; this is normal.</li>
 									<li><strong>Copy and paste these two lines of code:</strong>
 									 <code>importScript('User:ProveIt GT/ProveIt.js');<br />
@@ -43,7 +43,7 @@ include_once 'header.php';
 									<li><strong>Log in to Wikipedia.</strong> If you don't have an account, you'll have to create one to use ProveIt.</li>
 									<li><strong>Go to your user script page.</strong> You may have to create this page if it's empty. Also, if you're using Wikipedia's new skin, the page may redirect past some warning text in pink boxes &mdash; this is normal.</li>
 									<li><strong>Copy and paste these two lines of code:</strong>
-									 <code>importScriptURI('http://en.wikipedia.org/w/index.php?title=User:ProveIt_GT/ProveIt.js&action=raw&ctype=text/javascript');<br />
+									 <code>importScriptURI('http://en.wikipedia.org/w/index.php?title=User:ProveIt_GT/ProveIt.js&amp;action=raw&amp;ctype=text/javascript');<br />
 									 // [[User:ProveIt GT/ProveIt.js]]</code>
 									  Don't add or modify any other lines unless you know what you're doing.
 									 </li>
@@ -52,7 +52,7 @@ include_once 'header.php';
 
 								<hr />								
 
-								<p>That's it! You can start using ProveIt immediately. You can start with <a href="http://en.wikipedia.org/w/index.php?title=Georgia_Institute_of_Technology&action=edit">Georgia Institute of Technology</a> or go to any other Wikipedia article and click the Edit tab.</p>
+								<p>That's it! You can start using ProveIt immediately. You can start with <a href="http://en.wikipedia.org/w/index.php?title=Georgia_Institute_of_Technology&amp;action=edit">Georgia Institute of Technology</a> or go to any other Wikipedia article and click the Edit tab.</p>
 
    
 							</div><!-- end #mainBody -->

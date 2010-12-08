@@ -70,14 +70,6 @@ $(function()
 });
 //]]>
 </script>
-<style type="text/css">
-
-div.expanded button
-{
-	margin: 0.3em 0 0.1em 0;
-}
-
-</style>
 				<table id="mainTable">
 					<tr>
 						<td id="mainContent">
