@@ -9,6 +9,7 @@ $englishLogin = 'http://en.wikipedia.org/w/index.php?title=Special:UserLogin&ret
 $englishSignup = 'http://en.wikipedia.org/w/index.php?title=Special:UserLogin&type=signup&returnto=User:ProveIt_GT';
 $bypassCache = 'bypass your cache';
 ?>
+	                        <script type="text/javascript" src="jquery.ba-hashchange.min.js"></script><!-- Ben Alman's hashchange plugin -->
                                 <script type="text/javascript">
 				//<![CDATA[
 					$.getJSON("http://en.wikipedia.org/w/api.php?action=query&meta=siteinfo&siprop=interwikimap&sifilteriw=local&callback=?&format=json",
@@ -29,6 +30,7 @@ $bypassCache = 'bypass your cache';
 							{
 								var wikipedia = wikipedias[select.get(0).selectedIndex];
 								var lang = select.val();
+								window.location.hash = lang;
 								if(lang == 'en')
 								{
 									english.show();
@@ -49,13 +51,19 @@ $bypassCache = 'bypass your cache';
 							for(var i = 0; i < interwikis.length; i++)
 							{
 								var wiki = interwikis[i];
-								if(interwikis[i].url.indexOf("wikipedia") != -1)
+								if(wiki.url.indexOf("wikipedia") != -1)
 								{
 									wikipedias.push(wiki);
 									select.append($('<option/>', { value: wiki.prefix, text: wiki.language }));
 								}
 							}
-							select.val('en'); // English Wikipedia
+							$(window).hashchange(function()
+							{
+								var hashLang = window.location.hash.toString();
+								/* Language (at least 2 chars + #) specified in hash, or English.
+								 * We fire change, since we're modifying the value programatically. */
+								select.val(hashLang.length >= 3 ? hashLang.substring(1) : "en").change();
+							}).hashchange(); // Trigger manually on load
 						});
 					});
 				//]]>
