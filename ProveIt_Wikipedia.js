@@ -1953,7 +1953,7 @@ window.proveit = jQuery.extend({
 		header.append(add);
 		tabs.append(header);
 		// View tab
-		var viewTab = jQuery('<div/>', {id: 'view-tab'});
+		var viewTab = jQuery('<div/>', {id: 'view-tab', css: {display: 'none'}});
 		// View pane used for displaying references; within view tab
 		var viewPane = jQuery('<div/>', {id: 'view-pane'});
 		var viewScroll = jQuery('<div/>', {"class": 'scroll',
@@ -2047,7 +2047,7 @@ window.proveit = jQuery.extend({
 			append(deleteButton.clone());
 		tabs.append(addedparam);
 		// Add tab
-		var addTab = jQuery('<div/>', {id: 'add-tab'});
+		var addTab = jQuery('<div/>', {id: 'add-tab', css: {display: 'none'}});
 		var addFields = jQuery('<div/>', {id: 'add-fields',
 					     "class": 'inputs scroll',
 					     style: 'height: 170px'});
@@ -2144,7 +2144,7 @@ window.proveit = jQuery.extend({
 		// handle clicking on tabs
 		jQuery(viewLink).click(function(){
 				if(jQuery(viewTab).is(":hidden"))
-					showHideButton.click();
+					showHideButton.click(); // We use click so toggle stays in a consistent state.
 				else
 					cancelEdit();	// Edit and view are the same tab, so we handle this specially.
 			});
@@ -2216,7 +2216,7 @@ window.proveit = jQuery.extend({
 		// create the minimize button
 		showHideButton.button({
 			icons: {
-				primary: 'ui-icon-triangle-1-s'
+				primary: 'ui-icon-triangle-1-n'
 			},
 			text: false
 		});
@@ -2237,17 +2237,16 @@ window.proveit = jQuery.extend({
 
 		// set up the minimize button
 		showHideButton.toggle(
-			minimize,
-			maximize
+			maximize,
+			minimize
 		);
-
-		if(!this.loadMaximized)
-		{
-			minimize();
-		}
 
 		this.scanForRefs();
 
+		if(this.loadMaximized)
+		{
+			showHideButton.click();
+		}
 
 		jQuery("#refs tr").eq(0).click().click(); // select first item in list.  TODO: Why two .click?
 
