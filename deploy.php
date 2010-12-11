@@ -10,10 +10,10 @@ define('REV_LONG', 'rev');
 
 $options = getopt(REV_SHORT . ':', array(REV_LONG . ':'));
 $configuration = json_decode(file_get_contents('./deploy_configuration.json'));
-if(!(isset($configuration->username) && isset($configuration->password) && isset($configuration->page) 
-     && isset($configuration->ssh->host) && isset($configuration->ssh->username) && isset($configuration->ssh->password) && isset($configuration->ssh->path)))
+# Must have SSH configuration and at least one page.
+if(!isset($configuration->pages[0]->username, $configuration->pages[0]->password, $configuration->pages[0]->title, $configuration->pages[0]->header, $configuration->ssh->host, $configuration->ssh->username, $configuration->ssh->password, $configuration->ssh->path))
 {
-    fwrite(STDERR, 'You must provide a JSON file, deploy_configuaration.json, in the repository root (but not committed) with username, password, page, and ssh configuration fields set.');
+    fwrite(STDERR, 'You must provide a JSON file, deploy_configuaration.json, in the repository root (but not committed).  It must have username, password, title, and header fields for at least one page.  There must also be ssh configuration fields set.');
     exit(1);
 }
 
@@ -44,6 +44,11 @@ if($id_ret != 0)
     fwrite(STDERR, "Invalid revision id: " . $opt_revid . "\n");
     exit(5);
 }
+$date_line = exec("hg log --template '{date}' -r $revid");
+$date_stamp = substr($date_line, 0, strpos($date_line, '.'));
+$datetime = new DateTime(NULL, new DateTimeZone('UTC'));
+$datetime->setTimestamp($date_stamp);
+$date = $datetime->format('Y-m-d');
 
 $temp_dir = tempnam("/tmp", "proveit_deploy_r{$revid}_");
 if(!$temp_dir)
@@ -68,108 +73,108 @@ curl_setopt($closure_ch, CURLOPT_USERAGENT, USER_AGENT);
 
 $minified = curl_exec($closure_ch);
 curl_close($closure_ch);
-$header = <<< EOF
-/* ProveIt, commit $revid, Copyright 2010, Georgia Tech
-   Available under the GNU Free Documentation License, Creative Commons Attribution/Share-Alike License 3.0, and the GNU General Public License 2
-   This is a minified version.  Changes can be made through our Google Code Project (http://code.google.com/p/proveit-js/) */
-
-EOF;
-$full_code = $header . $minified;
-$deploy_cookies = tempnam("/tmp", "deploy_cookie");
-
-$login_ch = curl_init(MW_API);
-$login_data = array(
+$pages = $configuration->pages;
+foreach($pages as $page)
+{
+    $title = $page->title;
+    $header = implode("\n", $page->header); // Having header be an array makes the JSON file more readable
+    $subbed_header = sprintf($header, $revid, $date); // It's okay if not all parameters are used by %s placeholders in $header.
+    $full_code = $subbed_header . $minified;
+    $deploy_cookies = tempnam("/tmp", "deploy_cookie");
+    $login_ch = curl_init(MW_API);
+    $login_data = array(
     'action' => 'login',
-    'lgname' => $configuration->username,
-    'lgpassword' => $configuration->password,
+    'lgname' => $page->username,
+    'lgpassword' => $page->password,
     'format' => 'json'
-);
-curl_setopt($login_ch, CURLOPT_POSTFIELDS, http_build_query($login_data));
-curl_setopt($login_ch, CURLOPT_USERAGENT, USER_AGENT);
-curl_setopt($login_ch, CURLOPT_RETURNTRANSFER, TRUE);
-curl_setopt($login_ch, CURLOPT_COOKIEJAR, $deploy_cookies);
-$login_resp = json_decode(curl_exec($login_ch));
-curl_close($login_ch);
+    );
+    curl_setopt($login_ch, CURLOPT_POSTFIELDS, http_build_query($login_data));
+    curl_setopt($login_ch, CURLOPT_USERAGENT, USER_AGENT);
+    curl_setopt($login_ch, CURLOPT_RETURNTRANSFER, TRUE);
+    curl_setopt($login_ch, CURLOPT_COOKIEJAR, $deploy_cookies);
+    $login_resp = json_decode(curl_exec($login_ch));
+    curl_close($login_ch);
 
-$token_ch = curl_init(MW_API);
-$login_data['lgtoken'] = $login_resp->login->token;
-curl_setopt($token_ch, CURLOPT_POSTFIELDS, http_build_query($login_data));
-curl_setopt($token_ch, CURLOPT_USERAGENT, USER_AGENT);
-curl_setopt($token_ch, CURLOPT_RETURNTRANSFER, TRUE);
-curl_setopt($token_ch, CURLOPT_COOKIEFILE, $deploy_cookies);
-curl_setopt($token_ch, CURLOPT_COOKIEJAR, $deploy_cookies);
-$token_resp = json_decode(curl_exec($token_ch));
-curl_close($token_ch);
-
-$edit_token_ch = curl_init(MW_API);
-$edit_token_params = http_build_query(array(
+    $token_ch = curl_init(MW_API);
+    $login_data['lgtoken'] = $login_resp->login->token;
+    curl_setopt($token_ch, CURLOPT_POSTFIELDS, http_build_query($login_data));
+    curl_setopt($token_ch, CURLOPT_USERAGENT, USER_AGENT);
+    curl_setopt($token_ch, CURLOPT_RETURNTRANSFER, TRUE);
+    curl_setopt($token_ch, CURLOPT_COOKIEFILE, $deploy_cookies);
+    curl_setopt($token_ch, CURLOPT_COOKIEJAR, $deploy_cookies);
+    $token_resp = json_decode(curl_exec($token_ch));
+    curl_close($token_ch);
+    
+    $edit_token_ch = curl_init(MW_API);
+    $edit_token_params = http_build_query(array(
     'action' => 'query',
     'prop' => 'info|revisions',
     'intoken' => 'edit',
-    'titles' => $configuration->page,
+    'titles' => $title,
     'format' => 'json'
-));
-curl_setopt($edit_token_ch, CURLOPT_POSTFIELDS, $edit_token_params);
-curl_setopt($edit_token_ch, CURLOPT_USERAGENT, USER_AGENT);
-curl_setopt($edit_token_ch, CURLOPT_RETURNTRANSFER, TRUE);
-curl_setopt($edit_token_ch, CURLOPT_COOKIEFILE, $deploy_cookies);
-curl_setopt($edit_token_ch, CURLOPT_COOKIEJAR, $deploy_cookies);
-$edit_token_resp = json_decode(curl_exec($edit_token_ch), TRUE);
-curl_close($edit_token_ch);
+    ));
+    curl_setopt($edit_token_ch, CURLOPT_POSTFIELDS, $edit_token_params);
+    curl_setopt($edit_token_ch, CURLOPT_USERAGENT, USER_AGENT);
+    curl_setopt($edit_token_ch, CURLOPT_RETURNTRANSFER, TRUE);
+    curl_setopt($edit_token_ch, CURLOPT_COOKIEFILE, $deploy_cookies);
+    curl_setopt($edit_token_ch, CURLOPT_COOKIEJAR, $deploy_cookies);
+    $edit_token_resp = json_decode(curl_exec($edit_token_ch), TRUE);
+    curl_close($edit_token_ch);
 
-$page = array_pop($edit_token_resp['query']['pages']);
-$edit_token = $page['edittoken'];
-
-$edit_ch = curl_init(MW_API);
-$edit_params = array(
+    $resp_page = array_pop($edit_token_resp['query']['pages']);
+    $edit_token = $resp_page['edittoken'];
+    
+    $edit_ch = curl_init(MW_API);
+    $edit_params = array(
      'action' => 'edit',
-     'title' => $configuration->page,
+     'title' => $title,
      'section' => 0,
      'text' => $full_code,
      'summary' => "Deploy commit $revid of ProveIt.",
      'notminor' => 1,
      'token' => $edit_token,
      'format' => 'json'
-);
-curl_setopt($edit_ch, CURLOPT_POSTFIELDS, http_build_query($edit_params));
-curl_setopt($edit_ch, CURLOPT_HTTPHEADER, array('Expect:'));
-curl_setopt($edit_ch, CURLOPT_USERAGENT, USER_AGENT);
-curl_setopt($edit_ch, CURLOPT_RETURNTRANSFER, TRUE);
-curl_setopt($edit_ch, CURLOPT_COOKIEFILE, $deploy_cookies);
-$edit_resp_str = curl_exec($edit_ch);
-$edit_resp = json_decode($edit_resp_str);
-$success_msg = "You have successfully deployed commit $revid of ProveIt to " . $configuration->page . "\n";
-$success = $edit_resp->edit->result == 'Success';
-if($success)
-{
-    echo $success_msg;
-}
-else if(isset($edit_resp->edit->captcha))
-{
-    fwrite(STDERR, "Solve CAPTCHA at " . "http://en.wikipedia.org" . $edit_resp->edit->captcha->url . ", then enter it and press return:\n");
-    $answer = trim(fgets(STDIN));
-    $edit_params['captchaid'] = $edit_resp->edit->captcha->id;
-    $edit_params['captchaword'] = $answer;
+    );
     curl_setopt($edit_ch, CURLOPT_POSTFIELDS, http_build_query($edit_params));
-    $edit_resp = json_decode(curl_exec($edit_ch));
+    curl_setopt($edit_ch, CURLOPT_HTTPHEADER, array('Expect:'));
+    curl_setopt($edit_ch, CURLOPT_USERAGENT, USER_AGENT);
+    curl_setopt($edit_ch, CURLOPT_RETURNTRANSFER, TRUE);
+    curl_setopt($edit_ch, CURLOPT_COOKIEFILE, $deploy_cookies);
+    $edit_resp_str = curl_exec($edit_ch);
+    $edit_resp = json_decode($edit_resp_str);
+    $success_msg = "You have successfully deployed commit $revid of ProveIt to " . $title . "\n";
     $success = $edit_resp->edit->result == 'Success';
     if($success)
     {
-	echo "CAPTCHA successful. $success_msg"; 
+	echo $success_msg;
     }
-    else
+    else if(isset($edit_resp->edit->captcha))
     {
-	fwrite(STDERR, "CAPTCHA retry failed.");
+	fwrite(STDERR, "Solve CAPTCHA at " . "http://en.wikipedia.org" . $edit_resp->edit->captcha->url . ", then enter it and press return:\n");
+	$answer = trim(fgets(STDIN));
+	$edit_params['captchaid'] = $edit_resp->edit->captcha->id;
+	$edit_params['captchaword'] = $answer;
+	curl_setopt($edit_ch, CURLOPT_POSTFIELDS, http_build_query($edit_params));
+	$edit_resp = json_decode(curl_exec($edit_ch));
+	$success = $edit_resp->edit->result == 'Success';
+	if($success)
+	{
+	    echo "CAPTCHA successful. $success_msg"; 
+	}
+	else
+	{
+	    fwrite(STDERR, "CAPTCHA retry failed.");
+	}
+    }
+    curl_close($edit_ch);
+    unlink($deploy_cookies);
+    if(!$success)
+    {
+	fwrite(STDERR, "Failed to deploy.  Final response:\n");
+	fwrite(STDERR, $edit_resp_str);
+	exit(3);
     }
 }
-curl_close($edit_ch);
-if(!$success)
-{
-    fwrite(STDERR, "Failed to deploy.  Final response:\n");
-    fwrite(STDERR, $edit_resp_str);
-    exit(3);
-}
-
 system('./yuidoc.sh');
 echo "Connecting to {$configuration->ssh->host}\n";
 $con = ssh2_connect($configuration->ssh->host);
