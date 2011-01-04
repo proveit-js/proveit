@@ -447,6 +447,15 @@ td#sideTableofContents {
 		list-style: none;
 		margin: 10px 0;
 		}
+		td#sideTableofContents li.feedback {
+			font-size: 18px;
+			margin: 15px 0;
+			}
+		td#sideTableofContents span.name {
+			font-size: 11px;
+			white-space: nowrap;
+			color: #666;
+			}
 
 /*--- footer divs --- */
 
