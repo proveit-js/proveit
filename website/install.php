@@ -3,14 +3,9 @@
 $page = 'Install';
 
 include_once 'header.php';
-
-// We have special URLs for English Wikipedia that return to the user page.  This may help if people lose track of the instructions.
-$englishLogin = 'http://en.wikipedia.org/w/index.php?title=Special:UserLogin&returnto=User:ProveIt_GT';
-$englishSignup = 'http://en.wikipedia.org/w/index.php?title=Special:UserLogin&type=signup&returnto=User:ProveIt_GT';
-$bypassCache = 'bypass your cache';
 ?>
-	                        <script type="text/javascript" src="jquery.ba-hashchange.min.js"></script><!-- Ben Alman's hashchange plugin -->
-                                <script type="text/javascript">
+	            <script type="text/javascript" src="jquery.ba-hashchange.min.js"></script><!-- Ben Alman's hashchange plugin -->
+                <script type="text/javascript">
 				//<![CDATA[
 					$.getJSON("http://en.wikipedia.org/w/api.php?action=query&meta=siteinfo&siprop=interwikimap&sifilteriw=local&callback=?&format=json",
 					function(resp)
@@ -19,8 +14,8 @@ $bypassCache = 'bypass your cache';
 					        {
 							$('#enOption').remove();
 							var select = $('#language');
-							var english = $('.english');
-							var other = $('.otherLang');
+							var english = $('#englishInstall');
+							var other = $('#nonEnglishInstall');
 							var login = $('#login');
 							var signup = $('#signup');
 							var userScript = $('#userScript');
@@ -35,8 +30,6 @@ $bypassCache = 'bypass your cache';
 								{
 									english.show();
 									other.hide();
-									login.attr('href', '<?php echo $englishLogin; ?>');
-									signup.attr('href', '<?php echo $englishSignup; ?>');
 								}
 								else
 								{
@@ -86,27 +79,37 @@ $bypassCache = 'bypass your cache';
                                 <p>ProveIt is <a href="/users/features#foss">free and open source</a>, and installing it is a piece of cake. Just follow these simple instructions:</p>
                                 <p>Language:
                                         <select id="language">
-                                                <option id="enOption" value="en">English</option><!-- For validation and fallback -->
-					</select>
+                                            <option id="enOption" value="en">English</option><!-- For validation and fallback -->
+										</select>
                                 </p>
-
-							         <ol>
-									 <li><strong><a id="login" href="<?php echo htmlspecialchars($englishLogin); ?>">Log in</a> to Wikipedia.</strong> If you don't have an account, you'll have to <a id="signup" href="<?php echo htmlspecialchars($englishSignup); ?>">create one</a> to use ProveIt.</li>
-									<li><strong>Go to your <a id="userScript" href="http://en.wikipedia.org/w/index.php?title=Special:MyPage/skin.js&amp;action=edit">user script page</a>.</strong> You may have to create this page if it's empty. Also, if you're using Wikipedia's new skin, the page may redirect past some warning text in pink boxes &mdash; this is normal.</li>
-									<li><strong>Copy and paste these two lines of code:</strong>
-									 <code>
-										 <span class="english">importScript('User:ProveIt GT/ProveIt.js');</span>
-										 <span class="otherLang">importScriptURI('http://en.wikipedia.org/w/index.php?title=User:ProveIt_GT/ProveIt.js&amp;action=raw&amp;ctype=text/javascript');</span>
-										 <br />
-										 // [[User:ProveIt GT/ProveIt.js]]
-									 </code>
-									  Don't add or modify any other lines unless you know what you're doing.
-									</li>
-									<li><strong>Save.</strong> You may have to <a class="english" href="http://en.wikipedia.org/wiki/Wikipedia:Bypass_your_cache"><?php echo $bypassCache; ?></a><span class="otherLang"><?php echo $bypassCache; ?></span> to see the changes.</li>
-								</ol>
-							<p>That's it! You can start using ProveIt immediately. You can <span class="english">start with <a href="http://en.wikipedia.org/w/index.php?title=Georgia_Institute_of_Technology&amp;action=edit">Georgia Institute of Technology</a> or </span>go to any <span class="english">other </span>Wikipedia article and click the Edit tab.</p>
-
-
+								<div id="englishInstall">
+									<h2>English Wikipedia Installation</h2>
+									<p>Note: If you've already installed ProveIt the old way (editing your <a href="http://en.wikipedia.org/w/index.php?title=Special:MyPage/skin.js&action=edit">user script page</a>), delete any ProveIt-related code first.</p>
+									 <ol>
+										<li><a href="http://en.wikipedia.org/w/index.php?title=Special:UserLogin&returnto=User:ProveIt_GT">Log in</a> to Wikipedia. If you don't have an account, you'll have to <a href="http://en.wikipedia.org/w/index.php?title=Special:UserLogin&type=signup&returnto=User:ProveIt_GT">create one</a>.</li>
+										<li>Go to your <a href="http://en.wikipedia.org/wiki/Special:Preferences">preferences page</a>.</li>
+										<li>Click the Gadgets tab.</li>
+										<li>Find ProveIt under the "Editing gadgets" heading and check the box beside it.</li>
+										<li>Click Save at the bottom of the page.</li>
+									 </ol>
+									<p>That's it! You can start using ProveIt immediately. You can start with <a href="http://en.wikipedia.org/w/index.php?title=Georgia_Institute_of_Technology&action=edit">Georgia Institute of Technology</a> or go to any other Wikipedia article and click the Edit tab.</p>
+								</div><!-- #end englishInstall -->
+								<div id="nonEnglishInstall">
+									<h2>Non-English Wikipedia Installation</h2>
+							        <ol>
+										<li><strong><a id="login" href="<?php echo htmlspecialchars($login); ?>">Log in</a> to Wikipedia.</strong> If you don't have an account, you'll have to <a id="signup" href="<?php echo htmlspecialchars($signup); ?>">create one</a> to use ProveIt.</li>
+										<li><strong>Go to your <a id="userScript" href="http://en.wikipedia.org/w/index.php?title=Special:MyPage/skin.js&amp;action=edit">user script page</a>.</strong> You may have to create this page if it's empty. Also, if you're using Wikipedia's new skin, the page may redirect past some warning text in pink boxes &mdash; this is normal.</li>
+										<li><strong>Copy and paste these two lines of code:</strong>
+										 <code>
+											 importScriptURI('http://en.wikipedia.org/w/index.php?title=User:ProveIt_GT/ProveIt.js&amp;action=raw&amp;ctype=text/javascript');<br />
+											 // [[User:ProveIt GT/ProveIt.js]]
+										 </code>
+										  Don't add or modify any other lines unless you know what you're doing.
+										</li>
+										<li><strong>Save.</strong> You may have to bypass your cache to see the changes.</li>
+									</ol>
+									<p>That's it! You can start using ProveIt immediately. You can go to any Wikipedia article and click the Edit tab.</p>
+								</div><!-- end #nonEnglishInstall -->
 							</div><!-- end #mainBody -->
 						</td>
 						<td id="sideTableofContents">
