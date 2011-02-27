@@ -178,6 +178,11 @@ foreach($pages as $page)
 system('./yuidoc.sh');
 echo "Connecting to {$configuration->ssh->host}\n";
 $con = ssh2_connect($configuration->ssh->host);
+if(!$con)
+{
+    fwrite(STDERR, "Failed to connect to {$configuration->ssh->host}\n");
+    exit(10);
+}
 
 $auth_ret = ssh2_auth_password($con, $configuration->ssh->username, $configuration->ssh->password);
 if(!$auth_ret)
