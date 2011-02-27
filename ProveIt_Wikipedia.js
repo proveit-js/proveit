@@ -75,6 +75,144 @@ window.proveit = jQuery.extend({
 	 */
 	JQUERYUI_STYLES_URL : "http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.3/themes/base/jquery-ui.css",
 
+	/* Used to map between keys, including citation parameter names, and human-readable text.  It can be
+	 * internationalized easily.  Add descriptions.xx , where xx is
+	 * the ISO 639-1 code for a language, then set proveit.LANG to "xx"
+	 * to use the new descriptions.
+	 */
+	descriptions :
+	{
+		en :
+		{
+			name: "Name",
+			author: "Author (L, F)",
+			author2: "Author two (L, F)",
+			author3: "Author three (L, F)",
+			author4: "Author four (L, F)",
+			author5: "Author five (L, F)",
+			author6: "Author six (L, F)",
+			author7: "Author seven (L, F)",
+			author8: "Author eight (L, F)",
+			author9: "Author nine (L, F)",
+			last: "Last name",
+			last2: "Last name (auth. two)",
+			last3: "Last name (auth. three)",
+			last4: "Last name (auth. four)",
+			last5: "Last name (auth. five)",
+			last6: "Last name (auth. six)",
+			last7: "Last name (auth. seven)",
+			last8: "Last name (auth. eight)",
+			last9: "Last name (auth. nine)",
+			first: "First name",
+			first2: "First name (auth. two)",
+			first3: "First name (auth. three)",
+			first4: "First name (auth. four)",
+			first5: "First name (auth. five)",
+			first6: "First name (auth. six)",
+			first7: "First name (auth. seven)",
+			first8: "First name (auth. eight)",
+			first9: "First name (auth. nine)",
+			authorlink: "Author article name",
+			title: "Title",
+			publisher: "Publisher",
+			year: "Year",
+			location: "Location",
+			place: "Location of work",
+			isbn: "ISBN",
+			id: "ID",
+			doi: "DOI",
+			page: "Page",
+			pages: "Pages",
+			quote: "Quote",
+			month: "Month",
+			journal: "Journal",
+			edition: "Edition",
+			volume: "Volume",
+			issue: "Issue",
+			url: "URL",
+			date: "Publication date",
+			accessdate: "Access date",
+			coauthors: "Co-authors",
+			booktitle: "Title of Proceedings",
+			contribution: "Contribution/Chapter",
+			encyclopedia: "Encyclopedia",
+			newsgroup: "Newsgroup",
+			version: "Version",
+			site: "Site",
+			newspaper: "Newspaper",
+			"publication-place": "Publication location",
+			editor: "Editor (L, F)",
+			article: "Article",
+			pubplace: "Publisher location",
+			pubyear: "Publication year",
+			inventor: "Inventor (L, F)",
+			"issue-date": "Issue date",
+			"patent-number": "Patent number",
+			"country-code": "Country code (XX)",
+			work: "Work",
+			format: "Format",
+			issn: "ISSN",
+			pmid: "PMID",
+			chapter: "Chapter",
+			web: "Web",
+			book: "Book",
+			conference: "Conference",
+			news: "News",
+			paper: "Paper",
+			"press release": "Press release",
+			interview: "Interview",
+			subject: "Subject",
+			subjectlink: "Subject article name",
+			subject2: "Subject two",
+			subjectlink2: "Subject two article name",
+			subject3: "Subject three",
+			subjectlink3: "Subject three article name",
+			subject4: "Subject four",
+			interviewer: "Interviewer",
+			cointerviewers: "Co-interviewers",
+			type: "Type",
+			program: "Program",
+			callsign: "Call sign",
+			city: "City",
+			archiveurl: "Archive URL",
+			archivedate: "Date archived",
+			episode: "Episode",
+			episodelink: "Episode article name",
+			series: "Series",
+			serieslink: "Series article name",
+			credits: "Credits",
+			network: "Network",
+			station: "Station",
+			airdate: "Airdate",
+			began: "Start date",
+			ended: "End date",
+			season: "Season number",
+			seriesno: "Season number",
+			number: "Number",
+			minutes: "Minutes",
+			transcript: "Transcript",
+			transcripturl: "Transcript URL",
+			video: "Video",
+			people: "People",
+			medium: "Production medium",
+			language: "Language",
+			time: "Time",
+			oclc: "OCLC",
+			ref: "Anchor ID",
+			months: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
+		}
+	},
+
+	/**
+	 * Returns descriptions for the current language.
+	 * @return {Object} descriptions
+	 */
+	getDescriptions : function()
+	{
+		//this could be made Cite-specific if needed.
+		return this.descriptions[proveit.LANG];
+	},
+
 	/**
 	 * Convenience log function
 	 * @param {String} msg message to log
@@ -495,7 +633,7 @@ window.proveit = jQuery.extend({
 		{
 			//this.log("Calling addPaneRow on tempParams." + item);
 			//this.log("i: " + i + ", paramNames[i]: " + paramNames[i]);
-			this.addPaneRow(jQuery("#edit-pane").get(), tempParams, ref.getDescriptions(), paramNames[i], required[paramNames[i]], true);
+			this.addPaneRow(jQuery("#edit-pane").get(), tempParams, this.getDescriptions(), paramNames[i], required[paramNames[i]], true);
 		}
 
 		var acceptButton = jQuery('#edit-buttons .accept');
@@ -960,134 +1098,6 @@ window.proveit = jQuery.extend({
 		 */
 		this.params = {};
 
-		/* Used to map between parameter name and human-readable.  It can be
-		 * internationalized easily.  Add descriptions.xx , where xx is
-		 * the ISO 639-1 code for a language, then set proveit.LANG to "xx"
-		 * to use the new descriptions.
-		 */
-
-		var descriptions =
-		{
-			en :
-			{
-					name: "Name",
-					author: "Author (L, F)",
-					author2: "Author two (L, F)",
-					author3: "Author three (L, F)",
-					author4: "Author four (L, F)",
-					author5: "Author five (L, F)",
-					author6: "Author six (L, F)",
-					author7: "Author seven (L, F)",
-					author8: "Author eight (L, F)",
-					author9: "Author nine (L, F)",
-					last: "Last name",
-					last2: "Last name (auth. two)",
-					last3: "Last name (auth. three)",
-					last4: "Last name (auth. four)",
-					last5: "Last name (auth. five)",
-					last6: "Last name (auth. six)",
-					last7: "Last name (auth. seven)",
-					last8: "Last name (auth. eight)",
-					last9: "Last name (auth. nine)",
-					first: "First name",
-					first2: "First name (auth. two)",
-					first3: "First name (auth. three)",
-					first4: "First name (auth. four)",
-					first5: "First name (auth. five)",
-					first6: "First name (auth. six)",
-					first7: "First name (auth. seven)",
-					first8: "First name (auth. eight)",
-					first9: "First name (auth. nine)",
-					authorlink: "Author article name",
-					title: "Title",
-					publisher: "Publisher",
-					year: "Year",
-					location: "Location",
-					place: "Location of work",
-					isbn: "ISBN",
-					id: "ID",
-					doi: "DOI",
-					page: "Page",
-					pages: "Pages",
-					quote: "Quote",
-					month: "Month",
-					journal: "Journal",
-					edition: "Edition",
-					volume: "Volume",
-					issue: "Issue",
-					url: "URL",
-					date: "Publication date (YYYY-MM-DD)",
-					accessdate: "Access date (YYYY-MM-DD)",
-					coauthors: "Co-authors",
-					booktitle: "Title of Proceedings",
-					contribution: "Contribution/Chapter",
-					encyclopedia: "Encyclopedia",
-					newsgroup: "Newsgroup",
-					version: "Version",
-					site: "Site",
-					newspaper: "Newspaper",
-					"publication-place": "Publication location",
-					editor: "Editor (L, F)",
-					article: "Article",
-					pubplace: "Publisher location",
-					pubyear: "Publication year",
-					inventor: "Inventor (L, F)",
-					"issue-date": "Issue date (YYYY-MM-DD)",
-					"patent-number": "Patent number",
-					"country-code": "Country code (XX)",
-					work: "Work",
-					format: "Format",
-					issn: "ISSN",
-					pmid: "PMID",
-					chapter: "Chapter",
-					web: "Web",
-					book: "Book",
-					conference: "Conference",
-					news: "News",
-					paper: "Paper",
-					"press release": "Press release",
-					interview: "Interview",
-					subject: "Subject",
-					subjectlink: "Subject article name",
-					subject2: "Subject two",
-					subjectlink2: "Subject two article name",
-					subject3: "Subject three",
-					subjectlink3: "Subject three article name",
-					subject4: "Subject four",
-					interviewer: "Interviewer",
-					cointerviewers: "Co-interviewers",
-					type: "Type",
-					program: "Program",
-					callsign: "Call sign",
-					city: "City",
-					archiveurl: "Archive URL",
-					archivedate: "Date archived",
-					episode: "Episode",
-					episodelink: "Episode article name",
-					series: "Series",
-					serieslink: "Series article name",
-					credits: "Credits",
-					network: "Network",
-					station: "Station",
-					airdate: "Airdate",
-					began: "Start date",
-					ended: "End date",
-					season: "Season number",
-					seriesno: "Season number",
-					number: "Number",
-					minutes: "Minutes",
-					transcript: "Transcript",
-					transcripturl: "Transcript URL",
-					video: "Video",
-					people: "People",
-					medium: "Production medium",
-					language: "Language",
-					time: "Time",
-					oclc: "OCLC",
-					ref: "Anchor ID"
-			}
-		};
-
 		/**
 		 * Convenience method.  Returns sorter for parameters.
 		 * @return {Function} sorter for parameters
@@ -1120,16 +1130,6 @@ window.proveit = jQuery.extend({
 					}
 				}
 			};
-		};
-
-		/**
-		 * Returns descriptions for the current language.
-		 * @return {Object} descriptions
-		*/
-		this.getDescriptions = function()
-		{
-			//this could be made Cite-specific if needed.
-			return descriptions[proveit.LANG];
 		};
 
 		/**
@@ -1838,7 +1838,7 @@ window.proveit = jQuery.extend({
 			newRef = new this.CitationReference({});
 		}
 		newRef.type = newRefType;
-		var descs = newRef.getDescriptions();
+		var descs = this.getDescriptions();
 		var defaultParams = newRef.getDefaultParams().slice(0); // copy
 		defaultParams.sort(newRef.getSorter());
 		//var required = newRef.getRequiredParams();
@@ -2064,7 +2064,7 @@ window.proveit = jQuery.extend({
 						       proveit.changeAddPane(citemenu.get(0));
 					       }});
          	var citeTypes = this.CiteReference.getTypes();
-		var descs = new this.AbstractReference({}).getDescriptions();
+		var descs = this.getDescriptions();
 		for(var i = 0; i < citeTypes.length; i++)
 		{
 			citemenu.append(jQuery('<option/>', {value: citeTypes[i],
@@ -2623,15 +2623,16 @@ window.proveit = jQuery.extend({
 	},
 
 	/**
-	 * Formats date as YYYY-MM-DD
+	 * Formats date as Monthname DD, YYYY
 	 * @param {Date} date1 date to format
 	 * @return {String} formatted date as String
 	 */
 	formatDate : function(date1)
 	{
-		return date1.getFullYear() + '-' +
-		(date1.getMonth() < 9 ? '0' : '') + (date1.getMonth()+1) + '-' +
-		(date1.getDate() < 10 ? '0' : '') + date1.getDate();
+		var year = date1.getFullYear();
+		var month = this.getDescriptions().months[date1.getMonth()];
+		var day = (date1.getDate() < 10 ? '0' : '') + date1.getDate();
+		return month + ' ' + day + ', ' + year;
 	},
 
 	/**
