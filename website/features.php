@@ -76,7 +76,8 @@ include_once 'header.php';
 
 								<h3>Quick installation</h3>
 								<ul>
-									<li>Just copy one line of code into your Wikipedia user page and save it</li>
+									<li>Install as a Wikipedia Gadget through your preferences page (English Wikipedia only)</li>
+									<li>For non-English Wikipedias, just paste two lines of code into your user script page</li>
 								</ul>	
 
 								<h3>Works anywhere, any browser, all of the time</h3>

@@ -26,11 +26,17 @@ include_once 'header.php';
 								<p>ProveIt was created by a group of Wikipedia editors, researchers, and fans. We know Wikipedia, we love Wikipedia, and want want to make it better &mdash; for us and everyone else, especially new users.</p>
 								
 								<h2>Getting Started</h2>
-								<p> ProveIt is a quick copy-and-paste install, requiring no additional downloads or files. All you need is a free Wikipedia user account &mdash; if you don't have one already. Check out our 4-step <strong><a href="/install">install guide</a></strong> for more info, or give ProveIt a <strong><a href="/demo">test drive</a></strong> to see for yourself.</p> 
+								<p> ProveIt is a quick copy-and-paste install, requiring no additional downloads or files. All you need is a free Wikipedia user account, if you don't have one already. Check out our  <strong><a href="/install">install guide</a></strong> for more info, or give ProveIt a <strong><a href="/demo">test drive</a></strong> to see for yourself.</p> 
    
 							</div><!-- end #mainBody -->
 						</td>
 						<td id="sideTableofContents">
+							<h2>Feedback</h2>
+							<ul>
+								<li class="feedback">&ldquo;the best thing for Wikipedia usability since the new editing toolbar&hellip; Clear, effective, fast&rdquo; <span class="name">&mdash;<a href="http://www.wittylama.com/2010/12/a-series-of-unrelated-things/">Liam W.</a></span></li>
+								<li class="feedback">&ldquo;an amazing little open-source tool&hellip; Better than Zotero&rdquo; <span class="name">&mdash;<a href="http://www.bodyspacesociety.eu/2010/12/03/proveit-new-free-open-source-tool/">Antonio C.</a></span?</li>
+								<li class="feedback">&ldquo;quite awesome and <span style="white-space: nowrap;">easy-to-use!</span>&rdquo; <span class="name">&mdash;<a href="http://twitter.com/#!/filbertkm/status/10538601322381312">Katie F.</a></span></li>
+							</ul>
 							<h2>Features</h2>
 							<ul>
 								<li><a href="/users/features">Easily find, add, and edit references</a></li>
