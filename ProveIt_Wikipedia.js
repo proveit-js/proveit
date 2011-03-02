@@ -1821,7 +1821,7 @@ window.proveit = jQuery.extend({
 		var newRefType = menu.value;
 
 		var genPane = document.getElementById("dummyCitePane").cloneNode(true);
-		genPane.id = newRefType;
+		genPane.id = newRefType.replace(' ', '_');
 
 		// name the ref-name-row
 		jQuery('.ref-name-row',genPane).children('input').attr('id','addrefname');
