@@ -84,6 +84,7 @@ window.proveit = jQuery.extend({
 	{
 		en :
 		{
+			agency: "Agency",
 			name: "Name",
 			author: "Author (L, F)",
 			author2: "Author two (L, F)",
@@ -1354,6 +1355,7 @@ window.proveit = jQuery.extend({
 				"publisher",
 				"work",
 				"date",
+				"agency",
 				"accessdate",
 				"author",
 				"last",
@@ -1495,7 +1497,7 @@ window.proveit = jQuery.extend({
 		        conference : [ "conference", "title", "booktitle", "author", "editor", "year", "month", "url", "id", "accessdate", "location", "pages", "publisher" ],
 			encyclopedia: [ "title", "encyclopedia", "author", "editor", "accessdate", "edition", "year",
 			"publisher", "volume", "location", "pages" ],
-		        news: [ "title", "author", "url", "work", "date", "accessdate", "pages", "location" ],
+		        news: [ "title", "author", "url", "work", "date", "accessdate", "pages", "location", "agency" ],
 			newsgroup : [ "title", "author", "date", "newsgroup", "id", "url", "accessdate" ],
 		        "press release"	: [ "title", "url", "publisher", "date", "accessdate" ],
 			interview : ["last", "first", "subjectlink", "interviewer", "title", "callsign", "city", "date", "program", "accessdate"],
