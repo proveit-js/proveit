@@ -202,6 +202,7 @@ window.proveit = jQuery.extend({
 			ref: "Anchor ID",
 			months: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
 		},
+		// Finnish translation by Olli (ollinpostit at gmail.com)
 		fi : {
                         agency: "Edustaja",
                         name: "Nimi",
