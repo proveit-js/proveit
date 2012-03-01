@@ -1,5 +1,7 @@
 #!/usr/bin/php
 <?php
+error_reporting(-1); // All errors
+
 chdir(dirname (__FILE__)); // Change to directory of script (should be repo root)
 define('REPO', 'https://proveit-js.googlecode.com/hg/');
 define('PROVEIT_FILE', 'ProveIt_Wikipedia.js');
@@ -163,7 +165,12 @@ foreach($pages as $page)
 	exit(3);
     }
 }
-system('./yuidoc.sh');
+system('./yuidoc.sh', $yui_exit);
+if($yui_exit != 0)
+{
+    fwrite(STDERR, "Failed to run yuidoc.  Please check that it and its dependencies are installed.\n");
+    exit(11);
+}
 echo "Connecting to {$configuration->ssh->host}\n";
 $con = ssh2_connect($configuration->ssh->host);
 if(!$con)
@@ -200,7 +207,7 @@ function sftp_walk($con, $sftp, $local_dir, $remote_dir)
        	    $scp_ret = ssh2_scp_send($con, $local_file, $remote_file, 0755);
 	    if(!$scp_ret)
 	    {
-		fwrite(STDERR, "Failed to transfer file.\n");
+		fwrite(STDERR, "Failed to transfer $local_file.\n");
 		exit(8);
 	    }
 	}
