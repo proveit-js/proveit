@@ -60,26 +60,14 @@ unlink($temp_dir); // We need a directory, rather than file.
 shell_exec("hg archive -r $revid $temp_dir");
 chdir($temp_dir);
 
-$orig_code = file_get_contents(PROVEIT_FILE);
-$closure_ch = curl_init('http://closure-compiler.appspot.com/compile');
-$params = http_build_query(array(
-    'js_code' => $orig_code,
-    'compilation_level' => 'SIMPLE_OPTIMIZATIONS',
-    'output_info' => 'compiled_code'
-));
-curl_setopt($closure_ch, CURLOPT_POSTFIELDS, $params);
-curl_setopt($closure_ch, CURLOPT_RETURNTRANSFER, TRUE);
-curl_setopt($closure_ch, CURLOPT_USERAGENT, USER_AGENT);
-
-$minified = curl_exec($closure_ch);
-curl_close($closure_ch);
+$code = file_get_contents(PROVEIT_FILE);
 $pages = $configuration->pages;
 foreach($pages as $page)
 {
     $title = $page->title;
     $header = implode("\n", $page->header); // Having header be an array makes the JSON file more readable
     $subbed_header = sprintf($header, $revid, $date); // It's okay if not all parameters are used by %s placeholders in $header.
-    $full_code = $subbed_header . $minified;
+    $full_code = $subbed_header . $code;
     $deploy_cookies = tempnam("/tmp", "deploy_cookie");
     $login_ch = curl_init(MW_API);
     $login_data = array(
