@@ -1,16 +1,15 @@
 #encoding UTF-8
-#filter EncodeUnicode
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html xmlns:yui="http://yuilibrary.com/rdf/1.0/yui.rdf#">
 <head>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
 	<title>API: $modulename #if $classname# $classname #end if# #if $filename# $filename #end if#</title>
 
-	<link rel="stylesheet" type="text/css" href="assets/reset-fonts-grids-min.css?stamp=$timestamp" />
-	<link rel="stylesheet" type="text/css" href="assets/api.css?stamp=$timestamp" />
+	<link rel="stylesheet" type="text/css" href="assets/reset-fonts-grids-min.css#if $timestamp#?stamp=$timestamp#end if#" />
+	<link rel="stylesheet" type="text/css" href="assets/api.css#if $timestamp#?stamp=$timestamp#end if#" />
 
-    <script type="text/javascript" src="assets/api-js?stamp=$timestamp"></script>
-    <script type="text/javascript" src="assets/ac-js?stamp=$timestamp"></script>
+    <script type="text/javascript" src="assets/api-js#if $timestamp#?stamp=$timestamp#end if#"></script>
+    <script type="text/javascript" src="assets/ac-js#if $timestamp#?stamp=$timestamp#end if#"></script>
 </head>
 
 <body id="yahoo-com">
@@ -60,7 +59,7 @@
                         <style>
                             #doc3 .classopts { display:none; }
                         </style>
-                        #include raw $filepath_highlighted
+                        $highlightcontent
                     </div>
                 #else if $classname 
                     <h2>
@@ -279,11 +278,13 @@
                                                 </dl>
                                             #end if
 
-                                            #if $method.return.type
+                                            #if $method.return.description
                                                 <dl>
                                                     <dt>Returns:
                                                     <code property="yui:return">
-                                                        $method.return.type
+                                                        #if $method.return.type
+                                                            $method.return.type
+                                                        #end if
                                                     </code></dt>
                                                     <dd property="yui:returnInfo">$method.return.description</dd>
                                                 </dl>
@@ -397,7 +398,7 @@
                                             #end if
                                             #if $event.preventable
                                             <div class="preventable">
-                                                <strong>Preventable:</strong> This event is preventable by method: $event.preventable.
+                                                <strong>Preventable:</strong> This event is preventable by method e.preventDefault().  The default function executed by this event is $event.preventable.
                                             </div>        
                                             #end if
 
@@ -484,7 +485,7 @@
                             <div class="content" rel="yui:attributes">
                                 <code>
                                     #set i=0
-                                    #set l=len($inherited.methods[$superclassname])-1
+                                    #set l=len($inherited.configs[$superclassname])-1
                                     #for $config in $inherited.configs[$superclassname]
                                         #set i=i+1
                                         <span rel="yui:attribute" resource="${superclassname}.html#config_$config.name">                                        
@@ -558,7 +559,7 @@
                                         <h4>Submodules:</h4> 
                                         <dl>
                                         #for $info in $submodules
-                                            <dt><code><a href="${$subdata[$info].name}.html" title="$info">$info</a></code></dt>
+                                            <dt><code>$info</code></dt>
                                             <dd>$subdata[$info].description</dd>
                                         #end for
                                         </dl>
@@ -583,7 +584,8 @@
                                 #if $moduledef == $modulename
                                     #set $css = "selected"
                                 #end if
-                                <li class="$css"><a href="module_${moduledef}.html" title="$moduledef">$moduledef</a></li>
+                                #set $cleansedname = $cleansedmodulenames[$moduledef]
+                                <li class="$css"><a href="${cleansedname}.html" title="$moduledef">$moduledef</a></li>
                             #end for
                         </ul>
                     </div>
@@ -668,17 +670,25 @@
 	</div>
 	<div id="ft">
         <hr />
-        Copyright &copy; $year Yahoo! Inc. All rights reserved.
+        Copyright &copy; $year $copyrighttag All rights reserved.
 	</div>
 </div>
 <script type="text/javascript">
-    ALL_YUI_PROPS = $allprops;
+    #if $index
+        YAHOO.yuidoc.init();
+    #end if 
+
+    var ALL_YUI_PROPS = $allprops;
 </script>
 #if $ydn
-<!--MyBlogLog instrumentation-->
-<script type="text/javascript"
-src="http://track2.mybloglog.com/js/jsserv.php?mblID=2007020704011645"></script>
+<!-- Yahoo! Web Analytics - All rights reserved -->
+<script type="text/javascript" src="http://d.yimg.com/mi/ywa.js"></script>
+<script type="text/javascript">
+YWA.getTracker("10001393677061").submit();
+</script>
+<noscript>
+<div><img src="http://a.analytics.yahoo.com/p.pl?a=10001393677061&amp;js=no" width="1" height="1" alt="" /></div>
+</noscript>
 #end if
 </body>
 </html>
-#end filter
