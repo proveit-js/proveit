@@ -353,7 +353,7 @@ window.proveit = jQuery.extend({
 	isSupportedEditPage : function()
 	{
 	        // "Regular" article or Wikipedia:Sandbox (exception for testing).  Also, must be edit or preview mode
-	        return (wgCanonicalNamespace == '' || wgPageName == 'Wikipedia:Sandbox') && (wgAction == 'edit' || wgAction == 'submit');
+	        return (wgCanonicalNamespace == '' || wgCanonicalNamespace == 'User' || wgPageName == 'Wikipedia:Sandbox') && (wgAction == 'edit' || wgAction == 'submit');
 	},
 
 	/**
