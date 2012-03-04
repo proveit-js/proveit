@@ -55,6 +55,8 @@ window.proveit = jQuery.extend({
 	 */
 	EDIT_PARAM_PREFIX : "editparam",
 
+	GUI_ID : "proveit",
+
 	/**
 	 * Base URL used for static content
 	 *
@@ -62,18 +64,6 @@ window.proveit = jQuery.extend({
 	 * @type String
 	 */
 	STATIC_BASE : "http://proveit-js.googlecode.com/hg/static/",
-
-	/**
-	 * URL to jQueryUI script
-	 * @type String
-	 */
-	JQUERYUI_SCRIPT_URL : "http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.3/jquery-ui.min.js",
-
-	/**
-	 * URL to jQueryUI stylesheet
-	 * @type String
-	 */
-	JQUERYUI_STYLES_URL : "http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.3/themes/base/jquery-ui.css",
 
 	/* Used to map between keys, including citation parameter names, and human-readable text.  It can be
 	 * internationalized easily.  Add descriptions.xx , where xx is
@@ -556,25 +546,30 @@ window.proveit = jQuery.extend({
 	 */
 
 	/**
-	 * Runs to see if we want to load ProveIt
-	 * @return {Boolean} always true
+	 * Runs to create GUI if we're on a supported edit page
+	 * @return {Boolean} true if GUI was created, false if it already existed, or it's not a supported edit page
 	 */
 	load : function() {
 
 		this.summaryFunctionAdded = false;
 
-		if(this.isSupportedEditPage())
+		if($('#' + this.GUI_ID).length > 0)
 		{
-			jQuery.getScript(proveit.JQUERYUI_SCRIPT_URL, function()
-			{
-				addOnloadHook(function()
-				{
-					proveit.createGUI();
-				});
-			});
+			// GUI already created
+			return false;
 		}
 
-		return true;
+		if(this.isSupportedEditPage())
+		{
+			addOnloadHook(function()
+			{
+				proveit.createGUI();
+			});
+
+			return true;
+		}
+
+		return false;
 	},
 
 	/**
@@ -2037,12 +2032,10 @@ window.proveit = jQuery.extend({
 	 */
 	createGUI : function()
 	{
-	    // Keep jQuery UI CSS version in sync with JS above.
-	    importStylesheetURI(this.JQUERYUI_STYLES_URL);
 		importStylesheetURI(this.STATIC_BASE + 'styles.css');
 
 		// more JqueryUI CSS: http://blog.jqueryui.com/2009/06/jquery-ui-172/
-		var gui = jQuery('<div/>', {id: 'proveit'});
+		var gui = jQuery('<div/>', {id: this.GUI_ID});
 		var tabs = jQuery('<div/>', {id: 'tabs'});
 		var created = jQuery('<h1/>');
 		var createdLink = jQuery('<a/>', {title: 'Created by the ELC Lab at Georgia Tech',
