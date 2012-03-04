@@ -17,7 +17,7 @@ wgCanonicalSpecialPageName=false,
 wgNamespaceNumber=0,
 wgAction="edit";
 </script>
-<script src="http://bits.wikimedia.org/w/extensions/UsabilityInitiative/js/plugins.combined.min.js" type="text/javascript"></script>
+<script src="http://en.wikipedia.org/w/resources-1.19/resources/jquery/jquery.textSelection.js" type="text/javascript"></script>
 <script src="http://proveit-js.googlecode.com/hg/ProveIt_Wikipedia.js" type="text/javascript"></script>
 <script type="text/javascript">
 //<![CDATA[
