@@ -563,7 +563,14 @@ window.proveit = jQuery.extend({
 		{
 			addOnloadHook(function()
 			{
-				proveit.createGUI();
+				var dependency = 'jquery.ui.tabs';
+				mw.loader.using(dependency, function()
+				{
+					proveit.createGUI();
+				}, function()
+				{
+					proveit.log('Failed to load ' + dependency);
+				});
 			});
 
 			return true;

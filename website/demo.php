@@ -8,14 +8,29 @@ include_once 'header.php';
 <script src="wikibits.js" type="text/javascript"></script>
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
 <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.17/jquery-ui.min.js" type="text/javascript"></script>
+
 <script type="text/javascript">
-// wg's deliberately global
+// Mock Wikipedia environment ProveIt expects to run in
+
+// Deliberately global
 wgServer="http://en.wikipedia.org",
 wgScriptPath="/w",
 wgCanonicalNamespace="",
 wgCanonicalSpecialPageName=false,
 wgNamespaceNumber=0,
 wgAction="edit";
+
+var mw =
+{
+	loader:
+	{
+		using: function(dependencies, success)
+		{
+			success();
+		}
+	}
+}
+
 </script>
 <script src="http://en.wikipedia.org/w/resources-1.19/resources/jquery/jquery.textSelection.js" type="text/javascript"></script>
 <script src="http://proveit-js.googlecode.com/hg/ProveIt_Wikipedia.js" type="text/javascript"></script>
