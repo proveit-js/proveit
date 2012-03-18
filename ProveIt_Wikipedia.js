@@ -341,13 +341,23 @@ window.proveit = jQuery.extend({
 	},
 
 	/**
-	 * Returns true if we are on a known domain, and the action is set to edit or submit
+	 * Returns true if the page has an edit box
+	 *
+	 * @return {Boolean} true if the page has an edit box, false otherwise
+	 */
+	isEditPage : function()
+	{
+		return wgAction == 'edit' || wgAction == 'submit';
+	},
+
+	/**
+	 * Returns true if the page is likely to contain references
 	 * @return {Boolean} true if page is supported, false otherwise
 	 */
-	isSupportedEditPage : function()
+	isSupportedPage : function()
 	{
-	        // "Regular" article, userspace, or Wikipedia:Sandbox (exception for testing).  Also, must be edit or preview mode
-	        return (wgCanonicalNamespace == '' || wgCanonicalNamespace == 'User' || wgPageName == 'Wikipedia:Sandbox') && (wgAction == 'edit' || wgAction == 'submit');
+	        // "Regular" article, userspace, or Wikipedia:Sandbox (exception for testing).
+	        return (wgCanonicalNamespace == '' || wgCanonicalNamespace == 'User' || wgPageName == 'Wikipedia:Sandbox');
 	},
 
 	/**
@@ -497,7 +507,7 @@ window.proveit = jQuery.extend({
 	shouldAddSummary : true,
 
 	/**
-	 * ProveIt should be visible on load (rather than requiring toolbar button click)
+	 * ProveIt should be visible on load (rather than requiring toolbar button click) on supported edit pages
 	 * @type Boolean
 	 */
  	loadVisible : true,
@@ -524,13 +534,9 @@ window.proveit = jQuery.extend({
 					var summary = thisproveit.getEditSummary();
 
 					if(summary.value.indexOf("ProveIt") == -1)
-					summary.value += " (edited with [[User:ProveIt_GT|ProveIt]])";
-					/*
-					else
 					{
-						this.log("ProveIt already in summary.");
+						summary.value += " (edited with [[User:ProveIt_GT|ProveIt]])";
 					}
-					 */
 				});
 				this.summaryFunctionAdded = true;
 			}
@@ -539,14 +545,6 @@ window.proveit = jQuery.extend({
 				this.log("Failed to add onsubmit handler. e.message: " + e.message);
 			}
 		}
-		/*
-		else
-		{
-			this.log("Not adding to summary.");
-			this.log("this.shouldAddSummary: " + this.shouldAddSummary);
-			this.log("this.prefs.getBoolPref(\"shouldAddSummary\"): " + this.prefs.getBoolPref("shouldAddSummary"));
- 		}
-		 */
 	},
 
 	/**
@@ -582,46 +580,42 @@ window.proveit = jQuery.extend({
 		});
 	},
 
+	/**
+	 * Sets up ProveIt if we're on an edit page.  This includes setting up the toolbar button.  Depending on configuration and the current page, it may also call load to show ProveIt.
+	 */
 	setup : function()
 	{
-		if(this.loadVisible)
+		if(this.isEditPage())
 		{
-			this.load();
-		}
+			if(this.loadVisible && this.isSupportedPage())
+			{
+				this.load();
+			}
 
-		this.setupButton();
+			this.setupButton();
+		}
 	},
 
 	/**
-	 * Runs to create GUI if we're on a supported edit page
-	 * @return {Boolean} true if GUI was created, false if it already existed, or it's not a supported edit page
+	 * Loads dependencies and creates GUI
 	 */
-	load : function() {
-
-		this.summaryFunctionAdded = false;
-
-		if(this.isSupportedEditPage())
+	load : function()
+	{
+		addOnloadHook(function()
 		{
-			addOnloadHook(function()
+			var dependencies = ['jquery.ui.tabs', 'jquery.effects.highlight'];
+			mw.loader.using(dependencies, function()
 			{
-				var dependencies = ['jquery.ui.tabs', 'jquery.effects.highlight'];
-				mw.loader.using(dependencies, function()
+				proveit.createGUI();
+				if(proveit.loadMaximized)
 				{
-					proveit.createGUI();
-					if(proveit.loadMaximized)
-					{
-						proveit.toggleViewAddVisibility();
-					}
-				}, function()
-				{
-					proveit.log('Failed to load one of: ' + dependencies);
-				});
+					proveit.toggleViewAddVisibility();
+				}
+			}, function()
+			{
+				proveit.log('Failed to load one of: ' + dependencies);
 			});
-
-			return true;
-		}
-
-		return false;
+		});
 	},
 
 	/**
