@@ -555,28 +555,22 @@ window.proveit = jQuery.extend({
 		var $box = jQuery(this.getMWEditBox());
 
 		// Ensures wikiEditor is loaded
-		$box.bind('wikiEditor-toolbar-buildSection-main', function()
+		$box.bind('wikiEditor-toolbar-buildSection-main', function(event, section)
 		{
-			$box.wikiEditor('removeFromToolbar', {section: 'main', group: 'insert', tool: 'reference'});
+			delete section.groups.insert.reference;
 
-			$box.wikiEditor('addToToolbar', {
-				section: 'main',
-				group: 'insert',
-				tools: {
-					proveit: {
-						label: 'ProveIt',
-						type: 'button',
-						icon: 'http://upload.wikimedia.org/wikipedia/commons/thumb/1/19/ProveIt_logo_for_user_boxes.svg/22px-ProveIt_logo_for_user_boxes.svg.png',
-						action: {
-							type: 'callback',
-							execute: function()
-							{
-								proveit.toggleVisibility();
-							}
-						}
+			section.groups.insert.proveit = {
+				label: 'ProveIt',
+				type: 'button',
+				icon: 'http://upload.wikimedia.org/wikipedia/commons/thumb/1/19/ProveIt_logo_for_user_boxes.svg/22px-ProveIt_logo_for_user_boxes.svg.png',
+				action: {
+					type: 'callback',
+					execute: function()
+					{
+						proveit.toggleVisibility();
 					}
 				}
-			});
+			};
 		});
 	},
 
