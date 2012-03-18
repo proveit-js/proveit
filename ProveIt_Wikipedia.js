@@ -493,7 +493,13 @@ window.proveit = jQuery.extend({
 	shouldAddSummary : true,
 
 	/**
-	 * Keep ProveIt maximized on load.  If false, it will start minimized.
+	 * ProveIt should be visible on load (rather than requiring toolbar button click)
+	 * @type Boolean
+	 */
+ 	loadVisible : true,
+
+	/**
+	 * Maximize ProveIt when it first becomes visible.  If false, it will start minimized.  This has no effect on when it becomes visible.
 	 * @type Boolean
 	 */
 	loadMaximized : false,
@@ -539,11 +545,44 @@ window.proveit = jQuery.extend({
 		 */
 	},
 
-
-	/*
-	 * onload and onunload event handlers tied to the sidebar. These tie the
-	 * event handler into the browser and remove it when finished.
+	/**
+	 * Setup button so users can load ProveIt on demand
 	 */
+	setupButton : function()
+	{
+		var $box = this.getMWEditBox();
+
+		$box.wikiEditor('removeFromToolbar', {section: 'main', group: 'insert', tool: 'reference'});
+
+		$box.wikiEditor('addToToolbar', {
+			section: 'main',
+			group: 'insert',
+			tools: {
+				proveit: {
+					label: 'ProveIt',
+					type: 'button',
+					icon: 'http://upload.wikimedia.org/wikipedia/commons/thumb/1/19/ProveIt_logo_for_user_boxes.svg/22px-ProveIt_logo_for_user_boxes.svg.png',
+					action: {
+						type: 'callback',
+						execute: function()
+						{
+							proveit.toggleVisibility();
+						}
+					}
+				}
+			}
+		});
+	},
+
+	setup : function()
+	{
+		if(this.loadVisible)
+		{
+			this.load();
+		}
+
+		this.setupButton();
+	},
 
 	/**
 	 * Runs to create GUI if we're on a supported edit page
@@ -553,12 +592,6 @@ window.proveit = jQuery.extend({
 
 		this.summaryFunctionAdded = false;
 
-		if($('#' + this.GUI_ID).length > 0)
-		{
-			// GUI already created
-			return false;
-		}
-
 		if(this.isSupportedEditPage())
 		{
 			addOnloadHook(function()
@@ -567,6 +600,10 @@ window.proveit = jQuery.extend({
 				mw.loader.using(dependencies, function()
 				{
 					proveit.createGUI();
+					if(proveit.loadMaximized)
+					{
+						proveit.toggleViewAddVisibility();
+					}
 				}, function()
 				{
 					proveit.log('Failed to load one of: ' + dependencies);
@@ -2039,6 +2076,12 @@ window.proveit = jQuery.extend({
 	 */
 	createGUI : function()
 	{
+		if(this.getGUI().length > 0)
+		{
+			// GUI already created
+			return false;
+		}
+
 		importStylesheetURI(this.STATIC_BASE + 'styles.css');
 
 		// more JqueryUI CSS: http://blog.jqueryui.com/2009/06/jquery-ui-172/
@@ -2266,13 +2309,13 @@ window.proveit = jQuery.extend({
 		// handle clicking on tabs
 		jQuery(viewLink).click(function(){
 				if(jQuery(viewTab).is(":hidden"))
-					showHideButton.click(); // We use click so toggle stays in a consistent state.
+					this.toggleViewAddVisibility();
 				else
 					cancelEdit();	// Edit and view are the same tab, so we handle this specially.
 			});
 		jQuery(addLink).click(function(){
 				if(jQuery(addTab).is(":hidden"))
-					showHideButton.click();
+					this.toggleViewAddVisibility();
 			});
 
 		// add panel buttons
@@ -2344,6 +2387,7 @@ window.proveit = jQuery.extend({
 		});
 
 		var viewAndAdd = jQuery("#view-tab, #add-tab");
+		this.viewAndAddPanes = viewAndAdd;
 
 		function minimize()
 		{
@@ -2363,12 +2407,12 @@ window.proveit = jQuery.extend({
 			minimize
 		);
 
-		this.scanForRefs();
-
-		if(this.loadMaximized)
+		this.toggleViewAddVisibility = function()
 		{
 			showHideButton.click();
-		}
+		};
+
+		this.scanForRefs();
 
 		jQuery("#refs tr").eq(0).click().click(); // select first item in list.  TODO: Why two .click?
 
@@ -2376,6 +2420,71 @@ window.proveit = jQuery.extend({
 		jQuery("#refs tr:even").addClass('light');
 		jQuery("#refs tr:odd").addClass('dark');
 	},
+
+	/**
+	 * A reference to the set containing two items, the view and add tabs.  Will be initialized by createGUI, so it is non-null if ProveIt is visible
+	 *
+	 * @type {jQueryNodeSet}
+	 */
+	viewAndAddPanes : null,
+
+	/*
+	 * Gets jQuery set for ProveIt GUI, which will be empty if ProveIt has not initialized
+	 *
+	 * @return {jQueryNode} root of ProveIt
+	 */
+	getGUI : function()
+	{
+		return $('#' + this.GUI_ID);
+	},
+
+	/**
+	 * Hides ProveIt completely
+	 */
+	hide : function()
+	{
+		this.getGUI().hide();
+	},
+
+	/**
+	 * Show ProveIt
+	 */
+	show : function()
+	{
+		this.createGUI();
+		this.getGUI().show();
+	},
+
+	/**
+	 * Toggle overall visiblility.  If currently hidden, go to minimized.  If minimized, maximize.  If maximize, hide
+	 */
+	toggleVisibility : function()
+	{
+		if(this.getGUI().is(':visible'))
+		{
+			if(this.viewAndAddPanes.is(':visible')) // maximized
+			{
+				this.hide();
+			}
+
+			/*
+			 * If previously maximized, we minimize after hiding, so when we show, it will already be minimized.
+			 * If minimized, we maximize
+			 */
+			this.toggleViewAddVisibility();
+		}
+		else
+		{
+			this.show();
+		}
+	},
+
+	/**
+	 * Toggle visibility of view and add panes.  Initialized by createGUI
+	 *
+	 * @method
+	 */
+         toggleViewAddVisibility : null,
 
 	/**
 	 * Generates refbox row and all children, to be used by addNewElement, and when updating
@@ -2795,7 +2904,7 @@ if(!String.prototype.trim)
 proveit.split._compliantExecNpcg = /()??/.exec("")[1] === undefined; // NPCG: nonparticipating capturing group
 proveit.split._nativeSplit = String.prototype.split;
 
-proveit.load();
+proveit.setup();
 
 // Local Variables:
 // js2-basic-offset: 8
