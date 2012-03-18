@@ -2490,7 +2490,7 @@ window.proveit = jQuery.extend({
 	/**
 	 * Toggle visibility of view and add panes.  Initialized by createGUI
 	 *
-	 * @method
+	 * @method toggleViewAddVisibility
 	 */
          toggleViewAddVisibility : null,
 
