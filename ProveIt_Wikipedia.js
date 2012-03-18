@@ -557,9 +557,9 @@ window.proveit = jQuery.extend({
 		// Ensures wikiEditor is loaded
 		$box.bind('wikiEditor-toolbar-buildSection-main', function(event, section)
 		{
-			delete section.groups.insert.reference;
+			delete section.groups.insert.tools.reference;
 
-			section.groups.insert.proveit = {
+			section.groups.insert.tools.proveit = {
 				label: 'ProveIt',
 				type: 'button',
 				icon: 'http://upload.wikimedia.org/wikipedia/commons/thumb/1/19/ProveIt_logo_for_user_boxes.svg/22px-ProveIt_logo_for_user_boxes.svg.png',
