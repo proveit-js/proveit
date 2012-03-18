@@ -5,6 +5,10 @@
  *
  * Georgia Tech Research Corporation
  *
+ * Copyright 2011 -
+ *
+ * Matthew Flaschen
+ *
  * Atlanta, GA 30332-0415
  *
  * ALL RIGHTS RESERVED
@@ -550,7 +554,7 @@ window.proveit = jQuery.extend({
 	 */
 	setupButton : function()
 	{
-		var $box = this.getMWEditBox();
+		var $box = jQuery(this.getMWEditBox());
 
 		$box.wikiEditor('removeFromToolbar', {section: 'main', group: 'insert', tool: 'reference'});
 
@@ -2435,7 +2439,7 @@ window.proveit = jQuery.extend({
 	 */
 	getGUI : function()
 	{
-		return $('#' + this.GUI_ID);
+		return jQuery('#' + this.GUI_ID);
 	},
 
 	/**
