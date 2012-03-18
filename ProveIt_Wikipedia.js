@@ -2313,13 +2313,13 @@ window.proveit = jQuery.extend({
 		// handle clicking on tabs
 		jQuery(viewLink).click(function(){
 				if(jQuery(viewTab).is(":hidden"))
-					this.toggleViewAddVisibility();
+					proveit.toggleViewAddVisibility();
 				else
 					cancelEdit();	// Edit and view are the same tab, so we handle this specially.
 			});
 		jQuery(addLink).click(function(){
 				if(jQuery(addTab).is(":hidden"))
-					this.toggleViewAddVisibility();
+					proveit.toggleViewAddVisibility();
 			});
 
 		// add panel buttons
