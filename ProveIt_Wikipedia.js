@@ -795,10 +795,8 @@ window.proveit = jQuery.extend({
 		var acceptButton = jQuery('#edit-buttons .accept');
 		var acceptEdit = function()
 		{
-			proveit.log("Entering acceptEdit");
 			proveit.changeRefFromEditPane(ref, jQuery("#edit-pane").get());
 			proveit.saveRefFromEdit(ref);
-			acceptButton.unbind('click', acceptEdit);
 			jQuery("#edit-pane").hide();
 			jQuery("#view-pane").show();
 		};
@@ -810,12 +808,7 @@ window.proveit = jQuery.extend({
 		    jQuery('#edit-fields').scrollTop(0);
 		}, 0);
 
-		acceptButton.click(acceptEdit);
-
-		jQuery('.tab-link').one('click', function()
-		{
-			acceptButton.unbind('click', acceptEdit);
-		});
+		acceptButton.unbind('click.proveit').bind('click.proveit', acceptEdit);
 	},
 
 	/**
