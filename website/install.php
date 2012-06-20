@@ -38,7 +38,7 @@ include_once 'header.php';
 									login.attr('href', wikipedia.url.replace('$1', 'Special:UserLogin'));
 									signup.attr('href', wikipedia.url.replace('$1', 'Special:UserLogin?type=signup'));
 								}
-								userScript.attr('href', wikipedia.url.replace('$1', 'Special:MyPage/skin.js?action=edit'));
+								userScript.attr('href', wikipedia.url.replace('$1', 'Special:MyPage/common.js?action=edit'));
 							});
 
 							for(var i = 0; i < interwikis.length; i++)
