@@ -605,7 +605,7 @@ window.proveit = jQuery.extend({
 				{
 					proveit.toggleViewAddVisibility();
 				}
-			}, function()
+			}, function(ex)
 			{
 				proveit.log('Failed to load one of: ' + dependencies);
 			});
