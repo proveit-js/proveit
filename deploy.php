@@ -118,7 +118,6 @@ foreach($pages as $page)
     $edit_params = array(
      'action' => 'edit',
      'title' => $title,
-     'section' => 0,
      'text' => $full_code,
      'summary' => "Deploy commit $revid of ProveIt.",
      'notminor' => 1,
