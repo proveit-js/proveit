@@ -329,14 +329,40 @@ window.proveit = jQuery.extend({
 	},
 
 	/**
+	 * String added to logs for easy search
+	 * @type String
+	 */
+	LOG_MARKER : "[ProveIt] ",
+
+	/**
 	 * Convenience log function
 	 * @param {String} msg message to log
 	 */
 	log : function(msg)
 	{
-		if(typeof(console) === 'object' && console.log)
+		if(typeof(console) === "object" && console.log)
 		{
-			console.log("[ProveIt] %o", msg);
+			console.log(this.LOG_MARKER + "%o", msg);
+		}
+	},
+
+	/**
+	 * Log error object if possible, using error (preferable), or log, if available.
+	 * @param {Error} ex error object
+	 */
+	logException: function(ex)
+	{
+		var args = [this.LOG_MARKER, ex, ex.stack];
+		if(typeof(console) === "object")
+		{
+			if(console.error)
+			{
+				console.error.apply(null, args);
+			}
+			else if(console.log)
+			{
+				console.log.apply(null, args);
+			}
 		}
 	},
 
@@ -600,14 +626,21 @@ window.proveit = jQuery.extend({
 			var dependencies = ['jquery.ui.tabs', 'jquery.effects.highlight'];
 			mw.loader.using(dependencies, function()
 			{
-				proveit.createGUI();
-				if(proveit.loadMaximized)
+				try
 				{
-					proveit.toggleViewAddVisibility();
+					proveit.createGUI();
+					if(proveit.loadMaximized)
+					{
+						proveit.toggleViewAddVisibility();
+					}
 				}
-			}, function(ex)
+				catch(ex)
+				{
+					proveit.logException(ex);
+				}
+			}, function(ex, errorDependencies)
 			{
-				proveit.log('Failed to load one of: ' + dependencies);
+				proveit.log('Failed to load one of: ' + errorDependencies);
 			});
 		});
 	},
