@@ -67,7 +67,7 @@ window.proveit = jQuery.extend({
 	 * This directory includes icons from the Silk set (http://www.famfamfam.com/lab/icons/silk/), by Mark James
 	 * @type String
 	 */
-	STATIC_BASE : "http://proveit-js.googlecode.com/hg/static/",
+	STATIC_BASE : "//proveit-js.googlecode.com/hg/static/",
 
 	/* Used to map between keys, including citation parameter names, and human-readable text.  It can be
 	 * internationalized easily.  Add descriptions.xx , where xx is
