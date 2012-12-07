@@ -82,8 +82,8 @@ foreach($pages as $page)
     {
 	$header = '';
     }
-    $subbed_header = sprintf($header, $revid, $date); // It's okay if not all parameters are used by %s placeholders in $header.
-    $full_code = $subbed_header . IMPORT_HEADER . "\n" . $code;
+    $subbed_import_header = sprintf(IMPORT_HEADER, $revid, $date); // It's okay if not all parameters are used by %s placeholders in $header.
+    $full_code = $header . $subbed_import_header . "\n" . $code;
     echo $full_code;
     $deploy_cookies = tempnam("/tmp", "deploy_cookie");
     $login_ch = curl_init(MW_API);
