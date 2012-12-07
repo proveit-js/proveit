@@ -16,13 +16,45 @@ define('USER_AGENT', 'ProveIt deploy script (http://code.google.com/p/proveit-js
 define('MW_API', 'http://en.wikipedia.org/w/api.php');
 define('REV_SHORT', 'r');
 define('REV_LONG', 'rev');
+define('TYPE_SHORT', 't');
+define('TYPE_LONG', 'type');
 
-$options = getopt(REV_SHORT . ':', array(REV_LONG . ':'));
-$configuration = json_decode(file_get_contents('./deploy_configuration.json'));
+$options = getopt(REV_SHORT . ':' . TYPE_SHORT . ':', array(REV_LONG . ':', TYPE_LONG . ':'));
+function get_option_value($options, $short, $long, $meaning, $err_code)
+{
+    if(isset($options[$short]))
+    {
+	return $options[$short];
+    }
+    else if(isset($options[$long]))
+    {
+	return $options[$long];
+    }
+    else
+    {
+	fwrite(STDERR, "You must specify the $meaning.  Use -$short or --$long.\n");
+	exit($err_code);
+    }
+}
+
+$opt_deploy_type = get_option_value($options, TYPE_SHORT, TYPE_LONG, 'deployment type (user, prod, etc.)', 12);
+$configuration_filename = "./deploy_configuration.{$opt_deploy_type}.json";
+if(!file_exists($configuration_filename))
+{
+    fwrite(STDERR, "$configuration_filename does not exist.  Ensure that '$opt_deploy_type' is the correct type and the file exists.\n");
+    exit(13);
+}
+$configuration = json_decode(file_get_contents($configuration_filename));
 # Must have SSH configuration and at least one page.
 if(!isset($configuration->pages[0]->username, $configuration->pages[0]->password, $configuration->pages[0]->title, $configuration->ssh->host, $configuration->ssh->username, $configuration->ssh->password, $configuration->ssh->path))
 {
-    fwrite(STDERR, 'You must provide a JSON file, deploy_configuaration.json, in the repository root (but not committed).  It must have username, password, title, and header fields for at least one page.  There must also be ssh configuration fields set.');
+    fwrite(STDERR, <<< 'EOM'
+You must provide a JSON file, $configuration_filename, in the repository root (but not committed).
+It must have username, password, title, and header fields for at least one page.
+There must also be ssh configuration fields set.
+
+EOM
+);
     exit(1);
 }
 
@@ -33,19 +65,8 @@ if($out_ret === 0) // 0 unpushed changes, 1 otherwise
     fwrite(STDERR, "Push your changes to the main repository, " . REPO . ", before running $argv[0].\n");
     exit(2);
 }
-if(isset($options[REV_SHORT]))
-{
-    $opt_revid = $options[REV_SHORT];
-}
-else if(isset($options[REV_LONG]))
-{
-    $opt_revid = $options[REV_LONG];
-}
-else
-{
-    fwrite(STDERR, "You must specify the revision to deploy.\n");
-    exit(4);
-}
+
+$opt_revid = get_option_value($options, REV_SHORT, REV_LONG, 'revision to deploy', 4);
 
 $revid = exec('hg identify -i -r ' . $opt_revid, $_, $id_ret);
 if($id_ret != 0)
@@ -84,7 +105,6 @@ foreach($pages as $page)
     }
     $subbed_import_header = sprintf(IMPORT_HEADER, $revid, $date); // It's okay if not all parameters are used by %s placeholders in $header.
     $full_code = $header . $subbed_import_header . "\n" . $code;
-    echo $full_code;
     $deploy_cookies = tempnam("/tmp", "deploy_cookie");
     $login_ch = curl_init(MW_API);
     $login_data = array(
