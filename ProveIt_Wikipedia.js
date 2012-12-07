@@ -588,7 +588,7 @@ window.proveit = jQuery.extend({
 			section.groups.insert.tools.proveit = {
 				label: 'ProveIt',
 				type: 'button',
-				icon: 'http://upload.wikimedia.org/wikipedia/commons/thumb/1/19/ProveIt_logo_for_user_boxes.svg/22px-ProveIt_logo_for_user_boxes.svg.png',
+				icon: '//upload.wikimedia.org/wikipedia/commons/thumb/1/19/ProveIt_logo_for_user_boxes.svg/22px-ProveIt_logo_for_user_boxes.svg.png',
 				action: {
 					type: 'callback',
 					execute: function()
@@ -2111,7 +2111,7 @@ window.proveit = jQuery.extend({
 		var tabs = jQuery('<div/>', {id: 'tabs'});
 		var created = jQuery('<h1/>');
 		var createdLink = jQuery('<a/>', {title: 'Created by the ELC Lab at Georgia Tech',
-			                     href: 'http://proveit.cc.gatech.edu',
+			                     href: '//proveit.cc.gatech.edu',
 					     target: '_blank'});
 		// Main logo in upper-right
 		var logo = jQuery('<img/>', {src: this.STATIC_BASE + 'logo.png', alt: 'ProveIt', height: 30, width: 118 });
