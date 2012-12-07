@@ -5,6 +5,13 @@ error_reporting(-1); // All errors
 chdir(dirname (__FILE__)); // Change to directory of script (should be repo root)
 define('REPO', 'https://proveit-js.googlecode.com/hg/');
 define('PROVEIT_FILE', 'ProveIt_Wikipedia.js');
+define('IMPORT_HEADER', <<<'EOH'
+/*
+ * Imported from Mercurial commit %s as of %s from http://code.google.com/p/proveit-js/
+ * Changes should be made through that Google Code project.
+ */
+EOH
+);
 define('USER_AGENT', 'ProveIt deploy script (http://code.google.com/p/proveit-js/)');
 define('MW_API', 'http://en.wikipedia.org/w/api.php');
 define('REV_SHORT', 'r');
@@ -13,7 +20,7 @@ define('REV_LONG', 'rev');
 $options = getopt(REV_SHORT . ':', array(REV_LONG . ':'));
 $configuration = json_decode(file_get_contents('./deploy_configuration.json'));
 # Must have SSH configuration and at least one page.
-if(!isset($configuration->pages[0]->username, $configuration->pages[0]->password, $configuration->pages[0]->title, $configuration->pages[0]->header, $configuration->ssh->host, $configuration->ssh->username, $configuration->ssh->password, $configuration->ssh->path))
+if(!isset($configuration->pages[0]->username, $configuration->pages[0]->password, $configuration->pages[0]->title, $configuration->ssh->host, $configuration->ssh->username, $configuration->ssh->password, $configuration->ssh->path))
 {
     fwrite(STDERR, 'You must provide a JSON file, deploy_configuaration.json, in the repository root (but not committed).  It must have username, password, title, and header fields for at least one page.  There must also be ssh configuration fields set.');
     exit(1);
@@ -67,9 +74,17 @@ $pages = $configuration->pages;
 foreach($pages as $page)
 {
     $title = $page->title;
-    $header = implode("\n", $page->header); // Having header be an array makes the JSON file more readable
+    if(isset($page->header))
+    {
+	$header = implode("\n", $page->header) . "\n"; // Having header be an array makes the JSON file more readable
+    }
+    else
+    {
+	$header = '';
+    }
     $subbed_header = sprintf($header, $revid, $date); // It's okay if not all parameters are used by %s placeholders in $header.
-    $full_code = $subbed_header . $code;
+    $full_code = $subbed_header . IMPORT_HEADER . "\n" . $code;
+    echo $full_code;
     $deploy_cookies = tempnam("/tmp", "deploy_cookie");
     $login_ch = curl_init(MW_API);
     $login_data = array(

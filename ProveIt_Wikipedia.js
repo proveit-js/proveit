@@ -1,5 +1,5 @@
 /*
- * ProveIt (http://code.google.com/p/proveit-js/) is a new tool for reliable referencing on Wikipedia
+ * ProveIt ([[User:ProveIt GT]]) is a powerful GUI tool for viewing, adding, editing, and inserting references on Wikipedia.
  *
  * Copyright 2008 - 2011
  *
