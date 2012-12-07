@@ -5,11 +5,11 @@
  *
  * Georgia Tech Research Corporation
  *
+ * Atlanta, GA 30332-0415
+ *
  * Copyright 2011 -
  *
  * Matthew Flaschen
- *
- * Atlanta, GA 30332-0415
  *
  * ALL RIGHTS RESERVED
  *
