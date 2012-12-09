@@ -620,7 +620,7 @@ window.proveit = $.extend({
 	{
 		addOnloadHook(function()
 		{
-			var dependencies = ['jquery.ui.tabs', 'jquery.effects.highlight', 'mediaWiki.log'];
+			var dependencies = ['jquery.ui.tabs', 'jquery.effects.highlight'];
 			mw.loader.using(dependencies, function()
 			{
 				try
