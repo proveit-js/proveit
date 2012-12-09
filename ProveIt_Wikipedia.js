@@ -620,7 +620,7 @@ window.proveit = $.extend({
 	{
 		addOnloadHook(function()
 		{
-			var dependencies = ['jquery.ui.tabs', 'jquery.ui.button', 'jquery.effects.highlight', 'jQuery.textSelection'];
+			var dependencies = ['jquery.ui.tabs', 'jquery.ui.button', 'jquery.effects.highlight', 'jquery.textSelection'];
 			mw.loader.using(dependencies, function()
 			{
 				try
