@@ -4,11 +4,7 @@ $page = 'Demo';
 include_once 'header.php';
 
 ?>
-<link type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.17/themes/base/jquery-ui.css" rel="Stylesheet" />
 <script src="wikibits.js" type="text/javascript"></script>
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
-<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.17/jquery-ui.min.js" type="text/javascript"></script>
-
 <script type="text/javascript">
 // Mock Wikipedia environment ProveIt expects to run in
 
@@ -19,73 +15,76 @@ wgCanonicalNamespace="",
 wgCanonicalSpecialPageName=false,
 wgNamespaceNumber=0,
 wgAction="edit";
-
-var mw =
-{
-	loader:
-	{
-		using: function(dependencies, success)
-		{
-			success();
-		}
-	}
-}
-
 </script>
-<script src="http://en.wikipedia.org/w/resources-1.19/resources/jquery/jquery.textSelection.js" type="text/javascript"></script>
-<script src="http://proveit-js.googlecode.com/hg/ProveIt_Wikipedia.js" type="text/javascript"></script>
+<script src="https://bits.wikimedia.org/en.wikipedia.org/load.php?debug=false&lang=en&modules=startup&only=scripts&skin=vector&*"></script>
 <script type="text/javascript">
 //<![CDATA[
-proveit.loadMaximized = true;
+
 function loadArticle(articleName)
 {
-  if(articleName == null)
-    articleName = $('#articleName').val();
-  else
-    $('#articleName').val(articleName);
+    if(articleName == null)
+        articleName = $('#articleName').val();
+    else
+        $('#articleName').val(articleName);
   
-  $('#articleLink').text(articleName).attr('href', wgServer + '/wiki/' + encodeURIComponent(articleName));
+    $('#articleLink').text(articleName).attr('href', wgServer + '/wiki/' + encodeURIComponent(articleName));
 
-  $('#articleName').attr('readonly','readonly');
-  $('#articleBtn').attr('disabled','disabled');
+    $('#articleName').attr('readonly','readonly');
+    $('#articleBtn').attr('disabled','disabled');
   
-  var apiURL = 'http://en.wikipedia.org/w/api.php?action=query&prop=revisions&titles=' + encodeURIComponent(articleName) + '&rvprop=content&format=json&callback=?';
-  $.getJSON(apiURL, function(response)
-  {
-    if(response.error)
+    var apiURL = 'http://en.wikipedia.org/w/api.php?action=query&prop=revisions&titles=' + encodeURIComponent(articleName) + '&rvprop=content&format=json&callback=?';
+    $.getJSON(apiURL, function(response)
     {
-      throw response.error; 
-    }
-	else
-	{
-      $('#articleName').removeAttr('readonly');
-      $('#articleBtn').removeAttr('disabled');	  
-	}
-    var pages = response.query.pages;
-    for(var key in pages)
-    {
-      break; // Get first (only) key.  This is necessary due to odd JSON structure.
-    }
-    var page = pages[key];
-    var content = page.revisions[0]['*'];
-    // wg's global 
-    wgTitle = page.title;
-    wgPageName = page.title.replace(" ", "_");
-    $('#wpTextbox1').val(content);
-    $('#proveit').remove();
-    proveit.createGUI();
-  });
-  return false;
+        if(response.error)
+        {
+            throw response.error; 
+        }
+        else
+        {
+            $('#articleName').removeAttr('readonly');
+            $('#articleBtn').removeAttr('disabled');      
+        }
+        var pages = response.query.pages;
+        for(var key in pages)
+        {
+            break; // Get first (only) key.  This is necessary due to odd JSON structure.
+        }
+        var page = pages[key];
+        var content = page.revisions[0]['*'];
+        // wg's global 
+        wgTitle = page.title;
+        wgPageName = page.title.replace(" ", "_");
+        $('#wpTextbox1').val(content);
+        $('#proveit').remove();
+        proveit.createGUI();
+        proveit.toggleViewAddVisibility();
+    });
+    return false;
 }
 
-$(function()
+function log()
 {
-    jQuery.getScript(proveit.JQUERYUI_SCRIPT_URL, loadArticle);
-    $('#demoForm').submit(function(evt){
-	            loadArticle();
-		    evt.preventDefault();
-		});
+    if(typeof(console) === 'object' && console.log)
+    {
+        console.log.apply(null, arguments);
+    }
+}
+
+mw.loader.using("ext.gadget.ProveIt", function()
+{
+    $(function()
+    {
+        $('#demoForm').submit(function(evt){
+            loadArticle();
+            evt.preventDefault();
+        });
+        loadArticle();
+    });
+}, function(ex, errorDependencies)
+{
+    log('Failed to load ProveIt due to missing dependencies: ', errorDependencies);
 });
+
 //]]>
 </script>
 				<table id="mainTable">
