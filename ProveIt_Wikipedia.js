@@ -2026,10 +2026,7 @@ window.proveit = $.extend({
 				if(required[param])
 				{
 					label.addClass("required");
-					// Use raw DOM calls to work-around issue 79
-					var del = $('.delete-field', paramBox)[0];
-					del.parentNode.removeChild(del);  // don't let people remove required fields
-					// $('.delete-field', paramBox).remove();
+					$('.delete-field', paramBox).remove(); // don't let people remove required fields
 				}
 				else
 				{
