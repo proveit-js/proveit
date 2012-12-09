@@ -620,7 +620,7 @@ window.proveit = $.extend({
 	{
 		addOnloadHook(function()
 		{
-			var dependencies = ['jquery.ui.tabs', 'jquery.effects.highlight'];
+			var dependencies = ['jquery.ui.tabs', 'jquery.ui.button', 'jquery.effects.highlight'];
 			mw.loader.using(dependencies, function()
 			{
 				try
@@ -637,7 +637,7 @@ window.proveit = $.extend({
 				}
 			}, function(ex, errorDependencies)
 			{
-				proveit.log('Failed to load one of: ' + errorDependencies);
+				proveit.log('Failed to load one of: ', errorDependencies);
 			});
 		});
 	},
