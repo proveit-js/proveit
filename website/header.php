@@ -6,7 +6,7 @@
     <meta http-equiv="content-language" content="en" /> 
     <meta name="description" content="ProveIt is a free, open-source referencing tool that makes it really easy to find, edit, add, and cite references in Wikipedia articles." /> 
     <meta name="author" content="ELC Lab at Georgia Tech" /> 	
-	<link href="/proveit_styles.css" rel="stylesheet" type="text/css" />
+	<link href="/website_styles.css" rel="stylesheet" type="text/css" />
 	<link rel="shortcut icon" href="/img/favicon.ico" type="image/x-icon" />	
 	<script type="text/javascript" src="http://www.google.com/jsapi"></script> 
 	<script type="text/javascript"> 
