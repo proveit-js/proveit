@@ -2131,9 +2131,9 @@ window.proveit = $.extend({
 		var editFields = $('<div/>', {id: 'edit-fields',
 					      "class": 'inputs scroll',
 					      style: 'height: 170px',
-					      tabindex: 0});
+					      tabindex: -1});
 		// div.ref-name-row
-        var refNameRow = $('<div/>', {"class": 'ref-name-row',
+		var refNameRow = $('<div/>', {"class": 'ref-name-row',
 					      tabindex: -1});
 		var refLabel = $('<label/>', {'for': 'editrefname',
 					      title: 'This is a unique identifier that can be used to refer to this reference elsewhere on the page.',
@@ -2141,7 +2141,8 @@ window.proveit = $.extend({
 			append('&lt;ref&gt; name');
 		refNameRow.append(refLabel);
 		refNameRow.append($('<input/>', {id: 'editrefname',
-	                                       "class": 'paramvalue'}));
+						 "class": 'paramvalue',
+						 tabindex: 0}));
 		// div.paramlist
 		var paramList = $('<div/>', {"class": 'paramlist'});
 
@@ -2184,9 +2185,10 @@ window.proveit = $.extend({
 						  style: 'display: none'}).
 			append($('<label/>', {"class": 'paramdesc'}));
 		var paramvalue = $('<input/>', {"class": 'paramvalue',
-				                tabindex: -1});
+				                tabindex: 0});
 	        preloadedparam.append(paramvalue);
-		var deleteButton = $('<button/>', {"class": 'delete-field'}).
+		var deleteButton = $('<button/>', {"class": 'delete-field',
+						   tabindex: -1}).
 			append('delete field');
 		preloadedparam.append(deleteButton);
 		tabs.append(preloadedparam);
@@ -2194,7 +2196,7 @@ window.proveit = $.extend({
 					      "class": 'addedrow input-row',
  					      style: 'display: none'}).
 		        append($('<input/>', {"class": 'paramdesc',
-					      tabindex: -1})).
+					      tabindex: 0})).
 			append(paramvalue.clone()).
 			append(deleteButton.clone());
 		tabs.append(addedparam);
@@ -2226,7 +2228,7 @@ window.proveit = $.extend({
 		addFields.append(cite);
 		addFields.append($('<div/>', {"class": 'addpanes',
 					      id: 'citepanes',
-					      tabindex: 0}));
+					      tabindex: -1}));
 		var citation = $('<div/>', {style: 'display: none',
 					    id: 'citation',
 					    "class": 'input-row'});
