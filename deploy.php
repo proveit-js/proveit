@@ -18,7 +18,7 @@ define('REV_SHORT', 'r');
 define('REV_LONG', 'rev');
 define('TYPE_SHORT', 't');
 define('TYPE_LONG', 'type');
-
+define('SSH_DEFAULT_PORT', 22);
 $options = getopt(REV_SHORT . ':' . TYPE_SHORT . ':', array(REV_LONG . ':', TYPE_LONG . ':'));
 function get_option_value($options, $short, $long, $meaning, $err_code)
 {
@@ -46,7 +46,7 @@ if(!file_exists($configuration_filename))
 }
 $configuration = json_decode(file_get_contents($configuration_filename));
 # Must have SSH configuration and at least one page.
-if(!isset($configuration->pages[0]->username, $configuration->pages[0]->password, $configuration->pages[0]->title, $configuration->ssh->host, $configuration->ssh->username, $configuration->ssh->password, $configuration->ssh->path))
+if(!isset($configuration->pages[0]->username, $configuration->pages[0]->password, $configuration->pages[0]->title, $configuration->ssh->host, $configuration->ssh->username, $configuration->ssh->path))
 {
     fwrite(STDERR, <<< 'EOM'
 You must provide a JSON file, $configuration_filename, in the repository root (but not committed).
@@ -56,6 +56,12 @@ There must also be ssh configuration fields set.
 EOM
 );
     exit(1);
+}
+
+if(!isset($configuration->ssh->password) && !isset($configuration->ssh->publicKeyFileName, $configuration->ssh->privateKeyFileName))
+{
+    fwrite(STDERR, "In the SSH section you must set either password or both publicKeyFileName and privateKeyFileName\n");
+    exit(14);
 }
 
 $_ = NULL; // unused, needed because only variables can be passed by reference.
@@ -205,19 +211,35 @@ if($yui_exit != 0)
     fwrite(STDERR, "Failed to run yuidoc.  Please check that it and its dependencies are installed.\n");
     exit(11);
 }
-echo "Connecting to {$configuration->ssh->host}\n";
-$con = ssh2_connect($configuration->ssh->host);
+$port = isset($configuration->ssh->port) ? $configuration->ssh->port : DEFAULT_SSH_PORT;
+echo "Connecting to {$configuration->ssh->host} on port $port\n";
+
+$con = ssh2_connect($configuration->ssh->host, $port);
 if(!$con)
 {
     fwrite(STDERR, "Failed to connect to {$configuration->ssh->host}\n");
     exit(10);
 }
 
-$auth_ret = ssh2_auth_password($con, $configuration->ssh->username, $configuration->ssh->password);
-if(!$auth_ret)
+if(isset($configuration->ssh->password))
 {
-    fwrite(STDERR, 'SSH password authentication failed.\n');
-    exit(6);
+    $auth_ret = ssh2_auth_password($con, $configuration->ssh->username, $configuration->ssh->password);
+    if(!$auth_ret)
+    {
+	fwrite(STDERR, 'SSH password authentication failed.\n');
+	exit(6);
+    }
+}
+else
+{
+    $passphrase = isset($configuration->ssh->passphrase) ? $configuration->ssh->passphrase : NULL;
+    $auth_ret = ssh2_auth_pubkey_file($con, $configuration->ssh->username, $configuration->ssh->publicKeyFileName, $configuration->ssh->privateKeyFileName, $passphrase);
+    if(!$auth_ret)
+    {
+	fwrite(STDERR, 'SSH public/private key authentication failed.\n');
+	exit(15);
+    }
+
 }
 
 $sftp = ssh2_sftp($con);
