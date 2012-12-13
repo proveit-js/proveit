@@ -2204,7 +2204,8 @@ window.proveit = $.extend({
 		var addTab = $('<div/>', {id: 'add-tab', css: {display: 'none'}});
 		var addFields = $('<div/>', {id: 'add-fields',
 					     "class": 'inputs scroll',
-					     style: 'height: 170px'});
+					     style: 'height: 170px',
+					     tabindex: -1});
 		var cite = $('<div/>', {style: 'display: none',
 					id: 'cite',
 				        "class": 'input-row'});
