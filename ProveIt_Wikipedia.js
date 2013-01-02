@@ -38,28 +38,28 @@ window.proveit = $.extend({
 	 * Approximately half the height of the edit box.  Used in scrolling when highlighting text.
 	 * @type Number
 	 */
-	HALF_EDIT_BOX_HEIGHT : 200,
+	HALF_EDIT_BOX_HEIGHT: 200,
 
 	// This could be preference-controlled, instead of hard-coded.
 	/**
 	 * Language used for descriptions
 	 * @type String
 	 */
-	LANG : "en",
+	LANG: "en",
 
 	/**
 	 * Text before param name (e.g. url, title, etc.) in creation box, to avoid collisions with unrelated ids.
 	 * @type String
 	 */
-	NEW_PARAM_PREFIX : "newparam",
+	NEW_PARAM_PREFIX: "newparam",
 
 	/**
 	 * Text before param name (e.g. url, title, etc.) in edit box, to avoid collisions with unrelated ids.
 	 * @type String
 	 */
-	EDIT_PARAM_PREFIX : "editparam",
+	EDIT_PARAM_PREFIX: "editparam",
 
-	GUI_ID : "proveit",
+	GUI_ID: "proveit",
 
 	/**
 	 * Base URL used for static content
@@ -67,7 +67,7 @@ window.proveit = $.extend({
 	 * This directory includes icons from the Silk set (http://www.famfamfam.com/lab/icons/silk/), by Mark James
 	 * @type String
 	 */
-	STATIC_BASE : "//proveit-js.googlecode.com/hg/static/",
+	STATIC_BASE: "//proveit-js.googlecode.com/hg/static/",
 
 	/* Used to map between keys, including citation parameter names, and human-readable text.  It can be
 	 * internationalized easily.  Add descriptions.xx , where xx is
@@ -198,7 +198,7 @@ window.proveit = $.extend({
 			deadurl: 'Dead URL?'
 		},
 		// Finnish translation by Olli (ollinpostit at gmail.com)
-		fi : {
+		fi: {
                         agency: "Edustaja",
                         name: "Nimi",
                         author: "Tekijä",
@@ -323,7 +323,7 @@ window.proveit = $.extend({
 	 * Returns descriptions for the current language.
 	 * @return {Object} descriptions
 	 */
-	getDescriptions : function()
+	getDescriptions: function()
 	{
 		//this could be made Cite-specific if needed.
 		return this.descriptions[proveit.LANG];
@@ -333,13 +333,13 @@ window.proveit = $.extend({
 	 * String added to logs for easy search
 	 * @type String
 	 */
-	LOG_MARKER : "[ProveIt] ",
+	LOG_MARKER: "[ProveIt] ",
 
 	/**
 	 * Convenience log function
 	 * @param {...Object} var_args objects (including strings) to log
 	 */
-	log : function()
+	log: function()
 	{
 		var args = Array.prototype.slice.call(arguments);
 		args.unshift(this.LOG_MARKER);
@@ -369,7 +369,7 @@ window.proveit = $.extend({
 	 *
 	 * @return {Boolean} true if the page has an edit box, false otherwise
 	 */
-	isEditPage : function()
+	isEditPage: function()
 	{
 		return wgAction == 'edit' || wgAction == 'submit';
 	},
@@ -378,7 +378,7 @@ window.proveit = $.extend({
 	 * Returns true if the page is likely to contain references
 	 * @return {Boolean} true if page is supported, false otherwise
 	 */
-	isSupportedPage : function()
+	isSupportedPage: function()
 	{
 	        // "Regular" article, userspace, or Wikipedia:Sandbox (exception for testing).
 	        return (wgCanonicalNamespace == '' || wgCanonicalNamespace == 'User' || wgPageName == 'Wikipedia:Sandbox');
@@ -388,7 +388,7 @@ window.proveit = $.extend({
 	 * Convenience function.  Returns the refbox element.
 	 * @return {$Node} reference box
 	 */
-	getRefBox : function()
+	getRefBox: function()
 	{
 		return $("#refs");
 	},
@@ -398,7 +398,7 @@ window.proveit = $.extend({
 	 * @param {Node} node any HTML node
 	 * @return {Object} offsets to node, as object with left and top properties.
 	 */
-	getPosition : function(node)
+	getPosition: function(node)
 	{
 		var left = 0, top = 0;
 		do
@@ -415,7 +415,7 @@ window.proveit = $.extend({
 	 * @param {Number} length length of string to highlight
 	 * @return {Boolean} always true
 	*/
-	highlightLengthAtIndex : function(startInd, length)
+	highlightLengthAtIndex: function(startInd, length)
 	{
 		if(startInd < 0 || length < 0)
 		{
@@ -448,7 +448,7 @@ window.proveit = $.extend({
 	 * @param {String} targetStr the string in the edit box to highlight
 	 * @return {Boolean} true if successful, false otherwise
 	*/
-	highlightTargetString : function(targetStr)
+	highlightTargetString: function(targetStr)
 	{
 		var origText = this.getMWEditValue();
 		var startInd = origText.indexOf(targetStr);
@@ -464,7 +464,7 @@ window.proveit = $.extend({
 	 * Convenience function. Returns the raw MediaWiki textarea element.
 	 * @return {Node} the edit box element
 	*/
-	getMWEditBox : function()
+	getMWEditBox: function()
 	{
 		return $("#wpTextbox1")[0];
 	},
@@ -474,7 +474,7 @@ window.proveit = $.extend({
 	 *
 	 * @return {String} value of edit box with CRs stripped if document.selection exists
 	 */
-	getMWEditValue : function()
+	getMWEditValue: function()
 	{
 		var box = this.getMWEditBox();
 		var value = box.value;
@@ -489,7 +489,7 @@ window.proveit = $.extend({
 	 * Returns raw edit form element, which contains MWEditBox, among other things.
 	 * @return {Node} the edit form element
 	*/
-	getMWEditForm : function()
+	getMWEditForm: function()
 	{
 		return $("#editform")[0];
 	},
@@ -498,7 +498,7 @@ window.proveit = $.extend({
 	 * Runs a given function on submission of edit form
 	 * @param {Function} subFunc function to run on submission
 	*/
-	addOnsubmit : function(subFunc)
+	addOnsubmit: function(subFunc)
 	{
 		var form = this.getMWEditForm();
 		if(!form)
@@ -512,7 +512,7 @@ window.proveit = $.extend({
 	 * Returns the raw MW edit summary element
 	 * @return {Node} the edit summary element
 	*/
-	getEditSummary : function()
+	getEditSummary: function()
 	{
 		return $("#wpSummary")[0];
 	},
@@ -522,31 +522,31 @@ window.proveit = $.extend({
 	 * This guarantees the function will not be run twice.
 	 * @type Boolean
 	 */
-	summaryFunctionAdded : false,
+	summaryFunctionAdded: false,
 
 	/**
 	 * Does the user want us to ever add "Edited by ProveIt" summary?
 	 * @type Boolean
 	*/
-	shouldAddSummary : true,
+	shouldAddSummary: true,
 
 	/**
 	 * ProveIt should be visible on load (rather than requiring toolbar button click) on supported edit pages
 	 * @type Boolean
 	 */
- 	loadVisible : true,
+ 	loadVisible: true,
 
 	/**
 	 * Maximize ProveIt when it first becomes visible.  If false, it will start minimized.  This has no effect on when it becomes visible.
 	 * @type Boolean
 	 */
-	loadMaximized : false,
+	loadMaximized: false,
 
 	/**
 	 * Specifies to include ProveIt edit summary on next save.
 	 * Can be disabled by modifying shouldAddSummary
 	 */
-	includeProveItEditSummary : function()
+	includeProveItEditSummary: function()
 	{
 		if(this.shouldAddSummary && !this.summaryFunctionAdded)
 		{
@@ -574,7 +574,7 @@ window.proveit = $.extend({
 	/**
 	 * Setup button so users can load ProveIt on demand
 	 */
-	setupButton : function()
+	setupButton: function()
 	{
 		var $box = $(this.getMWEditBox());
 
@@ -601,7 +601,7 @@ window.proveit = $.extend({
 	/**
 	 * Sets up ProveIt if we're on an edit page.  This includes setting up the toolbar button.  Depending on configuration and the current page, it may also call load to show ProveIt.
 	 */
-	setup : function()
+	setup: function()
 	{
 		if(this.isEditPage())
 		{
@@ -617,7 +617,7 @@ window.proveit = $.extend({
 	/**
 	 * Loads dependencies and creates GUI
 	 */
-	load : function()
+	load: function()
 	{
 		addOnloadHook(function()
 		{
@@ -648,7 +648,7 @@ window.proveit = $.extend({
 	 * @return {Boolean} false if refBox wasn't found
 	 */
 
-	clearRefBox : function()
+	clearRefBox: function()
 	{
 		var box = this.getRefBox();
 		if(box == null)
@@ -665,7 +665,7 @@ window.proveit = $.extend({
 	 * @param {Boolean} full Insert the full reference text if true, citation otherwise.
 	 * @return {Boolean} false if errors
 	 */
-	insertRefIntoMWEditBox : function(ref, full)
+	insertRefIntoMWEditBox: function(ref, full)
 	{
 		var txtarea = this.getMWEditBox();
 		if(!txtarea)
@@ -697,7 +697,7 @@ window.proveit = $.extend({
 	 *
 	 * @return {AbstractReference} same ref that was passed in
 	 */
-	changeRefFromEditPane : function(ref, editPane)
+	changeRefFromEditPane: function(ref, editPane)
 	{
 		var paramBoxes = $("div.input-row", editPane);
 
@@ -742,7 +742,7 @@ window.proveit = $.extend({
 	 * Creates refBoxRow, updates numbering for all refBoxRows, replaces old refBoxRow with new one, and updates ref text in MWEditBox.
 	 * @param {AbstractReference} ref the ref we want to save.
 	 */
-	saveRefFromEdit : function(ref)
+	saveRefFromEdit: function(ref)
 	{
 		if(!ref.save)
 		{
@@ -762,7 +762,7 @@ window.proveit = $.extend({
 	 * Updates the edit pane when you choose a reference to edit.
 	 * @param {AbstractReference} ref the ref that was chosen.
 	 */
-	updateEditPane : function(ref)
+	updateEditPane: function(ref)
 	{
 		$('#editrefname').val(ref.name || "");
 
@@ -842,7 +842,7 @@ window.proveit = $.extend({
 	 * @param {Boolean} req true if current param name is required, otherwise not required.
 	 * @param {Boolean} fieldType true for label, false for textbox.
 	 */
-	addPaneRow : function(root, params, descs, item, req, fieldType)
+	addPaneRow: function(root, params, descs, item, req, fieldType)
 	{
 		var id = fieldType ? "preloadedparamrow" : "addedparamrow";
 		var newline = $('#'+id).clone(); // clone the hidden row
@@ -898,7 +898,7 @@ window.proveit = $.extend({
 	 * true signifies cite-style references, citation-style otherwise.  Used when creating a reference.
 	 * @type Boolean
 	 */
-	togglestyle : true,
+	togglestyle: true,
 
 	// TODO: This should be eliminated if only name only inserts are allowed.
 	/** true signifies full references, name-only otherwise.  Used when inserting.
@@ -906,7 +906,7 @@ window.proveit = $.extend({
 	 *
 	 * @type Boolean
 	 */
-	toggleinsert : false,
+	toggleinsert: false,
 
 	/* Cross-Browser Split 1.0.1
 	 (c) Steven Levithan <stevenlevithan.com>; MIT License
@@ -921,7 +921,7 @@ window.proveit = $.extend({
 	 * @param {Number} limit limit on number of splits.  If the parameter is absent, no limit is imposed.
 	 * @return {Array} array resulting from split
 	 */
-	split : function (str, separator, limit)
+	split: function (str, separator, limit)
 	{
 		// if `separator` is not a regex, use the native `split`
 		if (Object.prototype.toString.call(separator) !== "[object RegExp]") {
@@ -1010,7 +1010,7 @@ window.proveit = $.extend({
 	 * @param {String} workingString template string to parse.
 	 * @return {Object} object with two properties, names and values.
 	 */
-	splitNameVals : function (workingString)
+	splitNameVals: function (workingString)
 	{
 		var split = {};
 		// The first component is "ordinary" text (no pipes), while the second is a correctly balanced wikilink, with optional pipe.  Any combination of the two can appear.
@@ -1024,7 +1024,7 @@ window.proveit = $.extend({
 	/**
 	 * Scan for references in the MWEditBox, and create a reference object and refBoxRow for each.
 	 */
-	scanForRefs : function()
+	scanForRefs: function()
 	{
 		// these are strings used to allow the correct parsing of the ref
 		var workingstring;
@@ -1105,14 +1105,14 @@ window.proveit = $.extend({
 	 * Regex for parsing any reference text.
 	 * @type RegExp
 	*/
-	REF_REGEX : /<[\s]*ref[\s]*name[\s]*=[\s]*(?:(?:\"(.*?)\")|(?:\'(.*?)\')|(?:(.*?)))[\s]*\/?[\s]*>/,
+	REF_REGEX: /<[\s]*ref[\s]*name[\s]*=[\s]*(?:(?:\"(.*?)\")|(?:\'(.*?)\')|(?:(.*?)))[\s]*\/?[\s]*>/,
 
 	/**
 	 * Factory function for references.  Takes text of a reference, and returns instance of the appropriate class.
 	 * @param {String} refText reference string
 	 * @return {AbstractReference} null if refText isn't a ref, otherwise the reference object
 	 */
-	makeRef : function(refText)
+	makeRef: function(refText)
 	{
 		var isReference = /<[\s]*ref[^>]*>[^<]*\S[^<]*<[\s]*\/[\s]*ref[\s]*>/.test(refText); // Tests for reference (non-citation);
 		if(!isReference)
@@ -1177,7 +1177,7 @@ window.proveit = $.extend({
 	 * @constructor
 	 * @param {Object} argObj argument object with keys for each option
 	*/
-	AbstractReference : function(argObj)
+	AbstractReference: function(argObj)
 	{
 		// CiteReference has a non-trivial override of this.  This is defined early (and conditionally) because it is used in the constructor.
 		if(!this.setType)
@@ -1468,26 +1468,26 @@ window.proveit = $.extend({
 	 * @extends AbstractReference
 	 * @param {Object} argObj the argument object, with keys for each option
 	*/
-	CiteReference : function(argObj)
+	CiteReference: function(argObj)
 	{
 		/* Mostly an identity mapping, except for redirects.  I think
 		 * having the self-mappings is better than some kind of special case array.
 		 */
 		var typeNameMappings =
 		{
-			web:"web",
-			book:"book",
-			journal:"journal",
-			conference:"conference",
-			encyclopedia:"encyclopedia",
-			news:"news",
-			newsgroup:"newsgroup",
-			paper:"journal",
-			"press release":"press release",
-		        "pressrelease":"press release",
-			interview:"interview",
-		        episode:"episode",
-			video:"video"
+			web: "web",
+			book: "book",
+			journal: "journal",
+			conference: "conference",
+			encyclopedia: "encyclopedia",
+			news: "news",
+			newsgroup: "newsgroup",
+			paper: "journal",
+			"press release": "press release",
+		        "pressrelease": "press release",
+			interview: "interview",
+		        episode: "episode",
+			video: "video"
 		};
 
 		// Sets the type (e.g. web for cite web), applying the mappings.  This is up top because it is used in AbstractReference constructor.
@@ -1627,17 +1627,17 @@ window.proveit = $.extend({
 		// True indicates required (null, or undefined, means not required)
 		var requiredParams =
 		{
-			web : { "url": true, "title": true},
-			book : { "title": true },
-			journal : { "title": true },
-			conference : { "title": true },
+			web: { "url": true, "title": true},
+			book: { "title": true },
+			journal: { "title": true },
+			conference: { "title": true },
 			encyclopedia: { "title": true, "encyclopedia": true },
 			news: { "title": true, "work": true, "date": true },
-			newsgroup : { "title": true },
+			newsgroup: { "title": true },
 			"press release"	: { "title": true },
-			interview: { "last" : true }, // TODO: Interview requires last *or* subject.  Currently, we can't represent that.
-			episode : { "title": true },
-			video : { "title" : true }
+			interview: { "last": true }, // TODO: Interview requires last *or* subject.  Currently, we can't represent that.
+			episode: { "title": true },
+			video: { "title": true }
 		};
 
 		/**
@@ -1656,18 +1656,18 @@ window.proveit = $.extend({
 		// These paramaters will be auto-suggested when editing.
 		var defaultParams =
 		{
-		        web : [ "url", "title", "author", "accessdate", "work", "publisher", "date", "pages"],
-		        book : [ "title", "author", "authorlink", "year", "isbn", "publisher", "location", "pages" ],
-		        journal : [ "title", "author", "journal", "volume", "issue", "year", "month", "pages", "url", "doi" ],
-		        conference : [ "conference", "title", "booktitle", "author", "editor", "year", "month", "url", "id", "accessdate", "location", "pages", "publisher" ],
+		        web: [ "url", "title", "author", "accessdate", "work", "publisher", "date", "pages"],
+		        book: [ "title", "author", "authorlink", "year", "isbn", "publisher", "location", "pages" ],
+		        journal: [ "title", "author", "journal", "volume", "issue", "year", "month", "pages", "url", "doi" ],
+		        conference: [ "conference", "title", "booktitle", "author", "editor", "year", "month", "url", "id", "accessdate", "location", "pages", "publisher" ],
 			encyclopedia: [ "title", "encyclopedia", "author", "editor", "accessdate", "edition", "year",
 			"publisher", "volume", "location", "pages" ],
 		        news: [ "title", "author", "url", "work", "date", "accessdate", "pages", "location", "agency" ],
-			newsgroup : [ "title", "author", "date", "newsgroup", "id", "url", "accessdate" ],
+			newsgroup: [ "title", "author", "date", "newsgroup", "id", "url", "accessdate" ],
 		        "press release"	: [ "title", "url", "publisher", "date", "accessdate" ],
-			interview : ["last", "first", "subjectlink", "interviewer", "title", "callsign", "city", "date", "program", "accessdate"],
-		        episode : ["title", "series", "credits", "airdate", "city", "network", "season"],
-			video : ["people", "date", "url", "title", "medium", "location", "publisher"]
+			interview: ["last", "first", "subjectlink", "interviewer", "title", "callsign", "city", "date", "program", "accessdate"],
+		        episode: ["title", "series", "credits", "airdate", "city", "network", "season"],
+			video: ["people", "date", "url", "title", "medium", "location", "publisher"]
 		};
 
 		/**
@@ -1707,15 +1707,15 @@ window.proveit = $.extend({
 
 		var iconMapping =
 		{
-			web : "page_white_world.png",
-			book : "book.png",
-			journal : "page_white_text.png",
-			news : "newspaper.png",
-			newsgroup : "comments.png",
-			"press release" : "transmit_blue.png",
-			interview : "telephone.png",
-			episode : "television.png",
-			video : "film.png"
+			web: "page_white_world.png",
+			book: "book.png",
+			journal: "page_white_text.png",
+			news: "newspaper.png",
+			newsgroup: "comments.png",
+			"press release": "transmit_blue.png",
+			interview: "telephone.png",
+			episode: "television.png",
+			video: "film.png"
 		};
 
 		var superGetIcon = this.getIcon;
@@ -1739,7 +1739,7 @@ window.proveit = $.extend({
 	 * @param {Object} argObj argument object with keys for each option
 	 */
 
-	CitationReference : function(argObj) {
+	CitationReference: function(argObj) {
 		proveit.AbstractReference.call(this, argObj);
 
 		// None currently required;
@@ -1748,12 +1748,12 @@ window.proveit = $.extend({
 		// These paramaters will be auto-suggested when editing.
 		var defaultParams =
 		{
-			web : [ "url", "author", "title", "date", "accessdate"],
-			news : [ "author", "title", "newspaper", "url", "publication-place", "volume", "issue", "date", "pages"],
-			encyclopedia : ["author", "editor", "contribution", "title", "publisher", "place", "year", "volume", "pages"],
-			book : ["author", "title", "publisher", "place", "year"],
-			journal : ["author", "title", "journal", "volume", "issue", "year", "pages"],
-			patent : ["inventor", "title", "issue-date", "patent-number", "country-code"]
+			web: [ "url", "author", "title", "date", "accessdate"],
+			news: [ "author", "title", "newspaper", "url", "publication-place", "volume", "issue", "date", "pages"],
+			encyclopedia: ["author", "editor", "contribution", "title", "publisher", "place", "year", "volume", "pages"],
+			book: ["author", "title", "publisher", "place", "year"],
+			journal: ["author", "title", "journal", "volume", "issue", "year", "pages"],
+			patent: ["inventor", "title", "issue-date", "patent-number", "country-code"]
 		};
 
 		/**
@@ -1846,7 +1846,7 @@ window.proveit = $.extend({
 	 * @extends AbstractReference
 	 * @param {Object} argObj the argument object, with keys for each option
 	 */
-	RawReference : function(argObj)
+	RawReference: function(argObj)
 	{
 		proveit.AbstractReference.call(this, argObj);
 		this.type = 'raw';
@@ -1874,7 +1874,7 @@ window.proveit = $.extend({
 	 * @param {Node} box typepane root of add GUI (pane for specific type, e.g. journal)
          * @return {AbstractReference} ref or null if no panel exists yet.
 	 */
-	getRefFromAddPane : function(box)
+	getRefFromAddPane: function(box)
 	{
 		// get this working, lots of typing here.
 
@@ -1920,7 +1920,7 @@ window.proveit = $.extend({
 	 *
 	 * @param {AbstractReference} ref reference being added
 	 */
-	addReference : function(ref) {
+	addReference: function(ref) {
 		// get this working, lots of typing here.
 
 		this.addNewElement(ref);
@@ -1940,7 +1940,7 @@ window.proveit = $.extend({
 	 * Clear all rows of passed in add citation panes.
 	 * @param {Node} citePanes raw DOM element
 	 */
-	clearCitePanes : function(citePanes)
+	clearCitePanes: function(citePanes)
 	{
 		if(citePanes.hasChildNodes())
 		{
@@ -1952,7 +1952,7 @@ window.proveit = $.extend({
 	 * Add event handler to Delete Field button in Add/Edit Reference panes
 	 * @param {Node} fieldRow the fieldRow DOM element to remove
 	 */
-	activateRemoveField : function(fieldRow)
+	activateRemoveField: function(fieldRow)
 	{
 		$('.delete-field', fieldRow).click(function()
 		{
@@ -1969,7 +1969,7 @@ window.proveit = $.extend({
 	 * Changes the panel for the add reference panel to the correct type of entry
 	 * @param {Node} menu Raw HTML menu element
 	 */
-	changeAddPane : function(menu) {
+	changeAddPane: function(menu) {
 		// Reset scroll
 		$('#add-fields').scrollTop(0);
 		$(menu.parentNode).show(); // cite/citation vbox.
@@ -2064,7 +2064,7 @@ window.proveit = $.extend({
 	/**
 	 * Create ProveIt HTML GUI
 	 */
-	createGUI : function()
+	createGUI: function()
 	{
 		if(this.getGUI().length > 0)
 		{
@@ -2419,14 +2419,14 @@ window.proveit = $.extend({
 	 *
 	 * @type {$NodeSet}
 	 */
-	viewAndAddPanes : null,
+	viewAndAddPanes: null,
 
 	/*
 	 * Gets jQuery set for ProveIt GUI, which will be empty if ProveIt has not initialized
 	 *
 	 * @return {$Node} root of ProveIt
 	 */
-	getGUI : function()
+	getGUI: function()
 	{
 		return $('#' + this.GUI_ID);
 	},
@@ -2434,7 +2434,7 @@ window.proveit = $.extend({
 	/**
 	 * Hides ProveIt completely
 	 */
-	hide : function()
+	hide: function()
 	{
 		this.getGUI().hide();
 	},
@@ -2442,7 +2442,7 @@ window.proveit = $.extend({
 	/**
 	 * Show ProveIt
 	 */
-	show : function()
+	show: function()
 	{
 		this.createGUI();
 		this.getGUI().show();
@@ -2451,7 +2451,7 @@ window.proveit = $.extend({
 	/**
 	 * Toggle overall visiblility.  If currently hidden, go to minimized.  If minimized, maximize.  If maximize, hide
 	 */
-	toggleVisibility : function()
+	toggleVisibility: function()
 	{
 		if(this.getGUI().is(':visible'))
 		{
@@ -2477,7 +2477,7 @@ window.proveit = $.extend({
 	 *
 	 * @method toggleViewAddVisibility
 	 */
-         toggleViewAddVisibility : null,
+         toggleViewAddVisibility: null,
 
 	/**
 	 * Generates refbox row and all children, to be used by addNewElement, and when updating
@@ -2486,7 +2486,7 @@ window.proveit = $.extend({
 	 * @param {Boolean} isReplacement if true, this replaces another refbox item, so no number will be assigned, and the count will not be updated.
 	 * @return {Node} new refbox row for refbox
 	 */
-	makeRefBoxRow : function(ref, isReplacement)
+	makeRefBoxRow: function(ref, isReplacement)
 	{
 		var refName = ref.name; //may be null or blank
 
@@ -2829,7 +2829,7 @@ window.proveit = $.extend({
 	 * @param {String} title title to truncate
 	 * @return {String} truncated title
 	*/
-	truncateTitle : function(title)
+	truncateTitle: function(title)
 	{
 		var MAX_LENGTH = 86;
 		var truncated = title;
@@ -2851,7 +2851,7 @@ window.proveit = $.extend({
 	 * @param {Date} date1 date to format
 	 * @return {String} formatted date as String
 	 */
-	formatDate : function(date1)
+	formatDate: function(date1)
 	{
 		var year = date1.getFullYear();
 		var month = this.getDescriptions().months[date1.getMonth()];
@@ -2864,7 +2864,7 @@ window.proveit = $.extend({
 	 *
 	 * @param {AbstractReference} ref the reference to add
 	 */
-	addNewElement : function(ref)
+	addNewElement: function(ref)
 	{
 		var refbox = this.getRefBox();
 		$(refbox).append(this.makeRefBoxRow(ref, false));
