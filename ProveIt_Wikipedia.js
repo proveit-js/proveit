@@ -194,7 +194,8 @@ window.proveit = $.extend({
 			time: "Time",
 			oclc: "OCLC",
 			ref: "Anchor ID",
-			months: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
+			months: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+			deadurl: 'Dead URL?'
 		},
 		// Finnish translation by Olli (ollinpostit at gmail.com)
 		fi : {
@@ -1607,7 +1608,8 @@ window.proveit = $.extend({
 				"archivedate",
 				"time",
 				"quote",
-				"ref"
+				"ref",
+				"deadurl"
 			]);
 		};
 
