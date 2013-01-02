@@ -1512,13 +1512,13 @@ window.proveit = $.extend({
 		};
 
 		/**
-                 * Returns the type for display purposes, based on description messages.  For example, for AV Media it currently returns Audiovisual work.
+		 * Returns the type for display purposes, based on description messages.  For example, for AV Media it currently returns Audiovisual work.
 		 *
 		 * @return {String} type for display
 		 */
 		this.getTypeForDisplay = function()
 		{
-			return this.getDescriptions()[this.type];
+			return proveit.getDescriptions()[this.type];
 		};
 
 		proveit.AbstractReference.call(this, argObj);
