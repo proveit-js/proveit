@@ -1619,10 +1619,10 @@ window.proveit = $.extend({
 				"id",
 				"archiveurl",
 				"archivedate",
+				"deadurl",
 				"time",
 				"quote",
-				"ref",
-				"deadurl"
+				"ref"
 			]);
 		};
 
