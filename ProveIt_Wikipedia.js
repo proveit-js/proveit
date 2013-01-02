@@ -196,7 +196,8 @@ window.proveit = $.extend({
 			oclc: "OCLC",
 			ref: "Anchor ID",
 			months: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
-			deadurl: 'Dead URL?'
+			deadurl: 'Dead URL?',
+			raw: 'Unknown format'
 		},
 		// Finnish translation by Olli (ollinpostit at gmail.com)
 		fi: {
@@ -1887,6 +1888,11 @@ window.proveit = $.extend({
 		{
 			return proveit.STATIC_BASE + 'raw.png';
 		};
+
+		this.getTypeForDisplay = function()
+		{
+			return proveit.getDescriptions()['raw'];
+		};
 	},
 
 	// TODO: This should be unified with changeRefFromEditPane
@@ -2626,7 +2632,7 @@ window.proveit = $.extend({
 		var byline = '', separator = ' | ';
 		if(refType == 'raw')
 		{
-			byline = refTypeByline + separator + ref.toString();
+			byline = refTypeByline + separator + mw.html.escape(ref.toString());
 		}
 		else if(authorByline != '') // a??
 		{
