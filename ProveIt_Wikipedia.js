@@ -1727,7 +1727,7 @@ window.proveit = $.extend({
 			"press release": "transmit_blue.png",
 			interview: "telephone.png",
 			episode: "television.png",
-			video: "film.png"
+			"AV media": "film.png"
 		};
 
 		var superGetIcon = this.getIcon;
