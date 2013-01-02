@@ -1281,6 +1281,7 @@ window.proveit = $.extend({
 				}
 				else
 				{
+					proveit.log('Parameter missing from getSortIndex, invalidating sort. paramA: ', paramA, ', aInd: ', aInd, ', paramB: ', paramB, ', bInd: ', bInd);
 					if(paramA < paramB)
 					{
 						return -1;
