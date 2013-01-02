@@ -157,7 +157,7 @@ window.proveit = $.extend({
 			paper: "Paper",
 			"press release": "Press release",
 			interview: "Interview",
-			"AV media": "Audiovisual work",
+			"av media": "Audiovisual work",
 			subject: "Subject",
 			subjectlink: "Subject article name",
 			subject2: "Subject two",
@@ -1489,17 +1489,15 @@ window.proveit = $.extend({
 		        "pressrelease": "press release",
 			interview: "interview",
 		        episode: "episode",
-			"AV media": "AV media",
-			DVD: "AV media",
-			audio: "AV media",
-			"av media": "AV media",
-			cd: "AV media",
-			dvd: "AV media",
-			media: "AV media",
-			movie: "AV media",
-			"music video": "AV media",
-			video: "AV media",
-			visual: "AV media"
+			audio: "av media",
+			"av media": "av media",
+			cd: "av media",
+			dvd: "av media",
+			media: "av media",
+			movie: "av media",
+			"music video": "av media",
+			video: "av media",
+			visual: "av media"
 		};
 
 		// Sets the type (e.g. web for cite web), applying the mappings.  This is up top because it is used in AbstractReference constructor.
@@ -1513,7 +1511,7 @@ window.proveit = $.extend({
 		};
 
 		/**
-		 * Returns the type for display purposes, based on description messages.  For example, for AV Media it currently returns Audiovisual work.
+		 * Returns the type for display purposes, based on description messages.  For example, for "av media" it currently returns "Audiovisual work".
 		 *
 		 * @return {String} type for display
 		 */
@@ -1660,7 +1658,7 @@ window.proveit = $.extend({
 			"press release"	: { "title": true },
 			interview: { "last": true }, // TODO: Interview requires last *or* subject.  Currently, we can't represent that.
 			episode: { "title": true },
-			"AV media": { "title": true }
+			"av media": { "title": true }
 		};
 
 		/**
@@ -1690,7 +1688,7 @@ window.proveit = $.extend({
 		        "press release"	: [ "title", "url", "publisher", "date", "accessdate" ],
 			interview: ["last", "first", "subjectlink", "interviewer", "title", "callsign", "city", "date", "program", "accessdate"],
 		        episode: ["title", "series", "credits", "airdate", "city", "network", "season"],
-			"AV media": ["people", "date", "url", "title", "medium", "location", "publisher"]
+			"av media": ["people", "date", "url", "title", "medium", "location", "publisher"]
 		};
 
 		/**
@@ -1738,7 +1736,7 @@ window.proveit = $.extend({
 			"press release": "transmit_blue.png",
 			interview: "telephone.png",
 			episode: "television.png",
-			"AV media": "film.png"
+			"av media": "film.png"
 		};
 
 		var superGetIcon = this.getIcon;
@@ -2908,7 +2906,7 @@ window.proveit = $.extend({
  */
 proveit.CiteReference.getTypes = function()
 {
-	return ["web", "book", "journal", "conference", "encyclopedia", "news", "newsgroup", "press release", "interview", "episode", "AV media"];
+	return ["web", "book", "journal", "conference", "encyclopedia", "news", "newsgroup", "press release", "interview", "episode", "av media"];
 };
 
 proveit.split._compliantExecNpcg = /()??/.exec("")[1] === undefined; // NPCG: nonparticipating capturing group
