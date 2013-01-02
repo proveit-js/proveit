@@ -2582,7 +2582,7 @@ window.proveit = $.extend({
 		// $('td.details', newchild).html(details);
 
 		// generate a URL based on ref type
-		var icon = ref.getIcon(), url = '', refType = ref.type, displayType = ref.getTypeForDisplay();
+		var icon = ref.getIcon(), url = '', refType = ref.type;
 
 		switch(refType)
 		{
@@ -2606,8 +2606,6 @@ window.proveit = $.extend({
 				break;
 		}
 		$('td.type', newchild).css('background-image','url('+icon+')');
-		$('td.type', newchild).attr('title', displayType);
-
 
 		var authorByline = '', yearByline = '', refTypeByline = '';
 		if(formattedAuthor != '')
@@ -2616,7 +2614,9 @@ window.proveit = $.extend({
 			yearByline = 'Date: <span class="date">' + formattedYear + '</span>';
 		if(refType != null)
 		{
-			var formattedRefType = displayType;
+			var displayType = ref.getTypeForDisplay(), formattedRefType = displayType;
+			$('td.type', newchild).attr('title', displayType);
+
 			if(url != '')
 				formattedRefType = '<a href="' + url + '" target="_blank">' + formattedRefType + '</a>';
 			refTypeByline = 'Type: <span class="type">' + formattedRefType + '</span>';
