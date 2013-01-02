@@ -1138,13 +1138,14 @@ window.proveit = $.extend({
 			// This little hack relies on the fact that 'e' appears first as the last letter of 'cite', and the type is next.
 			if(citeFunction == this.CiteReference)
 			{
-				var typestart = cutupstring[0].toLowerCase().indexOf('e');
+				var beforeBarLowerCase = cutupstring[0].toLowerCase();
+				var typestart = beforeBarLowerCase.indexOf('e');
 				// First end curly brace
-				var rightcurly = cutupstring[0].indexOf('}');
+				var rightcurly = beforeBarLowerCase.indexOf('}');
 				// Usually, rightcurly will be -1.  But this takes into account empty references like <ref>{{cite web}}</ref>
-				var typeend = rightcurly != -1 ? rightcurly : cutupstring[0].length;
+				var typeend = rightcurly != -1 ? rightcurly : beforeBarLowerCase.length;
 				// grab the type, then trim it.
-				var type = $.trim(cutupstring[0].substring(typestart + 1, typeend));
+				var type = $.trim(beforeBarLowerCase.substring(typestart + 1, typeend));
 			}
 		}
 		// type may be undefined, but that's okay.
