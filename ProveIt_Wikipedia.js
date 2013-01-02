@@ -1511,6 +1511,16 @@ window.proveit = $.extend({
 				this.type = rawType; // Use naive type as fallback.
 		};
 
+		/**
+                 * Returns the type for display purposes, based on description messages.  For example, for AV Media it currently returns Audiovisual work.
+		 *
+		 * @return {String} type for display
+		 */
+		this.getTypeForDisplay = function()
+		{
+			return this.getDescriptions()[this.type];
+		};
+
 		proveit.AbstractReference.call(this, argObj);
 
 		// TODO: Should CiteReference.getSortIndex and CitationReference.getSortIndex be merged into AbstractCitation?  Less fine-grained, but simpler to maintain.
@@ -2572,7 +2582,7 @@ window.proveit = $.extend({
 		// $('td.details', newchild).html(details);
 
 		// generate a URL based on ref type
-		var icon = ref.getIcon(), url = '', refType = ref.type;
+		var icon = ref.getIcon(), url = '', refType = ref.type, displayType = ref.getTypeForDisplay();
 
 		switch(refType)
 		{
@@ -2596,7 +2606,7 @@ window.proveit = $.extend({
 				break;
 		}
 		$('td.type', newchild).css('background-image','url('+icon+')');
-		$('td.type', newchild).attr('title',ref.type);
+		$('td.type', newchild).attr('title', displayType);
 
 
 		var authorByline = '', yearByline = '', refTypeByline = '';
@@ -2606,9 +2616,10 @@ window.proveit = $.extend({
 			yearByline = 'Date: <span class="date">' + formattedYear + '</span>';
 		if(refType != null)
 		{
+			var formattedRefType = displayType;
 			if(url != '')
-				refType = '<a href="' + url + '" target="_blank">' + refType + '</a>';
-			refTypeByline = 'Type: <span class="type">' + refType + '</span>';
+				formattedRefType = '<a href="' + url + '" target="_blank">' + formattedRefType + '</a>';
+			refTypeByline = 'Type: <span class="type">' + formattedRefType + '</span>';
 		}
 
 		//alert("authorByline: " + authorByline + "\n yearByline: " + yearByline + "\n refTypeByline: " + refTypeByline);

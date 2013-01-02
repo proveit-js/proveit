@@ -171,11 +171,6 @@ div#proveit div.expanded {
 		text-transform: uppercase;
 		}
 
-	div#proveit div.expanded span.type {	
-		text-transform: capitalize;
-		/*font-weight: bold; */
-		}
-		
 	div#proveit div.expanded button {
 		margin-right: 1em;
 		}
