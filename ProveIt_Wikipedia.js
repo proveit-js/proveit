@@ -2009,7 +2009,7 @@ var proveit = window.proveit = $.extend({
 		var newRefType = menu.value;
 
 		var genPane = document.getElementById("dummyCitePane").cloneNode(true);
-		var $genPane = $(genPane);
+		var $genPane = $(genPane).attr('id', '');
 		$genPane.data('proveitRefType', newRefType);
 
 		// name the ref-name-row
