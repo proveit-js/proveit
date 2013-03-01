@@ -157,7 +157,7 @@ window.proveit = $.extend({
 			paper: "Paper",
 			"press release": "Press release",
 			interview: "Interview",
-			"av media": "Audiovisual work",
+			"AV media": "Audiovisual work",
 			subject: "Subject",
 			subjectlink: "Subject article name",
 			subject2: "Subject two",
@@ -1138,14 +1138,14 @@ window.proveit = $.extend({
 			// This little hack relies on the fact that 'e' appears first as the last letter of 'cite', and the type is next.
 			if(citeFunction == this.CiteReference)
 			{
-				var beforeBarLowerCase = cutupstring[0].toLowerCase();
-				var typestart = beforeBarLowerCase.indexOf('e');
+				var beforeBar = cutupstring[0];
+				var typeStart = beforeBar.toLowerCase().indexOf('e');
 				// First end curly brace
-				var rightcurly = beforeBarLowerCase.indexOf('}');
-				// Usually, rightcurly will be -1.  But this takes into account empty references like <ref>{{cite web}}</ref>
-				var typeend = rightcurly != -1 ? rightcurly : beforeBarLowerCase.length;
+				var rightCurly = beforeBar.indexOf('}');
+				// Usually, rightCurly will be -1.  But this takes into account empty references like <ref>{{cite web}}</ref>
+				var typeEnd = rightCurly != -1 ? rightCurly : beforeBar.length;
 				// grab the type, then trim it.
-				var type = $.trim(beforeBarLowerCase.substring(typestart + 1, typeend));
+				var type = $.trim(beforeBar.substring(typeStart + 1, typeEnd));
 			}
 		}
 		// type may be undefined, but that's okay.
@@ -1473,8 +1473,8 @@ window.proveit = $.extend({
 	*/
 	CiteReference: function(argObj)
 	{
-		/* Mostly an identity mapping, except for redirects.  I think
-		 * having the self-mappings is better than some kind of special case array.
+		/* This is basically a fast representation of the template redirects, along with
+		 * self-mappings.
 		 */
 		var typeNameMappings =
 		{
@@ -1490,15 +1490,17 @@ window.proveit = $.extend({
 		        "pressrelease": "press release",
 			interview: "interview",
 		        episode: "episode",
-			audio: "av media",
-			"av media": "av media",
-			cd: "av media",
-			dvd: "av media",
-			media: "av media",
-			movie: "av media",
-			"music video": "av media",
-			video: "av media",
-			visual: "av media"
+			"AV media": "AV media",
+			DVD: "AV media",
+			audio: "AV media",
+			"av media": "AV media",
+			cd: "AV media",
+			dvd: "AV media",
+			media: "AV media",
+			movie: "AV media",
+			"music video": "AV media",
+			video: "AV media",
+			visual: "AV media"
 		};
 
 		// Sets the type (e.g. web for cite web), applying the mappings.  This is up top because it is used in AbstractReference constructor.
@@ -1512,7 +1514,7 @@ window.proveit = $.extend({
 		};
 
 		/**
-		 * Returns the type for display purposes, based on description messages.  For example, for "av media" it currently returns "Audiovisual work".
+		 * Returns the type for display purposes, based on description messages.  For example, for "AV media" it currently returns "Audiovisual work".
 		 *
 		 * @return {String} type for display
 		 */
@@ -1659,7 +1661,7 @@ window.proveit = $.extend({
 			"press release"	: { "title": true },
 			interview: { "last": true }, // TODO: Interview requires last *or* subject.  Currently, we can't represent that.
 			episode: { "title": true },
-			"av media": { "title": true }
+			"AV media": { "title": true }
 		};
 
 		/**
@@ -1689,7 +1691,7 @@ window.proveit = $.extend({
 		        "press release"	: [ "title", "url", "publisher", "date", "accessdate" ],
 			interview: ["last", "first", "subjectlink", "interviewer", "title", "callsign", "city", "date", "program", "accessdate"],
 		        episode: ["title", "series", "credits", "airdate", "city", "network", "season"],
-			"av media": ["people", "date", "url", "title", "medium", "location", "publisher"]
+			"AV media": ["people", "date", "url", "title", "medium", "location", "publisher"]
 		};
 
 		/**
@@ -1737,7 +1739,7 @@ window.proveit = $.extend({
 			"press release": "transmit_blue.png",
 			interview: "telephone.png",
 			episode: "television.png",
-			"av media": "film.png"
+			"AV media": "film.png"
 		};
 
 		var superGetIcon = this.getIcon;
@@ -1903,9 +1905,8 @@ window.proveit = $.extend({
 	 */
 	getRefFromAddPane: function(box)
 	{
-		// get this working, lots of typing here.
-
-		var type = box.id;
+		var $box = $(box);
+		var type = $box.data('proveitRefType');
 
 		// get <ref> name
 		var refName = $('#addrefname').val();
@@ -2006,11 +2007,12 @@ window.proveit = $.extend({
 		var newRefType = menu.value;
 
 		var genPane = document.getElementById("dummyCitePane").cloneNode(true);
-		genPane.id = newRefType.replace(' ', '_');
+		var $genPane = $(genPane);
+		$genPane.data('proveitRefType', newRefType);
 
 		// name the ref-name-row
-		$('.ref-name-row',genPane).children('input').attr('id','addrefname');
-		$('.ref-name-row',genPane).children('label').attr('for','addrefname');
+		$('.ref-name-row', $genPane).children('input').attr('id','addrefname');
+		$('.ref-name-row', $genPane).children('label').attr('for','addrefname');
 
 		// Somewhat hackish.  What's a better way?
 		var newRef;
@@ -2043,7 +2045,7 @@ window.proveit = $.extend({
 		newParams.sort(newRef.getSorter());
 		var required = newRef.getRequiredParams();
 
-		var paramList = $(".paramlist", genPane)[0];
+		var paramList = $(".paramlist", $genPane)[0];
 		for(var i = 0; i < newParams.length; i++)
 		{
 			var param = newParams[i];
@@ -2084,8 +2086,8 @@ window.proveit = $.extend({
 			$(paramBox).show();
 			paramList.appendChild(paramBox);
 		}
-		$(genPane).show();
-		citePanes.insertBefore(genPane, citePanes.firstChild);
+		$genPane.show();
+		$(citePanes).prepend($genPane);
 	},
 
 	/**
@@ -2907,7 +2909,7 @@ window.proveit = $.extend({
  */
 proveit.CiteReference.getTypes = function()
 {
-	return ["web", "book", "journal", "conference", "encyclopedia", "news", "newsgroup", "press release", "interview", "episode", "av media"];
+	return ["web", "book", "journal", "conference", "encyclopedia", "news", "newsgroup", "press release", "interview", "episode", "AV media"];
 };
 
 proveit.split._compliantExecNpcg = /()??/.exec("")[1] === undefined; // NPCG: nonparticipating capturing group
