@@ -1683,7 +1683,7 @@ var proveit = window.proveit = $.extend({
 		var defaultParams =
 		{
 		        web: [ "url", "title", "author", "accessdate", "work", "publisher", "date", "pages"],
-		        book: [ "title", "author", "authorlink", "year", "isbn", "publisher", "location", "pages" ],
+		        book: [ "title", "author", "authorlink", "year", "isbn", "publisher", "location", "pages", "url" ],
 		        journal: [ "title", "author", "journal", "volume", "issue", "year", "month", "pages", "url", "doi" ],
 		        conference: [ "conference", "title", "booktitle", "author", "editor", "year", "month", "url", "id", "accessdate", "location", "pages", "publisher" ],
 			encyclopedia: [ "title", "encyclopedia", "author", "editor", "accessdate", "edition", "year",
