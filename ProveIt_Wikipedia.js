@@ -23,6 +23,8 @@
  * @module elc
  */
 
+( function ( mw, $ ) {
+
 /*
  Second parameter (pre-existing proveit object, if any) passed to extend overrides first.
  Gives users option to easily override initial constants, such as shouldAddSummary.
@@ -33,7 +35,7 @@
  * Main class and namespace for ProveIt software.  This is the only global variable.
  * @class proveit
  */
-window.proveit = $.extend({
+var proveit = window.proveit = $.extend({
 	/**
 	 * Approximately half the height of the edit box.  Used in scrolling when highlighting text.
 	 * @type Number
@@ -2916,6 +2918,8 @@ proveit.split._compliantExecNpcg = /()??/.exec("")[1] === undefined; // NPCG: no
 proveit.split._nativeSplit = String.prototype.split;
 
 proveit.setup();
+
+}( mediaWiki, jQuery ) );
 
 // Local Variables:
 // js2-basic-offset: 8
