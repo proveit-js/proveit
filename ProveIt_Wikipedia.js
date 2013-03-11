@@ -2103,8 +2103,6 @@ var proveit = window.proveit = $.extend({
 			return false;
 		}
 
-		importStylesheetURI(this.STATIC_BASE + 'styles.css');
-
 		// more JqueryUI CSS: http://blog.jqueryui.com/2009/06/jquery-ui-172/
 		var gui = $('<div/>', {id: this.GUI_ID});
 		var tabs = $('<div/>', {id: 'tabs'});
