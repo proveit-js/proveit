@@ -2877,16 +2877,15 @@ var proveit = window.proveit = $.extend({
 	},
 
 	/**
-	 * Formats date as Monthname DD, YYYY
+	 * Formats date as YYYY-MM-DD
 	 * @param {Date} date1 date to format
 	 * @return {String} formatted date as String
 	 */
 	formatDate: function(date1)
 	{
-		var year = date1.getFullYear();
-		var month = this.getDescriptions().months[date1.getMonth()];
-		var day = (date1.getDate() < 10 ? '0' : '') + date1.getDate();
-		return month + ' ' + day + ', ' + year;
+		return date1.getFullYear() + '-' +
+			(date1.getMonth() < 9 ? '0' : '') + (date1.getMonth() + 1) + '-' +
+			(date1.getDate() < 10 ? '0' : '') + date1.getDate();
 	},
 
 	/**
