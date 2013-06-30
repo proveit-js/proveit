@@ -19,6 +19,7 @@ define('TYPE_SHORT', 't');
 define('TYPE_LONG', 'type');
 define('SSH_DEFAULT_PORT', 22);
 $options = getopt(REV_SHORT . ':' . TYPE_SHORT . ':', array(REV_LONG . ':', TYPE_LONG . ':'));
+
 function get_option_value($options, $short, $long, $meaning, $err_code)
 {
 	if(isset($options[$short])) {
@@ -31,6 +32,70 @@ function get_option_value($options, $short, $long, $meaning, $err_code)
 		fwrite(STDERR, "You must specify the $meaning.  Use -$short or --$long.\n");
 		exit($err_code);
 	}
+}
+
+function sftp_walk($con, $sftp, $local_dir, $remote_dir)
+{
+	$dir = opendir($local_dir);
+	ssh2_sftp_mkdir($sftp, $remote_dir, 0755, true);
+	while (($file = readdir($dir)) !== false) {
+		$local_file = $local_dir . '/' . $file;
+		$remote_file = $remote_dir . '/' . $file;
+		if(!is_dir($local_file)) {
+			echo "Transferring $local_file to $remote_file\n";
+			$scp_ret = ssh2_scp_send($con, $local_file, $remote_file, 0755);
+			if(!$scp_ret) {
+				fwrite(STDERR, "Failed to transfer $local_file.\n");
+				exit(8);
+			}
+		}
+		else if($file != "." && $file != "..") {
+			sftp_walk($con, $sftp, $local_file, $remote_file);
+		}
+	}
+}
+
+function sync_yui($configuration) {
+	system('./yuidoc.sh', $yui_exit);
+	if($yui_exit != 0) {
+		fwrite(STDERR, "Failed to run yuidoc.  Please check that it and its dependencies are installed.\n");
+		exit(11);
+	}
+	$port = isset($configuration->ssh->port) ? $configuration->ssh->port : DEFAULT_SSH_PORT;
+	echo "Connecting to {$configuration->ssh->host} on port $port\n";
+
+	$con = ssh2_connect($configuration->ssh->host, $port);
+	if(!$con) {
+		fwrite(STDERR, "Failed to connect to {$configuration->ssh->host}\n");
+		exit(10);
+	}
+
+	if(isset($configuration->ssh->password)) {
+		$auth_ret = ssh2_auth_password($con, $configuration->ssh->username, $configuration->ssh->password);
+		if(!$auth_ret) {
+			fwrite(STDERR, 'SSH password authentication failed.\n');
+			exit(6);
+		}
+	}
+	else {
+		$passphrase = isset($configuration->ssh->passphrase) ? $configuration->ssh->passphrase : NULL;
+		$auth_ret = ssh2_auth_pubkey_file($con, $configuration->ssh->username, $configuration->ssh->publicKeyFileName, $configuration->ssh->privateKeyFileName, $passphrase);
+		if(!$auth_ret) {
+			fwrite(STDERR, 'SSH public/private key authentication failed.\n');
+			exit(15);
+		}
+
+	}
+
+	$sftp = ssh2_sftp($con);
+	if(!$sftp) {
+		fwrite(STDERR, "Failed to open SFTP subsystem.\n");
+		exit(7);
+	}
+
+	sftp_walk($con, $sftp, 'yui_docs/html', $configuration->ssh->path);
+	chdir(dirname(__FILE__));
+	echo "You have succesfully deployed the ProveIt API documentation.\n";
 }
 
 $opt_deploy_type = get_option_value($options, TYPE_SHORT, TYPE_LONG, 'deployment type (proveitgt, prod, etc.)', 12);
@@ -203,65 +268,6 @@ foreach($users as $user) {
 	unset($edit_token);
 	unlink($deploy_cookies);
 }
-system('./yuidoc.sh', $yui_exit);
-if($yui_exit != 0) {
-	fwrite(STDERR, "Failed to run yuidoc.  Please check that it and its dependencies are installed.\n");
-	exit(11);
-}
-$port = isset($configuration->ssh->port) ? $configuration->ssh->port : DEFAULT_SSH_PORT;
-echo "Connecting to {$configuration->ssh->host} on port $port\n";
 
-$con = ssh2_connect($configuration->ssh->host, $port);
-if(!$con) {
-	fwrite(STDERR, "Failed to connect to {$configuration->ssh->host}\n");
-	exit(10);
-}
-
-if(isset($configuration->ssh->password)) {
-	$auth_ret = ssh2_auth_password($con, $configuration->ssh->username, $configuration->ssh->password);
-	if(!$auth_ret) {
-		fwrite(STDERR, 'SSH password authentication failed.\n');
-		exit(6);
-	}
-}
-else {
-	$passphrase = isset($configuration->ssh->passphrase) ? $configuration->ssh->passphrase : NULL;
-	$auth_ret = ssh2_auth_pubkey_file($con, $configuration->ssh->username, $configuration->ssh->publicKeyFileName, $configuration->ssh->privateKeyFileName, $passphrase);
-	if(!$auth_ret) {
-		fwrite(STDERR, 'SSH public/private key authentication failed.\n');
-		exit(15);
-	}
-
-}
-
-$sftp = ssh2_sftp($con);
-if(!$sftp) {
-	fwrite(STDERR, "Failed to open SFTP subsystem.\n");
-	exit(7);
-}
-
-function sftp_walk($con, $sftp, $local_dir, $remote_dir)
-{
-	$dir = opendir($local_dir);
-	ssh2_sftp_mkdir($sftp, $remote_dir, 0755, true);
-	while (($file = readdir($dir)) !== false) {
-		$local_file = $local_dir . '/' . $file;
-		$remote_file = $remote_dir . '/' . $file;
-		if(!is_dir($local_file)) {
-			echo "Transferring $local_file to $remote_file\n";
-			$scp_ret = ssh2_scp_send($con, $local_file, $remote_file, 0755);
-			if(!$scp_ret) {
-				fwrite(STDERR, "Failed to transfer $local_file.\n");
-				exit(8);
-			}
-		}
-		else if($file != "." && $file != "..") {
-			sftp_walk($con, $sftp, $local_file, $remote_file);
-		}
-	}
-}
-
-sftp_walk($con, $sftp, 'yui_docs/html', $configuration->ssh->path);
-chdir(dirname(__FILE__));
+// sync_yui($configuration);
 system("rm -r $temp_dir");
-echo "You have succesfully deployed the ProveIt API documentation.\n";
