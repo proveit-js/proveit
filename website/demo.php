@@ -5,18 +5,21 @@ include_once 'header.php';
 
 ?>
 <script src="wikibits.js" type="text/javascript"></script>
+<script src="https://bits.wikimedia.org/en.wikipedia.org/load.php?debug=false&lang=en&modules=startup&only=scripts&skin=vector&*"></script>
 <script type="text/javascript">
 // Mock Wikipedia environment ProveIt expects to run in
 
-// Deliberately global
-wgServer="http://en.wikipedia.org",
-wgScriptPath="/w",
-wgCanonicalNamespace="",
-wgCanonicalSpecialPageName=false,
-wgNamespaceNumber=0,
-wgAction="edit";
+mw.config.set({
+    "wgServer": "http://en.wikipedia.org",
+    "wgScriptPath": "/w",
+    "wgCanonicalNamespace": "",
+    "wgCanonicalSpecialPageName": false,
+    "wgDefaultDateFormat": "dmy",
+    "wgMonthNames": ["","January","February","March","April","May","June","July","August","September","October","November","December"],
+    "wgNamespaceNumber": 0,
+    "wgAction": "edit"
+});
 </script>
-<script src="https://bits.wikimedia.org/en.wikipedia.org/load.php?debug=false&lang=en&modules=startup&only=scripts&skin=vector&*"></script>
 <script type="text/javascript">
 //<![CDATA[
 
@@ -26,23 +29,23 @@ function loadArticle(articleName)
         articleName = $('#articleName').val();
     else
         $('#articleName').val(articleName);
-  
+
     $('#articleLink').text(articleName).attr('href', wgServer + '/wiki/' + encodeURIComponent(articleName));
 
     $('#articleName').attr('readonly','readonly');
     $('#articleBtn').attr('disabled','disabled');
-  
+
     var apiURL = 'http://en.wikipedia.org/w/api.php?action=query&prop=revisions&titles=' + encodeURIComponent(articleName) + '&rvprop=content&format=json&callback=?';
     $.getJSON(apiURL, function(response)
     {
         if(response.error)
         {
-            throw response.error; 
+            throw response.error;
         }
         else
         {
             $('#articleName').removeAttr('readonly');
-            $('#articleBtn').removeAttr('disabled');      
+            $('#articleBtn').removeAttr('disabled');
         }
         var pages = response.query.pages;
         for(var key in pages)
@@ -51,7 +54,7 @@ function loadArticle(articleName)
         }
         var page = pages[key];
         var content = page.revisions[0]['*'];
-        // wg's global 
+        // wg's global
         wgTitle = page.title;
         wgPageName = page.title.replace(" ", "_");
         $('#wpTextbox1').val(content);
@@ -91,7 +94,7 @@ mw.loader.using("ext.gadget.ProveIt", function()
 					<tr>
 						<td id="mainContent">
 							<div id="mainBody">
-								<h2>Demo</h2> 
+								<h2>Demo</h2>
 
 								<p>See that cool-looking gadget in the bottom right corner of this window? <strong>That's ProveIt</strong>, and you can test drive it right here with any Wikipedia article. We've preloaded the article on Georgia Tech by default, but if you want to try a different one, just type the article name into the box below and click "Load article."</p>
 								<form id="demoForm" action="">

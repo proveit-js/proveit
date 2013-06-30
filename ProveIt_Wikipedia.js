@@ -197,7 +197,6 @@ var proveit = window.proveit = $.extend({
 			time: "Time",
 			oclc: "OCLC",
 			ref: "Anchor ID",
-			months: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
 			deadurl: 'Dead URL?',
 			raw: 'Unknown format'
 		},
@@ -318,9 +317,38 @@ var proveit = window.proveit = $.extend({
                         language: "Kieli",
                         time: "Aika",
                         oclc: "OCLC",
-                        ref: "Ankkurin ID-tunnus",
-                        months: ['tammikuu', 'helmikuu', 'maaliskuu', 'huhtikuu', 'toukokuu', 'kesäkuu', 'heinäkuu', 'elokuu', 'syyskuu', 'lokakuu', 'marraskuu', 'joulukuu']
+                        ref: "Ankkurin ID-tunnus"
                 }
+	},
+
+	/**
+	 * Optional preference to specify default date format for new references.
+	 * If set, it overrides the general date preference from Special:Preferences.
+	 *
+	 * @type {String} supported date format string
+	 */
+	dateFormatString: null,
+
+	/**
+	 * Singleton used to format dates according to user preference
+	 *
+	 * @type DateFormatter
+	 */
+	dateFormatter: null,
+
+	/**
+	 * Gets the effective preference for date format.  If there is no ProveIt-specific
+	 * preference already at proveit.dateFormatString, it will determine the correct preference
+	 * from	MW user preferences.  Then, it will store that value to proveit.dateFormatString
+	 *
+	 * @return {String} format string to use for dates
+	 */
+	getDatePreference: function () {
+		if (this.dateFormatString === null) {
+			this.dateFormatString = mw.user.options.get('date');
+		}
+
+		return this.dateFormatString;
 	},
 
 	/**
@@ -626,6 +654,10 @@ var proveit = window.proveit = $.extend({
 		addOnloadHook(function()
 		{
 			var dependencies = ['jquery.ui.tabs', 'jquery.ui.button', 'jquery.effects.highlight', 'jquery.textSelection'];
+			var preference = proveit.getDatePreference();
+
+			proveit.dateFormatter = new proveit.DateFormatter(preference);
+
 			mw.loader.using(dependencies, function()
 			{
 				try
@@ -1173,6 +1205,67 @@ var proveit = window.proveit = $.extend({
 			}
 		}
 		return citation;
+	},
+
+	// TODO: Use https://gerrit.wikimedia.org/r/#/c/67166/ when merged.
+	/**
+	 * Date-formatting class
+	 *
+	 * @param {String} format one of the format strings supported by MW core.
+	 *   Currently, the supported values are 'default', 'mdy', 'dmy', 'ymd', and 'ISO 8601'.
+	 *   If an unknown value is passed, it will use wgDefaultDateFormat.
+	 */
+	DateFormatter: function (format) {
+		// 1-indexed (due to filler item at 0), in page content language.
+		var monthNames = mw.config.get('wgMonthNames');
+
+		var supportedFormats = ['mdy', 'dmy', 'ymd', 'ISO 8601'];
+
+		if($.inArray(format, supportedFormats) === -1) {
+			format = mw.config.get('wgDefaultDateFormat');
+		}
+
+		function getMonthName(date) {
+			return monthNames[date.getMonth() + 1];;
+		}
+
+		this.formatAsMdy = function(date) {
+			return getMonthName(date) + ' ' + date.getDate() + ', ' + date.getFullYear();
+		};
+
+		this.formatAsDmy = function(date) {
+			return date.getDate() + ' ' + getMonthName(date) + ' ' + date.getFullYear();
+		};
+
+		this.formatAsYmd = function(date) {
+			return date.getFullYear() + ' ' + getMonthName(date) + ' ' + date.getDate();
+		};
+
+		this.formatAsISO8601 = function(date) {
+			return date.getFullYear() + '-' +
+				(date.getMonth() < 9 ? '0' : '') + (date.getMonth() + 1) + '-' +
+				(date.getDate() < 10 ? '0' : '') + date.getDate();
+		};
+
+		var formatters =
+		{
+			mdy: this.formatAsMdy,
+			dmy: this.formatAsDmy,
+			ymd: this.formatAsYmd,
+			'ISO 8601': this.formatAsISO8601
+		};
+
+		/**
+		 * Formats date according to stored preference
+		 *
+		 * @param {Date} date date to format
+		 *
+		 * @return {String} formatted date as String
+		 */
+		this.format = function(date)
+		{
+			return formatters[format](date);
+		};
 	},
 
 	/**
@@ -2070,7 +2163,7 @@ var proveit = window.proveit = $.extend({
 				// Basically the same code as nameHbox above
 				label.attr("for", this.NEW_PARAM_PREFIX + param);
 				if(param == 'accessdate')
-					$('.paramvalue', paramBox).val(this.formatDate(new Date));
+					$('.paramvalue', paramBox).val(this.dateFormatter.format(new Date));
 			}
 			else
 			{
@@ -2874,18 +2967,6 @@ var proveit = window.proveit = $.extend({
 			}
 		}
 		return truncated;
-	},
-
-	/**
-	 * Formats date as YYYY-MM-DD
-	 * @param {Date} date1 date to format
-	 * @return {String} formatted date as String
-	 */
-	formatDate: function(date1)
-	{
-		return date1.getFullYear() + '-' +
-			(date1.getMonth() < 9 ? '0' : '') + (date1.getMonth() + 1) + '-' +
-			(date1.getDate() < 10 ? '0' : '') + date1.getDate();
 	},
 
 	/**
