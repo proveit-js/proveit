@@ -1790,7 +1790,7 @@ var proveit = window.proveit = $.extend({
 		this.getSortIndex = function(param)
 		{
 			// This is the order fields will be displayed or outputted.
-			return [
+			return $.inArray(param, [
 				"last",
 				"first",
 				"url",
@@ -1826,7 +1826,7 @@ var proveit = window.proveit = $.extend({
 				"doi",
 				"oclc",
 				"accessdate"
-			].indexOf(param);
+			]);
 		};
 
 		/**
