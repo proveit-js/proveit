@@ -101,7 +101,7 @@ include_once 'header.php';
 										<li><strong>Go to your <a id="userScript" href="http://en.wikipedia.org/w/index.php?title=Special:MyPage/skin.js&amp;action=edit">user script page</a>.</strong> You may have to create this page if it's empty. Also, if you're using Wikipedia's new skin, the page may redirect past some warning text in pink boxes &mdash; this is normal.</li>
 										<li><strong>Copy and paste these two lines of code:</strong>
 										 <code>
-											 importScriptURI('http://en.wikipedia.org/w/index.php?title=MediaWiki:Gadget-ProveIt.js&amp;action=raw&amp;ctype=text/javascript');<br />
+											 mw.loader.load( 'http://en.wikipedia.org/w/index.php?title=User:ProveIt_GT/ProveIt.js&action=raw&ctype=text/javascript' );<br />
 											 // [[:en:User:ProveIt GT]]
 										 </code>
 										  Don't add or modify any other lines unless you know what you're doing.
