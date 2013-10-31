@@ -4,7 +4,7 @@ $page = 'Install';
 
 include_once 'header.php';
 ?>
-	            <script type="text/javascript" src="jquery.ba-hashchange.min.js"></script><!-- Ben Alman's hashchange plugin -->
+	            <script type="text/javascript" src="/jquery.ba-hashchange.min.js"></script><!-- Ben Alman's hashchange plugin -->
                 <script type="text/javascript">
 				//<![CDATA[
 					$.getJSON("http://en.wikipedia.org/w/api.php?action=query&meta=siteinfo&siprop=interwikimap&sifilteriw=local&callback=?&format=json",

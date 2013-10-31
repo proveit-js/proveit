@@ -4,7 +4,7 @@ $page = 'Demo';
 include_once 'header.php';
 
 ?>
-<script src="wikibits.js" type="text/javascript"></script>
+<script src="/wikibits.js" type="text/javascript"></script>
 <script src="https://bits.wikimedia.org/en.wikipedia.org/load.php?debug=false&lang=en&modules=startup&only=scripts&skin=vector&*"></script>
 <script type="text/javascript">
 // Mock Wikipedia environment ProveIt expects to run in
