@@ -1,18 +1,18 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd"> 
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"> 
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
 <head>
 	<title>ProveIt - Wikipedia References Made Easy - <?php echo $page; ?></title>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <meta http-equiv="content-language" content="en" /> 
-    <meta name="description" content="ProveIt is a free, open-source referencing tool that makes it really easy to find, edit, add, and cite references in Wikipedia articles." /> 
-    <meta name="author" content="ELC Lab at Georgia Tech" /> 	
+    <meta http-equiv="content-language" content="en" />
+    <meta name="description" content="ProveIt is a free, open-source referencing tool that makes it really easy to find, edit, add, and cite references in Wikipedia articles." />
+    <meta name="author" content="ELC Lab at Georgia Tech" />
 	<link href="/website_styles.css" rel="stylesheet" type="text/css" />
-	<link rel="shortcut icon" href="/img/favicon.ico" type="image/x-icon" />	
-	<script type="text/javascript" src="http://www.google.com/jsapi"></script> 
-	<script type="text/javascript"> 
+	<link rel="shortcut icon" href="/img/favicon.ico" type="image/x-icon" />
+	<script type="text/javascript" src="http://www.google.com/jsapi"></script>
+	<script type="text/javascript">
 		google.load("jquery", "1");
 		google.setOnLoadCallback(function(){});
-	</script> 
+	</script>
 	<script src="/scripts.js" type="text/javascript"></script>
 </head>
 <body>
@@ -44,15 +44,15 @@ switch($page)
 	case 'Users':
 		$primary = 'Users';
 		break;
-		
+
 	case 'Developers':
 		$primary = 'Developers';
 		break;
-	
+
 	case 'Demo':
 		$primary = 'Demo';
 		break;
-	
+
 	case 'Research':
 	case 'The Team':
 	case 'About':
@@ -61,8 +61,8 @@ switch($page)
 		break;
 }
 
-?>					
-						<ul id="primary-nav">				
+?>
+						<ul id="primary-nav">
 							<li>
 								<a href="/users" class="primary-nav-link<?= $primary == 'Users' ? ' selected' : '' ?>">Users</a>
 								<ul<?= $primary == 'Users' ? ' style="display: block;"' : '' ?>>
@@ -93,7 +93,7 @@ switch($page)
 								</ul>
 							</li>
 						</ul><!-- end #primary-nav -->
-							
+
 						</td>
 						<td style="width: 250px; ">
 							<div id="getProveIt"><a href="/install"></a></div>
@@ -102,4 +102,4 @@ switch($page)
 				</table>
 			<!-- End of Navigation Table -->
 </div>
-<div id="superContainer">	
+<div id="superContainer">
