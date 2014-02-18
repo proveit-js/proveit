@@ -1,5 +1,5 @@
 <VirtualHost *:80>
-	ServerAdmin https://code.google.com/p/proveit-js/
+	ServerAdmin https://github.com/proveit-js/proveit
 	ServerName proveit.wmflabs.org
 	DocumentRoot /srv/proveit-js
 

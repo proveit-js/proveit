@@ -77,8 +77,8 @@ switch($page)
 								<a href="/developers" class="primary-nav-link<?= $primary == 'Developers' ? ' selected' : '' ?>">Developers</a>
 								<ul<?= $primary == 'Developers' ? ' style="display: block;"' : '' ?>>
 									<li><a href="/yuidocs/index.html">Documentation</a></li>
-									<li><a href="http://code.google.com/p/proveit-js/">Google Code Project</a></li>
-									<li><a href="http://code.google.com/p/proveit-js/w/list">Wiki</a></li>
+									<li><a href="https://github.com/proveit-js/proveit">GitHub Project</a></li>
+									<li><a href="https://github.com/proveit-js/proveit/wiki">GitHub Wiki</a></li>
 								</ul>
 							</li>
 							<li>

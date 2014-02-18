@@ -16,9 +16,9 @@
 								
 								<a href="/demo"<?php if($page == 'Demo') echo ' class="selected"'; ?>>Demo</a> -
 								<a href="/install"<?php if($page == 'Install') echo ' class="selected"'; ?>>Install</a> -
-								<a href="/yuidocs/index.html">Documentation</a> -			
-								<a href="http://code.google.com/p/proveit-js/"<?php if($page == 'gCode') echo ' class="selected"'; ?>>Google Code Project</a> -
-								<a href="http://code.google.com/p/proveit-js/w/list"<?php if($page == 'Wiki') echo ' class="selected"'; ?>>Wiki</a>
+								<a href="/yuidocs/index.html">Documentation</a> -
+								<a href="https://github.com/proveit-js/proveit"<?php if($page == 'gCode') echo ' class="selected"'; ?>>GitHub Project</a> -
+								<a href="https://github.com/proveit-js/proveit/wiki"<?php if($page == 'Wiki') echo ' class="selected"'; ?>>GitHub Wiki</a>
 								<br />
 
 								<a href="/about/research"<?php if($page == 'Research') echo ' class="selected"'; ?>>Research</a> -

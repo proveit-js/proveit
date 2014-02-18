@@ -23,7 +23,7 @@ include_once 'header.php';
 								<li>MediaWiki, including <a href="http://bits.wikimedia.org/skins-1.5/common/wikibits.js">wikibits.js</a>.</li>
 								<li>Wikipedia <a href="http://bits.wikimedia.org/skins-1.5/common/jquery.min.js">version</a> of <a href="http://jquery.com/">jQuery</a>, which must already be loaded.</li>
 								<li>Icons from the <a href="http://www.famfamfam.com/lab/icons/silk/">Silk icon set</a>, by Mark James, used under Creative Commons Attribution 3.0 License. </li>
-								<li><a href="http://jqueryui.com">jQueryUI</a>, loaded via <a href="http://code.google.com/apis/libraries/devguide.html">Google Libraries API</a>.</li>
+								<li><a href="http://jqueryui.com">jQueryUI</a>, via MediaWiki core.</li>
 								<li>Public domain code from QuirksMode, by Peter-Paul Koch, particularly a modified version of his <a href="http://www.quirksmode.org/js/findpos.html">findPos</a> function.</li>
 								<li><a href="http://bits.wikimedia.org/w/extensions/UsabilityInitiative/js/plugins.combined.js">textSelection</a> API from Usability Initiative's plugins.combined.js.</li>
 								<li><a href="http://blog.stevenlevithan.com/archives/cross-browser-split">Cross-browser split</a>, by Steven Levithan, used under the MIT license.</li>

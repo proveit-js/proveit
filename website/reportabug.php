@@ -22,17 +22,15 @@ include_once 'header.php';
 								
 								<hr />
 								<h2 id="Fields">Issue Tracker</h2>
-								<p>We use Google Code's issue tracker to manage bug reports. To create a new bug report, go to the <a href="http://code.google.com/p/proveit-js/issues/entry?template=Defect%20report%20from%20user">New Issue</a> page. You'll see a number of fields:</p>
+								<p>We use GitHub's issue tracker to manage bug reports. To create a new bug report, go to the <a href="https://github.com/proveit-js/proveit/issues/new">New Issue</a> page. You'll see a number of fields:</p>
 								<dl>
-									<dt><i>Summary</i></dt>
+									<dt><i>Title</i></dt>
 									<dd>A brief, one-line summary of the problem you're having.</dd>
-									<dt>Description</dt>
+									<dt>Description (where it says 'Leave a comment')</dt>
 									<dd>A detailed description of your problem. See our <a href="#Tips">tips for writing good bug reports</a> below.</dd>
-									<dt>Status</dt>
-									<dd>The status of the bug. Your report will initially be marked <em>New</em>.  If it is verified, it will be changed to <em>Accepted</em>.  When we have begun working, it will be changed to <em>Started</em>.  Finally, when work is complete, it will be marked <em>Fixed</em>.</dd>
 									<dt>Label(s)</dt>
-									<dd>One or more short tags used to categorize the report. We use various labels help organize reports, including <em>Type</em> (e.g. Defect, Enhancement, or Task), <em>Priority</em>, and <em>OpSys</em> (operating system).</dd>
-									<dt>Owner</dt>
+									<dd>One or more short tags used to categorize the report. We use various labels help organize reports, including <em>Type</em> (e.g. Defect, Enhancement, or Task), <em>Priority</em>, and <em>OpSys</em> (operating system).  These are shown on the right</dd>
+									<dt>Assignee</dt>
 									<dd>The developer responsible for monitoring your report. You should post any relevant information to the issue page, rather than contacting the developer directly.</dd>
 								</dl>
 								
@@ -47,9 +45,9 @@ include_once 'header.php';
 									<li>The article you were editing</li>
 									<li>The expected result</li>
 									<li>The problem you experienced</li>
-								</ul>								
-								
-								<h2><a href="http://code.google.com/p/proveit-js/issues/entry?template=Defect%20report%20from%20user">Report a Bug Now</a></h2>
+								</ul>
+
+								<h2><a href="https://github.com/proveit-js/proveit/issues/new">Report a Bug Now</a></h2>
 
 							</div><!-- end #mainBody -->
 						</td>
@@ -59,7 +57,7 @@ include_once 'header.php';
 								<li><a href="#GettingStarted">Getting Started</a></li>
 								<li><a href="#Fields">Issue Tracker</a></li>
 								<li><a href="#Tips">Tips for Writing Bug Reports</a></li>
-								<li><a href="http://code.google.com/p/proveit-js/issues/entry?template=Defect%20report%20from%20user">Report a Bug Now</a></li>
+								<li><a href="https://github.com/proveit-js/proveit/issues/new">Report a Bug Now</a></li>
 							</ul>
 					  </td>
 					</tr>
