@@ -16,6 +16,9 @@
  * ProveIt is available under the GNU Free Documentation License (GFDL-1.3.txt), Creative Commons
  * Attribution/Share-Alike License 3.0 (http://creativecommons.org/licenses/by-sa/3.0/), and the GNU
  * General Public License 2 (GPL-2.txt)
+ *
+ * Includes icons from the Silk set (http://www.famfamfam.com/lab/icons/silk/), by Mark James, used under
+ * the Creative Commons Attribution 3.0 License.
  */
 
 /**
@@ -62,14 +65,6 @@ var proveit = window.proveit = $.extend({
 	EDIT_PARAM_PREFIX: "editparam",
 
 	GUI_ID: "proveit",
-
-	/**
-	 * Base URL used for static content
-	 *
-	 * This directory includes icons from the Silk set (http://www.famfamfam.com/lab/icons/silk/), by Mark James
-	 * @type String
-	 */
-	STATIC_BASE: "//proveit-js.googlecode.com/hg/static/",
 
 	/* Used to map between keys, including citation parameter names, and human-readable text.  It can be
 	 * internationalized easily.  Add descriptions.xx , where xx is
@@ -1554,7 +1549,7 @@ var proveit = window.proveit = $.extend({
 		 */
 		this.getIcon = function()
 		{
-			return proveit.STATIC_BASE + "page_white.png";
+			return '//upload.wikimedia.org/wikipedia/commons/d/dd/Silk-Page_white.png';
 		};
 	},
 
@@ -1826,15 +1821,15 @@ var proveit = window.proveit = $.extend({
 
 		var iconMapping =
 		{
-			web: "page_white_world.png",
-			book: "book.png",
-			journal: "page_white_text.png",
-			news: "newspaper.png",
-			newsgroup: "comments.png",
-			"press release": "transmit_blue.png",
-			interview: "telephone.png",
-			episode: "television.png",
-			"AV media": "film.png"
+			web: "//upload.wikimedia.org/wikipedia/commons/f/f0/Silk-Page_white_world.png",
+			book: "//upload.wikimedia.org/wikipedia/commons/1/1e/Silk-Book.png",
+			journal: "//upload.wikimedia.org/wikipedia/commons/f/f8/Silk-Page_white_text.png",
+			news: "//upload.wikimedia.org/wikipedia/commons/3/32/Silk-Newspaper.png",
+			newsgroup: "//upload.wikimedia.org/wikipedia/commons/5/5c/Silk-Comments.png",
+			"press release": "//upload.wikimedia.org/wikipedia/commons/b/bd/Silk-Transmit_blue.png",
+			interview: "//upload.wikimedia.org/wikipedia/commons/f/f7/Silk-Telephone.png",
+			episode: "//upload.wikimedia.org/wikipedia/commons/b/b2/Silk-Television.png",
+			"AV media": "//upload.wikimedia.org/wikipedia/commons/1/1a/Silk-film.png"
 		};
 
 		var superGetIcon = this.getIcon;
@@ -1843,7 +1838,7 @@ var proveit = window.proveit = $.extend({
 			var icon = iconMapping[this.type];
 			if(icon)
 			{
-				return proveit.STATIC_BASE + icon;
+				return icon;
 			}
 			return superGetIcon.call(this);
 		};
@@ -1982,7 +1977,7 @@ var proveit = window.proveit = $.extend({
 
 		this.getIcon = function()
 		{
-			return proveit.STATIC_BASE + 'raw.png';
+			return 'https://upload.wikimedia.org/wikipedia/commons/d/db/Silk-Page_white_code_red.png';
 		};
 
 		this.getTypeForDisplay = function()
@@ -2204,7 +2199,7 @@ var proveit = window.proveit = $.extend({
 			                     href: 'http://proveit.cc.gatech.edu',
 					     target: '_blank'});
 		// Main logo in upper-right
-		var logo = $('<img/>', {src: this.STATIC_BASE + 'logo.png', alt: 'ProveIt', height: 30, width: 118 });
+		var logo = $('<img/>', {src: 'https://upload.wikimedia.org/wikipedia/commons/0/0d/ProveIt_user_interface_logo.png', alt: 'ProveIt', height: 30, width: 118 });
 		createdLink.append(logo);
 		created.append(createdLink);
 		// Minimize/maximize button
