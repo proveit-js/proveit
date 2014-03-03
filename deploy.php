@@ -3,15 +3,15 @@
 error_reporting(-1); // All errors
 
 chdir(dirname (__FILE__)); // Change to directory of script (should be repo root)
-define('REPO', 'https://proveit-js.googlecode.com/hg/');
+define('REPO', 'https://github.com/proveit-js/proveit');
 define('IMPORT_HEADER', <<<'EOH'
 /*
- * Imported from Mercurial commit %s as of %s from http://code.google.com/p/proveit-js/
- * Changes should be made through that Google Code project.
+ * Imported from Git commit %s as of %s from https://github.com/proveit-js/proveit
+ * Changes should be made through that GitHub project.
  */
 EOH
 );
-define('USER_AGENT', 'ProveIt deploy script (http://code.google.com/p/proveit-js/)');
+define('USER_AGENT', 'ProveIt deploy script (https://github.com/proveit-js/proveit)');
 define('MW_API', 'http://en.wikipedia.org/w/api.php');
 define('REV_SHORT', 'r');
 define('REV_LONG', 'rev');
@@ -124,25 +124,24 @@ if(!isset($configuration->ssh->password) && !isset($configuration->ssh->publicKe
 }
 
 $_ = NULL; // unused, needed because only variables can be passed by reference.
-exec('hg outgoing ' . REPO, $_, $out_ret);
-// 0 unpushed changes, 1 otherwise
-if($out_ret === 0) {
-	fwrite(STDERR, "Push your changes to the main repository, " . REPO . ", before running $argv[0].\n");
+exec('git fetch origin');
+$compare_origin_local_out = array();
+exec('git log --oneline origin/master..master', $compare_origin_local_out);
+if(count($compare_origin_local_out) > 0) {
+	fwrite(STDERR, "Your changes must be merged to the main repository, " . REPO . ", before running $argv[0].\n");
 	exit(2);
 }
 
 $opt_revid = get_option_value($options, REV_SHORT, REV_LONG, 'revision to deploy', 4);
 
-$revid = exec('hg identify -i -r ' . $opt_revid, $_, $id_ret);
+$revid = exec('git rev-parse ' . $opt_revid, $_, $id_ret);
 if($id_ret != 0) {
 	fwrite(STDERR, "Invalid revision id: " . $opt_revid . "\n");
 	exit(5);
 }
-$date_line = exec("hg log --template '{date}' -r $revid");
-$date_stamp = substr($date_line, 0, strpos($date_line, '.'));
-$datetime = new DateTime(NULL, new DateTimeZone('UTC'));
-$datetime->setTimestamp($date_stamp);
-$date = $datetime->format('Y-m-d');
+
+// Commiter date
+$date = exec("git log -1 --pretty=%cd --date=short $revid");
 
 $temp_dir = tempnam("/tmp", "proveit_deploy_r{$revid}_");
 if(!$temp_dir) {
@@ -150,7 +149,12 @@ if(!$temp_dir) {
 	exit(9);
 }
 unlink($temp_dir); // We need a directory, rather than file.
-shell_exec("hg archive -r $revid $temp_dir");
+mkdir($temp_dir);
+exec("git archive --format=tar $revid | tar -x -C $temp_dir", $_, $archive_ret);
+if($archive_ret != 0) {
+	fwrite(STDERR, "Failed to export from git to temporary directory.\n");
+	exit(16);
+}
 chdir($temp_dir);
 
 $users = $configuration->users;
