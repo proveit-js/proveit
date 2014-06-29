@@ -909,8 +909,6 @@ var proveit = window.proveit = $.extend({
 			$(paramName).text(desc);
 			$(paramName).attr('title',item);
 			$(paramValue).val(params[item]);
-
-			$(newline).show();
 		}
 		else
 		{
@@ -2173,11 +2171,102 @@ var proveit = window.proveit = $.extend({
 
 			$(".paramvalue", paramBox)[0].id = this.NEW_PARAM_PREFIX + param;
 			//paramBox.childNodes[2].value = newRef.params[param]; // Causes parameters to disappear.  Why?
-			$(paramBox).show();
 			paramList.appendChild(paramBox);
 		}
-		$genPane.show();
 		$(citePanes).prepend($genPane);
+	},
+
+	/**
+	 * Creates and returns a hidden element holding the template elements
+	 * (placeholder elements later cloned and filled with real data)
+	 *
+	 * @return {jQuery} $root Hidden root element holding templates
+	 */
+	createTemplateElement: function() {
+		var $root = $('<div>', {
+			id: 'proveit-templates'
+		});
+
+		// Dummy cite pane
+		var dummyCite = $('<div>', {
+			id: 'dummyCitePane',
+			"class": 'typepane'
+		});
+
+		var $addRefNameRow = this.createRefNameRow();
+		//$('input', $addRefNameRow).attr('id', 'addrefname');
+		//$('label', $addRefNameRow).attr('for', 'addrefname');
+		dummyCite.append($addRefNameRow);
+		dummyCite.append($('<div>', {"class": 'paramlist'}));
+		$root.append(dummyCite);
+
+		var preloadedparam = $('<div>', {
+			id: 'preloadedparamrow',
+			"class": 'preloadedrow input-row'
+		}).append($('<label>', {
+			"class": 'paramdesc'
+		}));
+
+		var paramvalue = $('<input>', {
+			"class": 'paramvalue',
+			tabindex: 0
+		});
+	        preloadedparam.append(paramvalue);
+
+		var deleteButton = $('<button>', {
+			"class": 'delete-field',
+			tabindex: -1
+		}).text('delete field');
+
+		deleteButton.button({
+			icons: {
+				primary: 'ui-icon-close'
+			},
+			text: false
+		});
+
+		preloadedparam.append(deleteButton);
+		$root.append(preloadedparam);
+
+		var addedparam = $('<div>', {
+			id: 'addedparamrow',
+			"class": 'addedrow input-row'}).
+		        append($('<input>', {
+				"class": 'paramdesc',
+				tabindex: 0
+			})).
+			append(paramvalue.clone()).
+			append(deleteButton.clone());
+
+		$root.append(addedparam);
+		return $root;
+	},
+
+	/**
+	 * Creates a row to be used to input name attribute of the ref (<ref name="..." />)
+	 *
+	 * @return {jQuery} <ref> name row
+	 */
+	createRefNameRow: function() {
+		// div.ref-name-row
+		var $refNameRow = $('<div>', {
+			"class": 'ref-name-row',
+			tabindex: -1
+		});
+		var refLabel = $('<label>', {
+			"for": 'editrefname',
+			title: 'This is a unique identifier that can be used to refer to this reference elsewhere on the page.',
+			"class": 'paramdesc'
+		}).text('<ref> name');
+
+		$refNameRow.append(refLabel);
+		$refNameRow.append($('<input>', {
+			id: 'editrefname',
+			"class": 'paramvalue',
+			tabindex: 0
+		}));
+
+		return $refNameRow;
 	},
 
 	/**
@@ -2193,7 +2282,7 @@ var proveit = window.proveit = $.extend({
 
 		// more JqueryUI CSS: http://blog.jqueryui.com/2009/06/jquery-ui-172/
 		var gui = $('<div/>', {id: this.GUI_ID});
-		var tabs = $('<div/>', {id: 'tabs'});
+		var $tabs = $('<div/>', {id: 'proveit-tabs'});
 		var created = $('<h1/>');
 		var createdLink = $('<a/>', {title: 'Created by the ELC Lab at Georgia Tech',
 			                     href: 'http://proveit.cc.gatech.edu',
@@ -2203,29 +2292,32 @@ var proveit = window.proveit = $.extend({
 		createdLink.append(logo);
 		created.append(createdLink);
 		// Minimize/maximize button
-		var showHideButton = $('<button/>', {text: 'show/hide'});
+		var showHideButton = $('<button>', {
+			id: 'proveit-show-hide-toggle'
+		} ).text('show/hide');
 		created.append(showHideButton);
-		tabs.append(created);
+		$tabs.append(created);
 		var header = $('<ul/>');
 		var view = $('<li/>');
 		// View tab link
-		var viewLink = $('<a/>', {id: 'view-link', "class": 'tab-link', href: '#view-tab'});
-		viewLink.append('References (');
+		// TODO: Rename view-link, add-link, view-tab, add-tab to match jQuery UI Tabs terminology to avoid confusion.
+		var viewTab = $('<a/>', {id: 'proveit-view-tab', "class": 'tab-link', href: '#proveit-view-edit-panel'});
+		viewTab.append('References (');
 		var numRefs = $('<span/>', {id: 'numRefs'}).
 			append('0');
-		viewLink.append(numRefs).
+		viewTab.append(numRefs).
 			append(')');
-		view.append(viewLink);
+		view.append(viewTab);
 		header.append(view);
 		var add = $('<li/>');
 		// Add tab link
-		var addLink = $('<a/>', {id: 'add-link', "class": 'tab-link', href: '#add-tab'}).
+		var addTab = $('<a/>', {id: 'proveit-add-tab', "class": 'tab-link', href: '#proveit-add-panel'}).
 			append('Add a Reference');
-		add.append(addLink);
+		add.append(addTab);
 		header.append(add);
-		tabs.append(header);
-		// View tab
-		var viewTab = $('<div/>', {id: 'view-tab', css: {display: 'none'}});
+		$tabs.append(header);
+		// View and edit panel
+		var viewEditPanel = $('<div/>', {id: 'proveit-view-edit-panel'});
 		// View pane used for displaying references; within view tab
 		var viewPane = $('<div/>', {id: 'view-pane'});
 		var viewScroll = $('<div/>', {"class": 'scroll',
@@ -2244,7 +2336,7 @@ var proveit = window.proveit = $.extend({
 		refTable.append(dummyRef);
 		viewScroll.append(refTable);
 		viewPane.append(viewScroll);
-		viewTab.append(viewPane);
+		viewEditPanel.append(viewPane);
 		// div#edit-pane, within view tab
 		var editPane = $('<div/>', {id: 'edit-pane', style: 'display: none'});
 		// div#edit-fields
@@ -2252,17 +2344,9 @@ var proveit = window.proveit = $.extend({
 					      "class": 'inputs scroll',
 					      style: 'height: 170px',
 					      tabindex: -1});
-		// div.ref-name-row
-		var refNameRow = $('<div/>', {"class": 'ref-name-row',
-					      tabindex: -1});
-		var refLabel = $('<label/>', {'for': 'editrefname',
-					      title: 'This is a unique identifier that can be used to refer to this reference elsewhere on the page.',
-					      "class": 'paramdesc'}).
-			append('&lt;ref&gt; name');
-		refNameRow.append(refLabel);
-		refNameRow.append($('<input/>', {id: 'editrefname',
-						 "class": 'paramvalue',
-						 tabindex: 0}));
+
+		var refNameRow = this.createRefNameRow();
+
 		// div.paramlist
 		var paramList = $('<div/>', {"class": 'paramlist'});
 
@@ -2286,42 +2370,11 @@ var proveit = window.proveit = $.extend({
 			                           text: 'cancel'});
 		editButtons.append(cancelButton);
 		editPane.append(editButtons);
-		viewTab.append(editPane);
-		tabs.append(viewTab);
+		viewEditPanel.append(editPane);
+		$tabs.append(viewEditPanel);
 
-		// dumy cite pane
-		var dummyCite = $('<div/>', {id: 'dummyCitePane',
-					     "class": 'typepane',
-					     style: 'display: none'});
-		var addRefNameRow = refNameRow.clone();
-		//$('input', addRefNameRow).attr('id', 'addrefname');
-		//$('label', addRefNameRow).attr('for', 'addrefname');
-		dummyCite.append(addRefNameRow);
-		dummyCite.append($('<div/>', {"class": 'paramlist'}));
-		tabs.append(dummyCite);
-
-		var preloadedparam = $('<div/>', {id: 'preloadedparamrow',
-						  "class": 'preloadedrow input-row',
-						  style: 'display: none'}).
-			append($('<label/>', {"class": 'paramdesc'}));
-		var paramvalue = $('<input/>', {"class": 'paramvalue',
-				                tabindex: 0});
-	        preloadedparam.append(paramvalue);
-		var deleteButton = $('<button/>', {"class": 'delete-field',
-						   tabindex: -1}).
-			append('delete field');
-		preloadedparam.append(deleteButton);
-		tabs.append(preloadedparam);
-		var addedparam = $('<div/>', {id: 'addedparamrow',
-					      "class": 'addedrow input-row',
- 					      style: 'display: none'}).
-		        append($('<input/>', {"class": 'paramdesc',
-					      tabindex: 0})).
-			append(paramvalue.clone()).
-			append(deleteButton.clone());
-		tabs.append(addedparam);
-		// Add tab
-		var addTab = $('<div/>', {id: 'add-tab', css: {display: 'none'}});
+		// Add panel
+		var addPanel = $('<div/>', {id: 'proveit-add-panel'});
 		var addFields = $('<div/>', {id: 'add-fields',
 					     "class": 'inputs scroll',
 					     style: 'height: 170px',
@@ -2370,7 +2423,7 @@ var proveit = window.proveit = $.extend({
 		addFields.append(citation).
 			append($('<div/>', {"class": 'addpanes',
 					    id: 'citationpanes', style: 'display: none;'}));
-		addTab.append(addFields);
+		addPanel.append(addFields);
 		// Add buttons, part of add tab
 		var addButtons = $('<div/>', {id: 'add-buttons'});
 		addButtons.append($('<button/>', {style: 'margin-right: 50px;',
@@ -2379,9 +2432,9 @@ var proveit = window.proveit = $.extend({
 			append(" = required").
 			append(saveButton.clone().text('insert into edit form')).
 			append(cancelButton.clone());
-		addTab.append(addButtons);
-		tabs.append(addTab);
-		gui.append(tabs);
+		addPanel.append(addButtons);
+		$tabs.append(addPanel);
+		gui.append($tabs);
 		$(document.body).prepend(gui);
 
 		var cancelEdit = function() {
@@ -2390,43 +2443,49 @@ var proveit = window.proveit = $.extend({
 		};
 
 		// set up tabs
-		$("#tabs").tabs({
-			selected: 0,
-				show: function(event,ui)
+		$tabs.tabs({
+			collapsible: true,
+			active: false, // Initially all collapsed
+			beforeActivate: function(event, ui)
+			{
+				// TODO: Select just-added item in reference list, upon moving from add tab to view tab
+
+				// Is this event caused by a click on a tab?
+				var isClickOnTab = event.currentTarget && $(event.currentTarget).is('.tab-link');
+
+				// Moving to add (including maximizing)
+				if(ui.newPanel.is(addPanel))
 				{
-					switch(ui.index)
-					{
-						case 0: // view
-						//$('tr.selected').focus();
-						break;
-
-						case 1: // add
-						    cancelEdit();
-						    proveit.changeAddPane(document.getElementById(proveit.togglestyle ? 'citemenu' : 'citationmenu'));
-						break;
-
-				      //	case 1: // edit
-						// proveit.updateEditPane();
-						//	$('tr.selected').dblclick();
-						//break;
-
-						default:
-						// nothing
-					}
+					cancelEdit();
+					proveit.changeAddPane(document.getElementById(proveit.togglestyle ? 'citemenu' : 'citationmenu'));
 				}
-		});
 
-		// handle clicking on tabs
-		$(viewLink).click(function(){
-				if($(viewTab).is(":hidden"))
-					proveit.toggleViewAddVisibility();
-				else
-					cancelEdit();	// Edit and view are the same tab, so we handle this specially.
-			});
-		$(addLink).click(function(){
-				if($(addTab).is(":hidden"))
-					proveit.toggleViewAddVisibility();
-			});
+
+				if(ui.newPanel.length === 0)
+				{
+					if(isClickOnTab)
+					{
+						// Don't allow collapsing by clicking a tab.
+						event.preventDefault();
+
+						// Clicked view tab when either view or edit was showing
+						if(ui.oldPanel.is(viewEditPanel))
+						{
+							// Cancel the edit and show reference list
+							cancelEdit();
+						}
+					} else
+					{
+						// They clicked the show/hide button; let it collapse and update the icon.
+						showHideButton.button("option", "icons", { primary: 'ui-icon-triangle-1-n' } );
+					}
+				} else
+				{
+					// There is a visible new panel; update the icon.
+					showHideButton.button("option", "icons", { primary: 'ui-icon-triangle-1-s' } );
+				}
+			}
+		});
 
 		// add panel buttons
 		$("#add-buttons button:first").button({
@@ -2435,7 +2494,7 @@ var proveit = window.proveit = $.extend({
 			}
 		}).click(function()
 			 {
-				 proveit.addPaneRow(document.getElementById("add-tab"));
+				 proveit.addPaneRow(document.getElementById("proveit-add-panel"));
 			 })
 		.next().next().button({
 			icons: {
@@ -2444,8 +2503,8 @@ var proveit = window.proveit = $.extend({
 			}
 		}).click(function()
 			 {
-				 proveit.addReference(proveit.getRefFromAddPane($('#add-tab .typepane').get(0)));
-				 $("#tabs").tabs( { selected: '#view-tab' } );
+				 proveit.addReference(proveit.getRefFromAddPane($('#proveit-add-panel .typepane').get(0)));
+				 $tabs.tabs( { active: 0 } ); // Activate view panel
 				 $("div.scroll, #view-pane").scrollTop(100000); // scroll to new ref
 			 }).next().
 		button({
@@ -2454,7 +2513,7 @@ var proveit = window.proveit = $.extend({
 				}
 		}).click(function()
 			 {
-				 $("#tabs").tabs( { selected: '#view-tab' } );
+				 $tabs.tabs( { active: 0 } ); // Activate view panel
 			 });
 
 		// cancel buttons
@@ -2480,14 +2539,6 @@ var proveit = window.proveit = $.extend({
 			}
 		});
 
-		// delete field button
-		$(".delete-field").button({
-			icons: {
-				primary: 'ui-icon-close'
-			},
-			text: false
-		});
-
 		// create the minimize button
 		showHideButton.button({
 			icons: {
@@ -2496,31 +2547,35 @@ var proveit = window.proveit = $.extend({
 			text: false
 		});
 
-		var viewAndAdd = $("#view-tab, #add-tab");
+		var viewAndAdd = $(viewEditPanel).add(addPanel);
 		this.viewAndAddPanes = viewAndAdd;
+
+		var prevActiveTabPaneIndex = 0;
 
 		function minimize()
 		{
-			viewAndAdd.hide();
-			showHideButton.button("option", "icons", { primary: 'ui-icon-triangle-1-n' } );
+			prevActiveTabPaneIndex = $tabs.tabs('option', 'active');
+
+			// Collapse all tabs
+			$tabs.tabs('option', 'active', false);
 		}
 
 		function maximize()
 		{
-			viewAndAdd.show();
-			showHideButton.button("option", "icons", { primary: 'ui-icon-triangle-1-s' } );
+			$tabs.tabs('option', 'active', prevActiveTabPaneIndex);
 		}
-
-		// set up the minimize button
-		showHideButton.toggle(
-			maximize,
-			minimize
-		);
 
 		this.toggleViewAddVisibility = function()
 		{
-			showHideButton.click();
+			// All tabs collapsed
+			if($tabs.tabs('option', 'active') === false) {
+				maximize();
+			} else {
+				minimize();
+			}
 		};
+
+		showHideButton.click(this.toggleViewAddVisibility);
 
 		this.scanForRefs();
 
@@ -2529,6 +2584,8 @@ var proveit = window.proveit = $.extend({
 		// alternate row colors
 		$("#refs tr:even").addClass('light');
 		$("#refs tr:odd").addClass('dark');
+
+		gui.append(this.createTemplateElement());
 	},
 
 	/**
