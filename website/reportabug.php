@@ -22,12 +22,12 @@ include_once 'header.php';
 								
 								<hr />
 								<h2 id="Fields">Issue Tracker</h2>
-								<p>We use GitHub's issue tracker to manage bug reports. To create a new bug report, go to the <a href="https://github.com/proveit-js/proveit/issues/new">New Issue</a> page. You'll see a number of fields:</p>
+								<p>We use GitHub's issue tracker to manage bug reports. To create a new bug report, go to the <a href="http://tinyurl.com/proveit-github-issue">New Issue</a> page. You'll see a number of fields:</p>
 								<dl>
 									<dt><i>Title</i></dt>
 									<dd>A brief, one-line summary of the problem you're having.</dd>
 									<dt>Description (where it says 'Leave a comment')</dt>
-									<dd>A detailed description of your problem. See our <a href="#Tips">tips for writing good bug reports</a> below.</dd>
+									<dd>A detailed description of your problem. If you use the link above, there will be questions pre-filled.  See also our <a href="#Tips">tips for writing good bug reports</a> below.</dd>
 									<dt>Label(s)</dt>
 									<dd>One or more short tags used to categorize the report. We use various labels help organize reports, including <em>Type</em> (e.g. Defect, Enhancement, or Task), <em>Priority</em>, and <em>OpSys</em> (operating system).  These are shown on the right</dd>
 									<dt>Assignee</dt>
@@ -47,7 +47,7 @@ include_once 'header.php';
 									<li>The problem you experienced</li>
 								</ul>
 
-								<h2><a href="https://github.com/proveit-js/proveit/issues/new">Report a Bug Now</a></h2>
+								<h2><a href="http://tinyurl.com/proveit-github-issue">Report a Bug Now</a></h2>
 
 							</div><!-- end #mainBody -->
 						</td>
@@ -57,7 +57,7 @@ include_once 'header.php';
 								<li><a href="#GettingStarted">Getting Started</a></li>
 								<li><a href="#Fields">Issue Tracker</a></li>
 								<li><a href="#Tips">Tips for Writing Bug Reports</a></li>
-								<li><a href="https://github.com/proveit-js/proveit/issues/new">Report a Bug Now</a></li>
+								<li><a href="http://tinyurl.com/proveit-github-issue">Report a Bug Now</a></li>
 							</ul>
 					  </td>
 					</tr>
