@@ -12,7 +12,6 @@ define('IMPORT_HEADER', <<<'EOH'
 EOH
 );
 define('USER_AGENT', 'ProveIt deploy script (https://github.com/proveit-js/proveit)');
-define('MW_API', 'http://en.wikipedia.org/w/api.php');
 define('REV_SHORT', 'r');
 define('REV_LONG', 'rev');
 define('TYPE_SHORT', 't');
@@ -106,8 +105,8 @@ if(!file_exists($configuration_filename)) {
 }
 
 $configuration = json_decode(file_get_contents($configuration_filename));
-# Must have SSH configuration and at least one page.
-if(!isset($configuration->users[0]->username, $configuration->users[0]->password, $configuration->ssh->host, $configuration->ssh->username, $configuration->ssh->path)) {
+# Must have at least one wiki page.
+if(!isset($configuration->users[0]->username, $configuration->users[0]->password)) {
 	fwrite(STDERR, <<< 'EOM'
 		You must provide a JSON file, $configuration_filename, in the repository root (but not committed).
 		It must have username, password, and header fields for at least one page.
@@ -118,14 +117,24 @@ EOM
 	exit(1);
 }
 
-if(!isset($configuration->ssh->password) && !isset($configuration->ssh->publicKeyFileName, $configuration->ssh->privateKeyFileName)) {
-	fwrite(STDERR, "In the SSH section you must set either password or both publicKeyFileName and privateKeyFileName\n");
-	exit(14);
+// Uploading docs via SSH is optional (intended for production deployments, but not localhost ones), but if used, the required fields must be included.
+if(isset($configuration->ssh)) {
+	if(!isset($configuration->ssh->password) && !isset($configuration->ssh->publicKeyFileName, $configuration->ssh->privateKeyFileName)) {
+		fwrite(STDERR, "In the SSH section you must set either password or both publicKeyFileName and privateKeyFileName\n");
+		exit(14);
+	}
+
+	if(!isset($configuration->ssh->host) || !isset($configuration->ssh->username) || !isset($configuration->ssh->path)) {
+		fwrite(STDERR, "If uploading docs via SSH, you must specify a host, username, and path as subkeys\n");
+		exit(17);
+	}
 }
 
 $_ = NULL; // unused, needed because only variables can be passed by reference.
 exec('git fetch origin');
 $compare_origin_local_out = array();
+
+// TODO: This only checks the master branch.  Keep it?
 exec('git log --oneline origin/master..master', $compare_origin_local_out);
 if(count($compare_origin_local_out) > 0) {
 	fwrite(STDERR, "Your changes must be merged to the main repository, " . REPO . ", before running $argv[0].\n");
@@ -158,6 +167,15 @@ if($archive_ret != 0) {
 chdir($temp_dir);
 
 $users = $configuration->users;
+
+if(!isset($configuration->apiUrl)) {
+	fwrite(STDERR, "You must specify the URL of the MediaWiki API via the 'apiUrl' configuration key.\n");
+	exit(18);
+}
+
+$mwApiUrl = $configuration->apiUrl;
+$viaApi = "via $mwApiUrl";
+
 foreach($users as $user) {
 	if(isset($user->header)) {
 		$header = implode("\n", $user->header) . "\n"; // Having header be an array makes the JSON file more readable
@@ -167,7 +185,7 @@ foreach($users as $user) {
 	}
 	$subbed_import_header = sprintf(IMPORT_HEADER, $revid, $date);
 	$deploy_cookies = tempnam("/tmp", "deploy_cookie");
-	$login_ch = curl_init(MW_API);
+	$login_ch = curl_init($mwApiUrl);
 	$login_data = array(
 		'action' => 'login',
 		'lgname' => $user->username,
@@ -181,7 +199,7 @@ foreach($users as $user) {
 	$login_resp = json_decode(curl_exec($login_ch));
 	curl_close($login_ch);
 
-	$token_ch = curl_init(MW_API);
+	$token_ch = curl_init($mwApiUrl);
 	$login_data['lgtoken'] = $login_resp->login->token;
 	curl_setopt($token_ch, CURLOPT_POSTFIELDS, http_build_query($login_data));
 	curl_setopt($token_ch, CURLOPT_USERAGENT, USER_AGENT);
@@ -193,7 +211,7 @@ foreach($users as $user) {
 
 	foreach($user->files as $filename => $title) {
 		if(!isset($edit_token)) {
-			$edit_token_ch = curl_init(MW_API);
+			$edit_token_ch = curl_init($mwApiUrl);
 			$edit_token_params = http_build_query(array(
 				'action' => 'query',
 				'prop' => 'info|revisions',
@@ -213,7 +231,7 @@ foreach($users as $user) {
 			$edit_token = $resp_page['edittoken'];
 		}
 
-		echo "Attempting to deploy ProveIt file $filename to $title\n";
+		echo "Attempting to deploy ProveIt file $filename to $title $viaApi\n";
 		if(!file_exists($filename)) {
 			echo realpath(dirname('.'));
 			fwrite(STDERR, "Code file " . realpath($filename) . " does not exist.\n");
@@ -222,7 +240,7 @@ foreach($users as $user) {
 		$code = file_get_contents($filename);
 		$full_code = $header . $subbed_import_header . "\n" . $code;
 
-		$edit_ch = curl_init(MW_API);
+		$edit_ch = curl_init($mwApiUrl);
 		$edit_params = array(
 			'action' => 'edit',
 			'title' => $title,
@@ -240,7 +258,7 @@ foreach($users as $user) {
 		curl_setopt($edit_ch, CURLOPT_COOKIEFILE, $deploy_cookies);
 		$edit_resp_str = curl_exec($edit_ch);
 		$edit_resp = json_decode($edit_resp_str);
-		$success_msg = "You have successfully deployed commit $revid of ProveIt file $filename to $title\n";
+		$success_msg = "You have successfully deployed commit $revid of ProveIt file $filename to $title $viaApi\n";
 		$success = $edit_resp->edit->result == 'Success';
 
 		if($success) {
@@ -273,5 +291,8 @@ foreach($users as $user) {
 	unlink($deploy_cookies);
 }
 
-// sync_yui($configuration);
+if(isset($configuration->ssh)) {
+	sync_yui($configuration);
+}
+
 system("rm -r $temp_dir");
