@@ -2288,7 +2288,6 @@ var proveit = window.proveit = $.extend({
 		var header = $('<ul>');
 		var view = $('<li>');
 		// View tab link
-		// TODO: Rename view-link, add-link, view-tab, add-tab to match jQuery UI Tabs terminology to avoid confusion.
 		var viewTab = $('<a/>', {id: 'proveit-view-tab', "class": 'tab-link', href: '#proveit-view-edit-panel'}).text('References (');
 		var numRefs = $('<span>').attr({id: 'numRefs'}).text('0');
 		viewTab.append(numRefs, ')');
