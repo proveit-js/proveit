@@ -169,11 +169,6 @@ div#proveit div.expanded button {
 	margin-right: 1em;
 }
 
-div#proveit div.expanded button span {
-	padding-top: 0.3em;
-	padding-bottom: 0.3em;
-}
-
 /*** END CSS FOR REFLIST ***/
 
 div#proveit div.inputs {
