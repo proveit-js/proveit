@@ -392,13 +392,16 @@ var proveit = window.proveit = $.extend({
 	},
 
 	/**
-	 * Returns true if the page has an edit box
+	 * Returns true if the page has a wikitext edit box
 	 *
-	 * @return {Boolean} true if the page has an edit box, false otherwise
+	 * @return {Boolean} true if the page has a wikitext edit box, false otherwise
 	 */
 	isEditPage: function()
 	{
-		return wgAction == 'edit' || wgAction == 'submit';
+		var contentModel = mw.config.get( 'wgPageContentModel' ),
+			    action = mw.config.get( 'wgAction' );
+
+		return contentModel === 'wikitext' && ( action === 'edit' || action === 'submit' );
 	},
 
 	/**
@@ -407,8 +410,11 @@ var proveit = window.proveit = $.extend({
 	 */
 	isSupportedPage: function()
 	{
+		var namespace = mw.config.get( 'wgCanonicalNamespace' ),
+		    pageName = mw.config.get( 'wgPageName' );
+
 	        // "Regular" article, userspace, or Wikipedia:Sandbox (exception for testing).
-	        return (wgCanonicalNamespace == '' || wgCanonicalNamespace == 'User' || wgPageName == 'Wikipedia:Sandbox');
+	        return ( namespace === '' || namespace === 'User' || pageName === 'Wikipedia:Sandbox');
 	},
 
 	/**
@@ -647,7 +653,7 @@ var proveit = window.proveit = $.extend({
 	load: function()
 	{
 		$(function() {
-			var dependencies = ['jquery.ui.tabs', 'jquery.ui.button', 'jquery.effects.highlight', 'jquery.textSelection'];
+			var dependencies = ['jquery.ui.tabs', 'jquery.ui.button', 'jquery.effects.highlight', 'jquery.textSelection', 'mediawiki.util'];
 			var preference = proveit.getDatePreference();
 
 			proveit.dateFormatter = new proveit.DateFormatter(preference);
@@ -2726,7 +2732,7 @@ var proveit = window.proveit = $.extend({
 				break;
 			case 'book':
 				if(ref.params['isbn'] != null)
-					url = wgServer + '/w/index.php?title=Special%3ABookSources&isbn=' + ref.params['isbn'];
+					url = mw.util.getUrl( 'Special:BookSources', { isbn: ref.params['isbn'] } );
 				break;
 			case 'journal':
 			case 'conference':
