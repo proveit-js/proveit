@@ -421,7 +421,7 @@ var proveit = window.proveit = $.extend({
 	 * Convenience function.  Returns the refbox element.
 	 * @return {$Node} reference box
 	 */
-	getRefBox: function()
+	getReferenceBox: function()
 	{
 		return $("#refs");
 	},
@@ -454,7 +454,7 @@ var proveit = window.proveit = $.extend({
 		{
 			this.log("highlightStringAtIndex: invalid negative arguments");
 		}
-		var box = this.getMWEditBox();
+		var box = this.getTextbox();
 		var origText = box.value;
 		var editTop = this.getPosition(box).top;
 		box.value = origText.substring(0, startInd);
@@ -483,7 +483,7 @@ var proveit = window.proveit = $.extend({
 	*/
 	highlightTargetString: function(targetStr)
 	{
-		var origText = this.getMWEditValue();
+		var origText = this.getTextboxText();
 		var startInd = origText.indexOf(targetStr);
 		if(startInd == -1)
 		{
@@ -497,7 +497,7 @@ var proveit = window.proveit = $.extend({
 	 * Convenience function. Returns the raw MediaWiki textarea element.
 	 * @return {Node} the edit box element
 	*/
-	getMWEditBox: function()
+	getTextbox: function()
 	{
 		return $("#wpTextbox1")[0];
 	},
@@ -507,9 +507,9 @@ var proveit = window.proveit = $.extend({
 	 *
 	 * @return {String} value of edit box with CRs stripped if document.selection exists
 	 */
-	getMWEditValue: function()
+	getTextboxText: function()
 	{
-		var box = this.getMWEditBox();
+		var box = this.getTextbox();
 		var value = box.value;
 		if(!box.selectionStart && document.selection) // IE 8-like behavior
 		{
@@ -545,7 +545,7 @@ var proveit = window.proveit = $.extend({
 	 * Returns the raw MW edit summary element
 	 * @return {Node} the edit summary element
 	*/
-	getEditSummary: function()
+	getSummary: function()
 	{
 		return $("#wpSummary")[0];
 	},
@@ -588,7 +588,7 @@ var proveit = window.proveit = $.extend({
 				var thisproveit = this;
 				this.addOnsubmit(function()
 				{
-					var summary = thisproveit.getEditSummary();
+					var summary = thisproveit.getSummary();
 
 					if(summary.value.indexOf("ProveIt") == -1)
 					{
@@ -609,7 +609,7 @@ var proveit = window.proveit = $.extend({
 	 */
 	setupButton: function()
 	{
-		var $box = $(this.getMWEditBox());
+		var $box = $(this.getTextbox());
 
 		// Ensures wikiEditor is loaded
 		$box.bind('wikiEditor-toolbar-buildSection-main', function(event, section)
@@ -682,7 +682,7 @@ var proveit = window.proveit = $.extend({
 
 	clearRefBox: function()
 	{
-		var box = this.getRefBox();
+		var box = this.getReferenceBox();
 		if(box == null)
 		{
 			this.log("Ref box is not loaded yet.");
@@ -699,7 +699,7 @@ var proveit = window.proveit = $.extend({
 	 */
 	insertRefIntoMWEditBox: function(ref, full)
 	{
-		var txtarea = this.getMWEditBox();
+		var txtarea = this.getTextbox();
 		if(!txtarea)
 		{
 			this.log("insertRefIntoMWEditBox: txtarea is null");
@@ -778,8 +778,8 @@ var proveit = window.proveit = $.extend({
 	{
 		if(!ref.save)
 		{
-		    var newRichItem = this.makeRefBoxRow(ref, true);
-			var oldRichItem = $('.selected', this.getRefBox()).get(0);
+		    var newRichItem = this.makeReferenceBoxRow(ref, true);
+			var oldRichItem = $('.selected', this.getReferenceBox()).get(0);
 			var oldNumber = $('td.number', oldRichItem).text();
 			$('td.number', newRichItem).text(oldNumber); // preserve old numbering
 			oldRichItem.parentNode.replaceChild(newRichItem, oldRichItem);
@@ -1038,7 +1038,7 @@ var proveit = window.proveit = $.extend({
 	 * @param {String} workingString template string to parse.
 	 * @return {Object} object with two properties, names and values.
 	 */
-	splitNameVals: function (workingString)
+	splitKeysAndValues: function (workingString)
 	{
 		var split = {};
 		// The first component is "ordinary" text (no pipes), while the second is a correctly balanced wikilink, with optional pipe.  Any combination of the two can appear.
@@ -1052,7 +1052,7 @@ var proveit = window.proveit = $.extend({
 	/**
 	 * Scan for references in the MWEditBox, and create a reference object and refBoxRow for each.
 	 */
-	scanForRefs: function()
+	scanForReferences: function()
 	{
 		// these are strings used to allow the correct parsing of the ref
 		var workingstring;
@@ -1060,7 +1060,7 @@ var proveit = window.proveit = $.extend({
 
 		this.clearRefBox();
 
-		var textValue = this.getMWEditValue();
+		var textValue = this.getTextboxText();
 		// since we should pick the name out before we get to the reference type, here's a variable to hold it
 		var name;
 
@@ -1081,7 +1081,7 @@ var proveit = window.proveit = $.extend({
 		{
 			for (var i = 0; i < currentScan.length; i++)
 			{
-				var reference = this.makeRef(currentScan[i]);
+				var reference = this.makeReference(currentScan[i]);
 				if(reference) // Full reference object
 				{
 					name = reference.name;
@@ -1140,7 +1140,7 @@ var proveit = window.proveit = $.extend({
 	 * @param {String} refText reference string
 	 * @return {AbstractReference} null if refText isn't a ref, otherwise the reference object
 	 */
-	makeRef: function(refText)
+	makeReference: function(refText)
 	{
 		var isReference = /<[\s]*ref[^>]*>[^<]*\S[^<]*<[\s]*\/[\s]*ref[\s]*>/.test(refText); // Tests for reference (non-citation);
 		if(!isReference)
@@ -1179,7 +1179,7 @@ var proveit = window.proveit = $.extend({
 
 		if(citeFunction != this.RawReference)
 		{
-			var split = this.splitNameVals(workingstring);
+			var split = this.splitKeysAndValues(workingstring);
 			var names = split.names;
 			var values = split.values;
 
@@ -1467,13 +1467,13 @@ var proveit = window.proveit = $.extend({
 		 */
 		this.updateInText = function()
 		{
-			var txtarea = proveit.getMWEditBox();
+			var txtarea = proveit.getTextbox();
 
 			if (!txtarea || txtarea == null)
 				return;
 
 			txtarea.focus();
-			var text = proveit.getMWEditValue();
+			var text = proveit.getTextboxText();
 
 			text = text.replace(this.orig, this.toString());
 
@@ -1987,7 +1987,7 @@ var proveit = window.proveit = $.extend({
 	 * @param {Node} box typepane root of add GUI (pane for specific type, e.g. journal)
          * @return {AbstractReference} ref or null if no panel exists yet.
 	 */
-	getRefFromAddPane: function(box)
+	getReferenceFromAddPane: function(box)
 	{
 		var $box = $(box);
 		var type = $box.data('proveitRefType');
@@ -2187,7 +2187,7 @@ var proveit = window.proveit = $.extend({
 			"class": 'typepane'
 		});
 
-		var $addRefNameRow = this.createRefNameRow();
+		var $addRefNameRow = this.createReferenceNameRow();
 		//$('input', $addRefNameRow).attr('id', 'addrefname');
 		//$('label', $addRefNameRow).attr('for', 'addrefname');
 		dummyCite.append($addRefNameRow);
@@ -2241,7 +2241,7 @@ var proveit = window.proveit = $.extend({
 	 *
 	 * @return {jQuery} <ref> name row
 	 */
-	createRefNameRow: function() {
+	createReferenceNameRow: function() {
 		// div.ref-name-row
 		var $refNameRow = $('<div>', {
 			"class": 'ref-name-row',
@@ -2334,7 +2334,7 @@ var proveit = window.proveit = $.extend({
 					      style: 'height: 170px',
 					      tabindex: -1});
 
-		var refNameRow = this.createRefNameRow();
+		var refNameRow = this.createReferenceNameRow();
 
 		// div.paramlist
 		var paramList = $('<div/>', {"class": 'paramlist'});
@@ -2492,7 +2492,7 @@ var proveit = window.proveit = $.extend({
 			}
 		}).click(function()
 			 {
-				 proveit.addReference(proveit.getRefFromAddPane($('#proveit-add-panel .typepane').get(0)));
+				 proveit.addReference(proveit.getReferenceFromAddPane($('#proveit-add-panel .typepane').get(0)));
 				 $tabs.tabs( { active: 0 } ); // Activate view panel
 				 $("div.scroll, #view-pane").scrollTop(100000); // scroll to new ref
 			 }).next().
@@ -2566,7 +2566,7 @@ var proveit = window.proveit = $.extend({
 
 		showHideButton.click(this.toggleViewAddVisibility);
 
-		this.scanForRefs();
+		this.scanForReferences();
 
 		$("#refs tr").eq(0).click().click(); // select first item in list.  TODO: Why two .click?
 
@@ -2649,11 +2649,11 @@ var proveit = window.proveit = $.extend({
 	 * @param {Boolean} isReplacement if true, this replaces another refbox item, so no number will be assigned, and the count will not be updated.
 	 * @return {Node} new refbox row for refbox
 	 */
-	makeRefBoxRow: function(ref, isReplacement)
+	makeReferenceBoxRow: function(ref, isReplacement)
 	{
 		var refName = ref.name; //may be null or blank
 
-		//var refbox = this.getRefBox();
+		//var refbox = this.getReferenceBox();
 
 		var newchild = $('<tr><td class="number"></td><td class="type"></td><td class="title"></td><td class="edit"></td></tr>').get(0);
 		// removed <span class="pointers"></span>
@@ -2865,7 +2865,7 @@ var proveit = window.proveit = $.extend({
 				return function()
 				{
 					var last = 0, j = 0;
-					var text = proveit.getMWEditValue();
+					var text = proveit.getTextboxText();
 					for(j = 0; j < i; j++)
 					{
 						last = text.indexOf(citationStrings[j], last);
@@ -3017,8 +3017,8 @@ var proveit = window.proveit = $.extend({
 	 */
 	addNewElement: function(ref)
 	{
-		var refbox = this.getRefBox();
-		$(refbox).append(this.makeRefBoxRow(ref, false));
+		var refbox = this.getReferenceBox();
+		$(refbox).append(this.makeReferenceBoxRow(ref, false));
 	}
 }, window.proveit);
 
