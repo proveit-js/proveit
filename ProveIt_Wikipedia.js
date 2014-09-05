@@ -1,76 +1,47 @@
 /**
- * ProveIt ([[User:ProveIt GT]]) is a powerful GUI tool for viewing, adding, editing, and inserting references on Wikipedia.
+ * ProveIt is a powerful GUI tool for viewing, editing and creating references in Wikipedia
  *
- * Copyright 2008 - 2011
+ * Copyright 2008-2011 Georgia Tech Research Corporation, Atlanta, GA 30332-0415
+ * Copyright 2011-? Matthew Flaschen
  *
- * Georgia Tech Research Corporation
+ * ProveIt is available under the GNU Free Documentation License (http://www.gnu.org/copyleft/fdl.html),
+ * Creative Commons Attribution/Share-Alike License 3.0 (http://creativecommons.org/licenses/by-sa/3.0/),
+ * and the GNU General Public License 2 (http://www.gnu.org/licenses/gpl-2.0.html)
  *
- * Atlanta, GA 30332-0415
- *
- * Copyright 2011 -
- *
- * Matthew Flaschen
- *
- * ALL RIGHTS RESERVED
- *
- * ProveIt is available under the GNU Free Documentation License ( GFDL-1.3.txt ), Creative Commons
- * Attribution/Share-Alike License 3.0 ( http://creativecommons.org/licenses/by-sa/3.0/ ), and the GNU
- * General Public License 2 ( GPL-2.txt )
- *
- * Includes icons from the Silk set ( http://www.famfamfam.com/lab/icons/silk/ ), by Mark James, used under
- * the Creative Commons Attribution 3.0 License.
+ * Includes icons from the Silk set ( http://www.famfamfam.com/lab/icons/silk/ ), by Mark James,
+ * used under the Creative Commons Attribution 3.0 License.
  */
 
 /**
- * Electronic Learning Communities
- * @module elc
- */
-
-( function( mw, $ ) {
-
-/**
- * Second parameter ( pre-existing proveit object, if any ) passed to extend overrides first.
+ * Second parameter (pre-existing proveit object, if any) passed to extend overrides first.
  * Gives users option to easily override initial constants, such as shouldAddSummary.
  * If proveit is unintentionally imported more than once, the first import will take precedence.
  */
+( function( mw, $ ) {
 
 /**
  * Main class and namespace for ProveIt software. This is the only global variable.
  * @class proveit
  */
 var proveit = window.proveit = $.extend({
-	/**
-	 * Approximately half the height of the edit box. Used in scrolling when highlighting text.
-	 * @type Number
-	 */
-	HALF_EDIT_BOX_HEIGHT: 200,
 
-	// This could be preference-controlled, instead of hard-coded.
-	/**
-	 * Language used for descriptions
-	 * @type String
-	 */
+	ICON: '//upload.wikimedia.org/wikipedia/commons/thumb/1/19/ProveIt_logo_for_user_boxes.svg/22px-ProveIt_logo_for_user_boxes.svg.png',
+
+	LOGO: '//upload.wikimedia.org/wikipedia/commons/0/0d/ProveIt_user_interface_logo.png',
+
 	LANG: "en",
 
 	/**
-	 * Text before param name ( e.g. url, title, etc. ) in creation box, to avoid collisions with unrelated ids.
+	 * Text before param name ( e.g. url, title, etc. ) in creation box, to avoid collisions with unrelated ids
 	 * @type String
 	 */
 	NEW_PARAM_PREFIX: "newparam",
 
 	/**
-	 * Text before param name ( e.g. url, title, etc. ) in edit box, to avoid collisions with unrelated ids.
+	 * Text before param name ( e.g. url, title, etc. ) in edit box, to avoid collisions with unrelated ids
 	 * @type String
 	 */
 	EDIT_PARAM_PREFIX: "editparam",
-
-	/**
-	 * String added to logs for easy search
-	 * @type String
-	 */
-	LOG_MARKER: "[ ProveIt ] ",
-
-	GUI_ID: "proveit",
 
 	/**
 	 * Used to map between keys, including citation parameter names, and human-readable text. It can be
@@ -200,7 +171,8 @@ var proveit = window.proveit = $.extend({
 			deadurl: 'Dead URL?',
 			raw: 'Unknown format'
 		},
-		// Finnish translation by Olli ( ollinpostit at gmail.com )
+
+		// Finnish translation by Olli (ollinpostit at gmail.com)
 		fi: {
 			agency: "Edustaja",
 			name: "Nimi",
@@ -328,14 +300,12 @@ var proveit = window.proveit = $.extend({
 	/**
 	 * Optional preference to specify default date format for new references.
 	 * If set, it overrides the general date preference from Special:Preferences.
-	 *
 	 * @type {String} supported date format string
 	 */
 	dateFormatString: null,
 
 	/**
 	 * Singleton used to format dates according to user preference
-	 *
 	 * @type DateFormatter
 	 */
 	dateFormatter: null,
@@ -371,49 +341,51 @@ var proveit = window.proveit = $.extend({
 	 * true signifies cite-style references, citation-style otherwise. Used when creating a reference.
 	 * @type Boolean
 	 */
-	togglestyle: true,
+	toggleStyle: true,
 
-	// TODO: This should be eliminated if only name only inserts are allowed.
-	/** true signifies full references, name-only otherwise. Used when inserting.
-	 * Note that new references are always inserted in full.
-	 *
+	/**
+	 * true signifies full references, name-only otherwise. Used when inserting.
+	 * NOTE: new references are always inserted in full
+	 * TODO: This should be eliminated if only name only inserts are allowed
 	 * @type Boolean
 	 */
 	toggleinsert: false,
 
 
 
-	/* GET METHODS */
+	/* METHODS */
 
 	/**
-	 * Gets the effective preference for date format. If there is no ProveIt-specific
-	 * preference already at proveit.dateFormatString, it will determine the correct preference
-	 * from	MW user preferences. Then, it will store that value to proveit.dateFormatString
-	 *
-	 * @return {String} format string to use for dates
-	 */
-	getDatePreference: function() {
-		if ( this.dateFormatString === null ) {
-			this.dateFormatString = mw.user.options.get( 'date' );
-		}
-		return this.dateFormatString;
-	},
-
-	/**
-	 * Returns descriptions for the current language.
+	 * Returns descriptions for the current language
+	 * Could be made Cite-specific if needed
 	 * @return {Object} descriptions
 	 */
 	getDescriptions: function() {
-		//this could be made Cite-specific if needed.
 		return this.descriptions[ proveit.LANG ];
 	},
 
 	/**
-	 * Convenience function. Returns the refbox element.
+	 * Convenience function. Returns the refbox element
 	 * @return {$Node} reference box
 	 */
 	getReferenceBox: function() {
 		return $( "#refs" );
+	},
+
+	/**
+	 * Convenience function. Returns the raw MediaWiki textarea element
+	 * @return {Node} the edit box element
+	 */
+	getTextbox: function() {
+		return $( "#wpTextbox1" )[0];
+	},
+
+	/**
+	 * Provides value of edit box with CR normalization
+	 * @return {String} value of edit box with CRs stripped if document.selection exists
+	 */
+	getTextboxText: function() {
+		return $( "#wpTextbox1" ).val();
 	},
 
 	/**
@@ -422,7 +394,7 @@ var proveit = window.proveit = $.extend({
 	 * @param {Node} node any HTML node
 	 * @return {Object} offsets to node, as object with left and top properties.
 	 */
-	getPosition: function( node ) {
+	getOffset: function( node ) {
 		var left = 0, top = 0;
 		do {
 			left += node.offsetLeft;
@@ -432,51 +404,12 @@ var proveit = window.proveit = $.extend({
 	},
 
 	/**
-	 * Convenience function. Returns the raw MediaWiki textarea element.
-	 * @return {Node} the edit box element
-	 */
-	getTextbox: function() {
-		return $( "#wpTextbox1" )[0];
-	},
-
-	/**
-	 * Provides value of edit box with CR normalization
-	 *
-	 * @return {String} value of edit box with CRs stripped if document.selection exists
-	 */
-	getTextboxText: function() {
-		var box = this.getTextbox();
-		var value = box.value;
-		// IE 8-like behavior
-		if ( !box.selectionStart && document.selection ) {
-			value = value.replace( /\r\n/g, "\n" );
-		}
-		return value;
-	},
-
-	/**
-	 * Returns raw edit form element, which contains MWEditBox, among other things.
-	 * @return {Node} the edit form element
-	 */
-	getMWEditForm: function() {
-		return $( "#editform" )[0];
-	},
-
-	/**
-	 * Returns the raw MW edit summary element
-	 * @return {Node} the edit summary element
-	 */
-	getSummary: function() {
-		return $( "#wpSummary" )[0];
-	},
-
-	/**
 	 * Convenience log function
 	 * @param {...Object} var_args objects ( including strings ) to log
 	 */
 	log: function() {
 		var args = Array.prototype.slice.call( arguments );
-		args.unshift( this.LOG_MARKER );
+		args.unshift( '[ProveIt]' );
 		mw.log.apply( mw, args );
 	},
 
@@ -484,10 +417,10 @@ var proveit = window.proveit = $.extend({
 	 * Log error object if possible, using error ( preferable ), or log, if available.
 	 * @param {Error} ex error object
 	 */
-	logException: function( ex ) {
-		var args = [ ex, ex.stack ];
+	logException: function( exception ) {
+		var args = [ exception, exception.stack ];
 		if ( typeof console === "object" && $.isFunction( console.error ) ) {
-			args.unshift( this.LOG_MARKER );
+			args.unshift( '[ProveIt]' );
 			console.error.apply( null, args );
 		} else {
 			this.log.apply( this, args );
@@ -495,139 +428,101 @@ var proveit = window.proveit = $.extend({
 	},
 
 	/**
-	 * Returns true if the page has a wikitext edit box
-	 *
-	 * @return {Boolean} true if the page has a wikitext edit box, false otherwise
-	 */
-	isEditPage: function() {
-		var contentModel = mw.config.get( 'wgPageContentModel' ),
-			action = mw.config.get( 'wgAction' );
-		return contentModel === 'wikitext' && ( action === 'edit' || action === 'submit' );
-	},
-
-	/**
-	 * Returns true if the page is likely to contain references
-	 * @return {Boolean} true if page is supported, false otherwise
-	 */
-	isSupportedPage: function() {
-		var namespace = mw.config.get( 'wgCanonicalNamespace' ),
-		pageName = mw.config.get( 'wgPageName' );
-		// "Regular" article, userspace, or Wikipedia:Sandbox ( exception for testing ).
-		return ( namespace === '' || namespace === 'User' || pageName === 'Wikipedia:Sandbox' );
-	},
-
-	/**
 	 * Highlights a given length of text, at a particular index.
-	 * @param {Number} startInd start index in Wikipedia edit box
+	 * @param {Number} startIndex start index in Wikipedia edit box
 	 * @param {Number} length length of string to highlight
 	 * @return {Boolean} always true
 	 */
-	highlightLengthAtIndex: function( startInd, length ) {
-		if ( startInd < 0 || length < 0 ) {
+	highlightLengthAtIndex: function( startIndex, length ) {
+		if ( startIndex < 0 || length < 0 ) {
 			this.log( "highlightStringAtIndex: invalid negative arguments" );
 		}
-		var box = this.getTextbox();
-		var origText = box.value;
-		var editTop = this.getPosition( box ).top;
-		box.value = origText.substring( 0, startInd );
-		box.focus();
-		box.scrollTop = 1000000; //Larger than any real textarea ( hopefully )
-		var curScrollTop = box.scrollTop;
-		box.value += origText.substring( startInd );
+		var textbox = this.getTextbox();
+		var origText = textbox.value;
+		var editTop = this.getOffset( textbox ).top;
+		textbox.value = origText.substring( 0, startIndex );
+		textbox.focus();
+		textbox.scrollTop = 1000000; //Larger than any real textarea ( hopefully )
+		var curScrollTop = textbox.scrollTop;
+		textbox.value += origText.substring( startIndex );
 		if ( curScrollTop > 0 ) {
-			box.scrollTop = curScrollTop + this.HALF_EDIT_BOX_HEIGHT;
+			textbox.scrollTop = curScrollTop + 200; //200 is approx half the height of the edit box
 		}
-		$( box ).focus().textSelection( 'setSelection', { 
-			start: startInd,
-			end: startInd + length
+		$( textbox ).focus().textSelection( 'setSelection', { 
+			start: startIndex,
+			end: startIndex + length
 		});
-		editTop = this.getPosition( box ).top;
+		editTop = this.getOffset( textbox ).top;
 		window.scroll( 0, editTop );
 		return true;
 	},
 
 	/**
-	 * Highlights the first instance of a given string in the MediaWiki edit box.
-	 * @param {String} targetStr the string in the edit box to highlight
+	 * Highlights the first instance of a given string in the MediaWiki edit textbox
+	 * @param {String} the string in the edit textbox to highlight
 	 * @return {Boolean} true if successful, false otherwise
 	 */
-	highlightTargetString: function( targetStr ) {
-		var origText = this.getTextboxText();
-		var startInd = origText.indexOf( targetStr );
-		if ( startInd == -1 ) {
-			this.log( "Target string \"" + targetStr + "\" not found." );
+	highlightString: function( string ) {
+		var textboxText = this.getTextboxText();
+		var startIndex = textboxText.indexOf( string );
+		if ( startIndex == -1 ) {
+			this.log( 'Target string "' + string + '" not found.' );
 			return false;
 		}
-		return this.highlightLengthAtIndex( startInd, targetStr.length );
-	},
-
-	/**
-	 * Runs a given function on submission of edit form
-	 * @param {Function} subFunc function to run on submission
-	 */
-	addOnsubmit: function( subFunc ) {
-		var form = this.getMWEditForm();
-		if ( !form ) {
-			throw new Error( "No edit form, possibly due to protected page." );
-		}
-		form.addEventListener( "submit", subFunc, false );
+		return this.highlightLengthAtIndex( startIndex, string.length );
 	},
 
 	/**
 	 * Specifies to include ProveIt edit summary on next save.
 	 * Can be disabled by modifying shouldAddSummary
 	 */
-	includeProveItEditSummary: function() {
+	addSummary: function() {
 		if ( this.shouldAddSummary && !this.summaryFunctionAdded ) {
 			try {
-				var thisproveit = this;
-				this.addOnsubmit( function() {
-					var summary = thisproveit.getSummary();
-					if ( summary.value.indexOf( "ProveIt" ) == -1 ) {
-						summary.value += " (edited with [[User:ProveIt_GT|ProveIt ]])";
-					}
-				});
+				var form = $( "#editform" )[0];
+				if ( !form ) {
+					throw new Error( "No edit form, possibly due to protected page." );
+				}
+				form.addEventListener( "submit", subFunc, false );
 				this.summaryFunctionAdded = true;
-			} catch( e ) {
-				this.log( "Failed to add onsubmit handler. e.message: " + e.message );
+			} catch( error ) {
+				this.log( "Failed to add onsubmit handler. e.message: " + error.message );
 			}
 		}
 	},
 
 	/**
-	 * Setup button so users can load ProveIt on demand
-	 */
-	setupButton: function() {
-		var $box = $( this.getTextbox() );
-
-		// Ensures wikiEditor is loaded
-		$box.bind( 'wikiEditor-toolbar-buildSection-main', function( event, section ) {
-			delete section.groups.insert.tools.reference;
-			section.groups.insert.tools.proveit = {
-				label: 'ProveIt',
-				type: 'button',
-				icon: '//upload.wikimedia.org/wikipedia/commons/thumb/1/19/ProveIt_logo_for_user_boxes.svg/22px-ProveIt_logo_for_user_boxes.svg.png',
-				action: {
-					type: 'callback',
-					execute: function() {
-						proveit.toggleVisibility();
-					}
-				}
-			};
-		});
-	},
-
-	/**
-	 * Sets up ProveIt if we're on an edit page.
-	 * This includes setting up the toolbar button.
-	 * Depending on configuration and the current page, it may also call load to show ProveIt.
+	 * Sets up ProveIt if we're on an edit page
+	 * This includes setting up the toolbar button
+	 * Depending on configuration and the current page, it may also call load to show ProveIt
 	 */
 	setup: function() {
-		if ( this.isEditPage() ) {
-			if ( this.loadVisible && this.isSupportedPage() ) {
+		var contentModel = mw.config.get( 'wgPageContentModel' );
+		var action = mw.config.get( 'wgAction' );
+		if ( contentModel === 'wikitext' && ( action === 'edit' || action === 'submit' ) ) {
+			var namespace = mw.config.get( 'wgCanonicalNamespace' );
+			var pageName = mw.config.get( 'wgPageName' );
+			if ( this.loadVisible && ( namespace === '' || namespace === 'User' || pagename === 'Wikipedia:Sandbox' ) ) {
 				this.load();
 			}
-			this.setupButton();
+
+			//Setup button so users can load ProveIt on demand
+			var $box = $( this.getTextbox() );
+			// Ensures wikiEditor is loaded
+			$box.bind( 'wikiEditor-toolbar-buildSection-main', function( event, section ) {
+				delete section.groups.insert.tools.reference;
+				section.groups.insert.tools.proveit = {
+					label: 'ProveIt',
+					type: 'button',
+					icon: proveit.ICON,
+					action: {
+						type: 'callback',
+						execute: function() {
+							proveit.toggleVisibility();
+						}
+					}
+				};
+			});
 		}
 	},
 
@@ -637,7 +532,11 @@ var proveit = window.proveit = $.extend({
 	load: function() {
 		$( function() {
 			var dependencies = [ 'jquery.ui.tabs', 'jquery.ui.button', 'jquery.effects.highlight', 'jquery.textSelection', 'mediawiki.util' ];
-			var preference = proveit.getDatePreference();
+
+			if ( proveit.dateFormatString === null ) {
+				proveit.dateFormatString = mw.user.options.get( 'date' );
+			}
+			var preference = proveit.dateFormatString;
 
 			proveit.dateFormatter = new proveit.DateFormatter( preference );
 
@@ -657,20 +556,7 @@ var proveit = window.proveit = $.extend({
 	},
 
 	/**
-	 * Clears the refBox of refBoxRows, except for dummy rows.
-	 * @return {Boolean} false if refBox wasn't found
-	 */
-	clearReferenceBox: function() {
-		var box = this.getReferenceBox();
-		if ( box == null ) {
-			this.log( "Ref box is not loaded yet." );
-			return false;
-		}
-		$( "tr:not('tr#dummyRef')", box ).remove();
-		return true;
-	},
-
-	/** Inserts ref text into MW edit box.
+	 * Inserts ref text into MW edit box.
 	 * @param {String} ref Reference text to insert
 	 * @param {Boolean} full Insert the full reference text if true, citation otherwise.
 	 * @return {Boolean} false if errors
@@ -693,7 +579,7 @@ var proveit = window.proveit = $.extend({
 		// This is slightly redundant. It is called primarily for the scrollig workaround
 		this.highlightLengthAtIndex( caretPosition[0], caretPosition[ 1 ] - caretPosition[0] );
 
-		this.includeProveItEditSummary();
+		this.addSummary();
 	},
 
 	/**
@@ -703,7 +589,7 @@ var proveit = window.proveit = $.extend({
 	 * @param {AbstractReference} ref the original citation object we're modifying
 	 * @return {AbstractReference} same ref that was passed in
 	 */
-	changeRefFromEditPane: function( ref, editPane ) {
+	changeReferenceFromEditPane: function( ref, editPane ) {
 		var paramBoxes = $( editPane ).find( "div.input-row" );
 
 		var refName = $( '#editrefname' ).val();
@@ -740,45 +626,27 @@ var proveit = window.proveit = $.extend({
 	},
 
 	/**
-	 * Creates refBoxRow, updates numbering for all refBoxRows, replaces old refBoxRow with new one, and updates ref text in MWEditBox.
-	 * @param {AbstractReference} ref the ref we want to save.
-	 */
-	saveRefFromEdit: function( ref ) {
-		if ( !ref.save ) {
-		 var newRichItem = this.makeReferenceBoxRow( ref, true );
-			var oldRichItem = $( '.selected', this.getReferenceBox() ).get(0);
-			var oldNumber = $( 'td.number', oldRichItem ).text();
-			$( 'td.number', newRichItem ).text( oldNumber ); // preserve old numbering
-			oldRichItem.parentNode.replaceChild( newRichItem, oldRichItem );
-			$( newRichItem ).addClass( 'selected' );
-
-			ref.updateInText();
-			this.includeProveItEditSummary();
-		}
-	},
-
-	/**
 	 * Updates the edit pane when you choose a reference to edit.
 	 * @param {AbstractReference} ref the ref that was chosen.
 	 */
-	updateEditPane: function( ref ) {
-		$( '#editrefname' ).val( ref.name || "" );
+	updateEditPane: function( reference ) {
+		$( '#editreferencename' ).val( reference.name || "" );
 
 		// Don't contaminate actual object with junk params.
 		var tempParams = {};
-		for ( var param in ref.params ) {
-			tempParams[ param ] = ref.params[ param ];
+		for ( var param in reference.params ) {
+			tempParams[ param ] = reference.params[ param ];
 		}
 
 		// Add default params with blank values.
-		var defaults = ref.getDefaultParams();
+		var defaults = reference.getDefaultParams();
 		for ( var i = 0; i < defaults.length; i++ ) {
 			if ( !tempParams[ defaults[ i ] ] ) {
 				tempParams[ defaults[ i ] ] = "";
 			}
 		}
 
-		var required = ref.getRequiredParams();
+		var required = reference.getRequiredParams();
 
 		var paramNames = [];
 
@@ -787,7 +655,7 @@ var proveit = window.proveit = $.extend({
 			paramNames.push( item );
 		}
 
-		var sorter = ref.getSorter();
+		var sorter = reference.getSorter();
 		if ( sorter ) {
 			paramNames.sort( sorter );
 		} else {
@@ -807,13 +675,28 @@ var proveit = window.proveit = $.extend({
 
 		var acceptButton = $( '#edit-buttons .accept' );
 		var acceptEdit = function() {
-			proveit.changeRefFromEditPane( ref, $( "#edit-pane" ).get() );
-			proveit.saveRefFromEdit( ref );
+			proveit.changeReferenceFromEditPane( reference, $( "#edit-pane" ).get() );
+
+			//Creates referenceBoxRow, updates numbering for all referenceBoxRows,
+			//replaces old referenceBoxRow with new one, and updates reference text in MWEditBox.
+			if ( !reference.save ) {
+				var newRichItem = proveit.makeReferenceBoxRow( reference, true );
+				var oldRichItem = $( '.selected', proveit.getReferenceBox() ).get(0);
+				var oldNumber = $( 'td.number', oldRichItem ).text();
+				$( 'td.number', newRichItem ).text( oldNumber ); // preserve old numbering
+				oldRichItem.parentNode.replaceChild( newRichItem, oldRichItem );
+				$( newRichItem ).addClass( 'selected' );
+				
+				reference.updateInText();
+				proveit.addSummary();
+			}
+
+			
 			$( "#edit-pane" ).hide();
 			$( "#view-pane" ).show();
 		};
 
-		// Without setTimeout, scoll reset doesn't work in Firefox.
+		// Without setTimeout, scoll reset doesn't work in Fireferenceox.
 		setTimeout( function() {
 			// Reset scroll
 			$( '#edit-fields' ).scrollTop(0);
@@ -870,45 +753,44 @@ var proveit = window.proveit = $.extend({
 	},
 
 	/**
-	 * Cross-Browser Split 1.0.1
-	 * ( c ) Steven Levithan <stevenlevithan.com>; MIT License
+	 * Cross-browser implementation of ECMAScript String.prototype.split function 1.0.1
+	 * (c) Steven Levithan <stevenlevithan.com>; MIT License
 	 * http://blog.stevenlevithan.com/archives/cross-browser-split
-	 * An ECMA-compliant, uniform cross-browser split method
-	 * Cross-browser implementation of ECMAScript String.prototype.split function.
-	 * @param {String} str input string to split
+	 * @param {String} input string to split
 	 * @param separator separator to split on, as RegExp or String
-	 * @param {Number} limit limit on number of splits. If the parameter is absent, no limit is imposed.
+	 * @param {Number} limit limit on number of splits.  If the parameter is absent, no limit is imposed.
 	 * @return {Array} array resulting from split
 	 */
-	split: function( str, separator, limit ) {
-		var _compliantExecNpcg = /()??/.exec( "" )[ 1 ] === undefined; // NPCG: nonparticipating capturing group
+	split: function( string, separator, limit ) {
+		var _compliantExecNpcg = /()??/.exec("")[1] === undefined; //NPCG: non-participating capturing group
 		var _nativeSplit = String.prototype.split;
 
-		// if `separator` is not a regex, use the native `split`
-		if ( Object.prototype.toString.call( separator ) !== "[ object RegExp ]" ) {
-			return _nativeSplit.call( str, separator, limit );
+		//If 'separator' is not a regex, use the native 'split'
+		if ( Object.prototype.toString.call( separator ) !== "[object RegExp]" ) {
+			return _nativeSplit.call( string, separator, limit );
 		}
 
 		var output = [],
 		lastLastIndex = 0,
-		flags = ( separator.ignoreCase ? "i" : "" ) +
-			( separator.multiline ? "m" : "" ) +
-			( separator.sticky ? "y" : "" ),
-			separator = RegExp( separator.source, flags + "g" ), // make `global` and avoid `lastIndex` issues by working with a copy
-		separator2, match, lastIndex, lastLength;
+		flags = ( separator.ignoreCase ? "i" : "" ) + ( separator.multiline ? "m" : "" ) + ( separator.sticky ? "y" : "" ),
+			separator = RegExp( separator.source, flags + "g" ), //Make 'global' and avoid 'lastIndex' issues by working with a copy
+			separator2,
+			match,
+			lastIndex,
+			lastLength;
 
-		str = str + ""; // type conversion
+		string = string + ""; //Type conversion
 		if ( !_compliantExecNpcg ) {
-			separator2 = RegExp( "^" + separator.source + "$( ?!\\s )", flags ); // doesn't need /g or /y, but they don't hurt
+			separator2 = RegExp( "^" + separator.source + "jQuery(?!\\s)", flags ); //Doesn't need /g or /y, but they don't hurt
 		}
 
 		/**
-		 * Behavior for `limit`: if it's...
-		 * - `undefined`: no limit.
-		 * - `NaN` or zero: return an empty array.
-		 * - a positive number: use `Math.floor( limit )`.
-		 * - a negative number: no limit.
-		 * - other: type-convert, then use the above rules.
+		 * Behavior for 'limit'. If it's...
+		 * - undefined: no limit
+		 * - NaN or zero: return an empty array
+		 * - a positive number: use Math.floor(limit)
+		 * - a negative number: no limit
+		 * - other: type-convert, then use the above rules
 		 */
 		if ( limit === undefined || +limit < 0 ) {
 			limit = Infinity;
@@ -919,15 +801,15 @@ var proveit = window.proveit = $.extend({
 			}
 		}
 
-		while ( match = separator.exec( str ) ) {
-			lastIndex = match.index + match[0].length; // `separator.lastIndex` is not reliable cross-browser
+		while ( match = separator.exec( string ) ) {
+			lastIndex = match.index + match[0].length; //separator.lastIndex is not reliable cross-browser
 
 			if ( lastIndex > lastLastIndex ) {
-				output.push( str.slice( lastLastIndex, match.index ) );
+				output.push( string.slice( lastLastIndex, match.index ) );
 
-				// fix browsers whose `exec` methods don't consistently return `undefined` for nonparticipating capturing groups
+				//Fix browsers whose 'exec' methods don't consistently return 'undefined' for nonparticipating capturing groups
 				if ( !_compliantExecNpcg && match.length > 1 ) {
-					match[0].replace( separator2, function() {
+					match[0].replace( separator2, function () {
 						for ( var i = 1; i < arguments.length - 2; i++ ) {
 							if ( arguments[ i ] === undefined ) {
 								match[ i ] = undefined;
@@ -936,8 +818,8 @@ var proveit = window.proveit = $.extend({
 					});
 				}
 
-				if ( match.length > 1 && match.index < str.length ) {
-					Array.prototype.push.apply( output, match.slice( 1 ) );
+				if ( match.length > 1 && match.index < string.length ) {
+					Array.prototype.push.apply( output, match.slice(1) );
 				}
 
 				lastLength = match[0].length;
@@ -949,49 +831,54 @@ var proveit = window.proveit = $.extend({
 			}
 
 			if ( separator.lastIndex === match.index ) {
-				separator.lastIndex++; // avoid an infinite loop
+				separator.lastIndex++; //Avoid an infinite loop
 			}
 		}
 
-		if ( lastLastIndex === str.length ) {
-			if ( lastLength || !separator.test( "" ) ) {
-				output.push( "" );
+		if ( lastLastIndex === string.length ) {
+			if ( lastLength || !separator.test("") ) {
+				output.push("");
 			}
 		} else {
-			output.push( str.slice( lastLastIndex ) );
+			output.push( string.slice( lastLastIndex ) );
 		}
 
 		return output.length > limit ? output.slice( 0, limit ) : output;
 	},
 
-	// TODO: Remove the split code, and just use a regular regex ( with two main groups for name and val ), iteratively. Regex.find? Make name and val indices match, and rework calling code as needed. Also, check how this was done in the original code.
 	/**
-	 * Overly clever regex to parse template string ( e.g. |last=Smith|first=John|title=My Life Story ) into name and value pairs.
+	 * Overly clever regex to parse template string (e.g. |last=Smith|first=John|title=My Life Story) into key and value pairs
+	 * TODO: Remove the split code, and just use a regular regex (with two main groups for key and value), iteratively
+	 * Regex.find? Make key and value indices match, and rework calling code as needed
+	 * Also, check how this was done in the original code
 	 *
-	 * names is an array of all names, and values is an array of all values. They have equal lengths.
-	 *
-	 * @param {String} workingString template string to parse.
-	 * @return {Object} object with two properties, names and values.
+	 * @param {String} templateString template string to parse
+	 * @return {Object} object with two properties, keys and values
 	 */
-	splitKeysAndValues: function( workingString ) {
+	splitKeysAndValues: function( templateString ) {
 		var split = {};
-		// The first component is "ordinary" text ( no pipes ), while the second is a correctly balanced wikilink, with optional pipe. Any combination of the two can appear.
-		split.names = proveit.split( workingString.substring( workingString.indexOf( "|" ) + 1 ), /=(?:[ ^| ]*?(?:\[ \[[^|\ ]]*(?:\|(?:[ ^|\ ]]*))?\]\])?)+(?:\||\}\})/ );
-		split.names.length--; // Remove single empty element at end
 
-		split.values = proveit.split( workingString.substring( workingString.indexOf( "=" ) + 1, workingString.indexOf( "}}" ) ), /\|[ ^|= ]*=/ );
+		//The first component is "ordinary" text (no pipes), while the second is a correctly balanced wikilink, with optional pipe. Any combination of the two can appear.
+		split.names = proveit.split( templateString.substring( templateString.indexOf( '|' ) + 1 ), /=(?:[^|]*?(?:\[\[[^|\]]*(?:\|(?:[^|\]]*))?\]\])?)+(?:\||\}\})/ );
+
+		split.names.length--; //Remove single empty element at end
+
+		split.values = proveit.split( templateString.substring( templateString.indexOf( '=' ) + 1, templateString.indexOf( '}}' ) ), /\|[^|=]*=/ );
+
 		return split;
 	},
 
 	/**
-	 * Scan for references in the MWEditBox, and create a reference object and refBoxRow for each.
+	 * Scan for references in the MWEditBox, and create a reference object and referenceBoxRow for each.
 	 */
 	scanForReferences: function() {
 		// these are strings used to allow the correct parsing of the ref
 		var workingstring;
 		var cutupstring;
 
-		this.clearReferenceBox();
+		//Clear the reference box of referenceBoxRows, except for dummy rows
+		var referenceBox = this.getReferenceBox();
+		$( "tr:not('tr#dummyRef')", referenceBox ).remove();
 
 		var textValue = this.getTextboxText();
 		// since we should pick the name out before we get to the reference type, here's a variable to hold it
@@ -1005,10 +892,10 @@ var proveit = window.proveit = $.extend({
 
 		// Array of reference objects. At end of function, addNewElement called on each.
 		var references = [];
-		 // allRefs should count opening refs, but not ref citation ( not <ref name="..."" /> )
-		var allRefs = textValue.match( /<[ \s ]*ref[ ^\/> ]*>/gi );
+		// allRefs should count opening refs, but not ref citation ( not <ref name="..."" /> )
+		var allRefs = textValue.match( /<[\s]*ref[^\/>]*>/gi );
 		// currentScan holds the parsed ( match objects ) list of references. Regex matches full or name-only reference.
-		var currentScan = textValue.match( /<[ \s ]*ref[ ^> ]*>(?:[ ^< ]*<[ \s ]*\/[ \s ]*ref[ \s ]*>)?/gi ); // [ ^< ]* doesn't handle embedded HTML tags ( or comments ) correctly.
+		var currentScan = textValue.match( /<[\s]*ref[^>]*>(?:[^<]*<[\s]*\/[\s]*ref[\s]*>)?/gi ); // [^<]* doesn't handle embedded HTML tags ( or comments ) correctly.
 		// if there are results,
 		if ( currentScan ) {
 			for ( var i = 0; i < currentScan.length; i++ ) {
@@ -1021,7 +908,7 @@ var proveit = window.proveit = $.extend({
 						references.push( reference );
 					}
 				} else { // Not full reference. Possibly citation.
-					var match = currentScan[ i ].match( this.REF_REGEX );
+					var match = currentScan[ i ].match( /<[\s]*ref[\s]*name[\s]*=[\s]*(?:(?:\"(.*?)\")|(?:\'(.*?)\')|(?:(.*?)))[\s]*\/?[\s]*>/ );
 					name = match && ( match[ 1 ] || match[ 2 ] || match[ 3 ] );
 				}
 
@@ -1054,29 +941,23 @@ var proveit = window.proveit = $.extend({
 	},
 
 	/**
-	 * Regex for parsing any reference text.
-	 * @type RegExp
-	 */
-	REF_REGEX: /<[ \s ]*ref[ \s ]*name[ \s ]*=[ \s ]*(?:(?:\"(.*?)\")|(?:\'(.*? )\')|(?:(.*?)))[ \s ]*\/?[ \s ]*>/,
-
-	/**
 	 * Factory function for references. Takes text of a reference, and returns instance of the appropriate class.
 	 * @param {String} refText reference string
 	 * @return {AbstractReference} null if refText isn't a ref, otherwise the reference object
 	 */
 	makeReference: function( refText ) {
-		var isReference = /<[ \s ]*ref[ ^> ]*>[ ^< ]*\S[ ^< ]*<[ \s ]*\/[ \s ]*ref[ \s ]*>/.test( refText ); // Tests for reference ( non-citation );
+		var isReference = /<[\s]*ref[^>]*>[^<]*\S[^<]*<[\s]*\/[\s]*ref[\s]*>/.test( refText ); // Tests for reference (non-citation);
 		if ( !isReference ) {
 			return null;
 		}
-		var citeFunction = refText.match( /{[ \s ]*cite/i ) ? this.CiteReference : refText.match( /{[ \s ]*Citation/i ) ? this.CitationReference : this.RawReference;
+		var citeFunction = refText.match( /{[\s]*cite/i ) ? this.CiteReference : refText.match( /{[\s]*Citation/i ) ? this.CitationReference : this.RawReference;
 
 		if ( citeFunction != this.RawReference ) {
-			var workingstring = refText.match( /{[ \s ]*( cite|Citation )[ \s\S ]*?}}/i )[0];
-			var match = refText.match( this.REF_REGEX );
+			var workingstring = refText.match( /{{[\s]*(cite|Citation)[\s\S]*?}}/i )[0];
+			var match = refText.match( /<[\s]*ref[\s]*name[\s]*=[\s]*(?:(?:\"(.*?)\")|(?:\'(.*?)\')|(?:(.*?)))[\s]*\/?[\s]*>/ );
 
 			if ( match && match != null ) {
-				var name = match[ 1 ] || match[ 2 ] || match[ 3 ]; // 3 possibilities, corresponding to above regex, are <ref name="foo">, <ref name='bar'>, and <ref name=baz>
+				var name = match[1] || match[2] || match[3]; // 3 possibilities, corresponding to above regex, are <ref name="foo">, <ref name='bar'>, and <ref name=baz>
 			}
 
 			var cutupstring = workingstring.split( /\|/g );
@@ -1376,7 +1257,7 @@ var proveit = window.proveit = $.extend({
 			this.orig = this.toString();
 			this.save = true;
 
-			proveit.highlightTargetString( this.toString() );
+			proveit.highlightString( this.toString() );
 		};
 
 		/**
@@ -1391,7 +1272,7 @@ var proveit = window.proveit = $.extend({
 			} else {
 				var returnstring = "<ref>";
 			}
-			returnstring += "{" + template + ( includeType ? " " + this.type : "" );
+			returnstring += "{{" + template + ( includeType ? " " + this.type : "" );
 			for ( var name in this.params ) {
 				returnstring += " | " + name + "=" + this.params[ name ];
 			}
@@ -1839,10 +1720,10 @@ var proveit = window.proveit = $.extend({
 
 	/**
 	 * Convert the current contents of the add citation panel to a reference ( i.e CiteReference(), CitationReference() )
-	 * TODO: This should be unified with changeRefFromEditPane
+	 * TODO: This should be unified with changeReferenceFromEditPane
 	 * @for proveit
 	 * @param {Node} box typepane root of add GUI ( pane for specific type, e.g. journal )
- * @return {AbstractReference} ref or null if no panel exists yet.
+	 * @return {AbstractReference} ref or null if no panel exists yet.
 	 */
 	getReferenceFromAddPane: function( box ) {
 		var $box = $( box );
@@ -1851,7 +1732,7 @@ var proveit = window.proveit = $.extend({
 		// get <ref> name
 		var refName = $( '#addrefname' ).val();
 
-		var citeFunc = this.togglestyle ? this.CiteReference : this.CitationReference;
+		var citeFunc = this.toggleStyle ? this.CiteReference : this.CitationReference;
 		var ref = new citeFunc({"name": refName, "type": type});
 
 		var paramName, paramValue;
@@ -2110,7 +1991,7 @@ var proveit = window.proveit = $.extend({
 		}
 
 		// more JqueryUI CSS: http://blog.jqueryui.com/2009/06/jquery-ui-172/
-		var gui = $( '<div>', {id: this.GUI_ID});
+		var gui = $( '<div>', {id: 'proveit'});
 		var $tabs = $( '<div>', {id: 'proveit-tabs'});
 		var created = $( '<h1>' );
 		var createdLink = $( '<a>' ).attr({
@@ -2119,7 +2000,12 @@ var proveit = window.proveit = $.extend({
 			target: '_blank'
 		});
 		// Main logo in upper-right
-		var logo = $( '<img>' ).attr({src: 'https://upload.wikimedia.org/wikipedia/commons/0/0d/ProveIt_user_interface_logo.png', alt: 'ProveIt', height: 30, width: 118 });
+		var logo = $( '<img>' ).attr({
+			src: proveit.LOGO,
+			alt: 'ProveIt',
+			height: 30,
+			width: 118
+		});
 		createdLink.append( logo );
 		created.append( createdLink );
 		// Minimize/maximize button
@@ -2131,7 +2017,11 @@ var proveit = window.proveit = $.extend({
 		var header = $( '<ul>' );
 		var view = $( '<li>' );
 		// View tab link
-		var viewTab = $( '<a/>', {id: 'proveit-view-tab', "class": 'tab-link', href: '#proveit-view-edit-panel'}).text( 'References ( ' );
+		var viewTab = $( '<a/>', {
+			id: 'proveit-view-tab',
+			"class": 'tab-link',
+			href: '#proveit-view-edit-panel'
+		}).text( 'References ( ' );
 		var numRefs = $( '<span>' ).attr({id: 'numRefs'}).text( '0' );
 		viewTab.append( numRefs, ' )' );
 		view.append( viewTab );
@@ -2146,12 +2036,16 @@ var proveit = window.proveit = $.extend({
 		var viewEditPanel = $( '<div>', {id: 'proveit-view-edit-panel'});
 		// View pane used for displaying references; within view tab
 		var viewPane = $( '<div>', {id: 'view-pane'});
-		var viewScroll = $( '<div>', {"class": 'scroll',
-					 style: 'height: 210px;'});
+		var viewScroll = $( '<div>', {
+			"class": 'scroll',
+			style: 'height: 210px;'
+		});
 		// Ref list root element
 		var refTable = $( '<table>', {id: 'refs'});
-		var dummyRef = $( '<tr>', {id: 'dummyRef',
-					 style: 'display: none;'});
+		var dummyRef = $( '<tr>', {
+			id: 'dummyRef',
+			style: 'display: none;'
+		});
 		dummyRef.append( $( '<td>', {"class": 'number'})).
 			append( $( '<td>', {"class": 'type'})).
 			append( $( '<td>', {"class": 'title'}));
@@ -2247,7 +2141,8 @@ var proveit = window.proveit = $.extend({
 		var citationmenu = $( '<select/>', {id: 'citemenu',
 			change: function() {
 				proveit.changeAddPane( citationmenu.get(0) );
-						 }});
+			}
+		});
 		var citationTypes = [ 'web', 'book', 'journal', 'encyclopedia', 'news', 'patent' ];
 		for ( var j = 0; j < citationTypes.length; j++ ) {
 			citationmenu.append( $( '<option/>', {value: citationTypes[ i ],
@@ -2289,7 +2184,7 @@ var proveit = window.proveit = $.extend({
 				// Moving to add ( including maximizing )
 				if ( ui.newPanel.is( addPanel ) ) {
 					cancelEdit();
-					proveit.changeAddPane( document.getElementById( proveit.togglestyle ? 'citemenu' : 'citationmenu' ) );
+					proveit.changeAddPane( document.getElementById( proveit.toggleStyle ? 'citemenu' : 'citationmenu' ) );
 				}
 
 				if ( ui.newPanel.length === 0 ) {
@@ -2417,7 +2312,7 @@ var proveit = window.proveit = $.extend({
 	 * @return {$Node} root of ProveIt
 	 */
 	getGUI: function() {
-		return $( '#' + this.GUI_ID );
+		return $( '#proveit' );
 	},
 
 	/**
@@ -2444,8 +2339,7 @@ var proveit = window.proveit = $.extend({
 			if ( this.viewAndAddPanes.is( ':visible' ) ) {
 				this.hide();
 			}
-
-			/*
+			/**
 			 * If previously maximized, we minimize after hiding, so when we show, it will already be minimized.
 			 * If minimized, we maximize
 			 */
@@ -2457,10 +2351,9 @@ var proveit = window.proveit = $.extend({
 
 	/**
 	 * Toggle visibility of view and add panes. Initialized by createGUI
-	 *
 	 * @method toggleViewAddVisibility
 	 */
- toggleViewAddVisibility: null,
+	toggleViewAddVisibility: null,
 
 	/**
 	 * Generates refbox row and all children, to be used by addNewElement, and when updating
@@ -2629,8 +2522,8 @@ var proveit = window.proveit = $.extend({
 		}
 		// event handler for selecting a ref )
 		$( newchild ).click( function() {
-			thisproveit.highlightTargetString( ref.orig );
-			//thisproveit.highlightTargetString( ref.orig );
+			thisproveit.highlightString( ref.orig );
+			//thisproveit.highlightString( ref.orig );
 			$( "#refs tr" ).removeClass( 'selected' );
 			$( newchild ).addClass( 'selected' );
 		});
@@ -2672,11 +2565,11 @@ var proveit = window.proveit = $.extend({
 						}
 						last += citationStrings[ j ].length;
 					}
-					var startInd = text.indexOf( citationStrings[ i ], last );
-					if ( startInd == -1 ) {
+					var startIndex = text.indexOf( citationStrings[ i ], last );
+					if ( startIndex == -1 ) {
 						proveit.log( "citationStrings[ " + i + " ]: " + citationStrings[ i ] + " not found." );
 					} else {
-						proveit.highlightLengthAtIndex( startInd, citationStrings[ i ].length );
+						proveit.highlightLengthAtIndex( startIndex, citationStrings[ i ].length );
 					}
 					return false;
 				};
@@ -2817,7 +2710,3 @@ proveit.CiteReference.getTypes = function() {
 proveit.setup();
 
 }( mediaWiki, jQuery ) );
-
-// Local Variables:
-// js2-basic-offset: 8
-// End:
