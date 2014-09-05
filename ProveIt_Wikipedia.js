@@ -1,5 +1,5 @@
 /**
- * ProveIt ( [[User:ProveIt GT]] ) is a powerful GUI tool for viewing, adding, editing, and inserting references on Wikipedia.
+ * ProveIt ([[User:ProveIt GT]]) is a powerful GUI tool for viewing, adding, editing, and inserting references on Wikipedia.
  *
  * Copyright 2008 - 2011
  *
@@ -63,6 +63,12 @@ var proveit = window.proveit = $.extend({
 	 * @type String
 	 */
 	EDIT_PARAM_PREFIX: "editparam",
+
+	/**
+	 * String added to logs for easy search
+	 * @type String
+	 */
+	LOG_MARKER: "[ ProveIt ] ",
 
 	GUI_ID: "proveit",
 
@@ -315,6 +321,10 @@ var proveit = window.proveit = $.extend({
 		}
 	},
 
+
+
+	/* PREFERENCES */
+
 	/**
 	 * Optional preference to specify default date format for new references.
 	 * If set, it overrides the general date preference from Special:Preferences.
@@ -329,6 +339,51 @@ var proveit = window.proveit = $.extend({
 	 * @type DateFormatter
 	 */
 	dateFormatter: null,
+
+	/**
+	 * Keep track of whether we have already added an onsubmit function to include ProveIt in the summary.
+	 * This guarantees the function will not be run twice.
+	 * @type Boolean
+	 */
+	summaryFunctionAdded: false,
+
+	/**
+	 * Does the user want us to ever add "Edited by ProveIt" summary?
+	 * @type Boolean
+	 */
+	shouldAddSummary: true,
+
+	/**
+	 * ProveIt should be visible on load ( rather than requiring toolbar button click ) on supported edit pages
+	 * @type Boolean
+	 */
+ 	loadVisible: true,
+
+	/**
+	 * Maximize ProveIt when it first becomes visible.
+	 * If false, it will start minimized.
+	 * This has no effect on when it becomes visible.
+	 * @type Boolean
+	 */
+	loadMaximized: false,
+
+	/**
+	 * true signifies cite-style references, citation-style otherwise. Used when creating a reference.
+	 * @type Boolean
+	 */
+	togglestyle: true,
+
+	// TODO: This should be eliminated if only name only inserts are allowed.
+	/** true signifies full references, name-only otherwise. Used when inserting.
+	 * Note that new references are always inserted in full.
+	 *
+	 * @type Boolean
+	 */
+	toggleinsert: false,
+
+
+
+	/* GET METHODS */
 
 	/**
 	 * Gets the effective preference for date format. If there is no ProveIt-specific
@@ -354,10 +409,66 @@ var proveit = window.proveit = $.extend({
 	},
 
 	/**
-	 * String added to logs for easy search
-	 * @type String
+	 * Convenience function. Returns the refbox element.
+	 * @return {$Node} reference box
 	 */
-	LOG_MARKER: "[ProveIt] ",
+	getReferenceBox: function() {
+		return $( "#refs" );
+	},
+
+	/**
+	 * Provides the x ( left ) and y ( top ) offsets to a given element.
+	 * From QuirksMode ( http://www.quirksmode.org/js/findpos.html ), a freely available site by Peter-Paul Koch
+	 * @param {Node} node any HTML node
+	 * @return {Object} offsets to node, as object with left and top properties.
+	 */
+	getPosition: function( node ) {
+		var left = 0, top = 0;
+		do {
+			left += node.offsetLeft;
+			top += node.offsetTop;
+		} while ( node = node.offsetParent );
+		return { "left": left, "top": top };
+	},
+
+	/**
+	 * Convenience function. Returns the raw MediaWiki textarea element.
+	 * @return {Node} the edit box element
+	 */
+	getTextbox: function() {
+		return $( "#wpTextbox1" )[0];
+	},
+
+	/**
+	 * Provides value of edit box with CR normalization
+	 *
+	 * @return {String} value of edit box with CRs stripped if document.selection exists
+	 */
+	getTextboxText: function() {
+		var box = this.getTextbox();
+		var value = box.value;
+		// IE 8-like behavior
+		if ( !box.selectionStart && document.selection ) {
+			value = value.replace( /\r\n/g, "\n" );
+		}
+		return value;
+	},
+
+	/**
+	 * Returns raw edit form element, which contains MWEditBox, among other things.
+	 * @return {Node} the edit form element
+	 */
+	getMWEditForm: function() {
+		return $( "#editform" )[0];
+	},
+
+	/**
+	 * Returns the raw MW edit summary element
+	 * @return {Node} the edit summary element
+	 */
+	getSummary: function() {
+		return $( "#wpSummary" )[0];
+	},
 
 	/**
 	 * Convenience log function
@@ -374,7 +485,7 @@ var proveit = window.proveit = $.extend({
 	 * @param {Error} ex error object
 	 */
 	logException: function( ex ) {
-		var args = [ex, ex.stack];
+		var args = [ ex, ex.stack ];
 		if ( typeof console === "object" && $.isFunction( console.error ) ) {
 			args.unshift( this.LOG_MARKER );
 			console.error.apply( null, args );
@@ -403,29 +514,6 @@ var proveit = window.proveit = $.extend({
 		pageName = mw.config.get( 'wgPageName' );
 		// "Regular" article, userspace, or Wikipedia:Sandbox ( exception for testing ).
 		return ( namespace === '' || namespace === 'User' || pageName === 'Wikipedia:Sandbox' );
-	},
-
-	/**
-	 * Convenience function. Returns the refbox element.
-	 * @return {$Node} reference box
-	 */
-	getReferenceBox: function() {
-		return $( "#refs" );
-	},
-
-	/**
-	 * Provides the x ( left ) and y ( top ) offsets to a given element.
-	 * From QuirksMode ( http://www.quirksmode.org/js/findpos.html ), a freely available site by Peter-Paul Koch
-	 * @param {Node} node any HTML node
-	 * @return {Object} offsets to node, as object with left and top properties.
-	 */
-	getPosition: function( node ) {
-		var left = 0, top = 0;
-		do {
-			left += node.offsetLeft;
-			top += node.offsetTop;
-		} while ( node = node.offsetParent );
-		return { "left": left, "top": top };
 	},
 
 	/**
@@ -474,37 +562,6 @@ var proveit = window.proveit = $.extend({
 	},
 
 	/**
-	 * Convenience function. Returns the raw MediaWiki textarea element.
-	 * @return {Node} the edit box element
-	 */
-	getTextbox: function() {
-		return $( "#wpTextbox1" )[0];
-	},
-
-	/**
-	 * Provides value of edit box with CR normalization
-	 *
-	 * @return {String} value of edit box with CRs stripped if document.selection exists
-	 */
-	getTextboxText: function() {
-		var box = this.getTextbox();
-		var value = box.value;
-		// IE 8-like behavior
-		if ( !box.selectionStart && document.selection ) {
-			value = value.replace( /\r\n/g, "\n" );
-		}
-		return value;
-	},
-
-	/**
-	 * Returns raw edit form element, which contains MWEditBox, among other things.
-	 * @return {Node} the edit form element
-	 */
-	getMWEditForm: function() {
-		return $( "#editform" )[0];
-	},
-
-	/**
 	 * Runs a given function on submission of edit form
 	 * @param {Function} subFunc function to run on submission
 	 */
@@ -517,41 +574,6 @@ var proveit = window.proveit = $.extend({
 	},
 
 	/**
-	 * Returns the raw MW edit summary element
-	 * @return {Node} the edit summary element
-	 */
-	getSummary: function() {
-		return $( "#wpSummary" )[0];
-	},
-
-	/**
-	 * Keep track of whether we have already added an onsubmit function to include ProveIt in the summary.
-	 * This guarantees the function will not be run twice.
-	 * @type Boolean
-	 */
-	summaryFunctionAdded: false,
-
-	/**
-	 * Does the user want us to ever add "Edited by ProveIt" summary?
-	 * @type Boolean
-	 */
-	shouldAddSummary: true,
-
-	/**
-	 * ProveIt should be visible on load ( rather than requiring toolbar button click ) on supported edit pages
-	 * @type Boolean
-	 */
- 	loadVisible: true,
-
-	/**
-	 * Maximize ProveIt when it first becomes visible.
-	 * If false, it will start minimized.
-	 * This has no effect on when it becomes visible.
-	 * @type Boolean
-	 */
-	loadMaximized: false,
-
-	/**
 	 * Specifies to include ProveIt edit summary on next save.
 	 * Can be disabled by modifying shouldAddSummary
 	 */
@@ -562,7 +584,7 @@ var proveit = window.proveit = $.extend({
 				this.addOnsubmit( function() {
 					var summary = thisproveit.getSummary();
 					if ( summary.value.indexOf( "ProveIt" ) == -1 ) {
-						summary.value += " ( edited with [[User:ProveIt_GT|ProveIt]] )";
+						summary.value += " (edited with [[User:ProveIt_GT|ProveIt ]])";
 					}
 				});
 				this.summaryFunctionAdded = true;
@@ -614,7 +636,7 @@ var proveit = window.proveit = $.extend({
 	 */
 	load: function() {
 		$( function() {
-			var dependencies = ['jquery.ui.tabs', 'jquery.ui.button', 'jquery.effects.highlight', 'jquery.textSelection', 'mediawiki.util'];
+			var dependencies = [ 'jquery.ui.tabs', 'jquery.ui.button', 'jquery.effects.highlight', 'jquery.textSelection', 'mediawiki.util' ];
 			var preference = proveit.getDatePreference();
 
 			proveit.dateFormatter = new proveit.DateFormatter( preference );
@@ -666,10 +688,10 @@ var proveit = window.proveit = $.extend({
 			peri: insertionText,
 			replace: true
 		});
-		var caretPos = textbox.textSelection( 'getCaretPosition', { startAndEnd: true });
+		var caretPosition = textbox.textSelection( 'getCaretPosition', { startAndEnd: true });
 
 		// This is slightly redundant. It is called primarily for the scrollig workaround
-		this.highlightLengthAtIndex( caretPos[0], caretPos[1] - caretPos[0] );
+		this.highlightLengthAtIndex( caretPosition[0], caretPosition[ 1 ] - caretPosition[0] );
 
 		this.includeProveItEditSummary();
 	},
@@ -690,9 +712,9 @@ var proveit = window.proveit = $.extend({
 		// Clear old params
 		ref.params = {};
 
-		var paramName, paramVal;
+		var paramName, paramValue;
 		for ( var i = 0; i < paramBoxes.length; i++ ) {
-			var paramRow = paramBoxes[i];
+			var paramRow = paramBoxes[ i ];
 			var valueTextbox = $( paramRow ).find( ".paramvalue" )[0];
 
 			// Added with "Add another field"
@@ -702,12 +724,12 @@ var proveit = window.proveit = $.extend({
 				paramName = valueTextbox.id.substring( this.EDIT_PARAM_PREFIX.length );
 			}
 			this.log( "paramName: " + paramName );
-			paramVal = $.trim( valueTextbox.value );
+			paramValue = $.trim( valueTextbox.value );
 
-			this.log( "paramVal: " + paramVal );
+			this.log( "paramValue: " + paramValue );
 
-			if ( paramName != "" && paramVal != "" ) {
-				ref.params[ paramName ] = paramVal;
+			if ( paramName != "" && paramValue != "" ) {
+				ref.params[ paramName ] = paramValue;
 			}
 		}
 		if ( ref.toString() != ref.orig ) {
@@ -724,7 +746,7 @@ var proveit = window.proveit = $.extend({
 	saveRefFromEdit: function( ref ) {
 		if ( !ref.save ) {
 		 var newRichItem = this.makeReferenceBoxRow( ref, true );
-			var oldRichItem = $( '.selected', this.getReferenceBox() ).get( 0 );
+			var oldRichItem = $( '.selected', this.getReferenceBox() ).get(0);
 			var oldNumber = $( 'td.number', oldRichItem ).text();
 			$( 'td.number', newRichItem ).text( oldNumber ); // preserve old numbering
 			oldRichItem.parentNode.replaceChild( newRichItem, oldRichItem );
@@ -745,7 +767,7 @@ var proveit = window.proveit = $.extend({
 		// Don't contaminate actual object with junk params.
 		var tempParams = {};
 		for ( var param in ref.params ) {
-			tempParams[param] = ref.params[param];
+			tempParams[ param ] = ref.params[ param ];
 		}
 
 		// Add default params with blank values.
@@ -780,7 +802,7 @@ var proveit = window.proveit = $.extend({
 		$( '#edit-fields' ).children( '.paramlist' ).children().remove( 'div:not(.hidden)' ); // clear all fields in the edit box ( except the hidden ones )
 
 		for ( var j = 0; j < paramNames.length; j++ ) {
-			this.addPaneRow( $( "#edit-pane" ).get(), tempParams, this.getDescriptions(), paramNames[j], required[paramNames[j]], true );
+			this.addPaneRow( $( "#edit-pane" ).get(), tempParams, this.getDescriptions(), paramNames[ j ], required[ paramNames[j ]], true );
 		}
 
 		var acceptButton = $( '#edit-buttons .accept' );
@@ -794,7 +816,7 @@ var proveit = window.proveit = $.extend({
 		// Without setTimeout, scoll reset doesn't work in Firefox.
 		setTimeout( function() {
 			// Reset scroll
-			$( '#edit-fields' ).scrollTop( 0 );
+			$( '#edit-fields' ).scrollTop(0);
 		}, 0 );
 
 		acceptButton.unbind( 'click.proveit' ).on( 'click.proveit', acceptEdit );
@@ -814,8 +836,8 @@ var proveit = window.proveit = $.extend({
 		var newline = $( '#'+id ).clone(); // clone the hidden row
 		$( newline ).attr( 'id','' ); // clear the ID ( can't have two elements with same ID )
 		//this.activateRemoveField( newline );
-		var paramName = $( '.paramdesc', newline ).eq( 0 );
-		var paramValue = $( '.paramvalue', newline ).eq( 0 );
+		var paramName = $( '.paramdesc', newline ).eq(0);
+		var paramValueue = $( '.paramvalue', newline ).eq(0);
 
 
 		$( '.paramlist', root ).append( newline );
@@ -831,15 +853,15 @@ var proveit = window.proveit = $.extend({
 		//The description/name is a label ( not a textbox )
 		if ( fieldType ) {
 			paramName.attr( "for", this.EDIT_PARAM_PREFIX + item );
-			paramValue.attr( 'id',this.EDIT_PARAM_PREFIX + item );
+			paramValueue.attr( 'id',this.EDIT_PARAM_PREFIX + item );
 
-			var desc = descs[item];
+			var desc = descs[ item ];
 			if ( !desc ) {
 				this.log( "Undefined description for param: " + item + ". Using directly as description." );
 				desc = item;
 			}
 			$( paramName ).text( desc ).attr( 'title', item );
-			$( paramValue ).val( params[item] );
+			$( paramValueue ).val( params[ item ] );
 		} else {
 			// added a new row, so make it fancy
 			$( newline ).show( 'highlight',{},'slow' );
@@ -848,32 +870,10 @@ var proveit = window.proveit = $.extend({
 	},
 
 	/**
-	 * these are the current style and insert values to denote which one is
-	 * currently active
-	 */
-
-	/**
-	 * true signifies cite-style references, citation-style otherwise. Used when creating a reference.
-	 * @type Boolean
-	 */
-	togglestyle: true,
-
-	// TODO: This should be eliminated if only name only inserts are allowed.
-	/** true signifies full references, name-only otherwise. Used when inserting.
-	 * Note that new references are always inserted in full.
-	 *
-	 * @type Boolean
-	 */
-	toggleinsert: false,
-
-	/**
 	 * Cross-Browser Split 1.0.1
 	 * ( c ) Steven Levithan <stevenlevithan.com>; MIT License
 	 * http://blog.stevenlevithan.com/archives/cross-browser-split
 	 * An ECMA-compliant, uniform cross-browser split method
-	 */
-
-	/**
 	 * Cross-browser implementation of ECMAScript String.prototype.split function.
 	 * @param {String} str input string to split
 	 * @param separator separator to split on, as RegExp or String
@@ -881,9 +881,12 @@ var proveit = window.proveit = $.extend({
 	 * @return {Array} array resulting from split
 	 */
 	split: function( str, separator, limit ) {
+		var _compliantExecNpcg = /()??/.exec( "" )[ 1 ] === undefined; // NPCG: nonparticipating capturing group
+		var _nativeSplit = String.prototype.split;
+
 		// if `separator` is not a regex, use the native `split`
-		if ( Object.prototype.toString.call( separator ) !== "[object RegExp]" ) {
-			return proveit.split._nativeSplit.call( str, separator, limit );
+		if ( Object.prototype.toString.call( separator ) !== "[ object RegExp ]" ) {
+			return _nativeSplit.call( str, separator, limit );
 		}
 
 		var output = [],
@@ -895,7 +898,7 @@ var proveit = window.proveit = $.extend({
 		separator2, match, lastIndex, lastLength;
 
 		str = str + ""; // type conversion
-		if ( !proveit.split._compliantExecNpcg ) {
+		if ( !_compliantExecNpcg ) {
 			separator2 = RegExp( "^" + separator.source + "$( ?!\\s )", flags ); // doesn't need /g or /y, but they don't hurt
 		}
 
@@ -923,11 +926,11 @@ var proveit = window.proveit = $.extend({
 				output.push( str.slice( lastLastIndex, match.index ) );
 
 				// fix browsers whose `exec` methods don't consistently return `undefined` for nonparticipating capturing groups
-				if ( !proveit.split._compliantExecNpcg && match.length > 1 ) {
+				if ( !_compliantExecNpcg && match.length > 1 ) {
 					match[0].replace( separator2, function() {
 						for ( var i = 1; i < arguments.length - 2; i++ ) {
-							if ( arguments[i] === undefined ) {
-								match[i] = undefined;
+							if ( arguments[ i ] === undefined ) {
+								match[ i ] = undefined;
 							}
 						}
 					});
@@ -973,10 +976,10 @@ var proveit = window.proveit = $.extend({
 	splitKeysAndValues: function( workingString ) {
 		var split = {};
 		// The first component is "ordinary" text ( no pipes ), while the second is a correctly balanced wikilink, with optional pipe. Any combination of the two can appear.
-		split.names = proveit.split( workingString.substring( workingString.indexOf( "|" ) + 1 ), /=(?:[^|]*?(?:\[\[[^|\]]*(?:\|(?:[^|\]]*))?\]\] )?)+(?:\||\}\})/ );
+		split.names = proveit.split( workingString.substring( workingString.indexOf( "|" ) + 1 ), /=(?:[ ^| ]*?(?:\[ \[[^|\ ]]*(?:\|(?:[ ^|\ ]]*))?\]\])?)+(?:\||\}\})/ );
 		split.names.length--; // Remove single empty element at end
 
-		split.values = proveit.split( workingString.substring( workingString.indexOf( "=" ) + 1, workingString.indexOf( "}}" ) ), /\|[^|=]*=/ );
+		split.values = proveit.split( workingString.substring( workingString.indexOf( "=" ) + 1, workingString.indexOf( "}}" ) ), /\|[ ^|= ]*=/ );
 		return split;
 	},
 
@@ -1003,9 +1006,9 @@ var proveit = window.proveit = $.extend({
 		// Array of reference objects. At end of function, addNewElement called on each.
 		var references = [];
 		 // allRefs should count opening refs, but not ref citation ( not <ref name="..."" /> )
-		var allRefs = textValue.match( /<[\s]*ref[^\/>]*>/gi );
+		var allRefs = textValue.match( /<[ \s ]*ref[ ^\/> ]*>/gi );
 		// currentScan holds the parsed ( match objects ) list of references. Regex matches full or name-only reference.
-		var currentScan = textValue.match( /<[\s]*ref[^>]*>(?:[^<]*<[\s]*\/[\s]*ref[\s]*>)?/gi ); // [^<]* doesn't handle embedded HTML tags ( or comments ) correctly.
+		var currentScan = textValue.match( /<[ \s ]*ref[ ^> ]*>(?:[ ^< ]*<[ \s ]*\/[ \s ]*ref[ \s ]*>)?/gi ); // [ ^< ]* doesn't handle embedded HTML tags ( or comments ) correctly.
 		// if there are results,
 		if ( currentScan ) {
 			for ( var i = 0; i < currentScan.length; i++ ) {
@@ -1018,35 +1021,35 @@ var proveit = window.proveit = $.extend({
 						references.push( reference );
 					}
 				} else { // Not full reference. Possibly citation.
-					var match = currentScan[i].match( this.REF_REGEX );
-					name = match && ( match[1] || match[2] || match[3] );
+					var match = currentScan[ i ].match( this.REF_REGEX );
+					name = match && ( match[ 1 ] || match[ 2 ] || match[ 3 ] );
 				}
 
 				if ( name ) {
 					if ( !citations[ name ] ) {
 						// Create array of original reference strings
 						citations[ name ] = {};
-						if ( !citations[name].strings ) {
-							citations[name].strings = [];
+						if ( !citations[ name ].strings ) {
+							citations[ name ].strings = [];
 						}
 					}
 					// reference, and not already one for this name
-					if ( reference && !citations[name].reference ) {
-						citations[name].reference = reference;
+					if ( reference && !citations[ name ].reference ) {
+						citations[ name ].reference = reference;
 						references.push( reference );
 					}
 
 					// Add to array
-					citations[name].strings.push( currentScan[i] );
+					citations[ name ].strings.push( currentScan[ i ] );
 				}
 			}
 		}
 		for ( var j = 0; j < references.length; j++ ) {
-			if ( references[j].name ) {
-				var citation = citations[references[j].name];
-				references[j].setCitationStrings( citation.strings );
+			if ( references[ j ].name ) {
+				var citation = citations[ references[j ].name];
+				references[ j ].setCitationStrings( citation.strings );
 			}
-			this.addNewElement( references[j] );
+			this.addNewElement( references[ j ] );
 		}
 	},
 
@@ -1054,7 +1057,7 @@ var proveit = window.proveit = $.extend({
 	 * Regex for parsing any reference text.
 	 * @type RegExp
 	 */
-	REF_REGEX: /<[\s]*ref[\s]*name[\s]*=[\s]*(?:(?:\"(.*?)\")|(?:\'(.*? )\')|(?:(.*?)))[\s]*\/?[\s]*>/,
+	REF_REGEX: /<[ \s ]*ref[ \s ]*name[ \s ]*=[ \s ]*(?:(?:\"(.*?)\")|(?:\'(.*? )\')|(?:(.*?)))[ \s ]*\/?[ \s ]*>/,
 
 	/**
 	 * Factory function for references. Takes text of a reference, and returns instance of the appropriate class.
@@ -1062,18 +1065,18 @@ var proveit = window.proveit = $.extend({
 	 * @return {AbstractReference} null if refText isn't a ref, otherwise the reference object
 	 */
 	makeReference: function( refText ) {
-		var isReference = /<[\s]*ref[^>]*>[^<]*\S[^<]*<[\s]*\/[\s]*ref[\s]*>/.test( refText ); // Tests for reference ( non-citation );
+		var isReference = /<[ \s ]*ref[ ^> ]*>[ ^< ]*\S[ ^< ]*<[ \s ]*\/[ \s ]*ref[ \s ]*>/.test( refText ); // Tests for reference ( non-citation );
 		if ( !isReference ) {
 			return null;
 		}
-		var citeFunction = refText.match( /{[\s]*cite/i ) ? this.CiteReference : refText.match( /{[\s]*Citation/i ) ? this.CitationReference : this.RawReference;
+		var citeFunction = refText.match( /{[ \s ]*cite/i ) ? this.CiteReference : refText.match( /{[ \s ]*Citation/i ) ? this.CitationReference : this.RawReference;
 
 		if ( citeFunction != this.RawReference ) {
-			var workingstring = refText.match( /{[\s]*( cite|Citation )[\s\S]*?}}/i )[0];
+			var workingstring = refText.match( /{[ \s ]*( cite|Citation )[ \s\S ]*?}}/i )[0];
 			var match = refText.match( this.REF_REGEX );
 
 			if ( match && match != null ) {
-				var name = match[1] || match[2] || match[3]; // 3 possibilities, corresponding to above regex, are <ref name="foo">, <ref name='bar'>, and <ref name=baz>
+				var name = match[ 1 ] || match[ 2 ] || match[ 3 ]; // 3 possibilities, corresponding to above regex, are <ref name="foo">, <ref name='bar'>, and <ref name=baz>
 			}
 
 			var cutupstring = workingstring.split( /\|/g );
@@ -1101,20 +1104,21 @@ var proveit = window.proveit = $.extend({
 			for ( var j = 0; j < names.length; j++ ) {
 				/* Drop blank space, and |'s without params, which are never correct for
 				 citation templates.*/
-				var paramName = $.trim( names[j] ).replace( /(?:\s*\|)*(.*)/, "$1" );
-				var paramVal = $.trim( values[j] );
+				var paramName = $.trim( names[ j ] ).replace( /(?:\s*\|)*(.*)/, "$1" );
+				var paramValue = $.trim( values[ j ] );
 						 // Should there be a setParam function? It could handle empty values, and even drop ( siliently or otherwise ) invalid parameters. Alternatively, should params be passed in the constructor?
-				if ( paramVal != "" ){
-					citation.params[paramName] = paramVal;
+				if ( paramValue != "" ){
+					citation.params[ paramName ] = paramValue;
 				}
 			}
 		}
 		return citation;
 	},
 
-	// TODO: Use https://gerrit.wikimedia.org/r/#/c/67166/ when merged.
 	/**
 	 * Date-formatting class
+	 *
+	 * TODO: Use https://gerrit.wikimedia.org/r/#/c/67166/ when merged.
 	 *
 	 * @param {String} format one of the format strings supported by MW core.
 	 * Currently, the supported values are 'default', 'mdy', 'dmy', 'ymd', and 'ISO 8601'.
@@ -1124,14 +1128,14 @@ var proveit = window.proveit = $.extend({
 		// 1-indexed ( due to filler item at 0 ), in page content language.
 		var monthNames = mw.config.get( 'wgMonthNames' );
 
-		var supportedFormats = ['mdy', 'dmy', 'ymd', 'ISO 8601'];
+		var supportedFormats = [ 'mdy', 'dmy', 'ymd', 'ISO 8601' ];
 
 		if ( $.inArray( format, supportedFormats ) === -1 ) {
 			format = mw.config.get( 'wgDefaultDateFormat' );
 		}
 
 		function getMonthName( date ) {
-			return monthNames[date.getMonth() + 1];
+			return monthNames[ date.getMonth() + 1 ];
 		}
 
 		this.formatAsMdy = function( date ) {
@@ -1167,7 +1171,7 @@ var proveit = window.proveit = $.extend({
 		 * @return {String} formatted date as String
 		 */
 		this.format = function( date ) {
-			return formatters[format]( date );
+			return formatters[ format ]( date );
 		};
 	},
 
@@ -1176,9 +1180,9 @@ var proveit = window.proveit = $.extend({
 	 * @class AbstractReference
 	 * @for	proveit
 	 * @constructor
-	 * @param {Object} argObj argument object with keys for each option
+	 * @param {Object} argumentObject argument object with keys for each option
 	 */
-	AbstractReference: function( argObj ) {
+	AbstractReference: function( argumentObject ) {
 		// CiteReference has a non-trivial override of this. This is defined early ( and conditionally ) because it is used in the constructor.
 		if ( !this.setType ) {
 			/**
@@ -1210,9 +1214,9 @@ var proveit = window.proveit = $.extend({
 			if ( strings.length > 0 ) {
 				for ( var i = 0; i < strings.length; i++ ) {
 					// If we find the full citation as a citation, update to the new text.
-					if ( strings[i] == this.orig ) {
+					if ( strings[ i ] == this.orig ) {
 						// this.orig itself is updated in updateInText
-						strings[i] = newCiteText;
+						strings[ i ] = newCiteText;
 					}
 				}
 			} else if ( this.name != null ) { // They have added a name, so we should have a main citation.
@@ -1224,13 +1228,13 @@ var proveit = window.proveit = $.extend({
 		 * &lt;ref name /&gt; for reference
 		 * @type String
 		 */
-		this.name = argObj.name != "" ? argObj.name : null; // Save blank names as null
+		this.name = argumentObject.name != "" ? argumentObject.name : null; // Save blank names as null
 
 		/**
 		 * type of reference, e.g. cite web, cite news.
 		 * Also used ( including for CitationReference objects ) to determine default fields.
 		 */
-		this.setType( argObj.type );
+		this.setType( argumentObject.type );
 
 		//TODO: Re-examine whether both ( or indeed either ) of save or inMWEditBox are really necessary. Can it be determined from context?
 
@@ -1239,19 +1243,19 @@ var proveit = window.proveit = $.extend({
 		 * false indicates "dirty" citation that has yet to be updated in text and metadata.
 		 * @type Boolean
 		 */
-		this.save = argObj.save;
+		this.save = argumentObject.save;
 
 		/**
 		 * true if and only if the ref is in the MW edit box with the same value as this object's orig.
 		 * @type Boolean
  		 */
-		this.inMWEditBox = argObj.inMWEditBox;
+		this.inMWEditBox = argumentObject.inMWEditBox;
 
 		/**
 		 * original wikitext for reference
 		 * @type String
 		 */
-		this.orig = argObj.orig;
+		this.orig = argumentObject.orig;
 
 		/**
 		 * mapping of parameter names to values
@@ -1389,7 +1393,7 @@ var proveit = window.proveit = $.extend({
 			}
 			returnstring += "{" + template + ( includeType ? " " + this.type : "" );
 			for ( var name in this.params ) {
-				returnstring += " | " + name + "=" + this.params[name];
+				returnstring += " | " + name + "=" + this.params[ name ];
 			}
 			returnstring += "}}</ref>";
 			return returnstring;
@@ -1432,9 +1436,9 @@ var proveit = window.proveit = $.extend({
 	 * @for proveit
 	 * @constructor
 	 * @extends AbstractReference
-	 * @param {Object} argObj the argument object, with keys for each option
+	 * @param {Object} argumentObject the argument object, with keys for each option
 	 */
-	CiteReference: function( argObj ) {
+	CiteReference: function( argumentObject ) {
 		//This is basically a fast representation of the template redirects, along with self-mappings
 		var typeNameMappings = {
 			web: "web",
@@ -1465,7 +1469,7 @@ var proveit = window.proveit = $.extend({
 		// Sets the type ( e.g. web for cite web ), applying the mappings.
 		// This is up top because it is used in AbstractReference constructor.
 		this.setType = function( rawType ) {
-			var mappedType = typeNameMappings[rawType];
+			var mappedType = typeNameMappings[ rawType ];
 			if ( mappedType != null ) {
 				this.type = mappedType;
 			} else {
@@ -1480,10 +1484,10 @@ var proveit = window.proveit = $.extend({
 		 * @return {String} type for display
 		 */
 		this.getTypeForDisplay = function() {
-			return proveit.getDescriptions()[this.type];
+			return proveit.getDescriptions()[ this.type ];
 		};
 
-		proveit.AbstractReference.call( this, argObj );
+		proveit.AbstractReference.call( this, argumentObject );
 
 		/**
 		 * Returns the sort index for a given parameter
@@ -1595,7 +1599,7 @@ var proveit = window.proveit = $.extend({
 				"time",
 				"quote",
 				"ref"
-			] );
+			 ]);
 		};
 
 		/**
@@ -1627,7 +1631,7 @@ var proveit = window.proveit = $.extend({
 		 * @return {Object} object with required parameters as keys and true as value; empty object for unknown type
 		 */
 		this.getRequiredParams = function() {
-			var curReq = requiredParams[this.type];
+			var curReq = requiredParams[ this.type ];
 			if ( curReq )
 				return curReq;
 			else
@@ -1636,7 +1640,7 @@ var proveit = window.proveit = $.extend({
 
 		// These paramaters will be auto-suggested when editing.
 		var defaultParams = {
-			web: [ "url", "title", "author", "accessdate", "work", "publisher", "date", "pages"],
+			web: [ "url", "title", "author", "accessdate", "work", "publisher", "date", "pages" ],
 			book: [ "title", "author", "authorlink", "year", "isbn", "publisher", "location", "pages", "url" ],
 			journal: [ "title", "author", "journal", "volume", "issue", "year", "month", "pages", "url", "doi" ],
 			conference: [ "conference", "title", "booktitle", "author", "editor", "year", "month", "url", "id", "accessdate", "location", "pages", "publisher" ],
@@ -1645,9 +1649,9 @@ var proveit = window.proveit = $.extend({
 			news: [ "title", "author", "url", "work", "date", "accessdate", "pages", "location", "agency" ],
 			newsgroup: [ "title", "author", "date", "newsgroup", "id", "url", "accessdate" ],
 			"press release"	: [ "title", "url", "publisher", "date", "accessdate" ],
-			interview: ["last", "first", "subjectlink", "interviewer", "title", "callsign", "city", "date", "program", "accessdate"],
-			episode: ["title", "series", "credits", "airdate", "city", "network", "season"],
-			"AV media": ["people", "date", "url", "title", "medium", "location", "publisher"]
+			interview: [ "last", "first", "subjectlink", "interviewer", "title", "callsign", "city", "date", "program", "accessdate" ],
+			episode: [ "title", "series", "credits", "airdate", "city", "network", "season" ],
+			"AV media": [ "people", "date", "url", "title", "medium", "location", "publisher" ]
 		};
 
 		/**
@@ -1655,7 +1659,7 @@ var proveit = window.proveit = $.extend({
 		 * @return {Array} array of default parameter names; empty array if unknown
 		 */
 		this.getDefaultParams = function() {
-			var curDefault = defaultParams[this.type];
+			var curDefault = defaultParams[ this.type ];
 			if ( curDefault )
 				return curDefault;
 			else
@@ -1669,12 +1673,12 @@ var proveit = window.proveit = $.extend({
 			var req = this.getRequiredParams();
 			var i = 0;
 			var allFound = true;
-			for ( var reqParam in req ) {
+			for ( var requiredParam in req ) {
 				// Ignore parameters in req object that are null, undefined, or false. They are not required.
-				if ( !req[reqParam] ) {
+				if ( !req[ requiredParam ] ) {
 					continue;
 				}
-				allFound &= ( reqParam in this.params );
+				allFound &= ( requiredParam in this.params );
 				if ( !allFound ) {
 					break;
 				}
@@ -1696,7 +1700,7 @@ var proveit = window.proveit = $.extend({
 
 		var superGetIcon = this.getIcon;
 		this.getIcon = function() {
-			var icon = iconMapping[this.type];
+			var icon = iconMapping[ this.type ];
 			if ( icon ) {
 				return icon;
 			}
@@ -1710,22 +1714,22 @@ var proveit = window.proveit = $.extend({
 	 * @for proveit
 	 * @constructor
 	 * @extends AbstractReference
-	 * @param {Object} argObj argument object with keys for each option
+	 * @param {Object} argumentObject argument object with keys for each option
 	 */
-	CitationReference: function( argObj ) {
-		proveit.AbstractReference.call( this, argObj );
+	CitationReference: function( argumentObject ) {
+		proveit.AbstractReference.call( this, argumentObject );
 
 		// None currently required;
 		var requiredParams = {};
 
 		// These paramaters will be auto-suggested when editing.
 		var defaultParams = {
-			web: [ "url", "author", "title", "date", "accessdate"],
-			news: [ "author", "title", "newspaper", "url", "publication-place", "volume", "issue", "date", "pages"],
-			encyclopedia: ["author", "editor", "contribution", "title", "publisher", "place", "year", "volume", "pages"],
-			book: ["author", "title", "publisher", "place", "year"],
-			journal: ["author", "title", "journal", "volume", "issue", "year", "pages"],
-			patent: ["inventor", "title", "issue-date", "patent-number", "country-code"]
+			web: [ "url", "author", "title", "date", "accessdate" ],
+			news: [ "author", "title", "newspaper", "url", "publication-place", "volume", "issue", "date", "pages" ],
+			encyclopedia: [ "author", "editor", "contribution", "title", "publisher", "place", "year", "volume", "pages" ],
+			book: [ "author", "title", "publisher", "place", "year" ],
+			journal: [ "author", "title", "journal", "volume", "issue", "year", "pages" ],
+			patent: [ "inventor", "title", "issue-date", "patent-number", "country-code" ]
 		};
 
 		/**
@@ -1771,7 +1775,7 @@ var proveit = window.proveit = $.extend({
 				"doi",
 				"oclc",
 				"accessdate"
-			] );
+			 ]);
 		};
 
 		/**
@@ -1796,9 +1800,9 @@ var proveit = window.proveit = $.extend({
 		 */
 		this.getDefaultParams = function() {
 			if ( this.type ) {
-				return defaultParams[this.type];
+				return defaultParams[ this.type ];
 			} else {
-				return ["url", "title", "author", "date", "publisher"]; // Can't determine more specific defaults when editing a pre-existing Citation.
+				return [ "url", "title", "author", "date", "publisher" ]; // Can't determine more specific defaults when editing a pre-existing Citation.
 			}
 		};
 	},
@@ -1809,10 +1813,10 @@ var proveit = window.proveit = $.extend({
 	 * @for proveit
 	 * @constructor
 	 * @extends AbstractReference
-	 * @param {Object} argObj the argument object, with keys for each option
+	 * @param {Object} argumentObject the argument object, with keys for each option
 	 */
-	RawReference: function( argObj ) {
-		proveit.AbstractReference.call( this, argObj );
+	RawReference: function( argumentObject ) {
+		proveit.AbstractReference.call( this, argumentObject );
 		this.type = 'raw';
 
 		/**
@@ -1822,14 +1826,14 @@ var proveit = window.proveit = $.extend({
 		this.toString = function() {
 			return this.orig;
 		};
-		this.params['title'] = this.orig;
+		this.params[ 'title' ] = this.orig;
 
 		this.getIcon = function() {
 			return 'https://upload.wikimedia.org/wikipedia/commons/d/db/Silk-Page_white_code_red.png';
 		};
 
 		this.getTypeForDisplay = function() {
-			return proveit.getDescriptions()['raw'];
+			return proveit.getDescriptions()[ 'raw' ];
 		};
 	},
 
@@ -1850,12 +1854,12 @@ var proveit = window.proveit = $.extend({
 		var citeFunc = this.togglestyle ? this.CiteReference : this.CitationReference;
 		var ref = new citeFunc({"name": refName, "type": type});
 
-		var paramName, paramVal;
+		var paramName, paramValue;
 
 		var paramList = $( ".paramlist", box )[0];
 		var paramRows = $( 'div', paramList );
 		for ( var i = 0; i < paramRows.length; i++ ) {
-			var paramRow = paramRows[i];
+			var paramRow = paramRows[ i ];
 			var valueTextbox = $( ".paramvalue", paramRow )[0];
 
 			// Added with "Add another field"
@@ -1865,10 +1869,10 @@ var proveit = window.proveit = $.extend({
 				paramName = valueTextbox.id.substring( this.NEW_PARAM_PREFIX.length );
 			}
 
-			paramVal = $.trim( valueTextbox.value );
-			if ( paramName != "" && paramVal != "" ) {
+			paramValue = $.trim( valueTextbox.value );
+			if ( paramName != "" && paramValue != "" ) {
 				// Non-blank
-				ref.params[paramName] = paramVal;
+				ref.params[ paramName ] = paramValue;
 			}
 		}
 		ref.update();
@@ -1926,62 +1930,62 @@ var proveit = window.proveit = $.extend({
 	 */
 	changeAddPane: function( menu ) {
 		// Reset scroll
-		$( '#add-fields' ).scrollTop( 0 );
+		$( '#add-fields' ).scrollTop(0);
 		$( menu.parentNode ).show(); // cite/citation vbox.
 
-		var citePanes = $( ".addpanes", menu.parentNode.parentNode ).get( 0 );
+		var citePanes = $( ".addpanes", menu.parentNode.parentNode ).get(0);
 		this.clearCitePanes( citePanes );
-		var newRefType = menu.value;
+		var newReferenceType = menu.value;
 
 		var genPane = document.getElementById( "dummyCitePane" ).cloneNode( true );
 		var $genPane = $( genPane ).attr( 'id', '' );
-		$genPane.data( 'proveitRefType', newRefType );
+		$genPane.data( 'proveitRefType', newReferenceType );
 
 		// name the ref-name-row
 		$( '.ref-name-row', $genPane ).children( 'input' ).attr( 'id','addrefname' );
 		$( '.ref-name-row', $genPane ).children( 'label' ).attr( 'for','addrefname' );
 
 		// Somewhat hackish. What's a better way?
-		var newRef;
+		var newReference;
 		if ( menu.id == "citemenu" ) {
-			newRef = new this.CiteReference({});
+			newReference = new this.CiteReference({});
 		} else {
-			newRef = new this.CitationReference({});
+			newReference = new this.CitationReference({});
 		}
-		newRef.type = newRefType;
+		newReference.type = newReferenceType;
 		var descs = this.getDescriptions();
-		var defaultParams = newRef.getDefaultParams().slice( 0 ); // copy
-		defaultParams.sort( newRef.getSorter() );
-		//var required = newRef.getRequiredParams();
+		var defaultParams = newReference.getDefaultParams().slice(0); // copy
+		defaultParams.sort( newReference.getSorter() );
+		//var required = newReference.getRequiredParams();
 
 		// Possibly, Cite objects should automatically include default parameters in their param maps. That would seem to make this simpler.
 		for ( var i = 0; i < defaultParams.length; i++ ) {
-			newRef.params[defaultParams[i]] = "";
+			newReference.params[ defaultParams[ i ] ] = "";
 		}
 
 		// Should there be a getParamKeys or similar function for this, or even getSortedParamKeys?
 		var newParams = [];
-		for ( param in newRef.params ) {
+		for ( param in newReference.params ) {
 			newParams.push( param );
 		}
-		newParams.sort( newRef.getSorter() );
-		var required = newRef.getRequiredParams();
+		newParams.sort( newReference.getSorter() );
+		var required = newReference.getRequiredParams();
 
 		var paramList = $( ".paramlist", $genPane )[0];
 		for ( var i = 0; i < newParams.length; i++ ) {
-			var param = newParams[i];
+			var param = newParams[ i ];
 			var paramBox;
 
-			if ( descs[param] ) {
+			if ( descs[ param ] ) {
 				paramBox = document.getElementById( "preloadedparamrow" ).cloneNode( true );
 				var label = $( '.paramdesc', paramBox );
-				if ( required[param] ) {
+				if ( required[ param ] ) {
 					label.addClass( "required" );
 					$( '.delete-field', paramBox ).remove(); // don't let people remove required fields
 				} else {
 					this.activateRemoveField( paramBox );
 				}
-				label.text( descs[param] );
+				label.text( descs[ param ] );
 				// Basically the same code as nameHbox above
 				label.attr( "for", this.NEW_PARAM_PREFIX + param );
 				if ( param == 'accessdate' ) {
@@ -1998,7 +2002,7 @@ var proveit = window.proveit = $.extend({
 			this.activateRemoveField( paramBox );
 
 			$( ".paramvalue", paramBox )[0].id = this.NEW_PARAM_PREFIX + param;
-			//paramBox.childNodes[2].value = newRef.params[param]; // Causes parameters to disappear. Why?
+			//paramBox.childNodes[ 2 ].value = newReference.params[ param ]; // Causes parameters to disappear. Why?
 			paramList.appendChild( paramBox );
 		}
 		$( citePanes ).prepend( $genPane );
@@ -2025,7 +2029,7 @@ var proveit = window.proveit = $.extend({
 		//$( 'input', $addRefNameRow ).attr( 'id', 'addrefname' );
 		//$( 'label', $addRefNameRow ).attr( 'for', 'addrefname' );
 		dummyCite.append( $addRefNameRow );
-		dummyCite.append( $( '<div>', {"class": 'paramlist'}) );
+		dummyCite.append( $( '<div>', {"class": 'paramlist'}));
 		$root.append( dummyCite );
 
 		var preloadedparam = $( '<div>', {
@@ -2033,7 +2037,7 @@ var proveit = window.proveit = $.extend({
 			"class": 'preloadedrow input-row'
 		}).append( $( '<label>', {
 			"class": 'paramdesc'
-		}) );
+		}));
 
 		var paramvalue = $( '<input>', {
 			"class": 'paramvalue',
@@ -2062,7 +2066,7 @@ var proveit = window.proveit = $.extend({
 		 append( $( '<input>', {
 				"class": 'paramdesc',
 				tabindex: 0
-			}) ).
+			})).
 			append( paramvalue.clone() ).
 			append( deleteButton.clone() );
 
@@ -2092,7 +2096,7 @@ var proveit = window.proveit = $.extend({
 			id: 'editrefname',
 			"class": 'paramvalue',
 			tabindex: 0
-		}) );
+		}));
 		return $refNameRow;
 	},
 
@@ -2148,12 +2152,12 @@ var proveit = window.proveit = $.extend({
 		var refTable = $( '<table>', {id: 'refs'});
 		var dummyRef = $( '<tr>', {id: 'dummyRef',
 					 style: 'display: none;'});
-		dummyRef.append( $( '<td>', {"class": 'number'}) ).
-			append( $( '<td>', {"class": 'type'}) ).
-			append( $( '<td>', {"class": 'title'}) );
-			//append( $( '<td>', {"class": 'details'}) );
+		dummyRef.append( $( '<td>', {"class": 'number'})).
+			append( $( '<td>', {"class": 'type'})).
+			append( $( '<td>', {"class": 'title'}));
+			//append( $( '<td>', {"class": 'details'}));
 		var editTd = $( '<td>', {"class": 'edit'}).
-			append( $( '<button>', {text: 'edit'}) );
+			append( $( '<button>', {text: 'edit'}));
 		dummyRef.append( editTd );
 		refTable.append( dummyRef );
 		viewScroll.append( refTable );
@@ -2217,7 +2221,7 @@ var proveit = window.proveit = $.extend({
 		var citemenu = $( '<select/>', {
 			id: 'citemenu',
 			change: function() {
-				proveit.changeAddPane( citemenu.get( 0 ) );
+				proveit.changeAddPane( citemenu.get(0) );
 			}
 		});
 		var citeTypes = this.CiteReference.getTypes();
@@ -2225,8 +2229,8 @@ var proveit = window.proveit = $.extend({
 		for ( var i = 0; i < citeTypes.length; i++ ) {
 			citemenu.append( 
 				$( '<option/>', {
-					value: citeTypes[i],
-					text: descs[citeTypes[i]]
+					value: citeTypes[ i ],
+					text: descs[ citeTypes[i ]]
 				}
 			 ) );
 		}
@@ -2234,7 +2238,7 @@ var proveit = window.proveit = $.extend({
 		addFields.append( cite );
 		addFields.append( $( '<div/>', {"class": 'addpanes',
 					 id: 'citepanes',
-					 tabindex: -1}) );
+					 tabindex: -1}));
 		var citation = $( '<div/>', {style: 'display: none',
 					 id: 'citation',
 					 "class": 'input-row'});
@@ -2242,22 +2246,22 @@ var proveit = window.proveit = $.extend({
 		citation.append( refCitationTypeLabel );
 		var citationmenu = $( '<select/>', {id: 'citemenu',
 			change: function() {
-				proveit.changeAddPane( citationmenu.get( 0 ) );
+				proveit.changeAddPane( citationmenu.get(0) );
 						 }});
-		var citationTypes = ['web', 'book', 'journal', 'encyclopedia', 'news', 'patent'];
+		var citationTypes = [ 'web', 'book', 'journal', 'encyclopedia', 'news', 'patent' ];
 		for ( var j = 0; j < citationTypes.length; j++ ) {
-			citationmenu.append( $( '<option/>', {value: citationTypes[i],
-			 text: descs[citationTypes[i]]}) );
+			citationmenu.append( $( '<option/>', {value: citationTypes[ i ],
+			 text: descs[ citationTypes[i ]]}));
 		}
 		citation.append( citationmenu );
 		addFields.append( citation ).
 			append( $( '<div/>', {"class": 'addpanes',
-					 id: 'citationpanes', style: 'display: none;'}) );
+					 id: 'citationpanes', style: 'display: none;'}));
 		addPanel.append( addFields );
 		// Add buttons, part of add tab
 		var addButtons = $( '<div/>', {id: 'add-buttons'});
 		addButtons.append( $( '<button/>', {style: 'margin-right: 50px;',
-						 text: 'add field'}) ).
+						 text: 'add field'})).
 			append( reqSpan.clone() ).
 			append( " = required" ).
 			append( saveButton.clone().text( 'insert into edit form' ) ).
@@ -2322,7 +2326,7 @@ var proveit = window.proveit = $.extend({
 				secondary: 'ui-icon-circle-arrow-e'
 			}
 		}).click( function() {
-			proveit.addReference( proveit.getReferenceFromAddPane( $( '#proveit-add-panel .typepane' ).get( 0 ) ) );
+			proveit.addReference( proveit.getReferenceFromAddPane( $( '#proveit-add-panel .typepane' ).get(0) ) );
 			$tabs.tabs({ active: 0 }); // Activate view panel
 			$( "div.scroll, #view-pane" ).scrollTop( 100000 ); // scroll to new ref
 		}).next().button({
@@ -2471,7 +2475,7 @@ var proveit = window.proveit = $.extend({
 
 		//var refbox = this.getReferenceBox();
 
-		var newchild = $( '<tr><td class="number"></td><td class="type"></td><td class="title"></td><td class="edit"></td></tr>' ).get( 0 );
+		var newchild = $( '<tr><td class="number"></td><td class="type"></td><td class="title"></td><td class="edit"></td></tr>' ).get(0);
 		// removed <span class="pointers"></span>
 		// removed <td class="details"></td>
 
@@ -2480,14 +2484,14 @@ var proveit = window.proveit = $.extend({
 			$( newchild ).addClass( 'invalid' );
 		}
 		// grab the nodes that need changed out of it
-		var neweditimage = $( '.edit button', newchild ).get( 0 );
+		var neweditimage = $( '.edit button', newchild ).get(0);
 		var thisproveit = this;
 
 		var title = '';
 		var shortTitle = '';
 
-		if ( ref.params['title'] != null ) {
-			title = ref.params['title'];
+		if ( ref.params[ 'title' ] != null ) {
+			title = ref.params[ 'title' ];
 			shortTitle = this.truncateTitle( title );
 		}
 
@@ -2497,12 +2501,12 @@ var proveit = window.proveit = $.extend({
 		// deal with variations of date info
 		var formattedYear = '';
 
-		if ( ref.params['year'] ) {
-			formattedYear = ref.params['year'];
-		} else if ( ref.params['date'] ) {
-		 var yearMatch = ref.params['date'].match( /^( [12]\d{3})/ );
+		if ( ref.params[ 'year' ] ) {
+			formattedYear = ref.params[ 'year' ];
+		} else if ( ref.params[ 'date' ] ) {
+		 var yearMatch = ref.params[ 'date' ].match( /^( [ 12 ]\d{3})/ );
 			if ( yearMatch ) {
-				formattedYear = yearMatch[1];
+				formattedYear = yearMatch[ 1 ];
 			}
 		}
 
@@ -2511,16 +2515,16 @@ var proveit = window.proveit = $.extend({
 		// deal with variations of author info
 		var formattedAuthor = '';
 
-		if ( ref.params['author'] ) {
-			formattedAuthor = ref.params['author'];
-		} else if ( ref.params['last'] ) {
-			// if ( ref.params['first'] )
-				// formattedAuthor = ref.params['last'] + ', ' + ref.params['first'];
+		if ( ref.params[ 'author' ] ) {
+			formattedAuthor = ref.params[ 'author' ];
+		} else if ( ref.params[ 'last' ] ) {
+			// if ( ref.params[ 'first' ] )
+				// formattedAuthor = ref.params[ 'last' ] + ', ' + ref.params[ 'first' ];
 			// else
-				formattedAuthor = ref.params['last'];
+				formattedAuthor = ref.params[ 'last' ];
 		}
 
-		if ( ref.params['coauthors'] || ref.params['last2'] )
+		if ( ref.params[ 'coauthors' ] || ref.params[ 'last2' ] )
 			formattedAuthor += ' <i>et al.</i>';
 
 		// build the "details" cell based on presence of author/year data
@@ -2538,22 +2542,22 @@ var proveit = window.proveit = $.extend({
 
 		switch( refType ) {
 			case 'web':
-				url = ref.params['url'];
+				url = ref.params[ 'url' ];
 				break;
 			case 'book':
-				if ( ref.params['isbn'] != null )
-					url = mw.util.getUrl( 'Special:BookSources', { isbn: ref.params['isbn'] });
+				if ( ref.params[ 'isbn' ] != null )
+					url = mw.util.getUrl( 'Special:BookSources', { isbn: ref.params[ 'isbn' ] });
 				break;
 			case 'journal':
 			case 'conference':
-				if ( ref.params['doi'] != null )
-					url = 'http://dx.doi.org/' + ref.params['doi'];
+				if ( ref.params[ 'doi' ] != null )
+					url = 'http://dx.doi.org/' + ref.params[ 'doi' ];
 				break;
 			case 'news':
-				url = ref.params['url'];
+				url = ref.params[ 'url' ];
 				break;
 			case 'episode':
-				url = 'http://www.imdb.com/find?s=ep&q=' + escape( ref.params['title'] );
+				url = 'http://www.imdb.com/find?s=ep&q=' + escape( ref.params[ 'title' ] );
 				break;
 		}
 		$( 'td.type', newchild ).css( 'background-image','url( '+icon+' )' );
@@ -2659,20 +2663,20 @@ var proveit = window.proveit = $.extend({
 					var last = 0, j = 0;
 					var text = proveit.getTextboxText();
 					for ( j = 0; j < i; j++ ) {
-						last = text.indexOf( citationStrings[j], last );
+						last = text.indexOf( citationStrings[ j ], last );
 
 						// Shouldn't happen. Indicates citation strings are out of date.
 						if ( last == -1 ) {
-							proveit.log( "citationStrings[" + j + "]: " + citationStrings[j] + " not found. Returning." );
+							proveit.log( "citationStrings[ " + j + " ]: " + citationStrings[ j ] + " not found. Returning." );
 							return false;
 						}
-						last += citationStrings[j].length;
+						last += citationStrings[ j ].length;
 					}
-					var startInd = text.indexOf( citationStrings[i], last );
+					var startInd = text.indexOf( citationStrings[ i ], last );
 					if ( startInd == -1 ) {
-						proveit.log( "citationStrings[" + i + "]: " + citationStrings[i] + " not found." );
+						proveit.log( "citationStrings[ " + i + " ]: " + citationStrings[ i ] + " not found." );
 					} else {
-						proveit.highlightLengthAtIndex( startInd, citationStrings[i].length );
+						proveit.highlightLengthAtIndex( startInd, citationStrings[ i ].length );
 					}
 					return false;
 				};
@@ -2807,11 +2811,8 @@ var proveit = window.proveit = $.extend({
  * @return {Array} array of cite method types
  */
 proveit.CiteReference.getTypes = function() {
-	return ["web", "book", "journal", "conference", "encyclopedia", "news", "newsgroup", "press release", "interview", "episode", "AV media"];
+	return [ "web", "book", "journal", "conference", "encyclopedia", "news", "newsgroup", "press release", "interview", "episode", "AV media" ];
 };
-
-proveit.split._compliantExecNpcg = /()??/.exec( "" )[1] === undefined; // NPCG: nonparticipating capturing group
-proveit.split._nativeSplit = String.prototype.split;
 
 proveit.setup();
 
