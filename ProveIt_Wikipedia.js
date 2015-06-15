@@ -23,6 +23,13 @@ var proveit = $.extend({
 
 	TEMPLATE_REFERENCE_ICON: '//upload.wikimedia.org/wikipedia/commons/d/dd/Silk-Page_white.png',
 
+
+	/**
+	 * Keep track of whether we have already added ProveIt to the summary.
+	 * @type boolean
+	 */
+	summaryAdded: false,
+
 	/**
 	 * Convenience function that returns the message for the given key.
 	 *
@@ -328,19 +335,20 @@ var proveit = $.extend({
 		return reference;
 	},
 
-	// XXX: Add back old behavior; this is not meant to be the only summary.
 	/**
 	 * Adds the ProveIt edit summary to the edit summary field.
 	 *
 	 * @return {void}
 	 */
 	addSummary: function () {
-		var summary = $( '#wpSummary' ).val();
-		if ( summary ) {
-			return; // If there is already a summary, don't screw it up
+		if ( this.summaryAdded ) {
+			return;
 		}
-		summary = proveit.getMessage( 'summary' );
+
+		var summary = $( '#wpSummary' ).val();
+		summary = summary + proveit.getMessage( 'summary' );
 		$( '#wpSummary' ).val( summary );
+		this.summaryAdded = true;
 	},
 
 	/**
