@@ -203,8 +203,7 @@ proveit.templates = {
 		'postscript':           { label: 'Closing punctuation for the citation', hidden: true },
 		'layurl':               { label: 'Link to a summary', hidden: true },
 		'laydate':              { label: 'Date of the summary', hidden: true },
-		'laysource':            { label: 'Source of the summary', hidden: true },
-		'display-authors':      { label: 'Display authors?' }
+		'laysource':            { label: 'Source of the summary', hidden: true }
 	},
 	'Cite encyclopedia': {
 		'title':        { label: 'Otsikko', required: true },
@@ -409,5 +408,5 @@ proveit.icons = {
 	'Cite press release': '//upload.wikimedia.org/wikipedia/commons/b/bd/Silk-Transmit_blue.png',
 	'Cite interview': '//upload.wikimedia.org/wikipedia/commons/f/f7/Silk-Telephone.png',
 	'Cite episode': '//upload.wikimedia.org/wikipedia/commons/b/b2/Silk-Television.png',
-	'Cite AV media': '//upload.wikimedia.org/wikipedia/commons/1/1a/Silk-film.png',
+	'Cite AV media': '//upload.wikimedia.org/wikipedia/commons/1/1a/Silk-film.png'
 };

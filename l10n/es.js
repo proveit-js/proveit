@@ -73,7 +73,6 @@ proveit.templates = {
 		'ubicación':    { label: 'Ubicación', hidden: true },
 		'isbn':         { label: 'ISBN', hidden: true },
 		'páginas':      { label: 'Páginas', hidden: true },
-		'isbn':         { label: 'ISBN', hidden: true },
 		'oclc':         { label: 'OCLC', hidden: true },
 		'doi':          { label: 'DOI', hidden: true }
 	},
@@ -196,5 +195,5 @@ proveit.icons = {
 	'Cite conferencia': '//upload.wikimedia.org/wikipedia/commons/b/bd/Silk-Transmit_blue.png',
 	'Cite vídeo': '//upload.wikimedia.org/wikipedia/commons/1/1a/Silk-film.png',
 	'Cita episodio': '//upload.wikimedia.org/wikipedia/commons/b/b2/Silk-Television.png',
-	'Cita publicación': '//upload.wikimedia.org/wikipedia/commons/f/f8/Silk-Page_white_text.png',
+	'Cita publicación': '//upload.wikimedia.org/wikipedia/commons/f/f8/Silk-Page_white_text.png'
 };
