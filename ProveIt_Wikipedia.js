@@ -220,7 +220,7 @@ var proveit = $.extend({
 		// Three possibilities: <ref name="foo" />, <ref name='foo' /> and <ref name=foo />
 		var citationsRegExp = /<\s*ref\s+name\s*=\s*["|']?\s*([^"'\s]+)\s*["|']?\s*\/\s*>/gi;
 		var match, citation;
-		while ( match = citationsRegExp.exec( text ) ) {
+		while ( ( match = citationsRegExp.exec( text ) ) ) {
 			citation = new proveit.Citation({ 'name': match[1], 'index': match.index, 'string': match[0] });
 			citations.push( citation );
 		}
