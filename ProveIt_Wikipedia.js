@@ -14,7 +14,6 @@
 
 var proveit = $.extend({
 
-
 	LOGO: '//upload.wikimedia.org/wikipedia/commons/0/0d/ProveIt_user_interface_logo.png',
 
 	ICON: '//upload.wikimedia.org/wikipedia/commons/thumb/1/19/ProveIt_logo_for_user_boxes.svg/22px-ProveIt_logo_for_user_boxes.svg.png',
@@ -23,9 +22,9 @@ var proveit = $.extend({
 
 	TEMPLATE_REFERENCE_ICON: '//upload.wikimedia.org/wikipedia/commons/d/dd/Silk-Page_white.png',
 
-
 	/**
 	 * Keep track of whether we have already added ProveIt to the summary.
+	 *
 	 * @type boolean
 	 */
 	summaryAdded: false,
@@ -116,26 +115,22 @@ var proveit = $.extend({
 		var gui = $( '<div>' ).attr( 'id', 'proveit' );
 
 		// Tabs
-		var tabs = $( '<div>').attr( 'id', 'proveit-tabs' );
-		var editTab = $( '<span>' ).attr( 'id', 'proveit-edit-tab' ).addClass( 'active' ).text( proveit.getMessage( 'edit-tab' ) );
-		var addTab = $( '<span>' ).attr( 'id', 'proveit-add-tab' ).text( proveit.getMessage( 'add-tab' ) );
-		var logo = $( '<img>' ).attr( {
-			'id': 'proveit-logo',
-			'src': proveit.LOGO,
-			'alt': 'ProveIt'
-		} );
+		var tabs = $( '<div>').attr( 'id', 'proveit-tabs' ),
+			editTab = $( '<span>' ).attr( 'id', 'proveit-edit-tab' ).addClass( 'active' ).text( proveit.getMessage( 'edit-tab' ) ),
+			addTab = $( '<span>' ).attr( 'id', 'proveit-add-tab' ).text( proveit.getMessage( 'add-tab' ) ),
+			logo = $( '<img>' ).attr({ 'id': 'proveit-logo', 'src': proveit.LOGO, 'alt': 'ProveIt' });
 
 		// Content
-		var content = $( '<div>' ).attr( 'id', 'proveit-content' );
-		var referenceList = $( '<ul>' ).attr( 'id', 'proveit-reference-list' );
-		var referenceFormContainer = $( '<div>' ).attr( 'id', 'proveit-reference-form-container' );
+		var content = $( '<div>' ).attr( 'id', 'proveit-content' ),
+			referenceList = $( '<ul>' ).attr( 'id', 'proveit-reference-list' ),
+			referenceFormContainer = $( '<div>' ).attr( 'id', 'proveit-reference-form-container' );
 
 		// Buttons
-		var buttons = $( '<div>' ).attr( 'id', 'proveit-buttons' );
-		var addCustomParamButton = $( '<button>' ).attr( 'id', 'proveit-add-custom-param-button' ).text( proveit.getMessage( 'add-custom-param-button' ) );
-		var showAllParamsButton = $( '<button>' ).attr( 'id', 'proveit-show-all-params-button' ).text( proveit.getMessage( 'show-all-params-button' ) );
-		var updateButton = $( '<button>' ).attr( 'id', 'proveit-update-button' ).text( proveit.getMessage( 'update-button' ) );
-		var insertButton = $( '<button>' ).attr( 'id', 'proveit-insert-button' ).text( proveit.getMessage( 'insert-button' ) );
+		var buttons = $( '<div>' ).attr( 'id', 'proveit-buttons' ),
+			addCustomParamButton = $( '<button>' ).attr( 'id', 'proveit-add-custom-param-button' ).text( proveit.getMessage( 'add-custom-param-button' ) ),
+			showAllParamsButton = $( '<button>' ).attr( 'id', 'proveit-show-all-params-button' ).text( proveit.getMessage( 'show-all-params-button' ) ),
+			updateButton = $( '<button>' ).attr( 'id', 'proveit-update-button' ).text( proveit.getMessage( 'update-button' ) ),
+			insertButton = $( '<button>' ).attr( 'id', 'proveit-insert-button' ).text( proveit.getMessage( 'insert-button' ) );
 
 		// Then put everything together and add it to the DOM
 		tabs.append( logo ).append( editTab ).append( addTab );
@@ -167,10 +162,10 @@ var proveit = $.extend({
 			insertButton.show();
 
 			// Create an empty reference and an empty form out of it
-			var registeredTemplates = proveit.getRegisteredTemplates();
-			var firstTemplate = Object.keys( registeredTemplates )[0]; // The first template defined will be the default one
-			var emptyReference = new proveit.TemplateReference({ 'template': firstTemplate });
-			var emptyForm = emptyReference.toForm();
+			var registeredTemplates = proveit.getRegisteredTemplates(),
+				firstTemplate = Object.keys( registeredTemplates )[0], // The first template defined will be the default one
+				emptyReference = new proveit.TemplateReference({ 'template': firstTemplate }),
+				emptyForm = emptyReference.toForm();
 			referenceFormContainer.html( emptyForm ).show();
 		});
 
@@ -181,7 +176,7 @@ var proveit = $.extend({
 
 		showAllParamsButton.click( function () {
 			$( this ).hide();
-			$( '#proveit-reference-form label' ).css( { 'display': 'block' } );
+			$( '#proveit-reference-form label' ).css( 'display', 'block' );
 		});
 
 		proveit.getTextbox().change( function () {
@@ -196,13 +191,13 @@ var proveit = $.extend({
 	 * @param {string} [value] Value
 	 */
 	makeCustomParameterPair: function ( key, value ) {
-		var pair = $( '<span>' ).addClass( 'proveit-param-pair' );
-		var nameInput = $( '<input>' ).attr( { 'type': 'text', 'class': 'param-name' } );
+		var pair = $( '<span>' ).addClass( 'proveit-param-pair' ),
+			nameInput = $( '<input>' ).attr( 'class', 'param-name' );
 		if ( key ) {
 			nameInput.val( key );
 		}
 
-		var valueInput = $( '<input>' ).attr( { 'type': 'text',  'class': 'param-value' } );
+		var valueInput = $( '<input>' ).attr( 'class', 'param-value' );
 		if ( value ) {
 			valueInput.val( value );
 		}
@@ -222,11 +217,12 @@ var proveit = $.extend({
 		$( '#proveit-reference-list' ).children().remove();
 
 		// Second, look for all the citations and store them in an array for later
-		var text = proveit.getTextbox().val();
-		var citations = [];
-		// Three possibilities: <ref name="foo" />, <ref name='foo' /> and <ref name=foo />
-		var citationsRegExp = /<\s*ref\s+name\s*=\s*["|']?\s*([^"'\s]+)\s*["|']?\s*\/\s*>/gi;
-		var match, citation;
+		var text = proveit.getTextbox().val(),
+			citations = [],
+			citationsRegExp = /<\s*ref\s+name\s*=\s*["|']?\s*([^"'\s]+)\s*["|']?\s*\/\s*>/gi, // Three possibilities: <ref name="foo" />, <ref name='foo' /> and <ref name=foo />
+			match,
+			citation;
+
 		while ( ( match = citationsRegExp.exec( text ) ) ) {
 			citation = new proveit.Citation({ 'name': match[1], 'index': match.index, 'string': match[0] });
 			citations.push( citation );
@@ -236,7 +232,7 @@ var proveit = $.extend({
 		var matches = text.match( /<\s*ref.*?<\s*\/\s*ref\s*>/gi );
 
 		if ( !matches ) {
-			var noReferencesMessage = $( '<div>' ).attr( { 'id': 'proveit-no-references-message' } ).text( proveit.getMessage( 'no-references' ) );
+			var noReferencesMessage = $( '<div>' ).attr( 'id', 'proveit-no-references-message' ).text( proveit.getMessage( 'no-references' ) );
 			$( '#proveit-reference-list' ).append( noReferencesMessage );
 			return false;
 		}
@@ -268,29 +264,28 @@ var proveit = $.extend({
 	 * @return {Citation} Reference object
 	 */
 	makeReference: function ( referenceString ) {
-		var template;
 
 		// First we need to determine what kind of reference is it
 		// For this we need to get all the template names and search for a match
-		var registeredTemplates = proveit.getRegisteredTemplates();
-		var registeredTemplatesArray = [];
-		var registeredTemplate;
+		var registeredTemplates = proveit.getRegisteredTemplates(),
+			registeredTemplatesArray = [],
+			registeredTemplate;
 		for ( registeredTemplate in registeredTemplates ) {
 			registeredTemplatesArray.push( registeredTemplate );
 		}
-		var registeredTemplatesDisjunction = registeredTemplatesArray.join( '|' );
-		var regExp = new RegExp( '{{(' + registeredTemplatesDisjunction + ').*}}', 'i' );
-		var match = referenceString.match( regExp );
+		var registeredTemplatesDisjunction = registeredTemplatesArray.join( '|' ),
+			regExp = new RegExp( '{{(' + registeredTemplatesDisjunction + ').*}}', 'i' ),
+			match = referenceString.match( regExp ),
+			reference;
 
-		var reference;
 		if ( match ) {
-			reference = new this.TemplateReference( { 'string': referenceString } );
+			reference = new this.TemplateReference({ 'string': referenceString });
 
 			// Extract the full template string
 			var templateString = match[0];
 
 			// Extract the name of the template
-			template = match[1];
+			var template = match[1];
 
 			// Normalize it
 			for ( registeredTemplate in registeredTemplates ) {
@@ -301,14 +296,15 @@ var proveit = $.extend({
 			reference.template = template;
 
 			// Next, extract the parameters
-			var paramsString = templateString.substring( templateString.indexOf( '|' ) + 1, templateString.length - 2 ); // From after the first pipe to before the closing "}}"
-			var paramsArray = paramsString.split( '|' );
-			var paramString, nameAndValue, paramName, paramValue;
+			var paramsString = templateString.substring( templateString.indexOf( '|' ) + 1, templateString.length - 2 ), // From after the first pipe to before the closing "}}"
+				paramsArray = paramsString.split( '|' );
+				paramString, paramNameAndValue, paramName, paramValue;
+
 			for ( paramString in paramsArray ) {
 
-				nameAndValue = paramsArray[ paramString ].split( '=' );
-				paramName = $.trim( nameAndValue[0] );
-				paramValue = $.trim( nameAndValue[1] );
+				paramNameAndValue = paramsArray[ paramString ].split( '=' );
+				paramName = $.trim( paramNameAndValue[0] );
+				paramValue = $.trim( paramNameAndValue[1] );
 
 				if ( !paramName || !paramValue ) {
 					continue;
@@ -317,7 +313,7 @@ var proveit = $.extend({
 				reference.params[ paramName ] = paramValue;
 			}
 		} else {
-			reference = new this.RawReference( { 'string': referenceString } );
+			reference = new this.RawReference({ 'string': referenceString });
 		}
 
 		// Now set the starting index of the reference
@@ -461,14 +457,12 @@ var proveit = $.extend({
 		 */
 		this.toListItem = function () {
 
-			var item = $( '<li>' ).attr( 'class', 'proveit-reference-item' ).text( this.string );
-
-			var icon = $( '<img>' ).attr( { 'class': 'icon', 'src': this.getIcon() } );
-
-			var citations = $( '<span>' ).attr( 'class', 'citations' );
+			var item = $( '<li>' ).attr( 'class', 'proveit-reference-item' ).text( this.string ),
+				icon = $( '<img>' ).attr({ 'class': 'icon', 'src': this.getIcon() }),
+				citations = $( '<span>' ).attr( 'class', 'citations' );
 
 			for ( var i = 0; i < this.citations.length; i++ ) {
-				citations.append( $( '<a>' ).attr( { 'href': '#', 'class': 'citation' } ).text( i + 1 ) );
+				citations.append( $( '<a>' ).attr({ 'href': '#', 'class': 'citation' }).text( i + 1 ) );
 			}
 
 			item.prepend( icon ).append( citations );
@@ -557,9 +551,11 @@ var proveit = $.extend({
 		 * @return {object}
 		 */
 		this.getRegisteredAliases = function () {
-			var registeredAliases = {};
-			var registeredParams = this.getRegisteredParams();
-			var registeredParam, aliases, alias;
+			var registeredAliases = {},
+				registeredParams = this.getRegisteredParams(),
+				registeredParam,
+				aliases,
+				alias;
 			for ( registeredParam in registeredParams ) {
 				aliases = registeredParams[ registeredParam.alias ];
 				if ( $.type( aliases ) === 'array' ) {
@@ -580,8 +576,8 @@ var proveit = $.extend({
 		 * @return {object}
 		 */
 		this.getCustomParams = function () {
-			var customParams = {};
-			var registeredParams = this.getRegisteredParams();
+			var customParams = {},
+				registeredParams = this.getRegisteredParams();
 			for ( var paramName in this.params ) {
 				if ( !( paramName in registeredParams ) ) {
 					customParams[ paramName ] = this.params[ paramName ];
@@ -596,8 +592,8 @@ var proveit = $.extend({
 		 * @return {object}
 		 */
 		this.getRequiredParams = function () {
-			var requiredParams = {};
-			var registeredParams = this.getRegisteredParams();
+			var requiredParams = {},
+				registeredParams = this.getRegisteredParams();
 			for ( var registeredParam in registeredParams ) {
 				if ( registeredParams[ registeredParam ].required ) {
 					requiredParams[ registeredParam ] = registeredParams[ registeredParam ];
@@ -613,8 +609,8 @@ var proveit = $.extend({
 		 * @return {object}
 		 */
 		this.getHiddenParams = function () {
-			var hiddenParams = {};
-			var registeredParams = this.getRegisteredParams();
+			var hiddenParams = {},
+				registeredParams = this.getRegisteredParams();
 			for ( var registeredParam in registeredParams ) {
 				if ( registeredParams[ registeredParam ].hidden ) {
 					hiddenParams[ registeredParam ] = registeredParams[ registeredParam ];
@@ -659,9 +655,8 @@ var proveit = $.extend({
 		 */
 		this.toListItem = function () {
 
-			var item = $( '<li>' ).attr( { 'class': 'proveit-reference-item' } );
-
-			var icon = $( '<img>' ).attr( { 'class': 'icon', 'src': this.getIcon() } );
+			var item = $( '<li>' ).attr( 'class', 'proveit-reference-item' ),
+				icon = $( '<img>' ).attr({ 'class': 'icon', 'src': this.getIcon() });
 
 			item.append( $( '<span>' ).attr( 'class', 'template' ).text( this.template ) );
 			var requiredParams = this.getRequiredParams();
@@ -673,11 +668,11 @@ var proveit = $.extend({
 				item.append( ': ', $( '<span>' ).attr( 'class', 'value' ).text( value ) );
 			}
 
-			var citations = $( '<span>' ).attr( { 'class': 'citations' } );
+			var citations = $( '<span>' ).attr( 'class', 'citations' );
 
 			var i;
 			for ( i = 0; i < this.citations.length; i++ ) {
-				citations.append( $( '<a>' ).attr( { 'href': '#', 'class': 'citation' } ).text( i + 1 ) );
+				citations.append( $( '<a>' ).attr({ 'href': '#', 'class': 'citation' }).text( i + 1 ) );
 			}
 
 			item.prepend( icon ).append( citations );
@@ -713,21 +708,23 @@ var proveit = $.extend({
 		 */
 		this.toForm = function () {
 
-			var form = $( '<form>' ).attr( { 'id': 'proveit-reference-form' } ), pair;
+			var form = $( '<form>' ).attr( 'id', 'proveit-reference-form' ), pair;
 
 			// Insert the <ref> name field
-			var refNameLabel = $( '<label>' ).text( proveit.getMessage( 'ref-name-label' ) );
-			var refNameInput = $( '<input>' ).attr( { 'name': 'ref-name', 'value': this.name } );
+			var refNameLabel = $( '<label>' ).text( proveit.getMessage( 'ref-name-label' ) ),
+				refNameInput = $( '<input>' ).attr({ 'name': 'ref-name', 'value': this.name });
 			refNameLabel.append( refNameInput );
 			form.append( refNameLabel );
 
 			// Insert the dropdown menu
-			var templateLabel = $( '<label>' ).text( proveit.getMessage( 'template-label' ) );
-			var templateSelect = $( '<select>' ).attr( { 'name': 'template' } );
-			var registeredTemplates = proveit.getRegisteredTemplates();
-			var templateName, templateOption;
+			var templateLabel = $( '<label>' ).text( proveit.getMessage( 'template-label' ) ),
+				templateSelect = $( '<select>' ).attr( 'name', 'template' ),
+				registeredTemplates = proveit.getRegisteredTemplates(),
+				templateName,
+				templateOption;
+
 			for ( templateName in registeredTemplates ) {
-				templateOption = $( '<option>' ).text( templateName ).attr( { 'value': templateName } );
+				templateOption = $( '<option>' ).text( templateName ).attr( 'value', templateName );
 				if ( this.template === templateName ) {
 					templateOption.attr( 'selected', 'selected' );
 				}
@@ -737,9 +734,9 @@ var proveit = $.extend({
 			form.append( templateLabel );
 
 			// The insert all the other fields
-			var paramName, registeredParam, paramLabel, paramType, paramPlaceholder, paramValue, label, paramNameInput, paramValueInput;
-			var registeredParams = this.getRegisteredParams();
-			var hiddenParams = this.getHiddenParams();
+			var paramName, registeredParam, paramLabel, paramType, paramPlaceholder, paramValue, label, paramNameInput, paramValueInput,
+				registeredParams = this.getRegisteredParams(),
+				hiddenParams = this.getHiddenParams();
 
 			for ( paramName in registeredParams ) {
 
@@ -766,8 +763,8 @@ var proveit = $.extend({
 				}
 
 				label = $( '<label>' ).attr( 'class', 'proveit-param-pair' ).text( paramLabel );
-				paramNameInput = $( '<input>' ).attr( { 'type': 'hidden', 'class': 'param-name', 'value': paramName } );
-				paramValueInput = $( '<input>' ).attr( { 'type': paramType, 'class': 'param-value', 'value': paramValue, 'placeholder': paramPlaceholder } );
+				paramNameInput = $( '<input>' ).attr({ 'type': 'hidden', 'class': 'param-name', 'value': paramName });
+				paramValueInput = $( '<input>' ).attr({ 'type': paramType, 'class': 'param-value', 'value': paramValue, 'placeholder': paramPlaceholder });
 
 				// Hide the hidden parameters, unless they are filled
 				if ( ( paramName in hiddenParams ) && !paramValue ) {
@@ -823,8 +820,8 @@ var proveit = $.extend({
 
 			// Load all the parameter key-value pairs
 			this.params = {};
-			var pairs = $( '#proveit-reference-form .proveit-param-pair' );
-			var pair, paramName, paramValue;
+			var pairs = $( '#proveit-reference-form .proveit-param-pair' ),
+				pair, paramName, paramValue;
 			for ( var i = 0; i < pairs.length; i++ ) {
 				pair =  pairs[ i ];
 				paramName = $( 'input.param-name', pair ).val();
@@ -847,9 +844,9 @@ var proveit = $.extend({
 			var newString = this.string;
 
 			// Replace the old reference
-			var textbox = proveit.getTextbox();
-			var text = textbox.val();
-			text = text.replace( oldString, newString );
+			var textbox = proveit.getTextbox(),
+				text = textbox.val().replace( oldString, newString );
+
 			textbox.val( text );
 
 			// Update the index and highlight the reference
@@ -871,16 +868,16 @@ var proveit = $.extend({
 			this.loadFromForm();
 
 			// Replace the existing selection (if any)
-			var string = this.string;
-			var textbox = proveit.getTextbox();
+			var string = this.string,
+				textbox = proveit.getTextbox();
+
 			textbox.textSelection( 'encapsulateSelection', {
 				'peri': string,
 				'replace': true
 			});
 
 			// Update the index and highlight the reference
-			var text = textbox.val();
-			this.index = text.indexOf( this.string );
+			this.index = textbox.val().indexOf( this.string );
 			this.highlight();
 
 			// Add the summary and rescan
@@ -888,7 +885,7 @@ var proveit = $.extend({
 			proveit.scanForReferences();
 		};
 	}
-}, window.proveit);
+}, window.proveit );
 
 $( function () {
 	proveit.init();
