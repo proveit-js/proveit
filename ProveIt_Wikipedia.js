@@ -96,9 +96,9 @@ var proveit = $.extend({
 			proveit.makeGUI();
 			proveit.scanForReferences();
 
-			// Only initialize visible in the mainspace and user pages
+			// Only initialize visible for mainspace, user, and Draft pages
 			var namespace = mw.config.get( 'wgCanonicalNamespace' );
-			if ( namespace !== '' && namespace !== 'User' ) {
+			if ( namespace !== '' && namespace !== 'User' && namespace !== 'Draft' ) {
 				$( '#proveit' ).hide();
 			}
 		});
