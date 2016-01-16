@@ -184,7 +184,7 @@ proveit.messages = {
 	'update-button': 'Actualizar',
 	'show-all-params-button': 'Mostrar todos los parámetros',
 	'no-references': 'No se han encontrado referencias',
-	'summary': 'Editado con ProveIt'
+	'summary': 'Editado con #ProveIt'
 };
 
 proveit.icons = {

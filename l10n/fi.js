@@ -396,7 +396,7 @@ proveit.messages = {
 	'add-custom-param-button': 'Add custom parameter',
 	'show-all-params-button': 'Show all the parameters',
 	'no-references': 'No references found',
-	'summary': 'Edited with ProveIt'
+	'summary': 'Edited with #ProveIt'
 };
 
 proveit.icons = {
