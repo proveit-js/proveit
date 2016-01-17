@@ -297,7 +297,7 @@ var proveit = $.extend({
 
 			// Next, extract the parameters
 			var paramsString = templateString.substring( templateString.indexOf( '|' ) + 1, templateString.length - 2 ), // From after the first pipe to before the closing "}}"
-				paramsArray = paramsString.split( '|' );
+				paramsArray = paramsString.split( '|' ),
 				paramString, paramNameAndValue, paramName, paramValue;
 
 			for ( paramString in paramsArray ) {

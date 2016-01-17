@@ -265,7 +265,7 @@ proveit.templates = {
 		'location':         { label: 'Location' },
 		'publisher':        { label: 'Publisher' },
 		'url':              { label: 'URL' },
-		'accessdate':       { label: 'Access date' }
+		'accessdate':       { label: 'Access date' },
 		'last1':            { label: 'Author 1 last name', hidden: true },
 		'first1':           { label: 'Author 1 first name', hidden: true },
 		'author-link1':     { label: 'Author 1 article', hidden: true },
