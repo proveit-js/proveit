@@ -225,7 +225,8 @@ proveit.templates = {
 		'pages':      { label: 'Pages' },
 		'url':        { label: 'URL' },
 		'accessdate': { label: 'Access date' },
-		'pmid':       { label: 'PubMed Unique Identifier' }
+		'pmid':       { label: 'PubMed Unique Identifier' },
+		'jstor':      { label: 'JSTOR' }
 	},
 	'Cite patent': {
 		'title':            { label: 'Title', required: true },
