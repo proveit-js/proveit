@@ -107,7 +107,7 @@ proveit.templates = {
 		'title':                { label: 'Title', required: true },
 		'url':                  { label: 'URL', type: 'url' },
 		'last':                 { label: 'Last name', alias: [ 'surname' ] },
-		'first':                { label: 'First name', alias: [ 'given' ] },
+		'first':                { label: 'First name', alias: [ 'given', 'name' ] },
 		'last1':                { label: 'Author 1 last name', hidden: true, alias: [ 'surname1' ] },
 		'last2':                { label: 'Author 2 last name', hidden: true, alias: [ 'surname2' ] },
 		'last3':                { label: 'Author 3 last name', hidden: true, alias: [ 'surname3' ] },

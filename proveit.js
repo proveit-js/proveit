@@ -77,8 +77,7 @@ var proveit = $.extend({
 		mw.loader.using( dependencies, function () {
 
 			// Replace the references button for the ProveIt button
-			var textbox = proveit.getTextbox();
-			textbox.bind( 'wikiEditor-toolbar-buildSection-main', function ( event, section ) {
+			proveit.getTextbox().bind( 'wikiEditor-toolbar-buildSection-main', function ( event, section ) {
 				delete section.groups.insert.tools.reference;
 				section.groups.insert.tools.proveit = {
 					label: 'ProveIt',
@@ -891,4 +890,4 @@ $( function () {
 	proveit.init();
 });
 
-}( mediaWiki, jQuery ) );
+}( mw, jQuery ) );
