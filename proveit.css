@@ -66,24 +66,24 @@
 	cursor: pointer;
 }
 
-#proveit-reference-list .proveit-reference-item .template {
+#proveit-reference-list .proveit-reference-item .proveit-template {
 	font-weight: bold;
 	margin-right: 10px;
 }
 
-#proveit-reference-list .proveit-reference-item .label {
+#proveit-reference-list .proveit-reference-item .proveit-label {
 	text-decoration: underline;
 }
 
-#proveit-reference-list .proveit-reference-item .value {
+#proveit-reference-list .proveit-reference-item .proveit-value {
 	margin-right: 10px;
 }
 
-#proveit-reference-list .proveit-reference-item .citations {
+#proveit-reference-list .proveit-reference-item .proveit-citations {
 	float: right;
 }
 
-#proveit-reference-list .proveit-reference-item .citation {
+#proveit-reference-list .proveit-reference-item .proveit-citation {
 	color: blue;
 	padding: 3px;
 }
@@ -123,7 +123,7 @@
 	height: 15px;
 }
 
-#proveit-reference-form input.param-name {
+#proveit-reference-form input.proveit-param-name {
 	float: none;
 	width: 130px;
 }

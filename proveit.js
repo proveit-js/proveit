@@ -699,7 +699,7 @@ var proveit = $.extend({
 
 			var item = $( '<li>' ).attr( 'class', 'proveit-reference-item' );
 
-			item.append( $( '<span>' ).attr( 'class', 'template' ).text( this.template ) );
+			item.append( $( '<span>' ).attr( 'class', 'proveit-template' ).text( this.template ) );
 			var requiredParams = this.getRequiredParams(),
 				requiredParam,
 				label,
@@ -707,15 +707,15 @@ var proveit = $.extend({
 			for ( requiredParam in requiredParams ) {
 				label = requiredParams[ requiredParam ].label[ proveit.lang ];
 				value = this.params[ requiredParam ];
-				item.append( $( '<span>' ).attr( 'class', 'label' ).text( label ) );
-				item.append( ': ', $( '<span>' ).attr( 'class', 'value' ).text( value ) );
+				item.append( $( '<span>' ).attr( 'class', 'proveit-label' ).text( label ) );
+				item.append( ': ', $( '<span>' ).attr( 'class', 'proveit-value' ).text( value ) );
 			}
 
-			var citations = $( '<span>' ).attr( 'class', 'citations' );
+			var citations = $( '<span>' ).attr( 'class', 'proveit-citations' );
 
 			var i;
 			for ( i = 0; i < this.citations.length; i++ ) {
-				citations.append( $( '<a>' ).attr({ 'href': '#', 'class': 'citation' }).text( i + 1 ) );
+				citations.append( $( '<a>' ).attr({ 'href': '#', 'class': 'proveit-citation' }).text( i + 1 ) );
 			}
 
 			item.append( citations );
@@ -806,8 +806,8 @@ var proveit = $.extend({
 				}
 
 				label = $( '<label>' ).attr({ 'class': 'proveit-param-pair', 'title': paramDescription }).text( paramLabel );
-				paramNameInput = $( '<input>' ).attr({ 'type': 'hidden', 'class': 'param-name', 'value': paramName });
-				paramValueInput = $( '<input>' ).attr({ 'type': paramType, 'class': 'param-value', 'value': paramValue });
+				paramNameInput = $( '<input>' ).attr({ 'type': 'hidden', 'class': 'proveit-param-name', 'value': paramName });
+				paramValueInput = $( '<input>' ).attr({ 'type': paramType, 'class': 'proveit-param-value', 'value': paramValue });
 
 				// Hide the hidden parameters, unless they are filled
 				if ( ( paramName in hiddenParams ) && !paramValue ) {
@@ -854,8 +854,8 @@ var proveit = $.extend({
 				pair, paramName, paramValue;
 			for ( var i = 0; i < pairs.length; i++ ) {
 				pair =  pairs[ i ];
-				paramName = $( 'input.param-name', pair ).val();
-				paramValue = $( 'input.param-value', pair ).val();
+				paramName = $( 'input.proveit-param-name', pair ).val();
+				paramValue = $( 'input.proveit-param-value', pair ).val();
 				if ( paramName !== '' && paramValue !== '' ) {
 					this.params[ paramName ] = paramValue;
 				}
