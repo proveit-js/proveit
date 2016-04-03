@@ -20,10 +20,8 @@ var proveit = $.extend({
 			'add-tab': 'Add',
 			'template-label': 'Template',
 			'ref-name-label': '<ref> name',
-			'add-field-button': 'Add field',
 			'insert-button': 'Insert',
 			'update-button': 'Update',
-			'add-custom-param-button': 'Add custom parameter',
 			'show-all-params-button': 'Show all the parameters',
 			'no-references': 'No references found',
 			'summary': ' (edited with [[w:en:User:ProveIt_GT|#ProveIt]])',
@@ -33,8 +31,6 @@ var proveit = $.extend({
 			'add-tab': 'Agregar',
 			'template-label': 'Plantilla',
 			'ref-name-label': 'Nombre de la referencia',
-			'required': 'Requerido',
-			'add-custom-param-button': 'Agregar parámetro personalizado',
 			'insert-button': 'Insertar',
 			'update-button': 'Actualizar',
 			'show-all-params-button': 'Mostrar todos los parámetros',
@@ -46,10 +42,8 @@ var proveit = $.extend({
 			'add-tab': 'Add',
 			'template-label': 'Template',
 			'ref-name-label': '<ref> name',
-			'add-field-button': 'Add field',
 			'insert-button': 'Insert',
 			'update-button': 'Update',
-			'add-custom-param-button': 'Add custom parameter',
 			'show-all-params-button': 'Show all the parameters',
 			'no-references': 'No references found',
 			'summary': 'Edited with #ProveIt'
@@ -222,14 +216,13 @@ var proveit = $.extend({
 
 		// Buttons
 		var buttons = $( '<div>' ).attr( 'id', 'proveit-buttons' ),
-			addCustomParamButton = $( '<button>' ).attr( 'id', 'proveit-add-custom-param-button' ).text( proveit.getMessage( 'add-custom-param-button' ) ),
 			showAllParamsButton = $( '<button>' ).attr( 'id', 'proveit-show-all-params-button' ).text( proveit.getMessage( 'show-all-params-button' ) ),
 			updateButton = $( '<button>' ).attr( 'id', 'proveit-update-button' ).text( proveit.getMessage( 'update-button' ) ),
 			insertButton = $( '<button>' ).attr( 'id', 'proveit-insert-button' ).text( proveit.getMessage( 'insert-button' ) );
 
 		// Then put everything together and add it to the DOM
 		tabs.append( logo ).append( editTab ).append( addTab );
-		buttons.append( addCustomParamButton ).append( showAllParamsButton ).append( updateButton ).append( insertButton );
+		buttons.append( showAllParamsButton ).append( updateButton ).append( insertButton );
 		content.append( referenceList ).append( referenceFormContainer ).append( buttons );
 		gui.append( tabs ).append( content );
 		$( document.body ).prepend( gui );
@@ -263,11 +256,6 @@ var proveit = $.extend({
 			referenceFormContainer.html( emptyForm ).show();
 		});
 
-		addCustomParamButton.click( function () {
-			var pair = proveit.makeCustomParameterPair();
-			$( '#proveit-reference-form' ).append( pair );
-		});
-
 		showAllParamsButton.click( function () {
 			$( this ).hide();
 			$( '#proveit-reference-form label' ).css( 'display', 'block' );
@@ -276,28 +264,6 @@ var proveit = $.extend({
 		proveit.getTextbox().change( function () {
 			proveit.scanForReferences(); // Always keep the reference list up to date
 		});
-	},
-
-	/**
-	 * Makes a custom parameteter pair DOM element, with optional given values
-	 *
-	 * @param {string} [key] Key
-	 * @param {string} [value] Value
-	 */
-	makeCustomParameterPair: function ( key, value ) {
-		var pair = $( '<span>' ).addClass( 'proveit-param-pair' ),
-			nameInput = $( '<input>' ).attr( 'class', 'param-name' );
-		if ( key ) {
-			nameInput.val( key );
-		}
-
-		var valueInput = $( '<input>' ).attr( 'class', 'param-value' );
-		if ( value ) {
-			valueInput.val( value );
-		}
-
-		pair.append( valueInput ).append( nameInput );
-		return pair;
 	},
 
 	/**
@@ -610,7 +576,6 @@ var proveit = $.extend({
 		 *
 		 * This object is constructed directly out of the wikitext, so it doesn't include
 		 * any information about the parameters other than their names and values,
-		 * and it contains both registered parameters and custom parameters.
 		 */
 		this.params = {};
 
@@ -706,22 +671,6 @@ var proveit = $.extend({
 				}
 			}
 			return hiddenParams;
-		};
-
-		/**
-		 * Returns an object with the custom parameters of this reference.
-		 *
-		 * @return {object}
-		 */
-		this.getCustomParams = function () {
-			var customParams = {},
-				registeredParams = this.getRegisteredParams();
-			for ( var paramName in this.params ) {
-				if ( !( paramName in registeredParams ) ) {
-					customParams[ paramName ] = this.params[ paramName ];
-				}
-			}
-			return customParams;
 		};
 
 		/**
@@ -879,19 +828,6 @@ var proveit = $.extend({
 
 				label.prepend( paramValueInput ).append( paramNameInput );
 				form.append( label );
-			}
-
-			// Next, do the same with the custom parameters
-			var customParams = this.getCustomParams();
-			for ( paramName in customParams ) {
-
-				paramValue = '';
-				if ( paramName in this.params ) {
-					paramValue = this.params[ paramName ];
-				}
-
-				pair = proveit.makeCustomParameterPair( paramName, paramValue );
-				form.append( pair );
 			}
 
 			// Bind events
