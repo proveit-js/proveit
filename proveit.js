@@ -55,21 +55,22 @@ var proveit = $.extend({
 	 */
 	templates: {
 		'en': [
-			//'Template:Citation',
-			//'Template:Cite AV media',
-			//'Template:Cite BDE',
-			'Template:Cite book',
-			//'Template:Cite court',
-			//'Template:Cite encyclopedia',
-			//'Template:Cite journal',
-			//'Template:Cite magazine',
-			//'Template:Cite news',
-			//'Template:Cite patent',
-			//'Template:Cite press release',
-			//'Template:Cite RCDB',
-			//'Template:Cite sign',
-			//'Template:Cite tweet',
-			//'Template:Cite video game',
+			'Template:Cite book', // The first template will be the default
+			'Template:Allmusic',
+			'Template:Citation',
+			'Template:Cite AV media',
+			'Template:Cite BDE',
+			'Template:Cite court',
+			'Template:Cite encyclopedia',
+			'Template:Cite journal',
+			'Template:Cite magazine',
+			'Template:Cite news',
+			'Template:Cite patent',
+			'Template:Cite press release',
+			'Template:Cite RCDB',
+			'Template:Cite sign',
+			'Template:Cite tweet',
+			'Template:Cite video game',
 			'Template:Cite web'
 		],
 		'es': [
@@ -522,10 +523,10 @@ var proveit = $.extend({
 		this.toListItem = function () {
 
 			var item = $( '<li>' ).attr( 'class', 'proveit-reference-item' ).text( this.string ),
-				citations = $( '<span>' ).attr( 'class', 'citations' );
+				citations = $( '<span>' ).attr( 'class', 'proveit-citations' );
 
 			for ( var i = 0; i < this.citations.length; i++ ) {
-				citations.append( $( '<a>' ).attr({ 'href': '#', 'class': 'citation' }).text( i + 1 ) );
+				citations.append( $( '<a>' ).attr({ 'href': '#', 'class': 'proveit-citation' }).text( i + 1 ) );
 			}
 
 			item.append( citations );
@@ -538,7 +539,7 @@ var proveit = $.extend({
 				return false;
 			});
 
-			item.find( 'a.citation' ).click( function ( event ) {
+			item.find( 'a.proveit-citation' ).click( function ( event ) {
 				event.stopPropagation();
 				var i = parseInt( $( this ).text(), 10 ) - 1;
 				var citation = reference.citations[ i ];
@@ -733,7 +734,7 @@ var proveit = $.extend({
 				$( '#proveit-insert-button' ).hide();
 			});
 
-			item.find( 'a.citation' ).click( function ( event ) {
+			item.find( 'a.proveit-citation' ).click( function ( event ) {
 				event.stopPropagation();
 				var i = parseInt( $( this ).text(), 10 ) - 1;
 				var citation = reference.citations[ i ];
