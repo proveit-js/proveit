@@ -50,30 +50,33 @@ var proveit = $.extend({
 		}
 	},
 
+	/**
+	 * This will be replaced with the template data
+	 */
 	templates: {
 		'en': [
-			'Template:Citation',
-			'Template:Cite AV media',
-			'Template:Cite BDE',
+			//'Template:Citation',
+			//'Template:Cite AV media',
+			//'Template:Cite BDE',
 			'Template:Cite book',
-			'Template:Cite court',
-			'Template:Cite encyclopedia',
-			'Template:Cite journal',
-			'Template:Cite magazine',
-			'Template:Cite news',
-			'Template:Cite patent',
-			'Template:Cite press release',
-			'Template:Cite RCDB',
-			'Template:Cite sign',
-			'Template:Cite tweet',
-			'Template:Cite video game',
+			//'Template:Cite court',
+			//'Template:Cite encyclopedia',
+			//'Template:Cite journal',
+			//'Template:Cite magazine',
+			//'Template:Cite news',
+			//'Template:Cite patent',
+			//'Template:Cite press release',
+			//'Template:Cite RCDB',
+			//'Template:Cite sign',
+			//'Template:Cite tweet',
+			//'Template:Cite video game',
 			'Template:Cite web'
 		],
 		'es': [
-			'Template:Cita libro',
-			'Template:Cita noticia',
-			'Template:Cita publicación',
-			'Template:Cita web'
+			'Plantilla:Cita libro',
+			'Plantilla:Cita noticia',
+			'Plantilla:Cita publicación',
+			'Plantilla:Cita web'
 		],
 		'fi': [
 			'Malline:Verkkoviite'
@@ -111,7 +114,18 @@ var proveit = $.extend({
 	getMessage: function ( key ) {
 		return mw.message( key );
 	},
-	
+
+	/**
+	 * Convenience function that returns the templates for the user language
+	 */
+	getTemplateNames: function () {
+		var template = [];
+		for ( var template in proveit.templates ) {
+			
+		}
+		return proveit.templates[ proveit.lang ];
+	},
+
 	/**
 	 * Convenience function that returns a jQuery object for the edit textbox.
 	 *
@@ -145,15 +159,16 @@ var proveit = $.extend({
 		var api = new mw.Api();
 		api.get({
 			'action': 'templatedata',
-			'titles': proveit.templates[ lang ].join( '|' ),
+			'titles': proveit.templates[ lang ],
 			'format': 'json'
 		}).done( function ( data ) {
+			//console.log( date );
 			proveit.templates = {};
 			for ( var page in data.pages ) {
 				page = data.pages[ page ];
-				proveit.templates[ page.title ] = page.params;
+				proveit.templates[ page.title ] = page.params; // Replace the templates with the template data
 			}
-			console.log( proveit.templates );
+			//console.log( proveit.templates );
 		});
 
 		var dependencies = [
@@ -247,6 +262,7 @@ var proveit = $.extend({
 
 			// Create an empty reference and an empty form out of it
 			var firstTemplate = Object.keys( proveit.templates )[0],
+				firstTemplate = firstTemplate.substr( firstTemplate.indexOf( ':' ) + 1 ), // Remove the namespace
 				emptyReference = new proveit.TemplateReference({ 'template': firstTemplate }),
 				emptyForm = emptyReference.toForm();
 			referenceFormContainer.html( emptyForm ).show();
@@ -326,6 +342,7 @@ var proveit = $.extend({
 		var registeredTemplatesArray = [],
 			registeredTemplate;
 		for ( registeredTemplate in proveit.templates ) {
+			registeredTemplate = registeredTemplate.substr( registeredTemplate.indexOf( ':' ) + 1 ), // Remove the namespace
 			registeredTemplatesArray.push( registeredTemplate );
 		}
 		var registeredTemplatesDisjunction = registeredTemplatesArray.join( '|' ),
@@ -344,6 +361,7 @@ var proveit = $.extend({
 
 			// Normalize it
 			for ( registeredTemplate in proveit.templates ) {
+				registeredTemplate
 				if ( template.toLowerCase() === registeredTemplate.toLowerCase() ) {
 					template = registeredTemplate;
 				}
@@ -571,7 +589,7 @@ var proveit = $.extend({
 		 * @return {object}
 		 */
 		this.getRegisteredParams = function () {
-			return proveit.templates[ this.template ];
+			return proveit.templates[ 'Template:' + this.template ];
 		};
 
 		/**
@@ -748,6 +766,7 @@ var proveit = $.extend({
 				templateOption;
 
 			for ( templateName in proveit.templates ) {
+				templateName = templateName.substr( templateName.indexOf( ':' ) + 1 ), // Remove the namespace
 				templateOption = $( '<option>' ).text( templateName ).attr( 'value', templateName );
 				if ( this.template === templateName ) {
 					templateOption.attr( 'selected', 'selected' );
