@@ -40,7 +40,7 @@ var proveit = $.extend({
 		'fi': {
 			'edit-tab': 'Edit',
 			'add-tab': 'Add',
-			'template-label': 'Template',
+			'template-label': 'Malline',
 			'ref-name-label': '<ref> name',
 			'insert-button': 'Insert',
 			'update-button': 'Update',
@@ -86,10 +86,6 @@ var proveit = $.extend({
 	LOGO: '//upload.wikimedia.org/wikipedia/commons/0/0d/ProveIt_user_interface_logo.png',
 
 	ICON: '//upload.wikimedia.org/wikipedia/commons/thumb/1/19/ProveIt_logo_for_user_boxes.svg/22px-ProveIt_logo_for_user_boxes.svg.png',
-
-	RAW_REFERENCE_ICON: '//upload.wikimedia.org/wikipedia/commons/d/db/Silk-Page_white_code_red.png',
-
-	TEMPLATE_REFERENCE_ICON: '//upload.wikimedia.org/wikipedia/commons/d/dd/Silk-Page_white.png',
 
 	/**
 	 * Interface language
@@ -489,15 +485,6 @@ var proveit = $.extend({
 		this.citations = [];
 
 		/**
-		 * Returns the icon URL for raw references.
-		 *
-		 * @return {string} icon URL
-		 */
-		this.getIcon = function () {
-			return proveit.RAW_REFERENCE_ICON;
-		};
-
-		/**
 		 * Converts this reference to wikitext.
 		 *
 		 * This method is trivial, but it needs to exist because it isn't trivial in the TemplateReference class,
@@ -517,14 +504,13 @@ var proveit = $.extend({
 		this.toListItem = function () {
 
 			var item = $( '<li>' ).attr( 'class', 'proveit-reference-item' ).text( this.string ),
-				icon = $( '<img>' ).attr({ 'class': 'icon', 'src': this.getIcon() }),
 				citations = $( '<span>' ).attr( 'class', 'citations' );
 
 			for ( var i = 0; i < this.citations.length; i++ ) {
 				citations.append( $( '<a>' ).attr({ 'href': '#', 'class': 'citation' }).text( i + 1 ) );
 			}
 
-			item.prepend( icon ).append( citations );
+			item.append( citations );
 
 			// Bind events
 			var reference = this;
@@ -578,22 +564,6 @@ var proveit = $.extend({
 		 * any information about the parameters other than their names and values,
 		 */
 		this.params = {};
-
-		/**
-		 * Returns the icon URL for this reference.
-		 *
-		 * Overrides the getIcon() method of the RawReference class.
-		 *
-		 * @return {string} icon URL
-		 */
-		this.getIcon = function () {
-/*
-			if ( this.template in proveit.icons ) {
-				return proveit.icons[ this.template ];
-			}
-*/
-			return proveit.TEMPLATE_REFERENCE_ICON;
-		};
 
 		/**
 		 * Returns an object with the registered parameters for this reference.
@@ -709,8 +679,7 @@ var proveit = $.extend({
 		 */
 		this.toListItem = function () {
 
-			var item = $( '<li>' ).attr( 'class', 'proveit-reference-item' ),
-				icon = $( '<img>' ).attr({ 'class': 'icon', 'src': this.getIcon() });
+			var item = $( '<li>' ).attr( 'class', 'proveit-reference-item' );
 
 			item.append( $( '<span>' ).attr( 'class', 'template' ).text( this.template ) );
 			var requiredParams = this.getRequiredParams(),
@@ -731,7 +700,7 @@ var proveit = $.extend({
 				citations.append( $( '<a>' ).attr({ 'href': '#', 'class': 'citation' }).text( i + 1 ) );
 			}
 
-			item.prepend( icon ).append( citations );
+			item.append( citations );
 
 			// Bind events
 			var reference = this;

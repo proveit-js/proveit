@@ -66,11 +66,6 @@
 	cursor: pointer;
 }
 
-#proveit-reference-list .proveit-reference-item .icon {
-	margin-right: 5px;
-	vertical-align: text-bottom;
-}
-
 #proveit-reference-list .proveit-reference-item .template {
 	font-weight: bold;
 	margin-right: 10px;
