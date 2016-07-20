@@ -25,6 +25,7 @@ var proveit = $.extend({
 			'show-all-params-button': 'Show all the parameters',
 			'no-references': 'No references found',
 			'summary': ' (edited with [[w:en:User:ProveIt_GT|#ProveIt]])',
+			'category': 'Category:Wikipedia:ProveIt',
 		},
 		'es': {
 			'edit-tab': 'Editar',
@@ -35,7 +36,8 @@ var proveit = $.extend({
 			'update-button': 'Actualizar',
 			'show-all-params-button': 'Mostrar todos los parámetros',
 			'no-references': 'No se han encontrado referencias',
-			'summary': 'Editado con #ProveIt'
+			'summary': 'Editado con #ProveIt',
+			'category': 'Categoría:Wikipedia:ProveIt',
 		},
 		'fi': {
 			'edit-tab': 'Edit',
@@ -46,43 +48,15 @@ var proveit = $.extend({
 			'update-button': 'Update',
 			'show-all-params-button': 'Show all the parameters',
 			'no-references': 'No references found',
-			'summary': 'Edited with #ProveIt'
+			'summary': 'Edited with #ProveIt',
+			'category': 'Category:Wikipedia:ProveIt',
 		}
 	},
 
 	/**
-	 * This will be replaced with the template data
+	 * This will be filled with the template data retrieved from Wikipedia
 	 */
-	templates: {
-		'en': [
-			'Template:Cite book', // The first template will be the default
-			'Template:Allmusic',
-			'Template:Citation',
-			'Template:Cite AV media',
-			'Template:Cite BDE',
-			'Template:Cite court',
-			'Template:Cite encyclopedia',
-			'Template:Cite journal',
-			'Template:Cite magazine',
-			'Template:Cite news',
-			'Template:Cite patent',
-			'Template:Cite press release',
-			'Template:Cite RCDB',
-			'Template:Cite sign',
-			'Template:Cite tweet',
-			'Template:Cite video game',
-			'Template:Cite web'
-		],
-		'es': [
-			'Plantilla:Cita libro',
-			'Plantilla:Cita noticia',
-			'Plantilla:Cita publicación',
-			'Plantilla:Cita web'
-		],
-		'fi': [
-			'Malline:Verkkoviite'
-		]
-	},
+	templates: {},
 
 	/**
 	 * URLs of the logo and icon hosted at Commons
@@ -97,7 +71,7 @@ var proveit = $.extend({
 	 *
 	 * @type string
 	 */
-	lang: 'en',
+	userLanguage: 'en',
 
 	/**
 	 * Keep track of whether we have already added ProveIt to the summary.
@@ -113,7 +87,7 @@ var proveit = $.extend({
 	 * @return {string} message
 	 */
 	getMessage: function ( key ) {
-		return mw.message( key );
+		return mw.message( key ).text();
 	},
 
 	/**
@@ -124,7 +98,7 @@ var proveit = $.extend({
 		for ( var template in proveit.templates ) {
 			
 		}
-		return proveit.templates[ proveit.lang ];
+		return proveit.templates[ proveit.userLanguage ];
 	},
 
 	/**
@@ -150,26 +124,28 @@ var proveit = $.extend({
 		}
 
 		// Set the interface language
-		var lang = mw.config.get( 'wgUserLanguage' );
-		if ( lang in proveit.messages ) {
-			proveit.lang = lang;
+		var userLanguage = mw.config.get( 'wgUserLanguage' );
+		if ( userLanguage in proveit.messages ) {
+			proveit.userLanguage = userLanguage;
 		}
-		mw.messages.set( proveit.messages[ lang ] );
+		mw.messages.set( proveit.messages[ userLanguage ] );
 
 		// Get the templates data
 		var api = new mw.Api();
 		api.get({
 			'action': 'templatedata',
-			'titles': proveit.templates[ lang ],
+			'generator': 'categorymembers',
+			'gcmtitle': proveit.getMessage( 'category' ),
 			'format': 'json'
 		}).done( function ( data ) {
-			//console.log( date );
+			//console.log( data );
 			proveit.templates = {};
 			for ( var page in data.pages ) {
 				page = data.pages[ page ];
 				proveit.templates[ page.title ] = page.params; // Replace the templates with the template data
 			}
 			//console.log( proveit.templates );
+			proveit.scanForReferences();
 		});
 
 		var dependencies = [
@@ -195,7 +171,6 @@ var proveit = $.extend({
 			});
 
 			proveit.makeGUI();
-			proveit.scanForReferences();
 
 			// Only initialize visible for mainspace, user, and Draft pages
 			var namespace = mw.config.get( 'wgCanonicalNamespace' );
@@ -338,8 +313,8 @@ var proveit = $.extend({
 	 */
 	makeReference: function ( referenceString ) {
 
-		// First we need to determine what kind of reference is it
-		// For this we need to get all the template names and search for a match
+		// First we need to determine what kind of reference we're dealing with
+		// So we get all the template names and search for a match
 		var registeredTemplatesArray = [],
 			registeredTemplate;
 		for ( registeredTemplate in proveit.templates ) {
@@ -358,7 +333,8 @@ var proveit = $.extend({
 			var templateString = match[0];
 
 			// Extract the name of the template
-			var template = match[1];
+			var template = match[1],
+				template = template.charAt(0).toUpperCase() + template.slice(1); // Capitalize the first letter
 
 			// Normalize it
 			for ( registeredTemplate in proveit.templates ) {
@@ -590,27 +566,8 @@ var proveit = $.extend({
 		 * @return {object}
 		 */
 		this.getRegisteredParams = function () {
-			return proveit.templates[ 'Template:' + this.template ];
-		};
-
-		/**
-		 * Returns an object that maps aliases to registered parameters.
-		 *
-		 * @return {object}
-		 */
-		this.getRegisteredAliases = function () {
-			var registeredAliases = {},
-				registeredParams = this.getRegisteredParams(),
-				registeredParam,
-				aliases,
-				alias;
-			for ( registeredParam in registeredParams ) {
-				aliases = registeredParams[ registeredParam.alias ];
-				for ( alias in aliases ) {
-					registeredAliases[ alias ] = registeredParam;
-				}
-			}
-			return registeredAliases;
+			var templateLabel = proveit.getMessage( 'template-label' );
+			return proveit.templates[ templateLabel + ':' + this.template ];
 		};
 
 		/**
@@ -646,20 +603,20 @@ var proveit = $.extend({
 		};
 
 		/**
-		 * Returns an object with the hidden parameters for this reference.
-		 * These are parameters that are only displayed if already filled in (they are never suggested).
+		 * Returns an object with the optional parameters for this reference.
+		 * These parameters start hidden unless they are filled in.
 		 *
 		 * @return {object}
 		 */
-		this.getHiddenParams = function () {
-			var hiddenParams = {},
+		this.getOptionalParams = function () {
+			var optionalParams = {},
 				registeredParams = this.getRegisteredParams();
 			for ( var registeredParam in registeredParams ) {
 				if ( !registeredParams[ registeredParam ].required && !registeredParams[ registeredParam ].suggested ) {
-					hiddenParams[ registeredParam ] = registeredParams[ registeredParam ];
+					optionalParams[ registeredParam ] = registeredParams[ registeredParam ];
 				}
 			}
-			return hiddenParams;
+			return optionalParams;
 		};
 
 		/**
@@ -706,7 +663,7 @@ var proveit = $.extend({
 				label,
 				value;
 			for ( requiredParam in requiredParams ) {
-				label = requiredParams[ requiredParam ].label[ proveit.lang ];
+				label = requiredParams[ requiredParam ].label[ proveit.userLanguage ];
 				value = this.params[ requiredParam ];
 				item.append( $( '<span>' ).attr( 'class', 'proveit-label' ).text( label ) );
 				item.append( ': ', $( '<span>' ).attr( 'class', 'proveit-value' ).text( value ) );
@@ -780,7 +737,7 @@ var proveit = $.extend({
 			// The insert all the other fields
 			var paramName, registeredParam, paramLabel, paramType, paramDescription, paramValue, label, paramNameInput, paramValueInput,
 				registeredParams = this.getRegisteredParams(),
-				hiddenParams = this.getHiddenParams();
+				optionalParams = this.getOptionalParams();
 
 			for ( paramName in registeredParams ) {
 
@@ -792,15 +749,15 @@ var proveit = $.extend({
 				paramDescription = '';
 				paramValue = '';
 
-				// Override with content
-				if ( 'label' in registeredParam ) {
-					paramLabel = registeredParam.label[ proveit.lang ];
+				// Override with template data
+				if ( registeredParam.label ) {
+					paramLabel = registeredParam.label[ proveit.userLanguage ];
 				}
-				if ( 'type' in registeredParam ) {
+				if ( registeredParam.type ) {
 					paramType = registeredParam.type;
 				}
-				if ( 'description' in registeredParam ) {
-					paramDescription = registeredParam.description[ proveit.lang ];
+				if ( registeredParam.description ) {
+					paramDescription = registeredParam.description[ proveit.userLanguage ];
 				}
 				if ( paramName in this.params ) {
 					paramValue = this.params[ paramName ];
@@ -810,8 +767,8 @@ var proveit = $.extend({
 				paramNameInput = $( '<input>' ).attr({ 'type': 'hidden', 'class': 'proveit-param-name', 'value': paramName });
 				paramValueInput = $( '<input>' ).attr({ 'type': paramType, 'class': 'proveit-param-value', 'value': paramValue });
 
-				// Hide the hidden parameters, unless they are filled
-				if ( ( paramName in hiddenParams ) && !paramValue ) {
+				// Hide the optional parameters, unless they are filled
+				if ( ( paramName in optionalParams ) && !paramValue ) {
 					label.addClass( 'hidden' );
 				}
 
