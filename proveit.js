@@ -3,7 +3,7 @@
  *
  * Copyright 2008-2011 Georgia Tech Research Corporation, Atlanta, GA 30332-0415, ALL RIGHTS RESERVED
  * Copyright 2011- Matthew Flaschen
- * Rewritten and internationalized by Luis Felipe Schenone in 2014
+ * Rewritten and internationalized by Felipe Schenone in 2014
  *
  * ProveIt is available under the GNU Free Documentation License (http://www.gnu.org/copyleft/fdl.html),
  * the Creative Commons Attribution/Share-Alike License 3.0 (http://creativecommons.org/licenses/by-sa/3.0/),
@@ -13,6 +13,16 @@
 ( function ( mw, $ ) {
 
 var proveit = {
+
+	/**
+	 * URL of the ProveIt logo hosted at Commons
+	 */
+	LOGO: '//upload.wikimedia.org/wikipedia/commons/0/0d/ProveIt_user_interface_logo.png',
+
+	/**
+	 * URL of the ProveIt icon hosted at Commons
+	 */
+	ICON: '//upload.wikimedia.org/wikipedia/commons/thumb/1/19/ProveIt_logo_for_user_boxes.svg/22px-ProveIt_logo_for_user_boxes.svg.png',
 
 	/**
 	 * Interface messages
@@ -60,18 +70,11 @@ var proveit = {
 	templates: {},
 
 	/**
-	 * URLs of the logo and icon hosted at Commons
-	 */
-	LOGO: '//upload.wikimedia.org/wikipedia/commons/0/0d/ProveIt_user_interface_logo.png',
-
-	ICON: '//upload.wikimedia.org/wikipedia/commons/thumb/1/19/ProveIt_logo_for_user_boxes.svg/22px-ProveIt_logo_for_user_boxes.svg.png',
-
-	/**
 	 * Content language
 	 *
 	 * @type string
 	 */
-	contentLanguage: null,
+	contentLanguage: '',
 
 	/**
 	 * Interface language
@@ -124,7 +127,7 @@ var proveit = {
 
 		// Set the content language
 		proveit.contentLanguage = mw.config.get( 'wgContentLanguage' );
-		if ( ! ( proveit.contentLanguage in proveit.settings ) ) {
+		if ( !( proveit.contentLanguage in proveit.settings ) ) {
 			return; // Language not supported
 		}
 
@@ -177,9 +180,9 @@ var proveit = {
 
 			proveit.makeGUI();
 
-			// Only initialize visible for mainspace, user, and Draft pages
-			var namespace = mw.config.get( 'wgCanonicalNamespace' );
-			if ( namespace !== '' && namespace !== 'User' && namespace !== 'Draft' ) {
+			// Only initialize visible for mainspace and user namespaces
+			var namespace = mw.config.get( 'wgNamespaceNumber' );
+			if ( namespace !== 0 && namespace !== 2 ) {
 				$( '#proveit' ).hide();
 			}
 		});
@@ -393,7 +396,7 @@ var proveit = {
 	 */
 	addTag: function () {
 		if ( $( '#wpChangeTags' ).length > 0 ) {
-			return;
+			return; // Don't add it twice
 		}
 		var tagInput = $( '<input>' ).attr({
 			'id': 'wpChangeTags',
@@ -441,8 +444,8 @@ var proveit = {
 		 * @return {void}
 		 */
 		this.highlight = function () {
-			var textbox = proveit.getTextbox()[0];
-			var text = textbox.value;
+			var textbox = proveit.getTextbox()[0],
+				text = textbox.value;
 
 			// Scroll to the string
 			textbox.value = text.substring( 0, this.index );
@@ -455,8 +458,8 @@ var proveit = {
 			}
 
 			// Highlight the string
-			var start = this.index;
-			var end = this.index + this.string.length;
+			var start = this.index,
+				end = this.index + this.string.length;
 			$( textbox ).focus().textSelection( 'setSelection', { 'start': start, 'end': end } );
 		};
 	},
