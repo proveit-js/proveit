@@ -136,7 +136,7 @@ var proveit = $.extend({
 		}
 
 		// Set the content language
-		proveit.contentLanguage = mw.config.get( 'wgUserLanguage' );
+		proveit.contentLanguage = mw.config.get( 'wgContentLanguage' );
 		if ( ! ( proveit.contentLanguage in proveit.settings ) ) {
 			return; // Language not supported
 		}
