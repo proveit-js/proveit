@@ -16,40 +16,40 @@ var proveit = $.extend({
 
 	messages: {
 		'en': {
-			'edit-tab': 'Edit',
-			'add-tab': 'Add',
-			'template-label': 'Template',
-			'ref-name-label': '<ref> name',
-			'insert-button': 'Insert',
-			'update-button': 'Update',
-			'show-all-params-button': 'Show all the parameters',
-			'no-references': 'No references found',
-			'tag': 'ProveIt',
-			'category': 'Category:Wikipedia:ProveIt',
+			'proveit-edit-tab': 'Edit',
+			'proveit-add-tab': 'Add',
+			'proveit-template-label': 'Template',
+			'proveit-ref-name-label': '<ref> name',
+			'proveit-insert-button': 'Insert',
+			'proveit-update-button': 'Update',
+			'proveit-show-all-params-button': 'Show all the parameters',
+			'proveit-no-references': 'No references found',
+			'proveit-tag': 'ProveIt',
+			'proveit-category': 'Category:Wikipedia:ProveIt',
 		},
 		'es': {
-			'edit-tab': 'Editar',
-			'add-tab': 'Agregar',
-			'template-label': 'Plantilla',
-			'ref-name-label': 'Nombre de la referencia',
-			'insert-button': 'Insertar',
-			'update-button': 'Actualizar',
-			'show-all-params-button': 'Mostrar todos los parámetros',
-			'no-references': 'No se han encontrado referencias',
-			'tag': 'ProveIt',
-			'category': 'Categoría:Wikipedia:ProveIt',
+			'proveit-edit-tab': 'Editar',
+			'proveit-add-tab': 'Agregar',
+			'proveit-template-label': 'Plantilla',
+			'proveit-ref-name-label': 'Nombre de la referencia',
+			'proveit-insert-button': 'Insertar',
+			'proveit-update-button': 'Actualizar',
+			'proveit-show-all-params-button': 'Mostrar todos los parámetros',
+			'proveit-no-references': 'No se han encontrado referencias',
+			'proveit-tag': 'ProveIt',
+			'proveit-category': 'Categoría:Wikipedia:ProveIt',
 		},
 		'fi': {
-			'edit-tab': 'Edit',
-			'add-tab': 'Add',
-			'template-label': 'Malline',
-			'ref-name-label': '<ref> name',
-			'insert-button': 'Insert',
-			'update-button': 'Update',
-			'show-all-params-button': 'Show all the parameters',
-			'no-references': 'No references found',
-			'tag': 'ProveIt',
-			'category': 'Category:Wikipedia:ProveIt',
+			'proveit-edit-tab': 'Edit',
+			'proveit-add-tab': 'Add',
+			'proveit-template-label': 'Malline',
+			'proveit-ref-name-label': '<ref> name',
+			'proveit-insert-button': 'Insert',
+			'proveit-update-button': 'Update',
+			'proveit-show-all-params-button': 'Show all the parameters',
+			'proveit-no-references': 'No references found',
+			'proveit-tag': 'ProveIt',
+			'proveit-category': 'Category:Wikipedia:ProveIt',
 		}
 	},
 
@@ -80,7 +80,7 @@ var proveit = $.extend({
 	 * @return {string} message
 	 */
 	getMessage: function ( key ) {
-		return mw.message( key ).text();
+		return mw.message( 'proveit-' + key ).text();
 	},
 
 	/**
