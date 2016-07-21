@@ -24,7 +24,7 @@ var proveit = $.extend({
 			'update-button': 'Update',
 			'show-all-params-button': 'Show all the parameters',
 			'no-references': 'No references found',
-			'summary': ' (edited with [[w:en:User:ProveIt_GT|#ProveIt]])',
+			'tag': 'ProveIt',
 			'category': 'Category:Wikipedia:ProveIt',
 		},
 		'es': {
@@ -36,7 +36,7 @@ var proveit = $.extend({
 			'update-button': 'Actualizar',
 			'show-all-params-button': 'Mostrar todos los parámetros',
 			'no-references': 'No se han encontrado referencias',
-			'summary': 'Editado con #ProveIt',
+			'tag': 'ProveIt',
 			'category': 'Categoría:Wikipedia:ProveIt',
 		},
 		'fi': {
@@ -48,7 +48,7 @@ var proveit = $.extend({
 			'update-button': 'Update',
 			'show-all-params-button': 'Show all the parameters',
 			'no-references': 'No references found',
-			'summary': 'Edited with #ProveIt',
+			'tag': 'ProveIt',
 			'category': 'Category:Wikipedia:ProveIt',
 		}
 	},
@@ -72,13 +72,6 @@ var proveit = $.extend({
 	 * @type string
 	 */
 	userLanguage: 'en',
-
-	/**
-	 * Keep track of whether we have already added ProveIt to the summary.
-	 *
-	 * @type boolean
-	 */
-	summaryAdded: false,
 
 	/**
 	 * Convenience function that returns the message for the given key.
@@ -382,19 +375,21 @@ var proveit = $.extend({
 	},
 
 	/**
-	 * Adds the ProveIt edit summary to the edit summary field.
+	 * Add the ProveIt revision tag to the edit
 	 *
 	 * @return {void}
 	 */
-	addSummary: function () {
-		if ( this.summaryAdded ) {
+	addTag: function () {
+		if ( $( '#wpChangeTags' ).length > 0 ) {
 			return;
 		}
-
-		var summary = $( '#wpSummary' ).val();
-		summary = summary + proveit.getMessage( 'summary' );
-		$( '#wpSummary' ).val( summary );
-		this.summaryAdded = true;
+		var tagInput = $( '<input>' ).attr({
+			'id': 'wpChangeTags',
+			'type': 'hidden',
+			'name': 'wpChangeTags',
+			'value': proveit.getMessage( 'tag' )
+		});
+		$( '#editform' ).append( tagInput );
 	},
 
 	/**
@@ -842,8 +837,8 @@ var proveit = $.extend({
 			this.index = text.indexOf( newString );
 			this.highlight();
 
-			// Add the summary and rescan
-			proveit.addSummary();
+			// Add the tag and rescan
+			proveit.addTag();
 			proveit.scanForReferences();
 		};
 
@@ -868,8 +863,8 @@ var proveit = $.extend({
 			this.index = textbox.val().indexOf( this.string );
 			this.highlight();
 
-			// Add the summary and rescan
-			proveit.addSummary();
+			// Add the tag and rescan
+			proveit.addTag();
 			proveit.scanForReferences();
 		};
 	}
