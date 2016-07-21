@@ -12,7 +12,7 @@
 
 ( function ( mw, $ ) {
 
-var proveit = $.extend({
+var proveit = {
 
 	/**
 	 * Interface messages
@@ -68,7 +68,6 @@ var proveit = $.extend({
 
 	/**
 	 * Content language
-	 * Will be updated based on the current wiki
 	 *
 	 * @type string
 	 */
@@ -76,7 +75,6 @@ var proveit = $.extend({
 
 	/**
 	 * Interface language
-	 * Will be updated based on the user preferences
 	 *
 	 * @type string
 	 */
@@ -93,28 +91,17 @@ var proveit = $.extend({
 	},
 
 	/**
-	 * Convenience function that returns the message for the given key.
+	 * Convenience function to get a message
 	 *
 	 * @param {string} message key
-	 * @return {string} message
+	 * @return {string} message value
 	 */
 	getMessage: function ( key ) {
 		return mw.message( 'proveit-' + key ).text();
 	},
 
 	/**
-	 * Convenience function that returns the templates for the user language
-	 */
-	getTemplateNames: function () {
-		var template = [];
-		for ( var template in proveit.templates ) {
-			
-		}
-		return proveit.templates[ proveit.userLanguage ];
-	},
-
-	/**
-	 * Convenience function that returns a jQuery object for the edit textbox.
+	 * Convenience function to get the edit textbox
 	 *
 	 * @return {jQuery} Edit textbox
 	 */
@@ -123,7 +110,7 @@ var proveit = $.extend({
 	},
 
 	/**
-	 * Initializes ProveIt.
+	 * Initialize ProveIt
 	 *
 	 * @return {void}
 	 */
@@ -199,7 +186,7 @@ var proveit = $.extend({
 	},
 
 	/**
-	 * Generates the interface and inserts it into the DOM.
+	 * Generate the interface and insert it into the DOM
 	 *
 	 * @return {void}
 	 */
@@ -273,7 +260,7 @@ var proveit = $.extend({
 	},
 
 	/**
-	 * Scans for references in the textbox, makes a list item for each and fills the reference list with them.
+	 * Scan for references in the textbox, make a list item for each and fill the reference list with them
 	 *
 	 * @return {boolean} Whether the scan succeeded and found at least one reference
 	 */
@@ -324,9 +311,9 @@ var proveit = $.extend({
 	},
 
 	/**
-	 * Takes a reference string and returns a reference object.
+	 * Take a reference string and return a reference object
 	 *
-	 * @param {string} wikitext Wikitext that generates the reference
+	 * @param {string} Wikitext that generates the reference
 	 * @return {Citation} Reference object
 	 */
 	makeReference: function ( referenceString ) {
@@ -345,7 +332,7 @@ var proveit = $.extend({
 			reference;
 
 		if ( match ) {
-			reference = new this.TemplateReference({ 'string': referenceString });
+			reference = new proveit.TemplateReference({ 'string': referenceString });
 
 			// Extract the full template string
 			var templateString = match[0];
@@ -381,7 +368,7 @@ var proveit = $.extend({
 				reference.params[ paramName ] = paramValue;
 			}
 		} else {
-			reference = new this.RawReference({ 'string': referenceString });
+			reference = new proveit.RawReference({ 'string': referenceString });
 		}
 
 		// Now set the starting index of the reference
@@ -427,29 +414,29 @@ var proveit = $.extend({
 	Citation: function ( argObj ) {
 
 		/**
-		 * Name of the class.
+		 * Name of the class
 		 */
 		this.type = 'Citation';
 
 		/**
-		 * Name of the reference.
+		 * Name of the reference
 		 *
 		 * This is the value of the "name" parameter of the <ref> tag: <ref name="abc" />
 		 */
 		this.name = argObj.name;
 
 		/**
-		 * The location of this reference in the edit textbox.
+		 * Location of this reference in the edit textbox
 		 */
 		this.index = argObj.index;
 
 		/**
-		 * The wikitext for this reference.
+		 * Wikitext for this reference.
 		 */
 		this.string = argObj.string;
 
 		/**
-		 * Highlights the string in the textbox and scrolls it to view.
+		 * Highlight the string in the textbox and scroll it to view
 		 *
 		 * @return {void}
 		 */
@@ -483,12 +470,12 @@ var proveit = $.extend({
 	RawReference: function ( argObj ) {
 
 		/**
-		 * Command for extending the Citation class.
+		 * Extend the Citation class
 		 */
 		proveit.Citation.call( this, argObj );
 
 		/**
-		 * Name of the class.
+		 * Name of the class
 		 *
 		 * Overrides the value inherited from the Citation class.
 		 */
@@ -500,7 +487,7 @@ var proveit = $.extend({
 		this.citations = [];
 
 		/**
-		 * Converts this reference to wikitext.
+		 * Convert this reference to wikitext
 		 *
 		 * This method is trivial, but it needs to exist because it isn't trivial in the TemplateReference class,
 		 * and sometimes we call it on a reference object without knowing if it's a raw reference or a template reference.
@@ -512,7 +499,7 @@ var proveit = $.extend({
 		};
 
 		/**
-		 * Converts this reference to a list item ready to be inserted into the reference list.
+		 * Convert this reference to a list item ready to be inserted into the reference list
 		 *
 		 * @return {jQuery} jQuery-wrapped <li>
 		 */
@@ -556,12 +543,12 @@ var proveit = $.extend({
 	TemplateReference: function ( argObj ) {
 
 		/**
-		 * Command for extending the RawReference class.
+		 * Extend the RawReference class
 		 */
 		proveit.RawReference.call( this, argObj );
 
 		/**
-		 * Name of the class.
+		 * Name of the class
 		 *
 		 * Overrides the value inherited from the RawReference class.
 		 */
@@ -573,7 +560,7 @@ var proveit = $.extend({
 		this.template = argObj.template;
 
 		/**
-		 * Object mapping the parameter names of this reference to their values.
+		 * Object mapping the parameter names of this reference to their values
 		 *
 		 * This object is constructed directly out of the wikitext, so it doesn't include
 		 * any information about the parameters other than their names and values,
@@ -581,7 +568,7 @@ var proveit = $.extend({
 		this.params = {};
 
 		/**
-		 * Returns an object with the registered parameters for this reference.
+		 * Get the registered parameters for this reference
 		 *
 		 * @return {object}
 		 */
@@ -592,7 +579,7 @@ var proveit = $.extend({
 		};
 
 		/**
-		 * Returns an object with the required parameters for this reference.
+		 * Get the required parameters for this reference
 		 *
 		 * @return {object}
 		 */
@@ -608,7 +595,7 @@ var proveit = $.extend({
 		};
 
 		/**
-		 * Returns an object with the suggested parameters for this reference.
+		 * Get the suggested parameters for this reference
 		 *
 		 * @return {object}
 		 */
@@ -624,8 +611,7 @@ var proveit = $.extend({
 		};
 
 		/**
-		 * Returns an object with the optional parameters for this reference.
-		 * These parameters start hidden unless they are filled in.
+		 * Get the optional parameters for this reference
 		 *
 		 * @return {object}
 		 */
@@ -641,7 +627,7 @@ var proveit = $.extend({
 		};
 
 		/**
-		 * Converts this reference to wikitext.
+		 * Convert this reference to wikitext
 		 *
 		 * Overrides the toString() method of the RawReference class.
 		 *
@@ -668,9 +654,9 @@ var proveit = $.extend({
 		};
 
 		/**
-		 * Converts this reference to a list item ready to be inserted into the reference list.
+		 * Convert this reference to a list item ready to be inserted into the reference list
 		 *
-		 * Overrides the toListItem() method of the RawReference class
+		 * Overrides the toListItem() method of the RawReference class.
 		 *
 		 * @return {jQuery} jQuery-wrapped node for reference list
 		 */
@@ -724,7 +710,7 @@ var proveit = $.extend({
 		};
 
 		/**
-		 * Converts this reference into a HTML form filled with its data.
+		 * Convert this reference into a HTML form filled with its data
 		 *
 		 * @return {jQuery} jQuery-wrapped <form>
 		 */
@@ -819,7 +805,7 @@ var proveit = $.extend({
 		};
 
 		/**
-		 * Updates the data of this reference with the content of the reference form.
+		 * Update the data of this reference with the content of the reference form
 		 *
 		 * @return {void}
 		 */
@@ -843,7 +829,7 @@ var proveit = $.extend({
 		};
 
 		/**
-		 * Updates the wikitext in the textbox with the current data of this reference
+		 * Update the wikitext in the textbox with the current data of this reference
 		 *
 		 * @return {void}
 		 */
@@ -869,7 +855,7 @@ var proveit = $.extend({
 		};
 
 		/**
-		 * Inserts this reference into the textbox
+		 * Insert this reference into the textbox
 		 *
 		 * @return {void}
 		 */
@@ -894,10 +880,8 @@ var proveit = $.extend({
 			proveit.scanForReferences();
 		};
 	}
-}, window.proveit );
+};
 
-$( function () {
-	proveit.init();
-});
+$( proveit.init );
 
 }( mw, jQuery ) );
