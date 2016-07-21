@@ -14,18 +14,19 @@
 
 var proveit = $.extend({
 
+	/**
+	 * Interface messages
+	 */
 	messages: {
 		'en': {
 			'proveit-edit-tab': 'Edit',
 			'proveit-add-tab': 'Add',
 			'proveit-template-label': 'Template',
-			'proveit-ref-name-label': '<ref> name',
+			'proveit-ref-name-label': 'Reference name',
 			'proveit-insert-button': 'Insert',
 			'proveit-update-button': 'Update',
 			'proveit-show-all-params-button': 'Show all the parameters',
 			'proveit-no-references': 'No references found',
-			'proveit-tag': 'ProveIt',
-			'proveit-category': 'Category:Wikipedia:ProveIt',
 		},
 		'es': {
 			'proveit-edit-tab': 'Editar',
@@ -36,20 +37,20 @@ var proveit = $.extend({
 			'proveit-update-button': 'Actualizar',
 			'proveit-show-all-params-button': 'Mostrar todos los parámetros',
 			'proveit-no-references': 'No se han encontrado referencias',
-			'proveit-tag': 'ProveIt',
-			'proveit-category': 'Categoría:Wikipedia:ProveIt',
+		}
+	},
+
+	/**
+	 * Per wiki settings
+	 */
+	settings: {
+		'en': {
+			'category': 'Category:Wikipedia:ProveIt',
+			'tag': 'ProveIt',
 		},
-		'fi': {
-			'proveit-edit-tab': 'Edit',
-			'proveit-add-tab': 'Add',
-			'proveit-template-label': 'Malline',
-			'proveit-ref-name-label': '<ref> name',
-			'proveit-insert-button': 'Insert',
-			'proveit-update-button': 'Update',
-			'proveit-show-all-params-button': 'Show all the parameters',
-			'proveit-no-references': 'No references found',
-			'proveit-tag': 'ProveIt',
-			'proveit-category': 'Category:Wikipedia:ProveIt',
+		'es': {
+			'category': 'Categoría:Wikipedia:ProveIt',
+			'tag': 'ProveIt',
 		}
 	},
 
@@ -66,12 +67,30 @@ var proveit = $.extend({
 	ICON: '//upload.wikimedia.org/wikipedia/commons/thumb/1/19/ProveIt_logo_for_user_boxes.svg/22px-ProveIt_logo_for_user_boxes.svg.png',
 
 	/**
+	 * Content language
+	 * Will be updated based on the current wiki
+	 *
+	 * @type string
+	 */
+	contentLanguage: null,
+
+	/**
 	 * Interface language
 	 * Will be updated based on the user preferences
 	 *
 	 * @type string
 	 */
 	userLanguage: 'en',
+
+	/**
+	 * Convenience function to get a setting
+	 *
+	 * @param {string} setting key
+	 * @return {string} setting value
+	 */
+	getSetting: function ( key ) {
+		return proveit.settings[ proveit.contentLanguage ][ key ];
+	},
 
 	/**
 	 * Convenience function that returns the message for the given key.
@@ -116,6 +135,12 @@ var proveit = $.extend({
 			return;
 		}
 
+		// Set the content language
+		proveit.contentLanguage = mw.config.get( 'wgUserLanguage' );
+		if ( ! ( proveit.contentLanguage in proveit.settings ) ) {
+			return; // Language not supported
+		}
+
 		// Set the interface language
 		var userLanguage = mw.config.get( 'wgUserLanguage' );
 		if ( userLanguage in proveit.messages ) {
@@ -128,7 +153,7 @@ var proveit = $.extend({
 		api.get({
 			'action': 'templatedata',
 			'generator': 'categorymembers',
-			'gcmtitle': proveit.getMessage( 'category' ),
+			'gcmtitle': proveit.getSetting( 'category' ),
 			'format': 'json'
 		}).done( function ( data ) {
 			//console.log( data );
@@ -387,7 +412,7 @@ var proveit = $.extend({
 			'id': 'wpChangeTags',
 			'type': 'hidden',
 			'name': 'wpChangeTags',
-			'value': proveit.getMessage( 'tag' )
+			'value': proveit.getSetting( 'tag' )
 		});
 		$( '#editform' ).append( tagInput );
 	},
@@ -561,8 +586,9 @@ var proveit = $.extend({
 		 * @return {object}
 		 */
 		this.getRegisteredParams = function () {
-			var templateLabel = proveit.getMessage( 'template-label' );
-			return proveit.templates[ templateLabel + ':' + this.template ];
+			var formattedNamespaces = mw.config.get( 'wgFormattedNamespaces' );
+				templateNamespace = formattedNamespaces[10];
+			return proveit.templates[ templateNamespace + ':' + this.template ];
 		};
 
 		/**
