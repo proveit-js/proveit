@@ -287,7 +287,7 @@ var proveit = {
 		}
 
 		// Third, look for all the raw and template references
-		var matches = text.match( /<\s*ref.*?<\s*\/\s*ref\s*>/gi );
+		var matches = text.match( /<\s*ref[\s\S]*?<\s*\/\s*ref\s*>/gi );
 
 		if ( !matches ) {
 			var noReferencesMessage = $( '<div>' ).attr( 'id', 'proveit-no-references-message' ).text( proveit.getMessage( 'no-references' ) );
@@ -295,10 +295,12 @@ var proveit = {
 			return false;
 		}
 
-		var i, j, reference, referenceItem;
+		var i, j, referenceString, reference, referenceItem;
 		for ( i = 0; i < matches.length; i++ ) {
 			// Turn all the matches into reference objects
-			reference = proveit.makeReference( matches[ i ] );
+			referenceString = matches[ i ];
+			referenceString = referenceString.replace( /(\r\n|\n|\r)/gm, ' ' ); // Replace newlines by whitespaces
+			reference = proveit.makeReference( referenceString );
 
 			// For each reference, check the citations array for citations to it
 			for ( j = 0; j < citations.length; j++ ) {
