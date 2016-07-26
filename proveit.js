@@ -277,7 +277,7 @@ var proveit = {
 		// Second, look for all the citations and store them in an array for later
 		var text = proveit.getTextbox().val(),
 			citations = [],
-			citationsRegExp = /<\s*ref\s+name\s*=\s*["|']?\s*([^"'\s]+)\s*["|']?\s*\/\s*>/gi, // Three possibilities: <ref name="foo" />, <ref name='foo' /> and <ref name=foo />
+			citationsRegExp = /<\s*ref\s+name\s*=\s*["|']?\s*([^"'\s]+)\s*["|']?\s*\/\s*>/ig, // Three possibilities: <ref name="foo" />, <ref name='foo' /> and <ref name=foo />
 			match,
 			citation;
 
@@ -287,7 +287,7 @@ var proveit = {
 		}
 
 		// Third, look for all the raw and template references
-		var matches = text.match( /<\s*ref[\s\S]*?<\s*\/\s*ref\s*>/gi );
+		var matches = text.match( /<\s*ref[\s\S]*?<\s*\/\s*ref\s*>/ig );
 
 		if ( !matches ) {
 			var noReferencesMessage = $( '<div>' ).attr( 'id', 'proveit-no-references-message' ).text( proveit.getMessage( 'no-references' ) );
@@ -295,12 +295,10 @@ var proveit = {
 			return false;
 		}
 
-		var i, j, referenceString, reference, referenceItem;
+		var i, j, reference, referenceItem;
 		for ( i = 0; i < matches.length; i++ ) {
 			// Turn all the matches into reference objects
-			referenceString = matches[ i ];
-			referenceString = referenceString.replace( /(\r\n|\n|\r)/gm, ' ' ); // Replace newlines by whitespaces
-			reference = proveit.makeReference( referenceString );
+			reference = proveit.makeReference( matches[ i ] );
 
 			// For each reference, check the citations array for citations to it
 			for ( j = 0; j < citations.length; j++ ) {
@@ -327,38 +325,35 @@ var proveit = {
 
 		// First we need to determine what kind of reference we're dealing with
 		// So we get all the template names and search for a match
-		var registeredTemplatesArray = [],
-			registeredTemplate;
+		var registeredTemplate,
+			registeredTemplatesArray = [];
 		for ( registeredTemplate in proveit.templates ) {
-			registeredTemplate = registeredTemplate.substr( registeredTemplate.indexOf( ':' ) + 1 ), // Remove the namespace
+			registeredTemplate = registeredTemplate.substring( registeredTemplate.indexOf( ':' ) + 1 ); // Remove the namespace
 			registeredTemplatesArray.push( registeredTemplate );
 		}
 		var registeredTemplatesDisjunction = registeredTemplatesArray.join( '|' ),
-			regExp = new RegExp( '{{(' + registeredTemplatesDisjunction + ').*}}', 'i' ),
+			regExp = new RegExp( '{{(' + registeredTemplatesDisjunction + ')([\\s\\S]*)}}', 'i' ),
 			match = referenceString.match( regExp ),
 			reference;
 
 		if ( match ) {
 			reference = new proveit.TemplateReference({ 'string': referenceString });
 
-			// Extract the full template string
-			var templateString = match[0];
-
 			// Extract the name of the template
-			var template = match[1],
-				template = template.charAt(0).toUpperCase() + template.slice(1); // Capitalize the first letter
+			var template = match[1];
 
 			// Normalize it
-			for ( registeredTemplate in proveit.templates ) {
-				registeredTemplate
+			for ( registeredTemplate in registeredTemplatesArray ) {
 				if ( template.toLowerCase() === registeredTemplate.toLowerCase() ) {
 					template = registeredTemplate;
 				}
+				console.log( registeredTemplatesArray, registeredTemplate, template );
 			}
 			reference.template = template;
 
 			// Next, extract the parameters
-			var paramsString = templateString.substring( templateString.indexOf( '|' ) + 1, templateString.length - 2 ), // From after the first pipe to before the closing "}}"
+			var paramsString = match[2],
+				paramsString = paramsString.substring( paramsString.indexOf( '|' ) + 1 ), // Remove everything before the first pipe
 				paramsArray = paramsString.split( '|' ),
 				paramString, paramNameAndValue, paramName, paramValue;
 
@@ -416,9 +411,9 @@ var proveit = {
 	 *
 	 * The citation class is the base class. It has the properties and methods common to all references.
 	 *
-	 * @param {object} argObj Data for constructing the object
+	 * @param {object} Data for constructing the object
 	 */
-	Citation: function ( argObj ) {
+	Citation: function ( data ) {
 
 		/**
 		 * Name of the class
@@ -430,17 +425,17 @@ var proveit = {
 		 *
 		 * This is the value of the "name" parameter of the <ref> tag: <ref name="abc" />
 		 */
-		this.name = argObj.name;
+		this.name = data.name;
 
 		/**
 		 * Location of this reference in the edit textbox
 		 */
-		this.index = argObj.index;
+		this.index = data.index;
 
 		/**
 		 * Wikitext for this reference.
 		 */
-		this.string = argObj.string;
+		this.string = data.string;
 
 		/**
 		 * Highlight the string in the textbox and scroll it to view
@@ -472,14 +467,14 @@ var proveit = {
 	 * Class for raw references: <ref>This is a raw reference, it uses no templates.</ref>
 	 *
 	 * @extends Citation
-	 * @param {object} argObj Data for constructing the object
+	 * @param {object} Data for constructing the object
 	 */
-	RawReference: function ( argObj ) {
+	RawReference: function ( data ) {
 
 		/**
 		 * Extend the Citation class
 		 */
-		proveit.Citation.call( this, argObj );
+		proveit.Citation.call( this, data );
 
 		/**
 		 * Name of the class
@@ -545,14 +540,14 @@ var proveit = {
 	 * Class for template references: <ref>{{Cite book |first=Charles |last=Darwin |title=The Origin of Species}}</ref>
 	 *
 	 * @extends RawReference
-	 * @param {object} argObj Data for constructing the object
+	 * @param {object} Data for constructing the object
 	 */
-	TemplateReference: function ( argObj ) {
+	TemplateReference: function ( data ) {
 
 		/**
 		 * Extend the RawReference class
 		 */
-		proveit.RawReference.call( this, argObj );
+		proveit.RawReference.call( this, data );
 
 		/**
 		 * Name of the class
@@ -564,7 +559,7 @@ var proveit = {
 		/**
 		 * Name of the template used by this reference.
 		 */
-		this.template = argObj.template;
+		this.template = data.template;
 
 		/**
 		 * Object mapping the parameter names of this reference to their values
