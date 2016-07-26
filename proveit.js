@@ -56,7 +56,7 @@ var proveit = {
 	settings: {
 		'en': {
 			'category': 'Category:Wikipedia:ProveIt',
-			'tag': 'ProveIt',
+			'tag': 'ProveIt edit',
 		},
 		'es': {
 			'category': 'Categoría:Wikipedia:ProveIt',
@@ -65,26 +65,28 @@ var proveit = {
 	},
 
 	/**
-	 * This will be filled with the template data retrieved from Wikipedia
+	 * Template data retrieved from Wikipedia
+	 *
+	 * @type {object}
 	 */
 	templates: {},
 
 	/**
 	 * Content language
 	 *
-	 * @type string
+	 * @type {string}
 	 */
 	contentLanguage: '',
 
 	/**
 	 * Interface language
 	 *
-	 * @type string
+	 * @type {string}
 	 */
 	userLanguage: 'en',
 
 	/**
-	 * Convenience function to get a setting
+	 * Convenience method to get a setting
 	 *
 	 * @param {string} setting key
 	 * @return {string} setting value
@@ -94,7 +96,7 @@ var proveit = {
 	},
 
 	/**
-	 * Convenience function to get a message
+	 * Convenience method to get a message
 	 *
 	 * @param {string} message key
 	 * @return {string} message value
@@ -104,7 +106,7 @@ var proveit = {
 	},
 
 	/**
-	 * Convenience function to get the edit textbox
+	 * Convenience method to get the edit textbox
 	 *
 	 * @return {jQuery} Edit textbox
 	 */
@@ -314,9 +316,9 @@ var proveit = {
 	},
 
 	/**
-	 * Take a reference string and return a reference object
+	 * Make a reference object out of a reference string
 	 *
-	 * @param {string} Wikitext that generates the reference
+	 * @param {string} Wikitext of the reference
 	 * @return {Citation} Reference object
 	 */
 	makeReference: function ( referenceString ) {
