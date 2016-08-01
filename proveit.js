@@ -289,7 +289,7 @@ var proveit = {
 		}
 
 		// Third, look for all the raw and template references
-		var matches = text.match( /<\s*ref[^\/]*>[\s\S]*<\s*\/\s*ref\s*>/ig );
+		var matches = text.match( /<\s*ref[^\/]*>[\s\S]*?<\s*\/\s*ref\s*>/ig );
 
 		if ( !matches ) {
 			var noReferencesMessage = $( '<div>' ).attr( 'id', 'proveit-no-references-message' ).text( proveit.getMessage( 'no-references' ) );
