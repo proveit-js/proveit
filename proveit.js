@@ -31,8 +31,8 @@ var proveit = {
 		'en': {
 			'proveit-edit-tab': 'Edit',
 			'proveit-add-tab': 'Add',
-			'proveit-ref-name-label': 'Reference name',
-			'proveit-raw-reference-label': 'Reference content',
+			'proveit-reference-name-label': 'Reference name',
+			'proveit-reference-text-label': 'Reference content',
 			'proveit-template-label': 'Template',
 			'proveit-insert-button': 'Insert',
 			'proveit-update-button': 'Update',
@@ -42,8 +42,8 @@ var proveit = {
 		'es': {
 			'proveit-edit-tab': 'Editar',
 			'proveit-add-tab': 'Agregar',
-			'proveit-ref-name-label': 'Nombre de la referencia',
-			'proveit-raw-reference-label': 'Contenido de la referencia',
+			'proveit-reference-name-label': 'Nombre de la referencia',
+			'proveit-reference-text-label': 'Contenido de la referencia',
 			'proveit-template-label': 'Plantilla',
 			'proveit-insert-button': 'Insertar',
 			'proveit-update-button': 'Actualizar',
@@ -336,12 +336,12 @@ var proveit = {
 		var registeredTemplatesDisjunction = registeredTemplatesArray.join( '|' ),
 			regExp = new RegExp( '{{(' + registeredTemplatesDisjunction + ')([\\s\\S]*)}}', 'i' ),
 			match = referenceString.match( regExp ),
-			referenceContent,
+			referenceText,
 			reference;
 
 		if ( match ) {
-			referenceContent = match[2];
-			reference = new proveit.TemplateReference({ 'string': referenceString, 'content': referenceContent });
+			referenceText = match[2];
+			reference = new proveit.TemplateReference({ 'string': referenceString, 'text': referenceText });
 
 			// Extract the name of the template
 			var template = match[1];
@@ -355,7 +355,7 @@ var proveit = {
 			reference.template = template;
 
 			// Next, extract the parameters
-			var paramsArray = referenceContent.split( '|' ),
+			var paramsArray = referenceText.split( '|' ),
 				paramString, paramNameAndValue, paramName, paramValue;
 
 			paramsArray.shift(); // Remove everything before the fist pipe
@@ -373,8 +373,8 @@ var proveit = {
 				reference.params[ paramName ] = paramValue;
 			}
 		} else {
-			referenceContent = referenceString.match( />([\s\S]*)<\s*\/\s*ref\s*>/i )[1];
-			reference = new proveit.RawReference({ 'string': referenceString, 'content': referenceContent });
+			referenceText = referenceString.match( />([\s\S]*)<\s*\/\s*ref\s*>/i )[1];
+			reference = new proveit.RawReference({ 'string': referenceString, 'text': referenceText });
 		}
 
 		// Now set the starting index of the reference
@@ -495,7 +495,7 @@ var proveit = {
 		/**
 		 * String inside the <ref> tags
 		 */
-		this.content = data.content;
+		this.text = data.text;
 
 		/**
 		 * Convert this reference to wikitext
@@ -512,7 +512,7 @@ var proveit = {
 				string += ' name="' + this.name + '"';
 			}
 
-			string += '>' + this.content + '</ref>';
+			string += '>' + this.text + '</ref>';
 
 			return string;
 		};
@@ -524,7 +524,7 @@ var proveit = {
 		 */
 		this.toListItem = function () {
 
-			var item = $( '<li>' ).attr( 'class', 'proveit-reference-item' ).text( this.content ),
+			var item = $( '<li>' ).attr( 'class', 'proveit-reference-item' ).text( this.text ),
 				citations = $( '<span>' ).attr( 'class', 'proveit-citations' );
 
 			for ( var i = 0; i < this.citations.length; i++ ) {
@@ -567,21 +567,21 @@ var proveit = {
 			var form = $( '<form>' ).attr( 'id', 'proveit-reference-form' );
 
 			// Insert the <ref> name field
-			var refNameLabel = $( '<label>' ).text( proveit.getMessage( 'ref-name-label' ) ),
-				refNameInput = $( '<input>' ).attr({ 'name': 'ref-name', 'value': this.name });
-			refNameLabel.append( refNameInput );
-			form.append( refNameLabel );
+			var referenceNameLabel = $( '<label>' ).text( proveit.getMessage( 'reference-name-label' ) ),
+				referenceNameInput = $( '<input>' ).attr({ 'name': 'reference-name', 'value': this.name });
+			referenceNameLabel.append( referenceNameInput );
+			form.append( referenceNameLabel );
 
 			// Insert the textarea
-			var rawReferenceLabel = $( '<label>' ).text( proveit.getMessage( 'raw-reference-label' ) ),
-				rawReferenceTextarea = $( '<textarea>' ).attr( 'name', 'raw-reference' ).text( this.content );
-			rawReferenceLabel.append( rawReferenceTextarea );
-			form.append( rawReferenceLabel );
+			var referenceTextLabel = $( '<label>' ).text( proveit.getMessage( 'reference-text-label' ) ),
+				referenceTextArea = $( '<textarea>' ).attr( 'name', 'reference-text' ).val( this.text );
+			referenceTextLabel.append( referenceTextArea );
+			form.append( referenceTextLabel );
 
 			// Bind events
 			var reference = this;
-			rawReferenceTextarea.change( function ( event ) {
-				reference.content = $( event.currentTarget ).val();
+			referenceTextArea.change( function ( event ) {
+				reference.text = $( event.currentTarget ).val();
 				var form = reference.toForm();
 				$( '#proveit-reference-form-container' ).html( form );
 				$( '#proveit-show-all-params-button' ).hide();
@@ -605,8 +605,8 @@ var proveit = {
 		 * @return {void}
 		 */
 		this.loadFromForm = function () {
-			this.name = $( '#proveit-reference-form input[name="ref-name"]' ).val();
-			this.content = $( '#proveit-reference-form textarea[name="raw-reference"]' ).text();
+			this.name = $( '#proveit-reference-form input[name="reference-name"]' ).val();
+			this.text = $( '#proveit-reference-form textarea[name="reference-text"]' ).val();
 			this.string = this.toString();
 		};
 
@@ -845,10 +845,10 @@ var proveit = {
 			var form = $( '<form>' ).attr( 'id', 'proveit-reference-form' ), pair;
 
 			// Insert the <ref> name field
-			var refNameLabel = $( '<label>' ).text( proveit.getMessage( 'ref-name-label' ) ),
-				refNameInput = $( '<input>' ).attr({ 'name': 'ref-name', 'value': this.name });
-			refNameLabel.append( refNameInput );
-			form.append( refNameLabel );
+			var referenceNameLabel = $( '<label>' ).text( proveit.getMessage( 'reference-name-label' ) ),
+				referenceNameInput = $( '<input>' ).attr({ 'name': 'reference-name', 'value': this.name });
+			referenceNameLabel.append( referenceNameInput );
+			form.append( referenceNameLabel );
 
 			// Insert the dropdown menu
 			var templateLabel = $( '<label>' ).text( proveit.getMessage( 'template-label' ) ),
@@ -936,7 +936,7 @@ var proveit = {
 		 * @return {void}
 		 */
 		this.loadFromForm = function () {
-			this.name = $( '#proveit-reference-form input[name="ref-name"]' ).val();
+			this.name = $( '#proveit-reference-form input[name="reference-name"]' ).val();
 			this.template = $( '#proveit-reference-form select[name="template"]' ).val();
 
 			// Load all the parameter key-value pairs
