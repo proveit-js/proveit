@@ -93,10 +93,14 @@
 	padding: 10px;
 }
 
-#proveit-reference-form .proveit-param-pair, #proveit-reference-form label {
+#proveit-reference-form {
+	overflow: hidden;
+}
+
+#proveit-reference-form label {
 	box-sizing: border-box;
 	display: block;
-	line-height: 27px; /* This must be the same as the height of the input fields, so that the pair is aligned */
+	line-height: 27px; /* This must be the same as the height of the input fields, so that the pair is perfectly aligned */
 	margin: 0;
 	padding: 10px 10px 0 10px;
 	width: 100%;
@@ -117,6 +121,21 @@
 	padding: 5px;
 	width: 500px;
 	height: 15px; /* Set the height because else Chrome makes the date fields higher */
+}
+
+#proveit-reference-form textarea {
+	background: white;
+	border: 1px solid #ddd;
+	border-radius: 0;
+	box-sizing: content-box;
+	float: right;
+	font: inherit;
+	line-height: 15px;
+	margin: 0;
+	outline: none;
+	padding: 5px;
+	width: 500px;
+	height: 100px
 }
 
 #proveit-reference-form option {
