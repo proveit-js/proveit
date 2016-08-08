@@ -50,6 +50,7 @@
 
 #proveit-reference-list .proveit-reference-item {
 	margin: 0;
+	overflow: hidden;
 	padding: 10px;
 }
 

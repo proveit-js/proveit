@@ -1,5 +1,5 @@
 /**
- * ProveIt is a powerful GUI tool for viewing, editing and creating references in Wikipedia
+ * ProveIt is a powerful GUI tool to view, edit and add references in Wikipedia
  *
  * Copyright 2008-2011 Georgia Tech Research Corporation, Atlanta, GA 30332-0415, ALL RIGHTS RESERVED
  * Copyright 2011- Matthew Flaschen
@@ -32,7 +32,7 @@ var proveit = {
 			'proveit-edit-tab': 'Edit',
 			'proveit-add-tab': 'Add',
 			'proveit-reference-name-label': 'Reference name',
-			'proveit-reference-text-label': 'Reference content',
+			'proveit-reference-text-label': 'Reference text',
 			'proveit-template-label': 'Template',
 			'proveit-insert-button': 'Insert',
 			'proveit-update-button': 'Update',
@@ -43,7 +43,7 @@ var proveit = {
 			'proveit-edit-tab': 'Editar',
 			'proveit-add-tab': 'Agregar',
 			'proveit-reference-name-label': 'Nombre de la referencia',
-			'proveit-reference-text-label': 'Contenido de la referencia',
+			'proveit-reference-text-label': 'Texto de la referencia',
 			'proveit-template-label': 'Plantilla',
 			'proveit-insert-button': 'Insertar',
 			'proveit-update-button': 'Actualizar',
@@ -57,7 +57,7 @@ var proveit = {
 	 */
 	settings: {
 		'en': {
-			'category': 'Category:Wikipedia:ProveIt',
+			'category': 'Category:ProveIt templates',
 			'tag': 'ProveIt edit',
 		},
 		'es': {
@@ -148,6 +148,7 @@ var proveit = {
 			'action': 'templatedata',
 			'generator': 'categorymembers',
 			'gcmtitle': proveit.getSetting( 'category' ),
+			'gcmlimit': 500,
 			'format': 'json'
 		}).done( function ( data ) {
 			//console.log( data );
@@ -250,8 +251,8 @@ var proveit = {
 
 			// Create an empty reference and an empty form out of it
 			var firstTemplate = Object.keys( proveit.templates )[0],
-				firstTemplate = firstTemplate.substr( firstTemplate.indexOf( ':' ) + 1 ), // Remove the namespace
-				emptyReference = new proveit.TemplateReference({ 'template': firstTemplate }),
+				firstTemplateName = firstTemplate.substr( firstTemplate.indexOf( ':' ) + 1 ), // Remove the namespace
+				emptyReference = new proveit.TemplateReference({ 'template': firstTemplateName }),
 				emptyForm = emptyReference.toForm();
 			referenceFormContainer.html( emptyForm ).show();
 		});
@@ -858,7 +859,7 @@ var proveit = {
 
 			for ( templateName in proveit.templates ) {
 				templateName = templateName.substr( templateName.indexOf( ':' ) + 1 ), // Remove the namespace
-				templateOption = $( '<option>' ).text( templateName ).attr( 'value', templateName );
+				templateOption = $( '<option>' ).text( templateName ).val( templateName );
 				if ( this.template === templateName ) {
 					templateOption.attr( 'selected', 'selected' );
 				}
@@ -954,7 +955,7 @@ var proveit = {
 			this.string = this.toString();
 		};
 	}
-}
+};
 
 $( proveit.init );
 
