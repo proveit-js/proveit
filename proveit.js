@@ -1,9 +1,9 @@
 /**
- * ProveIt is a powerful GUI tool to view, edit and add references in Wikipedia
+ * ProveIt is a powerful GUI tool to find, edit, add and cite references in Wikipedia
  *
  * Copyright 2008-2011 Georgia Tech Research Corporation, Atlanta, GA 30332-0415, ALL RIGHTS RESERVED
  * Copyright 2011- Matthew Flaschen
- * Rewritten and internationalized by Felipe Schenone in 2014
+ * Rewritten, internationalized, enhanced and maintained by Felipe Schenone since 2014
  *
  * ProveIt is available under the GNU Free Documentation License (http://www.gnu.org/copyleft/fdl.html),
  * the Creative Commons Attribution/Share-Alike License 3.0 (http://creativecommons.org/licenses/by-sa/3.0/),
@@ -57,7 +57,7 @@ var proveit = {
 	 */
 	settings: {
 		'en': {
-			'category': 'Category:ProveIt templates',
+			'category': 'Category:ProveIt',
 			'tag': 'ProveIt edit',
 		},
 		'es': {
@@ -149,6 +149,7 @@ var proveit = {
 			'generator': 'categorymembers',
 			'gcmtitle': proveit.getSetting( 'category' ),
 			'gcmlimit': 500,
+			'gcmnamespace': 10,
 			'format': 'json'
 		}).done( function ( data ) {
 			//console.log( data );
