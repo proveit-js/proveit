@@ -15,16 +15,6 @@
 var proveit = {
 
 	/**
-	 * URL of the ProveIt logo hosted at Commons
-	 */
-	LOGO: '//upload.wikimedia.org/wikipedia/commons/0/0d/ProveIt_user_interface_logo.png',
-
-	/**
-	 * URL of the ProveIt icon hosted at Commons
-	 */
-	ICON: '//upload.wikimedia.org/wikipedia/commons/thumb/1/19/ProveIt_logo_for_user_boxes.svg/22px-ProveIt_logo_for_user_boxes.svg.png',
-
-	/**
 	 * Interface messages
 	 */
 	messages: {
@@ -53,7 +43,7 @@ var proveit = {
 	},
 
 	/**
-	 * Per wiki settings
+	 * Wiki-specific settings
 	 */
 	settings: {
 		'en': {
@@ -65,6 +55,16 @@ var proveit = {
 			'tag': 'ProveIt',
 		}
 	},
+
+	/**
+	 * URL of the ProveIt logo hosted at Commons
+	 */
+	LOGO: '//upload.wikimedia.org/wikipedia/commons/0/0d/ProveIt_user_interface_logo.png',
+
+	/**
+	 * URL of the ProveIt icon hosted at Commons
+	 */
+	ICON: '//upload.wikimedia.org/wikipedia/commons/thumb/1/19/ProveIt_logo_for_user_boxes.svg/22px-ProveIt_logo_for_user_boxes.svg.png',
 
 	/**
 	 * Template data retrieved from Wikipedia
@@ -117,7 +117,7 @@ var proveit = {
 	},
 
 	/**
-	 * Initialize ProveIt
+	 * Initialization script
 	 *
 	 * @return {void}
 	 */
@@ -395,11 +395,15 @@ var proveit = {
 	},
 
 	/**
-	 * Add the ProveIt revision tag to the edit
+	 * Add the ProveIt revision tag to the edit form
 	 *
 	 * @return {void}
 	 */
 	addTag: function () {
+		var tag = proveit.getSetting( 'tag' );
+		if ( !tag ) {
+			return; // No tag defined
+		}
 		if ( $( '#wpChangeTags' ).length > 0 ) {
 			return; // Don't add it twice
 		}
@@ -407,7 +411,7 @@ var proveit = {
 			'id': 'wpChangeTags',
 			'type': 'hidden',
 			'name': 'wpChangeTags',
-			'value': proveit.getSetting( 'tag' )
+			'value': tag
 		});
 		$( '#editform' ).append( tagInput );
 	},
