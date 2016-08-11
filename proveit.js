@@ -874,6 +874,7 @@ var proveit = {
 			// The insert all the other fields
 			var paramName, registeredParam, paramLabel, paramType, paramDescription, paramValue, label, paramNameInput, paramValueInput,
 				registeredParams = this.getRegisteredParams(),
+				requiredParams = this.getRequiredParams();
 				optionalParams = this.getOptionalParams();
 
 			for ( paramName in registeredParams ) {
@@ -904,9 +905,14 @@ var proveit = {
 				paramNameInput = $( '<input>' ).attr({ 'type': 'hidden', 'class': 'proveit-param-name', 'value': paramName });
 				paramValueInput = $( '<input>' ).attr({ 'type': paramType, 'class': 'proveit-param-value', 'value': paramValue });
 
+				// Mark the required parameters as such
+				if ( paramName in requiredParams ) {
+					label.addClass( 'proveit-required' );
+				}
+
 				// Hide the optional parameters, unless they are filled
 				if ( ( paramName in optionalParams ) && !paramValue ) {
-					label.addClass( 'hidden' );
+					label.addClass( 'proveit-hidden' );
 				}
 
 				label.prepend( paramValueInput ).append( paramNameInput );

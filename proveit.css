@@ -122,6 +122,14 @@
 	width: 100%;
 }
 
+#proveit-reference-form label.proveit-required {
+	text-decoration: underline;
+}
+
+#proveit-reference-form label.proveit-hidden {
+	display: none;
+}
+
 #proveit-reference-form input,
 #proveit-reference-form select {
 	-webkit-appearance: none;
@@ -184,8 +192,4 @@
 #proveit-insert-button,
 #proveit-update-button {
 	background: #a7dcff;
-}
-
-#proveit .hidden {
-	display: none;
 }
