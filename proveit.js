@@ -57,11 +57,6 @@ var proveit = {
 	},
 
 	/**
-	 * URL of the ProveIt logo hosted at Commons
-	 */
-	LOGO: '//upload.wikimedia.org/wikipedia/commons/0/0d/ProveIt_user_interface_logo.png',
-
-	/**
 	 * URL of the ProveIt icon hosted at Commons
 	 */
 	ICON: '//upload.wikimedia.org/wikipedia/commons/thumb/1/19/ProveIt_logo_for_user_boxes.svg/22px-ProveIt_logo_for_user_boxes.svg.png',
@@ -204,11 +199,13 @@ var proveit = {
 		// First define the elements
 		var gui = $( '<div>' ).attr( 'id', 'proveit' );
 
-		// Tabs
-		var tabs = $( '<div>').attr( 'id', 'proveit-tabs' ),
+		// Header
+		var header = $( '<div>' ).attr( 'id', 'proveit-header' ),
+			logo = $( '<span>' ).attr( 'id', 'proveit-logo' ).text( 'ProveIt' ),
+			leftBracket = $( '<span>' ).attr( 'id', 'proveit-left-bracket' ).text( '[' ),
+			rightBracket = $( '<span>' ).attr( 'id', 'proveit-right-bracket' ).text( ']' ),
 			editTab = $( '<span>' ).attr( 'id', 'proveit-edit-tab' ).addClass( 'active' ).text( proveit.getMessage( 'edit-tab' ) ),
-			addTab = $( '<span>' ).attr( 'id', 'proveit-add-tab' ).text( proveit.getMessage( 'add-tab' ) ),
-			logo = $( '<img>' ).attr({ 'id': 'proveit-logo', 'src': proveit.LOGO, 'alt': 'ProveIt' });
+			addTab = $( '<span>' ).attr( 'id', 'proveit-add-tab' ).text( proveit.getMessage( 'add-tab' ) );
 
 		// Content
 		var content = $( '<div>' ).attr( 'id', 'proveit-content' ),
@@ -222,20 +219,22 @@ var proveit = {
 			insertButton = $( '<button>' ).attr( 'id', 'proveit-insert-button' ).text( proveit.getMessage( 'insert-button' ) );
 
 		// Then put everything together and add it to the DOM
-		tabs.append( logo ).append( editTab ).append( addTab );
-		buttons.append( showAllParamsButton ).append( updateButton ).append( insertButton );
-		content.append( referenceList ).append( referenceFormContainer ).append( buttons );
-		gui.append( tabs ).append( content );
+		logo.prepend( leftBracket ).append( rightBracket );
+		header.append( logo, editTab, addTab );
+		buttons.append( showAllParamsButton, updateButton, insertButton );
+		content.append( referenceList, referenceFormContainer, buttons );
+		gui.append( header,	content );
 		$( document.body ).prepend( gui );
 
 		// Lastly, bind events
 		logo.click( function () {
 			content.toggle();
+			editTab.toggle();
+			addTab.toggle();
 		});
 
 		editTab.click( function () {
 			$( this ).addClass( 'active' ).siblings().removeClass( 'active' );
-			content.show();
 			referenceList.show();
 			referenceFormContainer.hide();
 			buttons.hide();
@@ -243,7 +242,6 @@ var proveit = {
 
 		addTab.click( function () {
 			$( this ).addClass( 'active' ).siblings().removeClass( 'active' );
-			content.show();
 			referenceList.hide();
 			buttons.show();
 			showAllParamsButton.show();

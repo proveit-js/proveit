@@ -4,30 +4,44 @@
 	position: fixed;
 	right: 10px;
 	bottom: 0;
-	width: 700px;
 	z-index: 99999999;
 }
 
-#proveit-logo {
-	cursor: pointer;
-	float: right;
-	margin: 3px 3px 0 0;
-}
-
-#proveit-tabs {
+#proveit-header {
 	border: 1px solid #ddd;
-	padding: 0;
+	overflow: hidden;
 }
 
-#proveit-tabs span {
+#proveit-logo {
+	background: black;
+	cursor: pointer;
+	color: white;
+	font-weight: bold;
+	float: right;
+	padding: 15px;
+}
+
+#proveit-left-bracket {
+	color: yellow;
+	margin-right: 5px;
+}
+#proveit-right-bracket {
+	color: yellow;
+	margin-left: 5px;
+}
+
+#proveit-edit-tab,
+#proveit-add-tab {
 	cursor: pointer;
 	color: black;
-	display: inline-block;
+	display: none;
+	float: left;
 	outline: none;
-	padding: 12px 20px 12px 20px;
+	padding: 15px;
 }
 
-#proveit-tabs span.active {
+#proveit-edit-tab.active,
+#proveit-add-tab.active {
 	background: #a7dcff;
 }
 
@@ -35,11 +49,12 @@
 	background: #f4f4f4;
 	border-left: 1px solid #ddd;
 	border-right: 1px solid #ddd;
-	height: 280px;
 	display: none;
+	height: 280px;
 	overflow: scroll;
 	overflow-y: scroll;
 	overflow-x: hidden;
+	width: 700px;
 }
 
 #proveit-reference-list {
