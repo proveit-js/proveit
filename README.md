@@ -2,7 +2,7 @@
 
 ProveIt is a powerful GUI tool to find, edit, add and cite references when editing Wikipedia articles
 
-## This repo should no longer be used!
+**THIS REPO IS NO LONGER HERE!!!**
 
 We have moved away from GitHub:
 * Bug reports should now be sent to https://phabricator.wikimedia.org/project/profile/2317/
